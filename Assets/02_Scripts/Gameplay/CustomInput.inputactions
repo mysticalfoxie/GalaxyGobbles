@@ -2,92 +2,48 @@
     "name": "CustomInput",
     "maps": [
         {
-            "name": "Player",
+            "name": "Touch",
             "id": "faa8ed5b-1948-4561-beda-4d0fd91cb62b",
             "actions": [
                 {
-                    "name": "Movement",
+                    "name": "TouchInteract",
+                    "type": "PassThrough",
+                    "id": "0cdb1e0b-3794-46aa-b529-6a68c1f911df",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TouchPosition",
                     "type": "Value",
-                    "id": "931a6bd7-fdf0-40de-b94d-ba41c7af98c4",
+                    "id": "6bfaf4cf-e108-4a03-adae-187d657026a5",
                     "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "0cdb1e0b-3794-46aa-b529-6a68c1f911df",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "3D Vector",
-                    "id": "c77d5105-f9f0-46e8-86f2-01acb4d048e9",
-                    "path": "3DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "41775994-e55a-426e-96e5-2000925ff43f",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "78183782-33b8-483c-adf9-db361d0bed0b",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "forward",
-                    "id": "41e239c4-bc8a-4248-aeae-9b807e25cf51",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "backward",
-                    "id": "14699987-f01b-405c-9861-ad405112f857",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "ad77ae16-e24e-4566-a832-8e804b76062b",
                     "path": "<Touchscreen>/Press",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Interact",
+                    "action": "TouchInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3ebe3b98-f5dd-488e-896d-e540d33ca8a8",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
