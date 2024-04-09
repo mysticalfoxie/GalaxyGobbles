@@ -1,23 +1,23 @@
 {
-    "name": "Controls",
+    "name": "CustomInput",
     "maps": [
         {
-            "name": "Movement",
-            "id": "41e2eb29-a6ed-4392-9bab-6ffafd44c39b",
+            "name": "Player",
+            "id": "faa8ed5b-1948-4561-beda-4d0fd91cb62b",
             "actions": [
                 {
-                    "name": "Move Horizontal",
-                    "type": "Button",
-                    "id": "a62f6ede-d9d8-4235-a904-d79a590d8a87",
-                    "expectedControlType": "Button",
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "931a6bd7-fdf0-40de-b94d-ba41c7af98c4",
+                    "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
-                    "name": "Move Vertical",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "c0d9e833-5054-4201-898b-5c487f06d258",
+                    "id": "0cdb1e0b-3794-46aa-b529-6a68c1f911df",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -26,70 +26,70 @@
             ],
             "bindings": [
                 {
-                    "name": "1D Axis",
-                    "id": "53813da6-1b60-4038-8167-e12e0a0bbbeb",
-                    "path": "1DAxis",
+                    "name": "3D Vector",
+                    "id": "c77d5105-f9f0-46e8-86f2-01acb4d048e9",
+                    "path": "3DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Horizontal",
+                    "action": "Movement",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "7c3d61f3-3067-4592-a289-91e915668789",
+                    "name": "left",
+                    "id": "41775994-e55a-426e-96e5-2000925ff43f",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Horizontal",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
-                    "id": "eb997207-fa48-43fa-b2e0-5201608ac983",
+                    "name": "right",
+                    "id": "78183782-33b8-483c-adf9-db361d0bed0b",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Horizontal",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "61943a85-34ad-4649-a81f-1051c88ad67f",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move Vertical",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "ea2e86d5-4e82-47f2-9e2b-b29b0c015183",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "d0b6d4b4-ffcc-4f4a-89d7-660fb5c7cc16",
+                    "name": "forward",
+                    "id": "41e239c4-bc8a-4248-aeae-9b807e25cf51",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Vertical",
+                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "backward",
+                    "id": "14699987-f01b-405c-9861-ad405112f857",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ad77ae16-e24e-4566-a832-8e804b76062b",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
