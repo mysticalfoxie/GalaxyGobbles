@@ -30,9 +30,7 @@ public class TouchManager : MonoBehaviour
 
     private void _touchPressed(InputAction.CallbackContext context)
     {
-        Vector3 position = Camera.main.ScreenToWorldPoint(_touchPosition.ReadValue<Vector2>());
-        position.z = _player.transform.position.z;
-        _player.transform.position = position;
 
     }
+    
 }
