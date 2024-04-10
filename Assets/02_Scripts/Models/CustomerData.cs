@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Customer", menuName = "GameData/Customer", order = 2)]
 public class CustomerData : ScriptableObject
@@ -18,10 +19,10 @@ public class CustomerData : ScriptableObject
 
     [Header("Customer Desires")]
     [SerializeField]
-    private MealData[] _desiredMeals;
+    private ItemData[] _desiredItems;
 
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;
-    public MealData[] DesiredMeals => _desiredMeals;
+    public ItemData[] DesiredItems => _desiredItems;
 }

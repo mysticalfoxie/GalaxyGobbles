@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+// TODO: Refactor to be part of the selection handler
+// Required so we recognize clicks in the void -> deselection
 public class TouchableMonoBehaviour : MonoBehaviour
 {
     private bool _touching;
@@ -13,7 +15,9 @@ public class TouchableMonoBehaviour : MonoBehaviour
 
     [SerializeField] 
     [Range(1, 300)]
-    private float _raycastDistance = 10.0F; 
+    private float _raycastDistance = 10.0F;
+
+    public event EventHandler Click;
 
     public virtual void Awake()
     {
@@ -34,11 +38,13 @@ public class TouchableMonoBehaviour : MonoBehaviour
         
         if (!_touching || !Input.GetMouseButtonUp(default)) 
             return;
-        
         _touching = false;
+
+        if (!IsTouchingThisGameObject()) 
+            return;
         
-        if (IsTouchingThisGameObject())
-            OnClick();
+        OnClick();
+        Click?.Invoke(this, EventArgs.Empty);
     }
 
     private bool IsTouchingThisGameObject()
