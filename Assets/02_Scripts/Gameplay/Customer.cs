@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,6 @@ public class Customer : TouchableMonoBehaviour, ISelectable
     public override void Awake()
     {
         _renderer = gameObject.GetComponent<MeshRenderer>();
-        //_meals = new List<MealData>(_data.DesiredMeals);
         _state = CustomerState.WaitingForSeat;
         base.Awake();
     }
@@ -24,15 +24,44 @@ public class Customer : TouchableMonoBehaviour, ISelectable
 
     public override void OnClick()
     {
-        if (Selected)
-        {
-            Deselect();
-            return;
-        }
+        HandleSelection();
         
-        if (_state == CustomerState.WaitingForSeat && !Selected)
-            SelectionHandler.Instance.Select(this);
     }
+
+    public void OnSeated()
+    {
+        _state = CustomerState.ThinkingAboutMeal;
+        StartCoroutine(nameof(OnThinkingStart));
+    }
+
+    public IEnumerator OnThinkingStart()
+    {
+        yield return new WaitForSeconds(3);
+    }
+
+    private void HandleSelection()
+    {
+        switch (Selected)
+        {
+            case true:
+                Deselect();
+                return;
+            case false when IsSelectable():
+                SelectionHandler.Instance.Select(this);
+                break;
+        }
+    }
+
+    private bool IsSelectable()
+        => _state switch
+        {
+            CustomerState.Eating => false,
+            CustomerState.ThinkingAboutMeal => false,
+            CustomerState.WaitingForCheckout => false,
+            CustomerState.WaitingForMeal => false,
+            CustomerState.WaitingForSeat => true,
+            _ => false,
+        };
 
     // TODO: Outsource to "SelectableMonoBehaviour"
     public void Select()

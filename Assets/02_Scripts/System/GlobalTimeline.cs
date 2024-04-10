@@ -5,14 +5,28 @@ using System.Linq;
 
 public class GlobalTimeline : TimelineBase
 {
-    private uint _secondsUntilClosure;
     private Dictionary<uint, CustomerData> _customers;
+
+    public static GlobalTimeline Instance { get; private set; }
+    public uint SecondsUntilClosure { get; private set; }
+    public int Seconds => Ticks;
+
+    public void Awake()
+    {
+        if (Instance is not null)
+        {
+            Destroy(this);
+            return;
+        }
+        
+        Instance = this;
+    }
 
     public new void Start()
     {
         base.Start();
         
-        _secondsUntilClosure = LevelManager.CurrentLevel.GetSeconds();
+        SecondsUntilClosure = LevelManager.CurrentLevel.GetSeconds();
         _customers = LevelManager.CurrentLevel.Customers
             .ToDictionary(x => x.GetSeconds(), y => y);
         
@@ -27,7 +41,7 @@ public class GlobalTimeline : TimelineBase
 
     private void HandleStoreClosure()
     {
-        if ((uint)Ticks + 1 != _secondsUntilClosure) return;
+        if ((uint)Ticks + 1 != SecondsUntilClosure) return;
         
         // TODO: Close store!
     }
