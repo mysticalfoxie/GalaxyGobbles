@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class ItemProvider : MonoBehaviour
+public class ItemProvider : TouchableMonoBehaviour
 {
+    [Header("Provider Data")]
     [SerializeField]
     private ItemType _item;
     
     // This is not a Unity event. This needs to be replaced with the "Touched Event" :)
-    public void OnClick()
+    public override void OnClick()
     {
-        // Something like this :)
-        // Inventory.Add(item);
+        // Something like: Inventory.Instance.Add(item)
     }
 }

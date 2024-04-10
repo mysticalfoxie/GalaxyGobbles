@@ -11,7 +11,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     // TODO: Validation!! ;)
     private LevelData[] _levels;
-    
+
+    [Header("References")] 
+    [SerializeField]
+    internal GameObject _customerPrefab;
 
     public void Awake()
     {
@@ -22,6 +25,10 @@ public class LevelManager : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(Instance);
+        
+        // TODO: Outsource -- Here it's just temporary
+        LoadLevel(0);
     }
 
     private void LoadLevel(int index)

@@ -1,6 +1,3 @@
-using UnityEngine;
-
-public class CustomerTimeline : MonoBehaviour
+public class CustomerTimeline : TimelineBase
 {
-    
 }
