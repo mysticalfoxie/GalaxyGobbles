@@ -12,7 +12,7 @@ public class TouchableMonoBehaviour : MonoBehaviour
     private Collider _raycastHitbox;
 
     [SerializeField] 
-    [Range(1, 50)]
+    [Range(1, 300)]
     private float _raycastDistance = 10.0F; 
 
     public virtual void Awake()
