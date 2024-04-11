@@ -27,7 +27,8 @@ public class Table : TouchableMonoBehaviour
 
     public override void OnClick()
     {
-        if (SeatedCustomer is not null)
-            SeatedCustomer.TryReceiveMeal();
+        if (SeatedCustomer is null) return;
+        SeatedCustomer.TryReceiveMeal();
+        SeatedCustomer.TryCheckout();
     }
 }

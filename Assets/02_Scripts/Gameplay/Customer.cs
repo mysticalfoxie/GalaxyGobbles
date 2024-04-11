@@ -5,14 +5,21 @@ using UnityEngine;
 
 public class Customer : TouchableMonoBehaviour, ISelectable
 {
+    [Header("Assets")]
     [SerializeField] private Material _selectedStateMaterial;
+    [SerializeField] private Sprite _thinkingBackgroundSprite;
+    [SerializeField] private Sprite _thinkingSprite;
+    [SerializeField] private Sprite _waitForCheckoutSprite;
+    [SerializeField] private Sprite _waitForSeatSprite;
 
     internal List<ItemData> DesiredItems;
-    internal CustomerState State;
+
+    private CustomerState _state;
     private CustomerData _data;
     private MeshRenderer _renderer;
     private Material _materialO;
     private SpriteRenderer _itemRenderer;
+    private SpriteRenderer _itemBackgroundRenderer;
 
     public bool Selected { get; private set; }
     public CustomerData Data
@@ -21,13 +28,19 @@ public class Customer : TouchableMonoBehaviour, ISelectable
         set => UpdateData(value);
     }
 
+    public CustomerState State
+    {
+        get => _state;
+        set => UpdateStatus(value);
+    }
+
     public override void Awake()
     {
         _renderer = gameObject.GetComponent<MeshRenderer>();
-        _itemRenderer = this
-            .GetChildren()
-            .Select(x => x.GetComponent<SpriteRenderer>())
-            .First(x => x != null);
+        
+        var itemRenderer = this.GetAllChildren().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
+        _itemRenderer = itemRenderer[0];
+        _itemBackgroundRenderer = itemRenderer[1];
 
         State = CustomerState.WaitingForSeat;
         base.Awake();
@@ -46,18 +59,36 @@ public class Customer : TouchableMonoBehaviour, ISelectable
         DesiredItems = Data.DesiredItems.ToList();
     }
 
-    private void TryCheckout()
+    private void UpdateStatus(CustomerState state)
+    {
+        _state = state;
+        _itemRenderer.sprite = GetStatusSprite();
+        _itemBackgroundRenderer.sprite = _itemRenderer.sprite is not null ? _thinkingBackgroundSprite : null;
+    }
+
+    private Sprite GetStatusSprite()
+        => _state switch
+        {
+            CustomerState.WaitingForSeat => _waitForSeatSprite,
+            CustomerState.WaitingForMeal => DesiredItems.First().Sprite,
+            CustomerState.ThinkingAboutMeal => _thinkingSprite,
+            CustomerState.Eating => null,
+            CustomerState.WaitingForCheckout => _waitForCheckoutSprite,
+            _ => null
+        };
+
+    public void TryCheckout()
     {
         if (State != CustomerState.WaitingForCheckout) return;
 
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     public void TryReceiveMeal()
     {
         if (State != CustomerState.WaitingForMeal) return;
         if (!Inventory.Instance.HasItem(DesiredItems.First())) return;
-
+        Inventory.Instance.Remove(DesiredItems.First());
         StartCoroutine(nameof(StartEating));
     }
 
