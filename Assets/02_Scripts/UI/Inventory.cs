@@ -52,4 +52,10 @@ public class Inventory : MonoBehaviour
         for (var i = 0; i < _renderers.Length; i++)
             _renderers[i].sprite = i < _items.Count ? _items[i].Sprite : null;
     }
+
+    public void Clear()
+    {
+        _items.Clear();
+        RefreshView();
+    }
 }
