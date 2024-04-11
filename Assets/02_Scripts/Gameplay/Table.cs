@@ -17,10 +17,17 @@ public class Table : TouchableMonoBehaviour
     {
         customer.transform.position = _customerPosition.position;
         SeatedCustomer = customer;
+        SeatedCustomer.OnSeated();
     }
 
     public void ClearSeat()
     {
         SeatedCustomer = null;
+    }
+
+    public override void OnClick()
+    {
+        if (SeatedCustomer is not null)
+            SeatedCustomer.TryReceiveMeal();
     }
 }

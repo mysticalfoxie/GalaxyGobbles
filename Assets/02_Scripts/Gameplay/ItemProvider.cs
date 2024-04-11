@@ -11,7 +11,11 @@ public class ItemProvider : TouchableMonoBehaviour
 
     public override void Awake()
     {
-        _renderer = this.GetChildren().Select(x => x.GetComponent<SpriteRenderer>()).First(x => x is not null);
+        _renderer = this
+            .GetChildren()
+            .Select(x => x.GetComponent<SpriteRenderer>())
+            .First(x => x is not null);
+        
         _renderer.sprite = _item.Sprite;
         
         base.Awake();

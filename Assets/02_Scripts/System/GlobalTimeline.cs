@@ -63,6 +63,6 @@ public class GlobalTimeline : TimelineBase
         yield return operation;
         var customerGameObject = operation.Result.First();
         var customer = customerGameObject.GetComponent<Customer>();
-        customer._data = data;
+        customer.Data = data;
     }
 }
