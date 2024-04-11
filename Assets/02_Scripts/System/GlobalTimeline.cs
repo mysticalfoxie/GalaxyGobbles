@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GlobalTimeline : TimelineBase
 {
@@ -54,14 +55,12 @@ public class GlobalTimeline : TimelineBase
             .First(x => x.Key == (uint)Ticks + 1)
             .Value;
 
-        StartCoroutine(SummonNewCustomer(customer));
+        SummonNewCustomer(customer);
     }
     
-    private static IEnumerator SummonNewCustomer(CustomerData data)
+    private static void SummonNewCustomer(CustomerData data)
     {
-        var operation = InstantiateAsync(LevelManager.Instance._customerPrefab);
-        yield return operation;
-        var customerGameObject = operation.Result.First();
+        var customerGameObject = Instantiate(LevelManager.Instance._customerPrefab);
         var customer = customerGameObject.GetComponent<Customer>();
         customer.Data = data;
     }
