@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class GlobalTimeline : TimelineBase
 {
@@ -43,8 +44,14 @@ public class GlobalTimeline : TimelineBase
     private void HandleStoreClosure()
     {
         if ((uint)Ticks + 1 != SecondsUntilClosure) return;
-        
-        // TODO: Close store!
+        StartCoroutine(nameof(WaitUntilCustomersLeave));
+    }
+
+    private IEnumerator WaitUntilCustomersLeave()
+    {
+        yield return new WaitWhile(() => _customers.Count != 0 );
+        Debug.Log	("Complete");
+        MainMenu.Instance.CompleteDay();
     }
 
     private void HandleCustomerArrival()

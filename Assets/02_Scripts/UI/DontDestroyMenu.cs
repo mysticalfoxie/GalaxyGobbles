@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class DontDestroyMenu : MonoBehaviour
 {
-    private static DontDestroyMenu singleton;
+    private static DontDestroyMenu _singleton;
 
     void Awake()
     {
-        if (singleton == null)
+        if (_singleton == null)
         {
-            singleton = this;
-        } else if (singleton != null)
+            _singleton = this;
+        } else if (_singleton != null)
         {
             Destroy(gameObject);
         }

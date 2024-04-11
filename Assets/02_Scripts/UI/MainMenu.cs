@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,16 +13,18 @@ public class MainMenu : MonoBehaviour
     [Header("Menus")] 
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _startMenu;
+    [SerializeField] private GameObject _completeDayMenu;
     [SerializeField] private GameObject _sidebar;
     
     [Header("Button")]
-    [SerializeField] private GameObject _btn_MainMenu;
+    [SerializeField] private GameObject _btnMainMenu;
     
     [Header("Misc")]
     [SerializeField] private GameObject _backgroundImage;
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
+    public static MainMenu Instance { get; private set; } 
 
     public void Start()
     {
@@ -35,33 +38,29 @@ public class MainMenu : MonoBehaviour
          */
     }
 
-    public void Update()
+    public void Awake()
     {
-       // if (_blockPauseMenu) return;
-        /* if (!_pausedGame)
+        if (Instance is not null)
         {
-            PauseGame();
+            Destroy(this);
+            return;
         }
-        else
-        {
-            ResumeGame();
-        }
-        */
-        
+
+        Instance = this;
     }
 
     public void StartGame()
     {
         _blockPauseMenu = false;
         SceneManager.LoadScene(1);
-        _btn_MainMenu.SetActive(true);
+        _btnMainMenu.SetActive(true);
         _startMenu.SetActive(false);
         _sidebar.SetActive(true);
     }
 
     public void PauseGame()
     {
-        _btn_MainMenu.SetActive(false);
+        _btnMainMenu.SetActive(false);
         Time.timeScale = 0.0f;
         _pauseMenu.SetActive(true);
         _pausedGame = true;
@@ -69,7 +68,7 @@ public class MainMenu : MonoBehaviour
 
     public void ResumeGame()
     {
-        _btn_MainMenu.SetActive(true);
+        _btnMainMenu.SetActive(true);
         Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
         _pausedGame = false;
@@ -77,6 +76,7 @@ public class MainMenu : MonoBehaviour
 
     public void HomeMenu()
     {
+        if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
         SceneManager.LoadScene(0);
         if (_pauseMenu) _pauseMenu.SetActive(false);
@@ -88,6 +88,12 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void CompleteDay()
+    {
+        _btnMainMenu.SetActive(false);
+        _completeDayMenu.SetActive(true);
     }
     
     
