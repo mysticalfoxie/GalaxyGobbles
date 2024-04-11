@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
     [Header("Menus")] 
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _startMenu;
+    [SerializeField] private GameObject _sidebar;
     
     [Header("Button")]
     [SerializeField] private GameObject _btn_MainMenu;
@@ -55,6 +56,7 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(1);
         _btn_MainMenu.SetActive(true);
         _startMenu.SetActive(false);
+        _sidebar.SetActive(true);
     }
 
     public void PauseGame()
@@ -80,6 +82,7 @@ public class MainMenu : MonoBehaviour
         if (_pauseMenu) _pauseMenu.SetActive(false);
         _startMenu.SetActive(true);
         _blockPauseMenu = true;
+        _sidebar.SetActive(false);
     }
 
     public void QuitGame()
