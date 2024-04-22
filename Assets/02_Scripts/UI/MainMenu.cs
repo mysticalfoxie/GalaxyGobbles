@@ -21,7 +21,6 @@ public class MainMenu : MonoBehaviour
     
     [Header("Misc")]
     [SerializeField] private GameObject _backgroundImage;
-
     [SerializeField] private bool _startWithoutMenu;
     
     private bool _pausedGame;

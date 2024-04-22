@@ -29,6 +29,7 @@ public class WaitAreaHandler : MonoBehaviour
         if (slot is null)
         {
             _outsideQueue.Add(customer);
+            customer.gameObject.SetActive(false);
             Debug.LogWarning("[Game Design] There are not enough slots for the customer to arrive in the store.");
             Debug.LogWarning("[Game Design] Customer waits outside and will arrive as soon as there's an open slot.");
             return;
@@ -51,8 +52,9 @@ public class WaitAreaHandler : MonoBehaviour
         for (var i = 0; i < _waitAreas.Length; i++)
         {
             _waitAreas[i].Customer ??= GetCustomerFromNextSlot(i);
-            if (_waitAreas[i].Customer is not null)
-                _waitAreas[i].Customer.gameObject.transform.position = _waitAreas[i].gameObject.transform.position;
+            if (_waitAreas[i].Customer is null) continue;
+            _waitAreas[i].Customer.gameObject.transform.position = _waitAreas[i].gameObject.transform.position;
+            _waitAreas[i].Customer.gameObject.SetActive(true);
         }
     }
 

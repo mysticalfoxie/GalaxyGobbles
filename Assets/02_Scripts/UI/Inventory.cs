@@ -20,7 +20,8 @@ public class Inventory : MonoBehaviour
 
         Instance = this;
 
-        _renderers = this.GetChildren()
+        _renderers = this
+            .GetChildren()
             .Select(x => x.GetComponent<Image>())
             .Where(x => x is not null)
             .ToArray();
