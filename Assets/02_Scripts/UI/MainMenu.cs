@@ -21,6 +21,8 @@ public class MainMenu : MonoBehaviour
     
     [Header("Misc")]
     [SerializeField] private GameObject _backgroundImage;
+
+    [SerializeField] private bool _startWithoutMenu;
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
@@ -28,7 +30,7 @@ public class MainMenu : MonoBehaviour
 
     public void Start()
     {
-        _startMenu.SetActive(true);
+        _startMenu.SetActive(!_startWithoutMenu);
       //  _backgroundImage.SetActive(true);
         
         /*

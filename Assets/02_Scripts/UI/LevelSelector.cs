@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelSelector : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private int _level;
+    public static int selectedLevel;
+    [SerializeField] TMP_Text _levelText;
     void Start()
     {
-        
+        _levelText.text = _level.ToString();
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    void OpenScene()
     {
-        
+        selectedLevel = _level;
+        SceneManager.LoadScene("UniversalLevel");
     }
 }
