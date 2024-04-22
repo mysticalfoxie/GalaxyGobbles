@@ -56,8 +56,6 @@ public class Customer : TouchableMonoBehaviour, ISelectable
     private void UpdateData(CustomerData data)
     {
         _data = data;
-        Debug.Log(Data);
-        Debug.Log(Data.DesiredItems.Length);
         DesiredItems = Data.DesiredItems.ToList();
     }
 

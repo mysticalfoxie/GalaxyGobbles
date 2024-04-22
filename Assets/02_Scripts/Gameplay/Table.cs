@@ -15,6 +15,7 @@ public class Table : TouchableMonoBehaviour
 
     public void Seat(Customer customer)
     {
+        WaitAreaHandler.Instance.RemoveCustomer(customer);
         customer.transform.position = _customerPosition.position;
         SeatedCustomer = customer;
         SeatedCustomer.OnSeated();

@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class GlobalTimeline : TimelineBase
 {
@@ -11,7 +11,6 @@ public class GlobalTimeline : TimelineBase
 
     public static GlobalTimeline Instance { get; private set; }
     public uint SecondsUntilClosure { get; private set; }
-    public int Seconds => Ticks;
 
     public void Awake()
     {
@@ -22,6 +21,7 @@ public class GlobalTimeline : TimelineBase
         }
         
         Instance = this;
+        
     }
 
     public new void Start()
@@ -35,10 +35,17 @@ public class GlobalTimeline : TimelineBase
         Tick += OnTimelineTick;
     }
 
+    private int _ticks;
     private void OnTimelineTick(object sender, EventArgs e)
     {
         HandleCustomerArrival();
         HandleStoreClosure();
+        
+        if (++_ticks % 5 == 0)
+        {
+            var customer = _customers.First().Value;
+            SummonNewCustomer(customer);
+        }
     }
 
     private void HandleStoreClosure()
@@ -50,7 +57,6 @@ public class GlobalTimeline : TimelineBase
     private IEnumerator WaitUntilCustomersLeave()
     {
         yield return new WaitWhile(() => _customers.Count != 0 );
-        Debug.Log	("Complete");
         MainMenu.Instance.CompleteDay();
     }
 
@@ -70,5 +76,6 @@ public class GlobalTimeline : TimelineBase
         var customerGameObject = Instantiate(LevelManager.Instance._customerPrefab);
         var customer = customerGameObject.GetComponent<Customer>();
         customer.Data = data;
+        WaitAreaHandler.Instance.AddCustomer(customer);
     }
 }
