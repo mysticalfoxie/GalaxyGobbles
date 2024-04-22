@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+﻿using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 
 namespace TMPro.Examples

@@ -16,12 +16,12 @@ public class GlobalTimeline : TimelineBase
     {
         if (Instance is not null)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         
         Instance = this;
-        
+        DontDestroyOnLoad(this);
     }
 
     public new void Start()

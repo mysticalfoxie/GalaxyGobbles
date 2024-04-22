@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿using System.Collections;
+using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace TMPro.Examples
 {

@@ -1,6 +1,8 @@
 // Code adapted from Arnaud's SRP Batcher
+
 using UnityEngine;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 public class ObjectSpawner : MonoBehaviour
 {

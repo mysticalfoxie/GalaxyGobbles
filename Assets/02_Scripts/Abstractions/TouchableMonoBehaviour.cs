@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine;
 
 // TODO: Refactor to be part of the selection handler
 // Required so we recognize clicks in the void -> deselection

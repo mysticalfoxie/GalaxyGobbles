@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Customer : TouchableMonoBehaviour, ISelectable
+public class Customer : SelectableMonoBehaviour
 {
     [Header("Assets")]
     [SerializeField] private Material _selectedStateMaterial;
@@ -20,8 +21,9 @@ public class Customer : TouchableMonoBehaviour, ISelectable
     private Material _materialO;
     private SpriteRenderer _itemRenderer;
     private SpriteRenderer _itemBackgroundRenderer;
+    
+    public event EventHandler Leave;
 
-    public bool Selected { get; private set; }
     public CustomerData Data
     {
         get => _data;
@@ -48,7 +50,6 @@ public class Customer : TouchableMonoBehaviour, ISelectable
 
     public override void OnClick()
     {
-        HandleSelection();
         TryReceiveMeal();
         TryCheckout();
     }
@@ -72,7 +73,6 @@ public class Customer : TouchableMonoBehaviour, ISelectable
             CustomerState.WaitingForSeat => _waitForSeatSprite,
             CustomerState.WaitingForMeal => DesiredItems.First().Sprite,
             CustomerState.ThinkingAboutMeal => _thinkingSprite,
-            CustomerState.Eating => null,
             CustomerState.WaitingForCheckout => _waitForCheckoutSprite,
             _ => null
         };
@@ -80,7 +80,7 @@ public class Customer : TouchableMonoBehaviour, ISelectable
     public void TryCheckout()
     {
         if (State != CustomerState.WaitingForCheckout) return;
-
+        Leave?.Invoke(this, EventArgs.Empty);
         Destroy(gameObject);
     }
 
@@ -113,41 +113,16 @@ public class Customer : TouchableMonoBehaviour, ISelectable
         State = CustomerState.WaitingForMeal;
     }
 
-    private void HandleSelection()
-    {
-        switch (Selected)
-        {
-            case true:
-                Deselect();
-                return;
-            case false when IsSelectable():
-                SelectionHandler.Instance.Select(this);
-                break;
-        }
-    }
+    public override bool IsSelectable() => State == CustomerState.WaitingForSeat;
 
-    private bool IsSelectable()
-        => State switch
-        {
-            CustomerState.Eating => false,
-            CustomerState.ThinkingAboutMeal => false,
-            CustomerState.WaitingForCheckout => false,
-            CustomerState.WaitingForMeal => false,
-            CustomerState.WaitingForSeat => true,
-            _ => false,
-        };
-
-    // TODO: Outsource to "SelectableMonoBehaviour"
-    public void Select()
+    protected override void OnSelected()
     {
         _materialO = _renderer.material;
         _renderer.material = _selectedStateMaterial;
-        Selected = true;
     }
 
-    public void Deselect()
+    protected override void OnDeselected()
     {
         _renderer.material = _materialO;
-        Selected = false;
     }
 }
