@@ -8,18 +8,8 @@ public class Inventory : MonoBehaviour
     private readonly List<ItemData> _items = new();
     private Image[] _renderers;
     
-    public static Inventory Instance { get; private set; }
-    
     public void Awake()
     {
-        if (Instance is not null)
-        {
-            Destroy(this);
-            return;
-        }
-
-        Instance = this;
-
         _renderers = this
             .GetChildren()
             .Select(x => x.GetComponent<Image>())

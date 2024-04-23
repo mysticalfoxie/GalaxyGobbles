@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public const int MAIN_LEVEL_INDEX = 2;
+    
     public static int CurrentLevelIndex { get; private set; }
     public static LevelData CurrentLevel { get; private set; }
     public static LevelManager Instance { get; private set; }
@@ -15,7 +17,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     internal GameObject _customerPrefab;
 
-    public void Awake()
+    private void Awake()
     {
         if (Instance is not null)
         {
@@ -26,21 +28,15 @@ public class LevelManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(Instance);
 
-        var selectedLevel = LevelSelector.selectedLevel;
-        // TODO: Outsource -- Here it's just temporary
-        Debug.Log($"Found selectedLevel: {selectedLevel}");
-        LoadLevel(selectedLevel-1);
+        var selectedLevel = LevelSelector.selectedLevel - 1;
+        LoadLevel(selectedLevel < 0 ? 0 : selectedLevel);
     }
 
     private void LoadLevel(int index)
     {
-        Debug.Log($"Used Index: {index}");
         CurrentLevelIndex = index;
-        Debug.Log($"currentLevelIndex: {CurrentLevelIndex}");
         CurrentLevel = _levels
             .OrderBy(x => x.Number)
             .ElementAt(index);
-        Debug.Log($"Loaded Level: {CurrentLevel}");
-    // + Scene loading needs to happen here~
     }
 }

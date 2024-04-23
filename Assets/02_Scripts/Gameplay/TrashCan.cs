@@ -21,6 +21,6 @@ public class TrashCan : TouchableMonoBehaviour
 
     public override void OnClick()
     {
-        Inventory.Instance.Clear();
+        Sidebar.Instance.Inventory.Clear();
     }
 }

@@ -87,8 +87,8 @@ public class Customer : SelectableMonoBehaviour
     public void TryReceiveMeal()
     {
         if (State != CustomerState.WaitingForMeal) return;
-        if (!Inventory.Instance.HasItem(DesiredItems.First())) return;
-        Inventory.Instance.Remove(DesiredItems.First());
+        if (!Sidebar.Instance.Inventory.HasItem(DesiredItems.First())) return;
+        Sidebar.Instance.Inventory.Remove(DesiredItems.First());
         StartCoroutine(nameof(StartEating));
     }
 

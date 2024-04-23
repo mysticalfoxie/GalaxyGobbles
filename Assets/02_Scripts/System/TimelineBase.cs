@@ -1,15 +1,33 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class TimelineBase : MonoBehaviour
 {
     public event EventHandler Tick;
     private bool _destroyed;
-    
+
     protected int Ticks { get; private set; }
-    
-    
+    protected bool Active { get; private set; }
+
+    public void Awake()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Active = scene.buildIndex == LevelManager.MAIN_LEVEL_INDEX;
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        if (scene.buildIndex == LevelManager.MAIN_LEVEL_INDEX)
+            Active = false;
+    }
+
     public void Start()
     {
         StartCoroutine(nameof(TimelineTick));
@@ -17,16 +35,18 @@ public abstract class TimelineBase : MonoBehaviour
 
     public IEnumerator TimelineTick()
     {
-        while (!_destroyed)
+        yield return new WaitForSecondsRealtime(1);
+        while (!_destroyed && Active)
         {
-            yield return new WaitForSeconds(1);
             Tick?.Invoke(this, EventArgs.Empty);
             Ticks++;
+            yield return new WaitForSecondsRealtime(1);
         }
     }
 
     public void OnDestroy()
     {
         _destroyed = true;
+        Active = false;
     }
 }

@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GlobalTimeline : TimelineBase
 {
@@ -38,25 +37,27 @@ public class GlobalTimeline : TimelineBase
     private int _ticks;
     private void OnTimelineTick(object sender, EventArgs e)
     {
+        SecondsUntilClosure--;
         HandleCustomerArrival();
         HandleStoreClosure();
-        
-        if (++_ticks % 5 == 0)
-        {
-            var customer = _customers.First().Value;
-            SummonNewCustomer(customer);
-        }
+        HandleTimerDisplay();
+    }
+
+    private void HandleTimerDisplay()
+    {
+        Sidebar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
     }
 
     private void HandleStoreClosure()
     {
-        if ((uint)Ticks + 1 != SecondsUntilClosure) return;
-        StartCoroutine(nameof(WaitUntilCustomersLeave));
+        Sidebar.Instance.OpenStatus.UpdateTime((int)SecondsUntilClosure);
+        if (SecondsUntilClosure != 0) return;
+        StartCoroutine(nameof(CloseStore));
     }
 
-    private IEnumerator WaitUntilCustomersLeave()
+    private IEnumerator CloseStore()
     {
-        yield return new WaitWhile(() => _customers.Count != 0 );
+        yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
         MainMenu.Instance.CompleteDay();
     }
 
@@ -68,14 +69,6 @@ public class GlobalTimeline : TimelineBase
             .First(x => x.Key == (uint)Ticks + 1)
             .Value;
 
-        SummonNewCustomer(customer);
-    }
-    
-    private static void SummonNewCustomer(CustomerData data)
-    {
-        var customerGameObject = Instantiate(LevelManager.Instance._customerPrefab);
-        var customer = customerGameObject.GetComponent<Customer>();
-        customer.Data = data;
-        WaitAreaHandler.Instance.AddCustomer(customer);
+        CustomerHandler.Instance.SummonNewCustomer(customer);
     }
 }
