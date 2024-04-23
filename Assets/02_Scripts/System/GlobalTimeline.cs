@@ -2,26 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class GlobalTimeline : TimelineBase
+public class GlobalTimeline : TimelineBase<GlobalTimeline>
 {
     private Dictionary<uint, CustomerData> _customers;
 
-    public static GlobalTimeline Instance { get; private set; }
     public uint SecondsUntilClosure { get; private set; }
-    public int Seconds => Ticks;
-
-    public void Awake()
-    {
-        if (Instance is not null)
-        {
-            Destroy(this);
-            return;
-        }
-        
-        Instance = this;
-    }
 
     public new void Start()
     {
@@ -36,15 +22,29 @@ public class GlobalTimeline : TimelineBase
 
     private void OnTimelineTick(object sender, EventArgs e)
     {
+        SecondsUntilClosure--;
         HandleCustomerArrival();
         HandleStoreClosure();
+        HandleTimerDisplay();
+    }
+
+    private void HandleTimerDisplay()
+    {
+        Sidebar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
     }
 
     private void HandleStoreClosure()
     {
-        if ((uint)Ticks + 1 != SecondsUntilClosure) return;
-        
-        // TODO: Close store!
+        Sidebar.Instance.OpenStatus.UpdateTime((int)SecondsUntilClosure);
+        if (SecondsUntilClosure != 0) return;
+        StartCoroutine(nameof(CloseStore));
+    }
+
+    private IEnumerator CloseStore()
+    {
+        yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
+        MainMenu.Instance.CompleteDay();
+        Active = false;
     }
 
     private void HandleCustomerArrival()
@@ -55,13 +55,6 @@ public class GlobalTimeline : TimelineBase
             .First(x => x.Key == (uint)Ticks + 1)
             .Value;
 
-        SummonNewCustomer(customer);
-    }
-    
-    private static void SummonNewCustomer(CustomerData data)
-    {
-        var customerGameObject = Instantiate(LevelManager.Instance._customerPrefab);
-        var customer = customerGameObject.GetComponent<Customer>();
-        customer.Data = data;
+        CustomerHandler.Instance.SummonNewCustomer(customer);
     }
 }

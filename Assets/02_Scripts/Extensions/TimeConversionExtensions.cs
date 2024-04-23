@@ -1,6 +1,4 @@
-using System;
-
-public static class TimeConverter
+public static class TimeConversionExtensions
 {
     public static uint GetSeconds(this CustomerData data) => FromValues(data.Minutes, data.Seconds);
     public static uint GetSeconds(this LevelData data) => FromValues(data.CloseAfterMinutes, data.CloseAfterSeconds);

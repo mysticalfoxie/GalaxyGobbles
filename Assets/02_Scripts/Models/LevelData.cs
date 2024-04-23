@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level", menuName = "GameData/Level", order = 1)]
@@ -22,5 +23,5 @@ public class LevelData : ScriptableObject
     public int Number => _levelNumber;
     public uint CloseAfterMinutes => _closeAfterMinutes;
     public uint CloseAfterSeconds => _closeAfterSeconds;
-    public CustomerData[] Customers => _customers;
+    public IEnumerable<CustomerData> Customers => _customers;
 }

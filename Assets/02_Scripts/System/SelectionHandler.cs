@@ -1,62 +1,67 @@
+using System;
+using System.Linq;
+using UnityEngine;
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using UnityEngine;
+public class SelectionHandler : SingletonMonoBehaviour<SelectionHandler>
+{
+    public SelectableMonoBehaviour Selection { get; private set; }
 
-    public class SelectionHandler : MonoBehaviour
+    public void Register(TouchableMonoBehaviour touchable)
     {
-        public static SelectionHandler Instance { get; private set; }
-
-        private Customer _selectedCustomer;
-        private readonly List<Table> _tables = new(); 
-        
-        public void Awake()
+        touchable.Click += (@object, _) =>
         {
-            if (Instance is not null)
-            {
-                Destroy(this);
+            if (@object is not SelectableMonoBehaviour se)
                 return;
-            }
 
-            Instance = this;
-            DontDestroyOnLoad(Instance);
-        }
-
-        public void Select(ISelectable selectable)
-        {
-            if (selectable.Selected) return;
-            if (_selectedCustomer is not null) return;
-            if (selectable is not Customer customer) return;
-            
-            selectable.Select();
-            _selectedCustomer = customer;
-        }
-
-        public void Register(TouchableMonoBehaviour selectable)
-        {
-            if (selectable is Table table) _tables.Add(table);
-            // TODO: Add customer management here: if (selectable is Customer customer) _customer.Add(customer);
-            selectable.Click += OnGameObjectClicked;
-        }
-
-        public void OnGameObjectClicked(object @object, EventArgs eventArgs)
-        {
-            HandleCustomerAssignment(@object);
-        }
-
-        private void HandleCustomerAssignment(object @object)
-        {
-            if (_selectedCustomer is null) return;
-            if (@object is not Table table) return;
-            if (table.SeatedCustomer) return;
-
-            _tables
-                .FirstOrDefault(x => x.SeatedCustomer == _selectedCustomer)
-                ?.ClearSeat();
-            
-            table.Seat(_selectedCustomer);
-            _selectedCustomer.Deselect();
-            _selectedCustomer = null;
-        }
+            HandleSelection(se);
+        };
     }
+
+    public void Update()
+    {
+        HandleTapping();
+    }
+
+    private void HandleTapping()
+    {
+        if (!TouchEventSystem.Instance.IsTapping) return;
+        var tapped = TouchEventSystem.Instance.GetTappedGameObject();
+        if (tapped is null) return;
+        if (TryHandleSelection(tapped)) return;
+        if (Selection is not null) Selection.Deselect();
+        HandleTouches(tapped);
+    }
+
+    private void HandleTouches(GameObject tapped)
+    {
+        var touchables = tapped.GetComponents<TouchableMonoBehaviour>();
+        if (touchables.Length == 0) return;
+        var touchable = touchables.First();
+        touchable.InvokeClick(this, EventArgs.Empty);
+    }
+
+    private bool TryHandleSelection(GameObject tapped)
+    {
+        var selectables = tapped.GetComponents<SelectableMonoBehaviour>();
+        if (selectables.Length == 0) return false;
+        var selectable = selectables.First();
+        HandleSelection(selectable);
+        return true;
+    }
+
+    private void HandleSelection(SelectableMonoBehaviour selectable)
+    {
+        if (selectable.Selected)
+        {
+            selectable.Deselect();
+            return;
+        }
+
+        if (!selectable.IsSelectable()) return;
+        if (Selection is not null)
+            Selection.Deselect();
+
+        selectable.Select();
+        Selection = selectable;
+    }
+}

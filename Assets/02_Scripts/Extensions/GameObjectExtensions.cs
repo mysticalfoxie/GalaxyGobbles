@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,4 +19,10 @@ public static class GameObjectExtensions
 
     public static IEnumerable<GameObject> GetAllChildren(this MonoBehaviour monoBehaviour)
         => monoBehaviour.gameObject.GetAllChildren();
+
+    public static T GetRequiredComponent<T>(this GameObject gameObject)
+        => gameObject.GetComponent<T>() ?? throw new NullReferenceException($"Cannot find a component of type {typeof(T).Name} on GameObject {gameObject.name}.");
+
+    public static T GetRequiredComponent<T>(this MonoBehaviour @object)
+        => @object.gameObject.GetRequiredComponent<T>();
 }

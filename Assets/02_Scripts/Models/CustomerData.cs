@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Customer", menuName = "GameData/Customer", order = 2)]
 public class CustomerData : ScriptableObject
@@ -24,5 +24,5 @@ public class CustomerData : ScriptableObject
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;
-    public ItemData[] DesiredItems => _desiredItems;
+    public IEnumerable<ItemData> DesiredItems => _desiredItems;
 }

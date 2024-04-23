@@ -1,12 +1,17 @@
-using System;
 using System.Linq;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
+    public const int MAIN_LEVEL_INDEX = 1;
+
+    public LevelManager() : base(true)
+    {
+        
+    }
+    
     public static int CurrentLevelIndex { get; private set; }
     public static LevelData CurrentLevel { get; private set; }
-    public static LevelManager Instance { get; private set; }
     
     [SerializeField]
     // TODO: Validation!! ;)
@@ -16,19 +21,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     internal GameObject _customerPrefab;
 
-    public void Awake()
+    public override void Awake()
     {
-        if (Instance is not null)
-        {
-            Destroy(this);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(Instance);
+        base.Awake();
         
-        // TODO: Outsource -- Here it's just temporary
-        LoadLevel(0);
+        var selectedLevel = LevelSelector.selectedLevel - 1;
+        LoadLevel(selectedLevel < 0 ? 0 : selectedLevel);
     }
 
     private void LoadLevel(int index)
@@ -37,6 +35,5 @@ public class LevelManager : MonoBehaviour
         CurrentLevel = _levels
             .OrderBy(x => x.Number)
             .ElementAt(index);
-        // + Scene loading needs to happen here~
     }
 }

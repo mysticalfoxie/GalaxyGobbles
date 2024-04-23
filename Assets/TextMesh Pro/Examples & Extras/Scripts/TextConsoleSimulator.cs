@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections;
-
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TMPro.Examples
 {

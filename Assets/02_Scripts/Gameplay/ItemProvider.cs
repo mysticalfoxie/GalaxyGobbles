@@ -23,6 +23,6 @@ public class ItemProvider : TouchableMonoBehaviour
 
     public override void OnClick()
     { 
-        Inventory.Instance.Add(_item);
+        Sidebar.Instance.Inventory.Add(_item);
     }
 }
