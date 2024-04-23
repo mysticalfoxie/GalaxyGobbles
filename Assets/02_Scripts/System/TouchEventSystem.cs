@@ -37,8 +37,8 @@ public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>,
     public InputAction.CallbackContext? FingerDownContext { get; private set; }
     public InputAction.CallbackContext? FingerUpContext { get; private set; }
     public InputAction.CallbackContext? MovingContext { get; private set; }
-    
-    protected TouchEventSystem() : base(true) { }
+
+    public TouchEventSystem() : base(true) { }
     
     public override void Awake()
     {
@@ -58,32 +58,24 @@ public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>,
     {
         _tap = true;
         _tapContext = context;
-        
-        Debug.Log(nameof(OnTapped));
     }
 
     private void OnPositionChanged(InputAction.CallbackContext context)
     {
         _moving = true;
         _movingContext = context;
-        
-        Debug.Log(nameof(OnPositionChanged));
     }
 
     private void OnFingerUp(InputAction.CallbackContext context)
     {
         _fingerUp = true;
         _fingerUpContext = context;
-        
-        Debug.Log(nameof(OnFingerUp));
     }
 
     private void OnFingerDown(InputAction.CallbackContext context)
     {
         _fingerDown = true;
         _fingerDownContext = context;
-        
-        Debug.Log(nameof(OnFingerDown));
     }
 
     public void Update()
