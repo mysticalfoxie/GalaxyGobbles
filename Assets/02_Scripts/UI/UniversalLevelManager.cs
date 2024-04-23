@@ -16,9 +16,8 @@ public class UniversalLevelManager : MonoBehaviour
         text.text = "Level " + level.ToString();
         background.sprite = backgrounds[level - 1];
     }
-    
     public void BackToLevelSelection()
     {
-        SceneManager.LoadScene("Level Map");
+        SceneManager.LoadScene("0.0_StartScene");
     }
 }

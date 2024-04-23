@@ -4351,12 +4351,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4440434841887024739, guid: a43fec3c5d866954ba478b33c8ed2477,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4647609682039462388, guid: a43fec3c5d866954ba478b33c8ed2477,
         type: 3}
       propertyPath: m_Name
       value: BTN_LevelSelector (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2711417014068907186, guid: a43fec3c5d866954ba478b33c8ed2477, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

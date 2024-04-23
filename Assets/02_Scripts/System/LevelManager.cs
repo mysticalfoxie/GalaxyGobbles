@@ -25,17 +25,22 @@ public class LevelManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(Instance);
-        
+
+        var selectedLevel = LevelSelector.selectedLevel;
         // TODO: Outsource -- Here it's just temporary
-        LoadLevel(0);
+        Debug.Log($"Found selectedLevel: {selectedLevel}");
+        LoadLevel(selectedLevel-1);
     }
 
     private void LoadLevel(int index)
     {
+        Debug.Log($"Used Index: {index}");
         CurrentLevelIndex = index;
+        Debug.Log($"currentLevelIndex: {CurrentLevelIndex}");
         CurrentLevel = _levels
             .OrderBy(x => x.Number)
             .ElementAt(index);
-        // + Scene loading needs to happen here~
+        Debug.Log($"Loaded Level: {CurrentLevel}");
+    // + Scene loading needs to happen here~
     }
 }

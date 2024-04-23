@@ -1,7 +1,9 @@
+using System;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -12,11 +14,15 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _startMenu;
     [SerializeField] private GameObject _completeDayMenu;
     [SerializeField] private GameObject _sidebar;
+    [SerializeField] private GameObject _levelMap;
+    [SerializeField] private GameObject _options;
+    [SerializeField] private GameObject _credits;
     
     [Header("Button")]
     [SerializeField] private GameObject _btnMainMenu;
     
-    [Header("Misc")]
+    [Header("Slider")]
+    
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private bool _startWithoutMenu;
     
@@ -49,11 +55,17 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        _blockPauseMenu = false;
-        SceneManager.LoadScene(1);
-        _btnMainMenu.SetActive(true);
+        //SceneManager.LoadScene(1);
         _startMenu.SetActive(false);
-        _sidebar.SetActive(true);
+        _levelMap.SetActive(true);
+    }
+
+    public void SetElementsForStart()
+    {
+        _levelMap.SetActive(false);
+        _blockPauseMenu = false;
+        _btnMainMenu.SetActive(true);
+        _sidebar.SetActive(true);    
     }
 
     public void PauseGame()
@@ -83,6 +95,16 @@ public class MainMenu : MonoBehaviour
         _sidebar.SetActive(false);
     }
 
+    public void BackButton()
+    {
+        _levelMap.SetActive(false);
+        _startMenu.SetActive(true);
+    }
+    public void BackToLevelSelection()
+    {
+        SceneManager.LoadScene("0.0_StartScene");
+    }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -93,7 +115,4 @@ public class MainMenu : MonoBehaviour
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
     }
-    
-    
-
 }
