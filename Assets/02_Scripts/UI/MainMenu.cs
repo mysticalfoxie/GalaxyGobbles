@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -138,6 +139,7 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+        EditorApplication.ExitPlaymode(); // hab ich grad online gefunden ;) 
     }
 
     public void CompleteDay()
