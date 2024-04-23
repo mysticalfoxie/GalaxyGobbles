@@ -3,24 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomerHandler : MonoBehaviour
+public class CustomerHandler : SingletonMonoBehaviour<CustomerHandler>
 {
     private readonly List<Customer> _customers = new();
     public IEnumerable<Customer> Customers => _customers;
-
-    public static CustomerHandler Instance { get; private set; }
-
-    public void Awake()
-    {
-        if (Instance is not null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
-
 
     public void SummonNewCustomer(CustomerData data)
     {

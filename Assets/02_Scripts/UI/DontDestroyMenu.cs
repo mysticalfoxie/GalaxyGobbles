@@ -1,18 +1,4 @@
-using UnityEngine;
-
-public class DontDestroyMenu : MonoBehaviour
+public class DontDestroyMenu : SingletonMonoBehaviour<DontDestroyMenu>
 {
-    private static DontDestroyMenu _singleton;
-
-    void Awake()
-    {
-        if (_singleton == null)
-        {
-            _singleton = this;
-        } else if (_singleton != null)
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
+    public DontDestroyMenu() : base(true) { }
 }

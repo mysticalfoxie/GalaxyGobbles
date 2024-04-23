@@ -2,26 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.SceneManagement;
 
-public class GlobalTimeline : TimelineBase
+public class GlobalTimeline : TimelineBase<GlobalTimeline>
 {
     private Dictionary<uint, CustomerData> _customers;
 
-    public static GlobalTimeline Instance { get; private set; }
     public uint SecondsUntilClosure { get; private set; }
-
-    public void Awake()
-    {
-        if (Instance is not null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
 
     public new void Start()
     {

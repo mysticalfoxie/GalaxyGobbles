@@ -1,3 +1,3 @@
-public class CustomerTimeline : TimelineBase
+public class CustomerTimeline : TimelineBase<CustomerTimeline>
 {
 }

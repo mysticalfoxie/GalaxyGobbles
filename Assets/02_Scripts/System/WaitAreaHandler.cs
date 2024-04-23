@@ -2,25 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class WaitAreaHandler : MonoBehaviour
+public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
 {
-    public static WaitAreaHandler Instance;
     private readonly List<Customer> _outsideQueue = new();
     private WaitArea[] _waitAreas;
     
-    public void Awake()
+    public override void Awake()
     {
-        if (Instance is not null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        base.Awake();
+        
         _waitAreas = GetComponentsInChildren<WaitArea>()
             .OrderBy(x => x.Order)
             .ToArray();
-        
-        Instance = this;
     }
 
     public void AddCustomer(Customer customer)

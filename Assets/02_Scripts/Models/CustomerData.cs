@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -24,5 +25,5 @@ public class CustomerData : ScriptableObject
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;
-    public ItemData[] DesiredItems => _desiredItems;
+    public IEnumerable<ItemData> DesiredItems => _desiredItems;
 }

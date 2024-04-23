@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class TimelineBase : MonoBehaviour
+public abstract class TimelineBase<T> : SingletonMonoBehaviour<T>
 {
     public event EventHandler Tick;
     private bool _destroyed;
@@ -11,8 +11,10 @@ public abstract class TimelineBase : MonoBehaviour
     protected int Ticks { get; private set; }
     protected bool Active { get; private set; }
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
