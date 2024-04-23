@@ -1,5 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -16,11 +19,19 @@ public class MainMenu : MonoBehaviour
     
     [Header("Button")]
     [SerializeField] private GameObject _btnMainMenu;
-    
-    [Header("Slider")]
+
+    [Header("Audio")]
+    [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private Slider _volumeSlider;
+    [SerializeField] private Slider _musicSlider;
+    [SerializeField] private Slider _sfxSlider;
+    [SerializeField] private float _currentVolume;
+    [SerializeField] private float _currentMusicVolume;
+    [SerializeField] private float _currentSfxVolume;
     
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private bool _startWithoutMenu;
+
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
@@ -29,6 +40,8 @@ public class MainMenu : MonoBehaviour
     public void Start()
     {
         _startMenu.SetActive(!_startWithoutMenu);
+                
+        LoadSettings();
       //  _backgroundImage.SetActive(true);
         
         /*
@@ -91,6 +104,27 @@ public class MainMenu : MonoBehaviour
         _sidebar.SetActive(false);
     }
 
+    public void Options()
+    {
+        _options.SetActive(true);
+    }
+
+    public void SetVolume(float volume)
+    {
+        _audioMixer.SetFloat("Volume", volume);
+        _currentVolume = volume;
+    }
+    public void SetMusic(float music)
+    {
+        _audioMixer.SetFloat("Music", music);
+        _currentMusicVolume = music;
+    }
+    public void SetSfx(float sfx)
+    {
+        _audioMixer.SetFloat("SFX", sfx);
+        _currentSfxVolume = sfx;
+    }
+
     public void BackButton()
     {
         _levelMap.SetActive(false);
@@ -110,5 +144,34 @@ public class MainMenu : MonoBehaviour
     {
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
+    }
+
+    public void BackAndSave()
+    {
+        Save();
+        _options.SetActive(false);
+        if (_pausedGame) ResumeGame();
+        else BackButton();
+    }
+    public void Save()
+    {
+        PlayerPrefs.SetFloat("VolumePref", _currentVolume);
+        PlayerPrefs.SetFloat("MusicPref", _currentMusicVolume);
+        PlayerPrefs.SetFloat("SFXPref", _currentSfxVolume);
+    }
+
+    public void LoadSettings()
+    {
+        _volumeSlider.value = PlayerPrefs.HasKey("VolumePref")
+            ? _currentVolume = PlayerPrefs.GetFloat("VolumePref")
+            : PlayerPrefs.GetFloat("VolumePref"); 
+        
+        _musicSlider.value = PlayerPrefs.HasKey("MusicPref")
+            ? _currentMusicVolume = PlayerPrefs.GetFloat("MusicPref")
+            : PlayerPrefs.GetFloat("MusicPref");
+        
+        _sfxSlider.value = PlayerPrefs.HasKey("SFXPref")
+            ? _currentSfxVolume = PlayerPrefs.GetFloat("SFXPref")
+            : PlayerPrefs.GetFloat("SFXPref"); 
     }
 }
