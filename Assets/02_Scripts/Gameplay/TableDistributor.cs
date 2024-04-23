@@ -10,13 +10,11 @@ public class TableDistributor : MonoBehaviour
     {
         _tables = GetComponentsInChildren<Table>();
         foreach (var table in _tables) 
-            table.Click += OnTableClick;
+            table.Click += (_, _) => OnTableClick(table);
     }
 
-    private void OnTableClick(object sender, EventArgs e)
+    private void OnTableClick(Table table)
     {
-        if (sender is not Table table) return;
-
         if (table.SeatedCustomer is not null)
         {
             table.SeatedCustomer.TryReceiveMeal();

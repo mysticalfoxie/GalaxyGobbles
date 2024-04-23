@@ -20,7 +20,6 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
         Tick += OnTimelineTick;
     }
 
-    private int _ticks;
     private void OnTimelineTick(object sender, EventArgs e)
     {
         SecondsUntilClosure--;
@@ -45,6 +44,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
     {
         yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
         MainMenu.Instance.CompleteDay();
+        Active = false;
     }
 
     private void HandleCustomerArrival()

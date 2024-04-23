@@ -9,7 +9,7 @@ public abstract class TimelineBase<T> : SingletonMonoBehaviour<T>
     private bool _destroyed;
 
     protected int Ticks { get; private set; }
-    protected bool Active { get; private set; }
+    protected bool Active { get; set; }
 
     public override void Awake()
     {
