@@ -1,25 +1,24 @@
-using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Sidebar : MonoBehaviour
+public class Sidebar : SingletonMonoBehaviour<Sidebar>
 {
-    public static Sidebar Instance { get; private set; }
-    
     public Inventory Inventory { get; private set; }
     public OpenStatus OpenStatus { get; private set; }
     public DaytimeDisplay DaytimeDisplay { get; private set; }
     
-    public void Awake()
+    public override void Awake()
     {
-        if (Instance is not null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
-        Instance = this;
-
+        base.Awake();
+        InheritedDDoL = true;
         Inventory = GetComponentInChildren<Inventory>();
         OpenStatus = GetComponentInChildren<OpenStatus>();
         DaytimeDisplay = GetComponentInChildren<DaytimeDisplay>();
+    }
+
+    protected override void OnSceneChange(Scene scene)
+    {
+        Inventory.Reset();
+        OpenStatus.Reset();
+        DaytimeDisplay.Reset();
     }
 }

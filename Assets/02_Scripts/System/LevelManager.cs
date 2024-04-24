@@ -4,11 +4,6 @@ using UnityEngine;
 public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
     public const int MAIN_LEVEL_INDEX = 1;
-
-    public LevelManager() : base(true)
-    {
-        
-    }
     
     public static int CurrentLevelIndex { get; private set; }
     public static LevelData CurrentLevel { get; private set; }

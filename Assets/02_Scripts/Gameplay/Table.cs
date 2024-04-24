@@ -5,7 +5,14 @@ public class Table : TouchableMonoBehaviour
     [Header("Table Properties")]
     [SerializeField]
     private Transform _customerPosition;
-    
+
+    public override void Awake()
+    {
+        base.Awake();
+        
+        CancelSelectionOnClick = false;
+    }
+
     public Customer SeatedCustomer { get; private set; }
 
     public void Seat(Customer customer)

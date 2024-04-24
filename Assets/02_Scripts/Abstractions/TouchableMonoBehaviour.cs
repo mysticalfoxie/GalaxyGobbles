@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Serialization;
 using UnityEngine;
 
 // TODO: Refactor to be part of the selection handler
@@ -7,6 +6,8 @@ using UnityEngine;
 public class TouchableMonoBehaviour : MonoBehaviour
 {
     private bool _touching;
+
+    public bool CancelSelectionOnClick { get; protected set; } = true;
     
     public event EventHandler Click;
 
@@ -24,6 +25,6 @@ public class TouchableMonoBehaviour : MonoBehaviour
         
     }
 
-    public void InvokeClick(object sender, EventArgs eventArgs) 
-        => Click?.Invoke(sender, eventArgs);
+    public void InvokeClick(object _, EventArgs eventArgs) 
+        => Click?.Invoke(this, eventArgs);
 }
