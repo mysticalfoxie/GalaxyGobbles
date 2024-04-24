@@ -31,8 +31,6 @@ public sealed class TouchInputSystem : SingletonMonoBehaviour<TouchInputSystem>
     public InputAction.CallbackContext? FingerDownContext { get; private set; }
     public InputAction.CallbackContext? FingerUpContext { get; private set; }
     public InputAction.CallbackContext? MovingContext { get; private set; }
-
-    public TouchInputSystem() : base(true) { }
     
     public override void Awake()
     {

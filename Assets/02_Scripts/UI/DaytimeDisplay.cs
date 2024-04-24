@@ -20,4 +20,9 @@ public class DaytimeDisplay : MonoBehaviour
         var minus = totalSeconds < 0 ? '-' : ' ';
         _renderer.text = $"{minus}{mm}:{ss}";
     }
+
+    public void Reset()
+    {
+        _renderer.text = string.Empty;
+    }
 }

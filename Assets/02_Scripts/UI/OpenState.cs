@@ -25,4 +25,9 @@ public class OpenStatus : MonoBehaviour
             _isOpen = false;
         }
     }
+
+    public void Reset()
+    {
+        _renderer.text = string.Empty;
+    }
 }

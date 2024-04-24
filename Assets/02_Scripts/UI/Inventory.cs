@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
             _renderers[i].sprite = i < _items.Count ? _items[i].Sprite : null;
     }
 
-    public void Clear()
+    public void Reset()
     {
         _items.Clear();
         RefreshView();

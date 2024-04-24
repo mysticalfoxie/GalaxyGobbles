@@ -74,6 +74,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
     
     private void HandleTouchInputDown()
     {
+        if (TouchInputSystem.Instance is null) return;
         if (!TouchInputSystem.Instance.IsFingerDown) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class TimelineBase<T> : SingletonMonoBehaviour<T>
+public abstract class TimelineBase<T> : SingletonMonoBehaviour<T> where T : class
 {
     public event EventHandler Tick;
     private bool _destroyed;
@@ -46,8 +46,9 @@ public abstract class TimelineBase<T> : SingletonMonoBehaviour<T>
         }
     }
 
-    public void OnDestroy()
+    public new void OnDestroy()
     {
+        base.OnDestroy();
         _destroyed = true;
         Active = false;
     }
