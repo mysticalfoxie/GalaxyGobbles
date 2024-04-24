@@ -4,7 +4,7 @@ public abstract class SelectableMonoBehaviour : TouchableMonoBehaviour
     
     public virtual void Start()
     {
-        SelectionHandler.Instance.Register(this);
+        SelectionSystem.Instance.Register(this);
     }
 
     public virtual bool IsSelectable() => true;

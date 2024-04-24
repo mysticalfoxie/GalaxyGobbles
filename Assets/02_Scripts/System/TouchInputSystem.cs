@@ -2,18 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 
-public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>, ITouchEventSystem
+public sealed class TouchInputSystem : SingletonMonoBehaviour<TouchInputSystem>
 {
     public const string INPUT_PRESS = "Press";          //  Button down and Button up -> Press performed
     public const string INPUT_TAP = "Tap";              //  Only a click within .4s is a tap 
     public const string INPUT_POSITION = "Position";    //  Triggers with each position change
     
     private PlayerInput _input;
-    
-    [Header("Touch Detection System")]
-    [SerializeField]
-    [Range(1, 100)]
-    private float _raycastMaxRange = 20.0F;
     
     private bool _tap;
     private bool _fingerDown;
@@ -25,7 +20,6 @@ public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>,
     private InputAction.CallbackContext? _fingerDownContext;
     private InputAction.CallbackContext? _fingerUpContext;
     private InputAction.CallbackContext? _movingContext;
-    private GameObject _tappedObjectCache;
     
     public bool IsTapping { get; private set; }
     public bool IsFingerDown { get; private set; }
@@ -38,7 +32,7 @@ public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>,
     public InputAction.CallbackContext? FingerUpContext { get; private set; }
     public InputAction.CallbackContext? MovingContext { get; private set; }
 
-    public TouchEventSystem() : base(true) { }
+    public TouchInputSystem() : base(true) { }
     
     public override void Awake()
     {
@@ -96,8 +90,6 @@ public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>,
         _fingerDownContext = null;
         _fingerUpContext = null;
         _movingContext = null;
-
-        _tappedObjectCache = null;
     }
 
     private void UpdateCurrentFrameStates()
@@ -117,27 +109,7 @@ public sealed class TouchEventSystem : SingletonMonoBehaviour<TouchEventSystem>,
         if (_fingerUp) _fingerPressing = false;
     }
 
-    public GameObject GetTappedGameObject()
-    {
-        if (!IsTapping) return null;
-        if (TapContext is null) return null;
-
-        var mainCamera = Camera.main;
-        
-        if (mainCamera is null) return null;
-        if (_tappedObjectCache is not null) return _tappedObjectCache;
-
-        var position = GetTouchPosition();
-        var ray = mainCamera.ScreenPointToRay(position);
-        Physics.Raycast(ray, out var raycast, _raycastMaxRange);
-        
-        if (raycast.transform is null) return null;
-        if (raycast.collider is null) return null;
-
-        return _tappedObjectCache = raycast.collider.gameObject;
-    }
-
-    private static Vector2 GetTouchPosition()
+    public static Vector2 GetTouchPosition()
     {
         var touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
         if (touchPosition != default) return touchPosition;

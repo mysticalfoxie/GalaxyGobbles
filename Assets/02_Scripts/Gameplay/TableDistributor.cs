@@ -17,12 +17,15 @@ public class TableDistributor : MonoBehaviour
     {
         if (table.SeatedCustomer is not null)
         {
+            if (SelectionSystem.Instance.Selection is not null)
+                SelectionSystem.Instance.Selection.Deselect();
+            
             table.SeatedCustomer.TryReceiveMeal();
             table.SeatedCustomer.TryCheckout();
             return;
         }
 
-        if (SelectionHandler.Instance.Selection is not Customer customer) return;
+        if (SelectionSystem.Instance.Selection is not Customer customer) return;
         if (customer.State != CustomerState.WaitingForSeat) return;
 
         customer.Leave += OnCustomerLeave;
