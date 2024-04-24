@@ -18,6 +18,7 @@ public class LevelSelector : MonoBehaviour
         selectedLevel = _level;
         //LevelManager();
         MainMenu.Instance.SetElementsForStart();
-        SceneManager.LoadScene("0.2_Level");
+        //SceneManager.LoadScene("0.2_Level");
+        SceneManager.LoadSceneAsync("0.2_Level");
     }
 }
