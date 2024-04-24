@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -38,6 +39,17 @@ public class MainMenu : MonoBehaviour
     private bool _blockPauseMenu;
     public static MainMenu Instance { get; private set; } 
 
+
+    public void Awake()
+    {
+        if (Instance is not null)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+    }
     public void Start()
     {
         _startMenu.SetActive(!_startWithoutMenu);
@@ -50,17 +62,6 @@ public class MainMenu : MonoBehaviour
          * _backgroundAudio = FindObjectOfType<AudioSource>();
          * if(_backgroundAudio) _backgroundAudio.Play();
          */
-    }
-
-    public void Awake()
-    {
-        if (Instance is not null)
-        {
-            Destroy(this);
-            return;
-        }
-
-        Instance = this;
     }
 
     public void StartGame()
@@ -110,20 +111,20 @@ public class MainMenu : MonoBehaviour
         _options.SetActive(true);
     }
 
-    public void SetVolume(float volume)
+    public void SetVolume(float masterVolume)
     {
-        _audioMixer.SetFloat("Volume", volume);
-        _currentVolume = volume;
+        _currentVolume = masterVolume;
+        _audioMixer.SetFloat("MasterVolume", masterVolume);
     }
-    public void SetMusic(float music)
+    public void SetMusic(float musicVolume)
     {
-        _audioMixer.SetFloat("Music", music);
-        _currentMusicVolume = music;
+        _currentMusicVolume = musicVolume;
+        _audioMixer.SetFloat("MusicVolume", musicVolume);
     }
-    public void SetSfx(float sfx)
+    public void SetSfx(float sfxVolume)
     {
-        _audioMixer.SetFloat("SFX", sfx);
-        _currentSfxVolume = sfx;
+        _currentSfxVolume = sfxVolume;
+        _audioMixer.SetFloat("SFXVolume", sfxVolume);
     }
 
     public void BackButton()
@@ -133,6 +134,13 @@ public class MainMenu : MonoBehaviour
     }
     public void BackToLevelSelection()
     {
+        if (_startMenu) _startMenu.SetActive(false);
+        if (_completeDayMenu) _completeDayMenu.SetActive(false);
+        if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
+        if (_pauseMenu) _pauseMenu.SetActive(false);
+        if (_blockPauseMenu == false) _blockPauseMenu = true;
+        if (_sidebar)_sidebar.SetActive(false);
+        _levelMap.SetActive(true);
         SceneManager.LoadScene("0.0_StartScene");
     }
 
@@ -157,23 +165,23 @@ public class MainMenu : MonoBehaviour
     }
     public void Save()
     {
-        PlayerPrefs.SetFloat("VolumePref", _currentVolume);
-        PlayerPrefs.SetFloat("MusicPref", _currentMusicVolume);
-        PlayerPrefs.SetFloat("SFXPref", _currentSfxVolume);
+        PlayerPrefs.SetFloat("MasterVolume", _currentVolume);
+        PlayerPrefs.SetFloat("MusicVolume", _currentMusicVolume);
+        PlayerPrefs.SetFloat("SFXVolume", _currentSfxVolume);
     }
 
     public void LoadSettings()
     {
-        _volumeSlider.value = PlayerPrefs.HasKey("VolumePref")
-            ? _currentVolume = PlayerPrefs.GetFloat("VolumePref")
-            : PlayerPrefs.GetFloat("VolumePref"); 
+        _volumeSlider.value = PlayerPrefs.HasKey("MasterVolume")
+            ? _currentVolume = PlayerPrefs.GetFloat("MasterVolume")
+            : PlayerPrefs.GetFloat("MasterVolume"); 
         
-        _musicSlider.value = PlayerPrefs.HasKey("MusicPref")
-            ? _currentMusicVolume = PlayerPrefs.GetFloat("MusicPref")
-            : PlayerPrefs.GetFloat("MusicPref");
+        _musicSlider.value = PlayerPrefs.HasKey("MusicVolume")
+            ? _currentMusicVolume = PlayerPrefs.GetFloat("MusicVolume")
+            : PlayerPrefs.GetFloat("MusicVolume");
         
-        _sfxSlider.value = PlayerPrefs.HasKey("SFXPref")
-            ? _currentSfxVolume = PlayerPrefs.GetFloat("SFXPref")
-            : PlayerPrefs.GetFloat("SFXPref"); 
+        _sfxSlider.value = PlayerPrefs.HasKey("SFXVolume")
+            ? _currentSfxVolume = PlayerPrefs.GetFloat("SFXVolume")
+            : PlayerPrefs.GetFloat("SFXVolume"); 
     }
 }
