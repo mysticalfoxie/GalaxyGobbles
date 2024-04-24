@@ -14,7 +14,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour
     {
         _dontDestroyOnLoad = dontDestroyOnLoad;
     }
-    
+
     public virtual void Awake()
     {
         if (Instance is not null)
@@ -22,10 +22,11 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         Instance = (T)(object)this;
-        
-        if (_dontDestroyOnLoad)
-            DontDestroyOnLoad(this);
+
+        if (!_dontDestroyOnLoad) return;
+
+        DontDestroyOnLoad(this);
     }
 }
