@@ -19,7 +19,8 @@ public class OpenStatus : MonoBehaviour
         {
             _isOpen = true;
             _renderer.text = "OPENED";
-        } else if (totalSeconds <= 0 && _isOpen)
+        } 
+        else if (totalSeconds <= 0 && _isOpen)
         {
             _renderer.text = "CLOSED";
             _isOpen = false;
@@ -29,5 +30,6 @@ public class OpenStatus : MonoBehaviour
     public void Reset()
     {
         _renderer.text = string.Empty;
+        _isOpen = false;
     }
 }
