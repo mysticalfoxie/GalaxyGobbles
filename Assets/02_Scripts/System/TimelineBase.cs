@@ -37,12 +37,12 @@ public abstract class TimelineBase<T> : SingletonMonoBehaviour<T> where T : clas
 
     public IEnumerator TimelineTick()
     {
-        yield return new WaitForSecondsRealtime(1);
         while (!_destroyed && Active)
         {
             Tick?.Invoke(this, EventArgs.Empty);
             Ticks++;
-            yield return new WaitForSecondsRealtime(1);
+            
+            yield return new WaitForSeconds(1);
         }
     }
 
