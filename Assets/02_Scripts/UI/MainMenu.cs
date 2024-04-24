@@ -152,7 +152,10 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-        EditorApplication.ExitPlaymode(); // hab ich grad online gefunden ;) 
+        
+#if UNITY_EDITOR // UwU
+        EditorApplication.ExitPlaymode();
+#endif
     }
 
     public void CompleteDay()
