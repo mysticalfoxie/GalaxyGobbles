@@ -130,6 +130,7 @@ public class MainMenu : MonoBehaviour
 
     public void BackButton()
     {
+        if(_options) _options.SetActive(false);
         _levelMap.SetActive(false);
         _startMenu.SetActive(true);
     }
@@ -160,8 +161,7 @@ public class MainMenu : MonoBehaviour
     public void BackAndSave()
     {
         Save();
-        _options.SetActive(false);
-        if (_pausedGame) ResumeGame();
+        if (_pausedGame) _options.SetActive(false);
         else BackButton();
     }
     public void Save()
