@@ -73,6 +73,7 @@ public class MainMenu : MonoBehaviour
 
     public void SetElementsForStart()
     {
+        if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
         _levelMap.SetActive(false);
         _blockPauseMenu = false;
         _btnMainMenu.SetActive(true);
@@ -99,11 +100,11 @@ public class MainMenu : MonoBehaviour
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
-        SceneManager.LoadScene(0);
         if (_pauseMenu) _pauseMenu.SetActive(false);
         _startMenu.SetActive(true);
         _blockPauseMenu = true;
         _sidebar.SetActive(false);
+        SceneManager.LoadScene(0);
     }
 
     public void Options()
