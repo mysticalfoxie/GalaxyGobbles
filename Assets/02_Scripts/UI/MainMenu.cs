@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using System.Linq;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -34,6 +35,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private bool _startWithoutMenu;
 
+    [SerializeField] TMP_Text _completeDayText;
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
@@ -136,6 +138,7 @@ public class MainMenu : MonoBehaviour
     }
     public void BackToLevelSelection()
     {
+        if (_completeDayText != null) _completeDayText.text = null;
         if (_startMenu) _startMenu.SetActive(false);
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
@@ -156,6 +159,8 @@ public class MainMenu : MonoBehaviour
     {
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
+        _completeDayText.text = "You Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
+
     }
 
     public void BackAndSave()

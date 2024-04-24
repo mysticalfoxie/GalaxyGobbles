@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelector : MonoBehaviour
 {
-    [SerializeField] private int _level;
+    [SerializeField] public int _level;
     public static int selectedLevel;
     [SerializeField] TMP_Text _levelText;
     
