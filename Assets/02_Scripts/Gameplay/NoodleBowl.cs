@@ -1,9 +1,9 @@
+using System;
+
 public class NoodleBowl : ItemDispenserBase
 {
-    public override void Awake()
+    public void Start()
     {
-        base.Awake();
-        
         SetItem(References.Instance.Items.Noodles);
     }
 
