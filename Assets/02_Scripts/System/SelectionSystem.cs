@@ -16,7 +16,7 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
         // ReSharper disable once ConvertIfStatementToSwitchStatement
         if (sender is not GameObject @object) return;
         if (@object.GetComponents<SelectableMonoBehaviour>().Any()) return;
-        if (@object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is { CancelSelectionOnClick: false }) return;
+        if (@object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is { CancelSelectionOnTouch: false }) return;
         if (Selection is null) return;
         Selection.Deselect();
         Selection = null;
@@ -24,7 +24,7 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
 
     public void Register(TouchableMonoBehaviour touchable)
     {
-        touchable.Click += (@object, _) =>
+        touchable.Touch += (@object, _) =>
         {
             if (@object is not SelectableMonoBehaviour se)
                 return;

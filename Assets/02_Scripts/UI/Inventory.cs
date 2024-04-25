@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private readonly List<ItemData> _items = new();
+    private readonly List<Item> _items = new();
     private Image[] _renderers;
     
     public void Awake()
@@ -17,7 +17,8 @@ public class Inventory : MonoBehaviour
             .ToArray();
     }
 
-    public void Add(ItemData item)
+
+    public void Add(Item item)
     {
         if (IsFull()) return;
         
@@ -25,11 +26,13 @@ public class Inventory : MonoBehaviour
         RefreshView();
     }
 
-    public bool HasItem(ItemData item) => _items.Any(x => x == item);
+    public bool HasItem(Item item) => _items.Any(x => x == item);
+    
+    public bool HasItem(ItemData item) => _items.Any(x => x.Data == item);
 
     public bool IsFull() => _items.Count >= _renderers.Length;
 
-    public void Remove(ItemData item)
+    public void Remove(Item item)
     {
         _items.Remove(item);
         RefreshView();
@@ -41,7 +44,7 @@ public class Inventory : MonoBehaviour
             spriteRenderer.sprite = null;
 
         for (var i = 0; i < _renderers.Length; i++)
-            _renderers[i].sprite = i < _items.Count ? _items[i].Sprite : null;
+            _renderers[i].sprite = i < _items.Count ? _items[i].Data.Sprite : null;
     }
 
     public void Reset()
@@ -49,4 +52,19 @@ public class Inventory : MonoBehaviour
         _items.Clear();
         RefreshView();
     }
+
+    public Item GetItemOfType(ItemData data)
+    {
+        return _items.FirstOrDefault(x => x.Data == data);
+    }
+
+    public void Create(ItemData itemData)
+    {
+        if (IsFull()) return;
+
+        var item = Item.Create(itemData);
+        _items.Add(item);
+        RefreshView();
+    }
 }
+

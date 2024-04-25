@@ -19,7 +19,7 @@ public class TrashCan : TouchableMonoBehaviour
         base.Awake();
     }
 
-    public override void OnClick()
+    protected override void OnTouch()
     {
         Sidebar.Instance.Inventory.Reset();
     }

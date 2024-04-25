@@ -10,7 +10,7 @@ public class Table : TouchableMonoBehaviour
     {
         base.Awake();
         
-        CancelSelectionOnClick = false;
+        CancelSelectionOnTouch = false;
     }
 
     public Customer SeatedCustomer { get; private set; }

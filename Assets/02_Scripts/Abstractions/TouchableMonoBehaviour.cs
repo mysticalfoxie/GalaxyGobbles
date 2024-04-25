@@ -7,9 +7,9 @@ public class TouchableMonoBehaviour : MonoBehaviour
 {
     private bool _touching;
 
-    public bool CancelSelectionOnClick { get; protected set; } = true;
+    public bool CancelSelectionOnTouch { get; protected set; } = true;
     
-    public event EventHandler Click;
+    public event EventHandler Touch;
 
     public virtual void Awake()
     {
@@ -17,14 +17,14 @@ public class TouchableMonoBehaviour : MonoBehaviour
         if (hitbox is null)
             throw new Exception($"The GameObject {gameObject.name} should be touchable but is missing a collider!");
 
-        Click += (_, _) => OnClick();
+        Touch += (_, _) => OnTouch();
     }
-    
-    public virtual void OnClick()
+
+    protected virtual void OnTouch()
     {
         
     }
 
-    public void InvokeClick(object _, EventArgs eventArgs) 
-        => Click?.Invoke(this, eventArgs);
+    public void InvokeTouch(object _, EventArgs eventArgs) 
+        => Touch?.Invoke(this, eventArgs);
 }

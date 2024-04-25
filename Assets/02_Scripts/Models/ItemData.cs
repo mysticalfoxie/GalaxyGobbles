@@ -10,6 +10,9 @@ public class ItemData : ScriptableObject
     private ItemCategory _category;
 
     [SerializeField] 
+    private ItemType _type;
+
+    [SerializeField] 
     private Sprite _sprite;
     
     [SerializeField] 
@@ -17,6 +20,7 @@ public class ItemData : ScriptableObject
 
     public string Name => _name;
     public ItemCategory Category => _category;
+    public ItemType Type => _type;
     public Sprite Sprite => _sprite;
     public bool Deliverable => _deliverable;
 }

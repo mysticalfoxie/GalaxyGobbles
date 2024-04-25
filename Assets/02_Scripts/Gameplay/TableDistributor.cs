@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class TableDistributor : MonoBehaviour
 {
-    private Table[] _tables;
-    
     public void Awake()
     {
-        _tables = GetComponentsInChildren<Table>();
-        foreach (var table in _tables) 
-            table.Click += (_, _) => OnTableClick(table);
+        foreach (var table in References.Instance.Tables) 
+            table.Touch += (_, _) => OnTableClick(table);
     }
 
-    private void OnTableClick(Table table)
+    private static void OnTableClick(Table table)
     {
         if (table.SeatedCustomer is not null)
         {
@@ -35,10 +32,10 @@ public class TableDistributor : MonoBehaviour
         customer.OnSeated();
     }
 
-    private void OnCustomerLeave(object sender, EventArgs e)
+    private static void OnCustomerLeave(object sender, EventArgs e)
     {
         if (sender is not Customer customer) return;
-        var table = _tables.FirstOrDefault(x => x.SeatedCustomer == customer);
+        var table = References.Instance.Tables.FirstOrDefault(x => x.SeatedCustomer == customer);
         if (table is null) return;
         customer.Leave -= OnCustomerLeave;
         table.ClearSeat();

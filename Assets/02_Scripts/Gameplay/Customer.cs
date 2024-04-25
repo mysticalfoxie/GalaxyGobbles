@@ -48,7 +48,7 @@ public class Customer : SelectableMonoBehaviour
         base.Awake();
     }
 
-    public override void OnClick()
+    protected override void OnTouch()
     {
         TryReceiveMeal();
         TryCheckout();
@@ -88,7 +88,8 @@ public class Customer : SelectableMonoBehaviour
     {
         if (State != CustomerState.WaitingForMeal) return;
         if (!Sidebar.Instance.Inventory.HasItem(DesiredItems.First())) return;
-        Sidebar.Instance.Inventory.Remove(DesiredItems.First());
+        var item = Sidebar.Instance.Inventory.GetItemOfType(DesiredItems.First());
+        Sidebar.Instance.Inventory.Remove(item);
         StartCoroutine(nameof(StartEating));
     }
 
@@ -124,5 +125,13 @@ public class Customer : SelectableMonoBehaviour
     protected override void OnDeselected()
     {
         _renderer.material = _materialO;
+    }
+
+    public static Customer Create(CustomerData data)
+    {
+        var customerGameObject = Instantiate(References.Instance.CustomerPrefab);
+        var customer = customerGameObject.GetComponent<Customer>();
+        customer.Data = data;
+        return customer;
     }
 }

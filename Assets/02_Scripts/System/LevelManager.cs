@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -5,17 +6,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
     public const int MAIN_LEVEL_INDEX = 1;
     
-    public static int CurrentLevelIndex { get; private set; }
-    public static LevelData CurrentLevel { get; private set; }
-    
     [SerializeField]
     // TODO: Validation!! ;)
     private LevelData[] _levels;
-
-    [Header("References")] 
-    [SerializeField]
-    internal GameObject _customerPrefab;
-
+    
+    public static int CurrentLevelIndex { get; private set; }
+    public static LevelData CurrentLevel { get; private set; }
+    public IEnumerable<LevelData> Levels => _levels;
+    
     public override void Awake()
     {
         base.Awake();
