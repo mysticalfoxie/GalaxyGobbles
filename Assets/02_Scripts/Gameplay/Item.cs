@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : ItemRendererBase
 {
     private Sprite _sprite;
     private SpriteRenderer _renderer;
@@ -10,19 +10,14 @@ public class Item : MonoBehaviour
     public ItemData Data
     {
         get => _data;
-        set => UpdateData(value);
-    }
-
-    public void Awake()
-    {
-        _renderer = this.GetRequiredComponent<SpriteRenderer>();
-        _renderer.sprite = Data.Sprite;
+        protected set => UpdateData(value);
     }
 
     private void UpdateData(ItemData data)
     {
         _data = data ? data : throw new ArgumentNullException(nameof(data));
         _renderer.sprite = Data.Sprite;
+        RenderItem(this);
     }
 
     public static Item Create(ItemData itemData)
