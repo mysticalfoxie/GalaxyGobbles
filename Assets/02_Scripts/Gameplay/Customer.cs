@@ -129,7 +129,7 @@ public class Customer : SelectableMonoBehaviour
 
     public static Customer Create(CustomerData data)
     {
-        var customerGameObject = Instantiate(References.Instance.CustomerPrefab);
+        var customerGameObject = Instantiate(ReferencesSettings.Data.CustomerPrefab);
         var customer = customerGameObject.GetComponent<Customer>();
         customer.Data = data;
         return customer;

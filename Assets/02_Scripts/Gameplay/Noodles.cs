@@ -6,7 +6,7 @@
 
         public static Noodles Create()
         {
-            var prefab = References.Instance.ItemPrefab;
+            var prefab = ReferencesSettings.Data.ItemPrefab;
             var instance = Instantiate(prefab);
             var item = instance.GetRequiredComponent<Noodles>();
             item.Data = References.Instance.Items.Noodles;

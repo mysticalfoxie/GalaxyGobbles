@@ -6,35 +6,20 @@ using UnityEngine.SceneManagement;
 public class References : SingletonMonoBehaviour<References>
 {
     [Header("References")]
-    [SerializeField]
-    private GameObject _itemPrefab;
-    [SerializeField]
-    private GameObject _customerPrefab;
-
-    [Header("Game Data")]
-    [SerializeField]
-    private ItemData[] _items;
-    
-    [SerializeField]
-    private SpeciesData[] _species;
-
     private readonly List<GameObject> _allLevelObjects = new();
-    
     private readonly List<Table> _tables = new();
     private readonly List<WaitArea> _waitAreas = new();
     private readonly List<NoodlePot> _noodlePots = new();
-    
-    
+
     public override void Awake()
     {
         base.Awake();
         
-        Items = new ItemReferences(_items);
-
         var scene = SceneManager.GetActiveScene();
         var root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
         AnalyseLevelObjects(root);
 
+        Items = new ItemReferences();
     }
 
     private void AnalyseLevelObjects(GameObject root)
@@ -59,14 +44,11 @@ public class References : SingletonMonoBehaviour<References>
         if (pots is not null) _noodlePots.Add(pots);
     }
 
-    public GameObject ItemPrefab => _itemPrefab;
-    public GameObject CustomerPrefab => _customerPrefab;
     public IEnumerable<Table> Tables => _tables;
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;
     public IEnumerable<NoodlePot> NoodlePots => _noodlePots;
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
-    
-    public IEnumerable<SpeciesData> Species => _species;
+
     public ItemReferences Items { get; private set; }
 }
 
@@ -76,10 +58,9 @@ public class ItemReferences
 
     public ItemData Noodles { get; private set; }
 
-    public ItemReferences(IEnumerable<ItemData> items)
+    public ItemReferences()
     {
-        All = items;
-        
+        All = ItemSettings.Data.Items;
         AnalyseDataAndAssignItems();
     }
 

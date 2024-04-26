@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemDispenser : ItemDispenserBase
+public class ItemDispenser : ItemRendererBase
 {
     [Header("Provider Data")]
     [SerializeField]
@@ -9,11 +9,11 @@ public class ItemDispenser : ItemDispenserBase
     public override void Awake()
     {
         base.Awake();
-        SetItem(_item);
+        RenderItem(_item);
     }
     
     protected override void OnTouch()
     {
-        Sidebar.Instance.Inventory.Create(Item);
+        Sidebar.Instance.Inventory.Create(ItemData);
     }
 }

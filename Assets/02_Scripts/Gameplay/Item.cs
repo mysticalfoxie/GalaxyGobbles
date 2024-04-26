@@ -27,7 +27,7 @@ public class Item : MonoBehaviour
 
     public static Item Create(ItemData itemData)
     {
-        var prefab = References.Instance.ItemPrefab;
+        var prefab = ReferencesSettings.Data.ItemPrefab;
         var instance = Instantiate(prefab);
         var item = instance.GetRequiredComponent<Item>();
         item.Data = itemData;

@@ -2268,6 +2268,7 @@ MonoBehaviour:
   _currentSfxVolume: 0
   _backgroundImage: {fileID: 4064187427887235608}
   _startWithoutMenu: 0
+  _completeDayText: {fileID: 0}
 --- !u!1 &3834815267467053173
 GameObject:
   m_ObjectHideFlags: 0
@@ -6489,16 +6490,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
         type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 210
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -6509,38 +6500,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
         type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 1702825816682911968, guid: 2b48272673a2ba34fb0c5af665f2ae0f,
         type: 3}

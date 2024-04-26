@@ -1,14 +1,14 @@
 using System;
 
-public class NoodleBowl : ItemDispenserBase
+public class NoodleBowl : ItemRendererBase
 {
     public void Start()
     {
-        SetItem(References.Instance.Items.Noodles);
+        RenderItem(References.Instance.Items.Noodles);
     }
 
     protected override void OnTouch()
     {   
-        NoodlePotDistributor.Instance.AddNoodles();
+        NoodlePotDistributor.AddNoodles();
     }
 }
