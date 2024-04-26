@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class NoodlePot : ItemRendererBase
@@ -8,7 +9,7 @@ public class NoodlePot : ItemRendererBase
     
     protected override void OnTouch()
     {
-        Debug.Log(GeneralSettings.Data.NoodleBoilingTime);        
+        
     }
 
     public void SetNoodles(Noodles noodles)
@@ -23,8 +24,10 @@ public class NoodlePot : ItemRendererBase
         StartCoroutine(nameof(OnCookingStart));
     }
 
-    private void OnCookingStart()
+    private IEnumerator OnCookingStart()
     {
-        //yield return new WaitForSeconds()
+        yield return new WaitForSeconds(GeneralSettings.Data.NoodleBoilingTime);
+        
+        
     }
 }

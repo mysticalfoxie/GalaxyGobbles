@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ItemRendererBase : TouchableMonoBehaviour
 {
-    private SpriteRenderer _renderer;
+    protected SpriteRenderer _renderer;
 
     protected ItemData ItemData { get; private set; }
     protected Item Item { get; private set; }

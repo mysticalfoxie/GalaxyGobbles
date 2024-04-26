@@ -4,7 +4,6 @@ using UnityEngine;
 public class Item : ItemRendererBase
 {
     private Sprite _sprite;
-    private SpriteRenderer _renderer;
     private ItemData _data;
     
     public ItemData Data
@@ -25,6 +24,7 @@ public class Item : ItemRendererBase
         var prefab = ReferencesSettings.Data.ItemPrefab;
         var instance = Instantiate(prefab);
         var item = instance.GetRequiredComponent<Item>();
+        item.gameObject.SetActive(false);
         item.Data = itemData;
         return item;
     }
