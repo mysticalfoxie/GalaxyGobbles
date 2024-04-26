@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GlobalTimeline : TimelineBase<GlobalTimeline>
 {
@@ -12,12 +13,23 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
     public new void Start()
     {
         base.Start();
+
+        var operation = WaitUntilLevelLoaded(() =>
+        {
+            SecondsUntilClosure = LevelManager.CurrentLevel.GetSeconds();
+            _customers = LevelManager.CurrentLevel.Customers
+                .ToDictionary(x => x.GetSeconds(), y => y);
+            
+            Tick += OnTimelineTick;
+        });
         
-        SecondsUntilClosure = LevelManager.CurrentLevel.GetSeconds();
-        _customers = LevelManager.CurrentLevel.Customers
-            .ToDictionary(x => x.GetSeconds(), y => y);
-        
-        Tick += OnTimelineTick;
+        StartCoroutine(operation);
+    }
+
+    private static IEnumerator WaitUntilLevelLoaded(Action callback)
+    {
+        yield return new WaitUntil(() => !LevelManager.Instance.Loading);
+        callback();
     }
 
     private void OnTimelineTick(object sender, EventArgs e)

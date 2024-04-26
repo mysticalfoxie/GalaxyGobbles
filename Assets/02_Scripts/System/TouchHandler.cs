@@ -45,7 +45,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         if (touchables.Length == 0) return;
         
         foreach (var touchable in touchables)
-            touchable.InvokeClick(this, EventArgs.Empty);
+            touchable.InvokeTouch(this, EventArgs.Empty);
     }
 
     private void CheckTouchState()

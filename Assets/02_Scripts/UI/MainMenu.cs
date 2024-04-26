@@ -162,8 +162,8 @@ public class MainMenu : MonoBehaviour
     {
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
-        _completeDayText.text = "You Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
-
+        // _completeDayText.text = "You Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
+        // threw errors and I don't know which prefab you want to insert in the field :/
     }
 
     public void BackAndSave()

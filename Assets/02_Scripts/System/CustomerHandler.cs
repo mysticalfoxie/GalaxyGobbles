@@ -10,9 +10,7 @@ public class CustomerHandler : SingletonMonoBehaviour<CustomerHandler>
 
     public void SummonNewCustomer(CustomerData data)
     {
-        var customerGameObject = Instantiate(LevelManager.Instance._customerPrefab);
-        var customer = customerGameObject.GetComponent<Customer>();
-        customer.Data = data;
+        var customer = Customer.Create(data);
         _customers.Add(customer);
         WaitAreaHandler.Instance.AddCustomer(customer);
         customer.Leave += OnCustomerLeave;
