@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TableDistributor : MonoBehaviour
 {
-    public void Awake()
+    public void Start()
     {
         foreach (var table in References.Instance.Tables) 
             table.Touch += (_, _) => OnTableClick(table);

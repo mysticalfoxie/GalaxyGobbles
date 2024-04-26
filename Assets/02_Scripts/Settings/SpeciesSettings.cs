@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 // ReSharper disable InconsistentNaming
 
-public class SpeciesSettings : ScriptableObject
+public class SpeciesSettings : ScriptableObject, ISettings
     {
         public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_Species Settings.asset";
         
@@ -19,6 +19,7 @@ public class SpeciesSettings : ScriptableObject
     
         internal static SpeciesSettings GetOrCreateSettings()
         {
+#if UNITY_EDITOR
             var settings = AssetDatabase.LoadAssetAtPath<SpeciesSettings>(SETTINGS_PATH);
             if (settings != null) return settings;
         
@@ -27,6 +28,9 @@ public class SpeciesSettings : ScriptableObject
             AssetDatabase.SaveAssets();
         
             return settings;
+#else
+            return References.Instance.SpeciesSettings;
+#endif
         }
 
         private static SpeciesSettings CreateDefaultSettings()

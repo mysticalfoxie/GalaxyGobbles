@@ -5,12 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class References : SingletonMonoBehaviour<References>
 {
-    [Header("References")]
     private readonly List<GameObject> _allLevelObjects = new();
     private readonly List<Table> _tables = new();
     private readonly List<WaitArea> _waitAreas = new();
     private readonly List<NoodlePot> _noodlePots = new();
-
+    
+    [Header("Settings")] 
+    [SerializeField] 
+    private GeneralSettings _general;
+     
+    [SerializeField] 
+    private ItemSettings _items;
+     
+    [SerializeField] 
+    private LevelSettings _level;
+ 
+    [SerializeField] 
+    private SpeciesSettings _species;
+ 
+    [SerializeField] 
+    private ReferencesSettings _reference;
+    
     public override void Awake()
     {
         base.Awake();
@@ -20,6 +35,7 @@ public class References : SingletonMonoBehaviour<References>
         AnalyseLevelObjects(root);
 
         Items = new ItemReferences();
+        
     }
 
     private void AnalyseLevelObjects(GameObject root)
@@ -50,22 +66,10 @@ public class References : SingletonMonoBehaviour<References>
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
 
     public ItemReferences Items { get; private set; }
-}
-
-public class ItemReferences
-{
-    public IEnumerable<ItemData> All { get; }
-
-    public ItemData Noodles { get; private set; }
-
-    public ItemReferences()
-    {
-        All = ItemSettings.Data.Items;
-        AnalyseDataAndAssignItems();
-    }
-
-    public void AnalyseDataAndAssignItems()
-    {
-        Noodles = All.First(x => x.Type == ItemType.ITEM_01_Noodles);
-    }
+    
+    public GeneralSettings GeneralSettings => _general;
+    public ItemSettings ItemSettings => _items;
+    public LevelSettings LevelSettings => _level;
+    public SpeciesSettings SpeciesSettings => _species;
+    public ReferencesSettings ReferenceSettings => _reference;
 }

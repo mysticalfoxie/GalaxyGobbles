@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Linq;
+using UnityEngine;
 
 public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
@@ -7,12 +10,25 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public static int CurrentLevelIndex { get; private set; }
     public static LevelData CurrentLevel { get; private set; }
     
+    public bool Loading { get; private set; }
+    
     public override void Awake()
     {
         base.Awake();
         
+        Loading = true;
         var selectedLevel = LevelSelector.selectedLevel - 1;
-        LoadLevel(selectedLevel < 0 ? 0 : selectedLevel);
+        StartCoroutine(WaitUntilReferencesLoaded(() =>
+        {
+            LoadLevel(selectedLevel < 0 ? 0 : selectedLevel);
+            Loading = false;
+        }));
+    }
+
+    private static IEnumerator WaitUntilReferencesLoaded(Action callback)
+    {
+        yield return new WaitUntil(() => References.Instance is not null);
+        callback();
     }
 
     private static void LoadLevel(int index)

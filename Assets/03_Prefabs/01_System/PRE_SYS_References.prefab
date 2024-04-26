@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5358484743340091180}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 272, y: 173, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,24 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3dea38af204302b053fd63745c5d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemPrefab: {fileID: 3252135566979042909, guid: d3024749853fb9448b22b795707563bf,
-    type: 3}
-  _customerPrefab: {fileID: 3858524379104844713, guid: 7236d0a812a00394da9c1f861afed8bf,
-    type: 3}
-  _items:
-  - {fileID: 11400000, guid: 92cdbf3d8d2afb44d8193471db9d56aa, type: 2}
-  - {fileID: 11400000, guid: bafa3b46a5667804eafca3f93e23c48d, type: 2}
-  - {fileID: 11400000, guid: e85cd067868be3f4ca92680cf6ecfb2c, type: 2}
-  - {fileID: 11400000, guid: 03978775f02c3d1469664276485ad3bd, type: 2}
-  - {fileID: 11400000, guid: ffa04008ad662284da199e1dd45856bd, type: 2}
-  - {fileID: 11400000, guid: 415cfb13d5c663846b539575d14556a2, type: 2}
-  - {fileID: 11400000, guid: 4f3a5eb0896495d4e87f2d983081d86d, type: 2}
-  - {fileID: 11400000, guid: a4ed01ab13d58af4f8913d1a1eb18a0a, type: 2}
-  - {fileID: 11400000, guid: 74a16eb75abad004184826a3e4b17700, type: 2}
-  - {fileID: 11400000, guid: 5b5c22a1958a4a941a36f091965f1506, type: 2}
-  - {fileID: 11400000, guid: c4aa4bf16252c924495b8ac2bb0a85b1, type: 2}
-  - {fileID: 11400000, guid: b164ed7cfc5e06944a0ed29648e91350, type: 2}
-  - {fileID: 11400000, guid: 4a792990b8bf9724b854df8e4bf6dce6, type: 2}
-  - {fileID: 11400000, guid: 9a81a5ea1692d6f40af2c4e9c1484d01, type: 2}
-  _species:
-  - {fileID: 11400000, guid: 99ddd7ca94694d14f9aabbfc771cc8c2, type: 2}
+  _general: {fileID: 11400000, guid: 3e58f9d7c97f3094fb7f868c60592573, type: 2}
+  _items: {fileID: 11400000, guid: da1a2d280cfff82488a03ae8ff70a68c, type: 2}
+  _level: {fileID: 11400000, guid: d59243aff1ef28d4b86f113d40b79ef9, type: 2}
+  _species: {fileID: 11400000, guid: d20f47ba2f3875a4f99d0ecc6b12bbd0, type: 2}
+  _reference: {fileID: 11400000, guid: 65dd6be4020244c4fa328cecae8fd880, type: 2}

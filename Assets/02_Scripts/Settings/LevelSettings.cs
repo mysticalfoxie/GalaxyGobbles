@@ -4,7 +4,7 @@ using UnityEngine;
 
 // ReSharper disable InconsistentNaming
 
-public class LevelSettings : ScriptableObject
+public class LevelSettings : ScriptableObject, ISettings
 {
     public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_Level Settings.asset";
     
@@ -14,10 +14,10 @@ public class LevelSettings : ScriptableObject
     [Header("List of all Levels")]
     [SerializeField]
     public LevelData[] Levels;
-
     
     internal static LevelSettings GetOrCreateSettings()
     {
+#if UNITY_EDITOR
         var settings = AssetDatabase.LoadAssetAtPath<LevelSettings>(SETTINGS_PATH);
         if (settings != null) return settings;
         
@@ -26,6 +26,9 @@ public class LevelSettings : ScriptableObject
         AssetDatabase.SaveAssets();
         
         return settings;
+#else
+        return References.Instance!.LevelSettings;
+#endif
     }
 
     private static LevelSettings CreateDefaultSettings()

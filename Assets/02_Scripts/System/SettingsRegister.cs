@@ -2,6 +2,7 @@ using UnityEditor;
 
 public static class SettingsRegister
 {
+#if UNITY_EDITOR
     [SettingsProvider]
     public static SettingsProvider CreateGeneralSettingsProvider() 
         => AssetSettingsProvider
@@ -59,5 +60,6 @@ public static class SettingsRegister
         ItemSettings.GetOrCreateSettings();
         return provider;
     } 
+#endif
 }
 

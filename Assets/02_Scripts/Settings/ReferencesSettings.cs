@@ -3,7 +3,7 @@ using UnityEngine;
 
 // ReSharper disable InconsistentNaming
 
-public class ReferencesSettings : ScriptableObject
+public class ReferencesSettings : ScriptableObject, ISettings
 {
     public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_References.asset";
     
@@ -18,6 +18,7 @@ public class ReferencesSettings : ScriptableObject
 
     internal static ReferencesSettings GetOrCreateSettings()
     {
+#if UNITY_EDITOR
         var settings = AssetDatabase.LoadAssetAtPath<ReferencesSettings>(SETTINGS_PATH);
         if (settings != null) return settings;
         
@@ -26,6 +27,9 @@ public class ReferencesSettings : ScriptableObject
         AssetDatabase.SaveAssets();
         
         return settings;
+#else
+        return References.Instance.ReferenceSettings;
+#endif
     }
 
     private static ReferencesSettings CreateDefaultSettings()
