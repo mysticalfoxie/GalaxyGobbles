@@ -14,6 +14,10 @@ public class ReferencesSettings : ScriptableObject, ISettings
     [SerializeField]
     public GameObject ItemPrefab;
     [SerializeField]
+    public GameObject NoodlesPrefab;
+    [SerializeField]
+    public GameObject IngredientPrefab;
+    [SerializeField]
     public GameObject CustomerPrefab;
 
     internal static ReferencesSettings GetOrCreateSettings()

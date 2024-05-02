@@ -1,15 +1,17 @@
 using UnityEngine;
 
-public class ItemDispenser : ItemRendererBase
+public class ItemDispenser : SpriteRendererBase
 {
     [Header("Provider Data")]
     [SerializeField]
     private ItemData _item;
+    
+    protected ItemData ItemData { get; private set; }
 
     public override void Awake()
     {
         base.Awake();
-        RenderItem(_item);
+        RenderSprite(_item);
     }
     
     protected override void OnTouch()

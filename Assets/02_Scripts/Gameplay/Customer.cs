@@ -40,7 +40,7 @@ public class Customer : SelectableMonoBehaviour
     {
         _renderer = gameObject.GetComponent<MeshRenderer>();
         
-        var itemRenderer = this.GetAllChildren().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
+        var itemRenderer = this.GetChildrenRecursively().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
         _itemRenderer = itemRenderer[0];
         _itemBackgroundRenderer = itemRenderer[1];
 

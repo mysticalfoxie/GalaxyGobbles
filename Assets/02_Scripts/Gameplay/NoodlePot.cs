@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class NoodlePot : ItemRendererBase
+public class NoodlePot : SpriteRendererBase
 {
     private bool _cooking;
     
@@ -18,7 +18,7 @@ public class NoodlePot : ItemRendererBase
         if (_cooking) return;
         
         Noodles = noodles;
-        RenderItem(Noodles);
+        RenderSprite(Noodles);
         _cooking = true;
 
         StartCoroutine(nameof(OnCookingStart));

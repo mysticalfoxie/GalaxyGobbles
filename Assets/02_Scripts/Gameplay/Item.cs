@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Item : ItemRendererBase
+public class Item : SpriteRendererBase
 {
     private Sprite _sprite;
     private ItemData _data;
@@ -15,8 +15,7 @@ public class Item : ItemRendererBase
     private void UpdateData(ItemData data)
     {
         _data = data ? data : throw new ArgumentNullException(nameof(data));
-        _renderer.sprite = Data.Sprite;
-        RenderItem(this);
+        RenderSprite(this);
     }
 
     public static Item Create(ItemData itemData)

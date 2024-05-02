@@ -36,7 +36,19 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
     private void UpdateStatesAndCallEvents()
     {
         if (TouchedGameObject is null) return;
-
+        
+        try
+        {
+            // Provoking a UnityEngine.UnassignedReferenceException
+            TouchedGameObject.SetActive(true);
+        }
+        catch (UnassignedReferenceException)
+        {
+            Debug.LogWarning("UnassignedReferenceException. Cannot update states and call events for an unassigned gameobject.");
+            TouchedGameObject = null;
+            return;
+        }
+        
         var touched = TouchedGameObject;
         Touch?.Invoke(touched, EventArgs.Empty);
         var touchables = touched.GetComponents<TouchableMonoBehaviour>();
@@ -79,6 +91,21 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
         _touchStartGameObject = RaycastGameObject(position);
+        EnsureObjectAssigned(_touchStartGameObject, () => _touchStartGameObject = null);
+    }
+
+    private static void EnsureObjectAssigned(GameObject @object, Func<GameObject> onError)
+    {
+        try
+        {
+            // Provoking a UnityEngine.UnassignedReferenceException
+            @object.SetActive(true);
+        }
+        catch (UnassignedReferenceException)
+        {
+            Debug.LogWarning("UnassignedReferenceException. The player touched an unassigned game object.");
+            onError();
+        }
     }
 
     private void HandleTouchInputUp()
@@ -89,6 +116,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         if (position == default) return;
         
         _touchEndGameObject = RaycastGameObject(position);
+        EnsureObjectAssigned(_touchEndGameObject, () => _touchEndGameObject = null);
     }
     
     

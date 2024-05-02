@@ -14,11 +14,20 @@ public static class GameObjectExtensions
     public static IEnumerable<GameObject> GetChildren(this MonoBehaviour monoBehaviour)
         => monoBehaviour.gameObject.GetChildren();
 
-    public static IEnumerable<GameObject> GetAllChildren(this GameObject gameObject)
-        => gameObject.GetChildren().SelectMany(x => x.GetChildren());
+    public static IEnumerable<GameObject> GetChildrenRecursively(this GameObject gameObject, List<GameObject> list = null)
+    {
+        list ??= new List<GameObject>();
 
-    public static IEnumerable<GameObject> GetAllChildren(this MonoBehaviour monoBehaviour)
-        => monoBehaviour.gameObject.GetAllChildren();
+        var children = gameObject.GetChildren().ToArray();
+        foreach (var child in children) 
+            GetChildrenRecursively(child, list); 
+        list.AddRange(children);
+
+        return list;
+    }
+
+    public static IEnumerable<GameObject> GetChildrenRecursively(this MonoBehaviour monoBehaviour)
+        => monoBehaviour.gameObject.GetChildrenRecursively();
 
     public static T GetRequiredComponent<T>(this GameObject gameObject)
         => gameObject.GetComponent<T>() ?? throw new NullReferenceException($"Cannot find a component of type {typeof(T).Name} on GameObject {gameObject.name}.");
