@@ -3,9 +3,9 @@ using System.Linq;
 
 public class IngredientReferences
 {
-    public IEnumerable<IngredientData> All { get; }
-
-    public IngredientData Red { get; private set; }
+    public IngredientData Egg { get; private set; }
+    public IngredientData Seaweed { get; private set; }
+    public IngredientData[] All { get; }
 
     public IngredientReferences()
     {
@@ -15,7 +15,8 @@ public class IngredientReferences
 
     public void AnalyseDataAndAssignItems()
     {
-        Red = All.First(x => x.Type == IngredientType.ING_01_Red);
+        Egg = All.First(x => x.Type == IngredientType.INGR_01_Egg);
+        Seaweed = All.First(x => x.Type == IngredientType.INGR_02_Seaweed);
     }
 }
 

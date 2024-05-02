@@ -14,6 +14,8 @@ public class ReferencesSettings : ScriptableObject, ISettings
     [SerializeField]
     public GameObject ItemPrefab;
     [SerializeField]
+    public GameObject SpriteRenderer;
+    [SerializeField]
     public GameObject NoodlesPrefab;
     [SerializeField]
     public GameObject IngredientPrefab;

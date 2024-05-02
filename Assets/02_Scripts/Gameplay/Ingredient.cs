@@ -1,34 +1,32 @@
 using System;
 using System.Linq;
-using UnityEngine;
 
-public class Ingredient : SpriteRendererBase
+public class Ingredient : TouchableMonoBehaviour
 {
-    private Sprite _sprite;
     private IngredientData _data;
+    private IngredientRenderer _renderer;
     
     public IngredientData Data
     {
         get => _data;
         protected set => UpdateData(value);
     }
+    
+    public IngredientType Type { get; private set; }
+
+    public override void Awake()
+    {
+        base.Awake();
+        
+        _renderer = this.GetRequiredComponent<IngredientRenderer>();
+    }
 
     private void UpdateData(IngredientData data)
     {
         _data = data ? data : throw new ArgumentNullException(nameof(data));
-        RenderSprite(data);
+        Type = _data.Type;
+        _renderer.Ingredient = _data;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public IngredientType Type { get; private set; }
 
     public static Ingredient Create(IngredientType type)
     {
@@ -37,7 +35,7 @@ public class Ingredient : SpriteRendererBase
         instance.gameObject.SetActive(false);
 
         var ingredient = instance.GetRequiredComponent<Ingredient>();
-        ingredient.Data = References.Instance.Ingredients.All.First(x => x.Type == type);
+        ingredient.Data = References.Instance.IngredientSettings.Ingredients.First(x => x.Type == type);
         ingredient.Type = type;
 
         return ingredient;

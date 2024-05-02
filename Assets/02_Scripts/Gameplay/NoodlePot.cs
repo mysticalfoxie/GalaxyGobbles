@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class NoodlePot : SpriteRendererBase
+public class NoodlePot : TouchableMonoBehaviour
 {
     private bool _cooking;
     
@@ -18,7 +18,7 @@ public class NoodlePot : SpriteRendererBase
         if (_cooking) return;
         
         Noodles = noodles;
-        RenderSprite(Noodles);
+        //RenderSprite(Noodles);
         _cooking = true;
 
         StartCoroutine(nameof(OnCookingStart));

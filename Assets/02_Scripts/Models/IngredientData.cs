@@ -5,9 +5,9 @@ public class IngredientData : ScriptableObject
 {
     [SerializeField] private string _name;
     [SerializeField] private IngredientType _type;
-    [SerializeField] private Sprite _sprite;
+    [SerializeField] private SpriteData _sprite;
     
     public string Name => _name; 
     public IngredientType Type => _type; 
-    public Sprite Sprite => _sprite; 
+    public SpriteData Sprite => _sprite; 
 }

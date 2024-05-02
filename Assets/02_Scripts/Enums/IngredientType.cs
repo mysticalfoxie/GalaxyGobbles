@@ -1,5 +1,6 @@
+// ReSharper disable InconsistentNaming
 public enum IngredientType
 {
-    ING_01_Red,
-    ING_02_Orange,
+    INGR_01_Egg,
+    INGR_02_Seaweed,
 }

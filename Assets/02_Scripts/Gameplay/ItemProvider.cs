@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemDispenser : SpriteRendererBase
+public class ItemProvider : TouchableMonoBehaviour
 {
     [Header("Provider Data")]
     [SerializeField]
@@ -11,7 +11,7 @@ public class ItemDispenser : SpriteRendererBase
     public override void Awake()
     {
         base.Awake();
-        RenderSprite(_item);
+        //RenderSprite(_item);
     }
     
     protected override void OnTouch()

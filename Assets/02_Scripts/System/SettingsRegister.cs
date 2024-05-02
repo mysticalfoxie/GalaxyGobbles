@@ -37,6 +37,13 @@ public static class SettingsRegister
             .CreateProviderFromAssetPath("Game Design/Items", ItemSettings.SETTINGS_PATH)
             .EnsureSettingsCreated()
             .AppendSaveChangesEvent();
+    
+    [SettingsProvider]
+    public static SettingsProvider CreateIngredientSettingsProvider() 
+        => AssetSettingsProvider
+            .CreateProviderFromAssetPath("Game Design/Ingredients", IngredientSettings.SETTINGS_PATH)
+            .EnsureSettingsCreated()
+            .AppendSaveChangesEvent();
 
     private static AssetSettingsProvider AppendSaveChangesEvent(this AssetSettingsProvider provider)
     {
@@ -58,6 +65,7 @@ public static class SettingsRegister
         LevelSettings.GetOrCreateSettings();
         SpeciesSettings.GetOrCreateSettings();
         ItemSettings.GetOrCreateSettings();
+        IngredientSettings.GetOrCreateSettings();
         return provider;
     } 
 #endif

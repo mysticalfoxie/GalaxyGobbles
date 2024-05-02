@@ -9,11 +9,6 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
     private Camera _camera;
     
     private GameObject TouchedGameObject { get; set; }
-    
-    [Header("Touch Detection System")]
-    [SerializeField]
-    [Range(1, 100)]
-    private float _raycastMaxRange = 20.0F;
 
     public event EventHandler Touch;
 
@@ -90,7 +85,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         if (!TouchInputSystem.Instance.IsFingerDown) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
-        _touchStartGameObject = RaycastGameObject(position);
+        DimensionHelper.Instance.Convert2Dto3D(position, out _touchStartGameObject);
         EnsureObjectAssigned(_touchStartGameObject, () => _touchStartGameObject = null);
     }
 
@@ -114,22 +109,8 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         if (!TouchInputSystem.Instance.IsFingerUp) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
-        
-        _touchEndGameObject = RaycastGameObject(position);
-        EnsureObjectAssigned(_touchEndGameObject, () => _touchEndGameObject = null);
-    }
-    
-    
-    public GameObject RaycastGameObject(Vector2 touchPosition)
-    {
-        if (_camera is null) return null;
-        
-        var ray = _camera.ScreenPointToRay(touchPosition);
-        Physics.Raycast(ray, out var raycast, _raycastMaxRange);
-        
-        if (raycast.transform is null) return null;
-        if (raycast.collider is null) return null;
 
-        return raycast.collider.gameObject;
+        DimensionHelper.Instance.Convert2Dto3D(position, out _touchEndGameObject);
+        EnsureObjectAssigned(_touchEndGameObject, () => _touchEndGameObject = null);
     }
 }

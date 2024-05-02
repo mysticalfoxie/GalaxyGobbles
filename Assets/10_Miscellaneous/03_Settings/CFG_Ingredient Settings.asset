@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb5f8a7eb87f4f3ca3dd627775938ef7, type: 3}
-  m_Name: CFG_Item Settings
+  m_Script: {fileID: 11500000, guid: 4d76ee7573ac46759a1a851583fd8f38, type: 3}
+  m_Name: CFG_Ingredient Settings
   m_EditorClassIdentifier: 
-  Items: []
+  Ingredients:
+  - {fileID: 11400000, guid: a514d64b0761f3f48ac65dc9056b9ec6, type: 2}
+  - {fileID: 11400000, guid: da42a8573e0cdf944ad795f5fb9aad0a, type: 2}

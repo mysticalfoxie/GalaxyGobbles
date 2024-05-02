@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class IngredientSettings : ScriptableObject, ISettings
 {
-    public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_Item Settings.asset";
+    public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_Ingredient Settings.asset";
     
     private static IngredientSettings _data;
     public static IngredientSettings Data => _data ??= GetOrCreateSettings();
