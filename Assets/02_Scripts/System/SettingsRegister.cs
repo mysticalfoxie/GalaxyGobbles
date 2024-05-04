@@ -4,44 +4,9 @@ public static class SettingsRegister
 {
 #if UNITY_EDITOR
     [SettingsProvider]
-    public static SettingsProvider CreateGeneralSettingsProvider() 
-        => AssetSettingsProvider
-            .CreateProviderFromAssetPath("Game Design/General", GeneralSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated()
-            .AppendSaveChangesEvent();
-    
-    [SettingsProvider]
     public static SettingsProvider CreateReferenceSettingsProvider() 
         => AssetSettingsProvider
-            .CreateProviderFromAssetPath("Game Design/References", ReferencesSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated()
-            .AppendSaveChangesEvent();
-    
-    [SettingsProvider]
-    public static SettingsProvider CreateLevelSettingsProvider() 
-        => AssetSettingsProvider
-            .CreateProviderFromAssetPath("Game Design/Levels", LevelSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated()
-            .AppendSaveChangesEvent();
-    
-    [SettingsProvider]
-    public static SettingsProvider CreateSpeciesSettingsProvider() 
-        => AssetSettingsProvider
-            .CreateProviderFromAssetPath("Game Design/Species", SpeciesSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated()
-            .AppendSaveChangesEvent();
-    
-    [SettingsProvider]
-    public static SettingsProvider CreateItemSettingsProvider() 
-        => AssetSettingsProvider
-            .CreateProviderFromAssetPath("Game Design/Items", ItemSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated()
-            .AppendSaveChangesEvent();
-    
-    [SettingsProvider]
-    public static SettingsProvider CreateIngredientSettingsProvider() 
-        => AssetSettingsProvider
-            .CreateProviderFromAssetPath("Game Design/Ingredients", IngredientSettings.SETTINGS_PATH)
+            .CreateProviderFromAssetPath("Galaxy Gobbles/Game Settings", GameSettings.SETTINGS_PATH)
             .EnsureSettingsCreated()
             .AppendSaveChangesEvent();
 
@@ -60,12 +25,7 @@ public static class SettingsRegister
 
     private static AssetSettingsProvider EnsureSettingsCreated(this AssetSettingsProvider provider)
     {
-        GeneralSettings.GetOrCreateSettings();
-        ReferencesSettings.GetOrCreateSettings();
-        LevelSettings.GetOrCreateSettings();
-        SpeciesSettings.GetOrCreateSettings();
-        ItemSettings.GetOrCreateSettings();
-        IngredientSettings.GetOrCreateSettings();
+        GameSettings.GetOrCreateSettings();
         return provider;
     } 
 #endif

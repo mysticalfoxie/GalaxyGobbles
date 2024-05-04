@@ -5,14 +5,14 @@ public class NoodlePot : TouchableMonoBehaviour
 {
     private bool _cooking;
     
-    public Noodles Noodles { get; private set; }
+    public NoodleData Noodles { get; private set; }
     
     protected override void OnTouch()
     {
         
     }
 
-    public void SetNoodles(Noodles noodles)
+    public void SetNoodles(NoodleData noodles)
     {
         if (Noodles is not null) return;
         if (_cooking) return;
@@ -26,8 +26,8 @@ public class NoodlePot : TouchableMonoBehaviour
 
     private IEnumerator OnCookingStart()
     {
-        yield return new WaitForSeconds(GeneralSettings.Data.NoodleBoilingTime);
-        
+        var boilingTime = GameSettings.Data.NoodleBoilingTime;
+        yield return new WaitForSeconds(boilingTime);
         
     }
 }

@@ -19,8 +19,8 @@ public class Customer : SelectableMonoBehaviour
     private CustomerData _data;
     private MeshRenderer _renderer;
     private Material _materialO;
-    private SpriteRenderer _itemRenderer;
-    private SpriteRenderer _itemBackgroundRenderer;
+    private UnityEngine.SpriteRenderer _itemRenderer;
+    private UnityEngine.SpriteRenderer _itemBackgroundRenderer;
     
     public event EventHandler Leave;
 
@@ -40,7 +40,7 @@ public class Customer : SelectableMonoBehaviour
     {
         _renderer = gameObject.GetComponent<MeshRenderer>();
         
-        var itemRenderer = this.GetChildrenRecursively().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
+        var itemRenderer = this.GetChildrenRecursively().Select(x => x.GetComponent<UnityEngine.SpriteRenderer>()).ToArray();
         _itemRenderer = itemRenderer[0];
         _itemBackgroundRenderer = itemRenderer[1];
 
@@ -129,7 +129,7 @@ public class Customer : SelectableMonoBehaviour
 
     public static Customer Create(CustomerData data)
     {
-        var customerGameObject = Instantiate(ReferencesSettings.Data.CustomerPrefab);
+        var customerGameObject = Instantiate(GameSettings.Data.PRE_Customer);
         var customer = customerGameObject.GetComponent<Customer>();
         customer.Data = data;
         return customer;

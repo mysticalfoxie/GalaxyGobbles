@@ -1,4 +1,5 @@
 using System.Linq;
+using UnityEngine;
 
 public class NoodlePotDistributor : SingletonMonoBehaviour<NoodlePotDistributor>
 {
@@ -7,7 +8,7 @@ public class NoodlePotDistributor : SingletonMonoBehaviour<NoodlePotDistributor>
         var slot = References.Instance.NoodlePots.FirstOrDefault(x => x.Noodles is null);
         if (slot is null) return;
 
-        var noodles = Noodles.Create();
+        var noodles = ScriptableObject.CreateInstance<NoodleData>();
         slot.SetNoodles(noodles);
     }
 }

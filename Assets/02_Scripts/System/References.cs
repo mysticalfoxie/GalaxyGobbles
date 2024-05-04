@@ -12,22 +12,7 @@ public class References : SingletonMonoBehaviour<References>
     
     [Header("Settings")] 
     [SerializeField] 
-    private GeneralSettings _general;
-     
-    [SerializeField] 
-    private ItemSettings _items;
-     
-    [SerializeField] 
-    private IngredientSettings _ingredients;
-     
-    [SerializeField] 
-    private LevelSettings _level;
- 
-    [SerializeField] 
-    private SpeciesSettings _species;
- 
-    [SerializeField] 
-    private ReferencesSettings _reference;
+    private GameSettings _settings;
     
     public override void Awake()
     {
@@ -38,8 +23,9 @@ public class References : SingletonMonoBehaviour<References>
         AnalyseLevelObjects(root);
 
         Items = new ItemReferences();
-        Ingredients = new IngredientReferences();
     }
+
+    public GameSettings GetLocalSettings() => _settings;
 
     private void AnalyseLevelObjects(GameObject root)
     {
@@ -70,12 +56,4 @@ public class References : SingletonMonoBehaviour<References>
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
 
     public ItemReferences Items { get; private set; }
-    public IngredientReferences Ingredients { get; private set; }
-    
-    public GeneralSettings GeneralSettings => _general;
-    public ItemSettings ItemSettings => _items;
-    public IngredientSettings IngredientSettings => _ingredients;
-    public LevelSettings LevelSettings => _level;
-    public SpeciesSettings SpeciesSettings => _species;
-    public ReferencesSettings ReferenceSettings => _reference;
 }

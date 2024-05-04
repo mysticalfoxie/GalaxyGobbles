@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TrashCan : TouchableMonoBehaviour
 {
-    private SpriteRenderer _renderer;
+    private UnityEngine.SpriteRenderer _renderer;
 
     [SerializeField] private Sprite _sprite;
     
@@ -11,7 +11,7 @@ public class TrashCan : TouchableMonoBehaviour
     {
         _renderer = this
             .GetChildren()
-            .Select(x => x.GetComponent<SpriteRenderer>())
+            .Select(x => x.GetComponent<UnityEngine.SpriteRenderer>())
             .First(x => x is not null);
         
         _renderer.sprite = _sprite;

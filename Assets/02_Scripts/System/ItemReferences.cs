@@ -9,7 +9,7 @@ public class ItemReferences
 
     public ItemReferences()
     {
-        All = ItemSettings.Data.Items;
+        All = GameSettings.Data.Items;
         AnalyseDataAndAssignItems();
     }
 

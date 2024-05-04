@@ -11,9 +11,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public static LevelData CurrentLevel { get; private set; }
     
     public bool Loading { get; private set; }
+    public Camera Camera { get; private set; }
     
     public override void Awake()
     {
+        Camera = Camera.main;
         base.Awake();
         
         Loading = true;
@@ -34,7 +36,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     private static void LoadLevel(int index)
     {
         CurrentLevelIndex = index;
-        CurrentLevel = LevelSettings.Data.Levels
+        CurrentLevel = GameSettings.Data.Levels
             .OrderBy(x => x.Number)
             .ElementAt(index);
     }

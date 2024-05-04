@@ -27,8 +27,8 @@ public class Inventory : MonoBehaviour
     }
 
     public bool HasItem(Item item) => _items.Any(x => x == item);
-    
-    public bool HasItem(ItemData item) => _items.Any(x => x.Data == item);
+
+    public bool HasItem(ItemData item) => false; // _items.Any(x => x.Data == item);
 
     public bool IsFull() => _items.Count >= _renderers.Length;
 
@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
             spriteRenderer.sprite = null;
 
         for (var i = 0; i < _renderers.Length; i++)
-            _renderers[i].sprite = i < _items.Count ? _items[i].Data.Sprite : null;
+            _renderers[i].sprite = i < _items.Count ? null : null; // _items[i].Data.Sprite : null;
     }
 
     public void Reset()
@@ -55,16 +55,17 @@ public class Inventory : MonoBehaviour
 
     public Item GetItemOfType(ItemData data)
     {
-        return _items.FirstOrDefault(x => x.Data == data);
+        return null; // TODO: GetItemOfType
+                     // _items.FirstOrDefault(x => x.Data == data);
     }
 
     public void Create(ItemData itemData)
     {
         if (IsFull()) return;
 
-        var item = Item.Create(itemData);
-        _items.Add(item);
-        RefreshView();
+        // var item = Item.Create(itemData);
+        // _items.Add(item);
+        // RefreshView();
     }
 }
 

@@ -1,28 +1,55 @@
 using System;
-
-public class Item : TouchableMonoBehaviour
+using UnityEngine;
+ 
+public class Item
 {
-    private ItemData _data;
+    private ItemRenderer _renderer;
+
+    public Item(ItemData data, bool hideOnCreation = false)
+    {
+        Data = data;
+        if (!hideOnCreation) Show();
+    }
+
+    private ItemData Data { get; }
+    public event EventHandler Destroyed;
+
+    public void Show()
+    {
+        Render();
+    }
+
+    public void Hide()
+    {
+        _renderer.Disable();
+    }
+
+    public void Combine(Item item)
+    {
+        // TODO: Crafting REZEPTE 
+    }
     
-    public ItemData Data
+    public void AlignTo(GameObject value, Vector2 offset = default)
     {
-        get => _data;
-        set => UpdateData(value);
+        var offset3d = new Vector3(offset.x, offset.y, 0);
+        var position = value.gameObject.transform.position + offset3d;
+        var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
+        
     }
 
-    private void UpdateData(ItemData data)
+    public void Follow(GameObject value, Vector2 offset = default)
     {
-        _data = data ? data : throw new ArgumentNullException(nameof(data));
-        //RenderSprite(this);
+        
+    } 
+
+    public void Destroy()
+    {
+        Destroyed?.Invoke(this, EventArgs.Empty);
     }
 
-    public static Item Create(ItemData itemData)
+    private void Render()
     {
-        var prefab = ReferencesSettings.Data.ItemPrefab;
-        var instance = Instantiate(prefab);
-        var item = instance.GetRequiredComponent<Item>();
-        item.gameObject.SetActive(false);
-        item.Data = itemData;
-        return item;
+        _renderer ??= Overlay.Instance.CreateItemRenderer(this);
+        if (_renderer.Disabled) _renderer.Enable();
     }
 }

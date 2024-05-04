@@ -74,7 +74,7 @@ namespace TMPro.Examples
                             go.transform.position = new Vector3(0, 1.2f, 0);
 
                             TextMesh textMesh = go.AddComponent<TextMesh>();
-                            textMesh.GetComponent<Renderer>().sharedMaterial = SourceFont.material;
+                            textMesh.GetComponent<UnityEngine.Renderer>().sharedMaterial = SourceFont.material;
                             textMesh.font = SourceFont;
                             textMesh.anchor = TextAnchor.MiddleCenter;
                             textMesh.fontSize = 130;
