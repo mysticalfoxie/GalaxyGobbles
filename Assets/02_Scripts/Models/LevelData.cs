@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Level", menuName = "GameData/Level", order = 1)]
+[CreateAssetMenu(fileName = "Level", menuName = "Galaxy Gobbles/Level", order = 1)]
 public class LevelData : ScriptableObject
 {
     [SerializeField]

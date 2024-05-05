@@ -11,17 +11,21 @@ public class Item
         if (!hideOnCreation) Show();
     }
 
-    private ItemData Data { get; }
+    public ItemData Data { get; }
+    public bool IsDestroyed { get; private set; }
+    public bool Hidden { get; private set; }
     public event EventHandler Destroyed;
 
     public void Show()
     {
         Render();
+        Hidden = false;
     }
 
     public void Hide()
     {
         _renderer.Disable();
+        Hidden = true;
     }
 
     public void Combine(Item item)
@@ -31,25 +35,32 @@ public class Item
     
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
-        var offset3d = new Vector3(offset.x, offset.y, 0);
-        var position = value.gameObject.transform.position + offset3d;
-        var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
-        
+        if (_renderer is null) return;
+        _renderer.AlignTo(value, offset);
     }
 
     public void Follow(GameObject value, Vector2 offset = default)
     {
-        
+        if (_renderer is null) return;
+        _renderer.Follow(value, offset);
     } 
 
     public void Destroy()
     {
         Destroyed?.Invoke(this, EventArgs.Empty);
+        IsDestroyed = true;
     }
 
     private void Render()
     {
-        _renderer ??= Overlay.Instance.CreateItemRenderer(this);
+        _renderer ??= CreateItemRenderer();
         if (_renderer.Disabled) _renderer.Enable();
+    }
+
+    private ItemRenderer CreateItemRenderer()
+    {
+        var itemRenderer = Overlay.Instance.CreateItemRenderer(this);
+        itemRenderer.Item = this;
+        return itemRenderer;
     }
 }

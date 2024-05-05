@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Customer", menuName = "GameData/Customer", order = 2)]
+[CreateAssetMenu(fileName = "Customer", menuName = "Galaxy Gobbles/Customer", order = 2)]
 public class CustomerData : ScriptableObject
 {
     [Header("Customer Arrival")]

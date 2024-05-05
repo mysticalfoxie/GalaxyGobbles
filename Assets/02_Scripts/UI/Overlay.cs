@@ -1,41 +1,37 @@
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.VisualScripting;
 
 public class Overlay : SingletonMonoBehaviour<Overlay>
 {
-    public Overlay() : base(true) { }
+    private readonly List<ItemRenderer> _items = new();
 
-    private readonly List<ItemRenderer> _renderers = new();
-    private GameObject _renderer;
-
-    public override void Awake()
+    public void RegisterItemRenderer(ItemRenderer itemRenderer)
     {
-        base.Awake();
-        _renderer = GameSettings.Data.PRE_ItemRenderer;
+        _items.Add(itemRenderer);
     }
 
-    public void RegisterRenderer(ItemRenderer itemRenderer)
+    public void DestroyItemRenderer(ItemRenderer itemRenderer)
     {
-        _renderers.Add(itemRenderer);
-    }
-
-    public void DestroyRenderer(ItemRenderer itemRenderer)
-    {
-        _renderers.Remove(itemRenderer);
+        if (!itemRenderer.IsDestroyed() && !itemRenderer.Item.IsDestroyed)
+            itemRenderer.Item.Destroy(); 
+        
+        _items.Remove(itemRenderer);
     }
 
     public ItemRenderer CreateItemRenderer(Item item)
     {
-        var instance = Instantiate(_renderer);
+        var instance = Instantiate(GameSettings.Data.PRE_Item);
         var itemRenderer = instance.GetRequiredComponent<ItemRenderer>();
+        instance.transform!.SetParent(gameObject.transform);
+        instance.transform.localPosition = default;
         itemRenderer.Item = item;
         item.Destroyed += (_, _) =>
         {
             Destroy(instance);
-            DestroyRenderer(itemRenderer);
+            DestroyItemRenderer(itemRenderer);
         };
         
-        _renderers.Add(itemRenderer);
+        _items.Add(itemRenderer);
         return itemRenderer;
     }
 }

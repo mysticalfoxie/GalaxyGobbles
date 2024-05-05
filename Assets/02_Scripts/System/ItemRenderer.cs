@@ -1,26 +1,23 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Attached to the item Game Object. Controls the children. 
 public class ItemRenderer : TouchableMonoBehaviour
 {
-    private List<Image> _renderers;
-    private GameObject _renderer;
+    private readonly Dictionary<GameObject, Image> _renderers = new();
     private GameObject _follow;
     private Vector2 _followOffset;
     private SpriteData[] _sprites;
+    private Item _item;
 
     public Item Item
     {
-        get;
-        set;
-    }
-    
-    public SpriteData[] Sprites
-    {
-        get => _sprites;
-        set => UpdateSprites(value);
+        get => _item;
+        set => UpdateItem(value);
     }
 
     public bool Disabled { get; private set; }
@@ -28,13 +25,13 @@ public class ItemRenderer : TouchableMonoBehaviour
     public override void Awake()
     {
         base.Awake();
-        _renderer = GameSettings.Data.PRE_ItemRenderer;
-        Overlay.Instance.RegisterRenderer(this);
+        Overlay.Instance.RegisterItemRenderer(this);
     }
 
     public void Update()
     {
-        if (_follow is not null) AlignTo(_follow, _followOffset);
+        if (_follow.IsAssigned()) 
+            AlignTo(_follow, _followOffset);
     }
 
     public void Disable()
@@ -69,29 +66,39 @@ public class ItemRenderer : TouchableMonoBehaviour
     
     protected void AddSprite(SpriteData sprite)
     {
-        var rendererGameObject = Instantiate(_renderer);
+        var rendererGameObject = Instantiate(GameSettings.Data.PRE_SpriteRenderer);
         var rendererComponent = rendererGameObject.GetRequiredComponent<Image>();
         rendererComponent.transform.SetParent(gameObject.transform);
-        rendererComponent.sprite = sprite.Sprite;
-        rendererComponent.transform.position = sprite.Offset.GetValueOrDefault();
-        _renderers.Add(rendererComponent);
+        rendererComponent.sprite = sprite.Sprite; 
+        rendererComponent.rectTransform.sizeDelta = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
+        rendererComponent.rectTransform.transform.localPosition = sprite.Offset;
+        rendererComponent.rectTransform.transform.localScale = Vector2.one; 
+        _renderers.Add(rendererGameObject, rendererComponent);
     }
 
     protected void RemoveSprite(SpriteData sprite)
     {
-        var rendererComponent = _renderers.First(x => x.sprite == sprite.Sprite);
-        _renderers.Remove(rendererComponent);
-        Destroy(rendererComponent.gameObject);
+        var (rendererGameObject, _) = _renderers.First(x => x.Value.sprite == sprite.Sprite);
+        _renderers.Remove(rendererGameObject);
+        Destroy(rendererGameObject);
     }
 
     private void DetectChanges(SpriteData[] newSprites, out SpriteData[] removed, out SpriteData[] added)
     {
-        added = newSprites.Where(x => !_sprites.Contains(x)).ToArray();
-        removed = _sprites.Where(x => !newSprites.Contains(x)).ToArray();
+        added = newSprites
+            .Where(x => x is not null)
+            .Where(x => !_sprites?.Contains(x) ?? true)
+            .ToArray();
+        
+        removed = _sprites?
+            .Where(x => !newSprites.Contains(x))
+            .ToArray() ?? Array.Empty<SpriteData>();
     }
 
-    private void UpdateSprites(SpriteData[] sprites)
+    private void UpdateItem(Item item)
     {
+        _item = item ?? throw new ArgumentNullException(nameof(item));
+        var sprites = _item.Data.Sprites.ToArray();
         DetectChanges(sprites, out var removed, out var added);
         foreach (var removedSprite in removed) RemoveSprite(removedSprite);
         foreach (var addedSprite in added) AddSprite(addedSprite);
@@ -101,9 +108,11 @@ public class ItemRenderer : TouchableMonoBehaviour
 
     private void IndexingSprites()
     {
+        if (_sprites is null) return;
+        
         var spriteRenderers = _sprites
             .OrderBy(x => x.Order)
-            .ToDictionary(x => x, x => _renderers.First(y => y.sprite == x.Sprite));
+            .ToDictionary(x => x, x => _renderers.First(y => y.Value.sprite == x.Sprite).Value);
         
         for (var i = 0; i < spriteRenderers.Count; i++)
         {
@@ -114,6 +123,6 @@ public class ItemRenderer : TouchableMonoBehaviour
 
     private void OnDestroy()
     {
-        Overlay.Instance.DestroyRenderer(this);
+        Overlay.Instance?.DestroyItemRenderer(this);
     }
 }

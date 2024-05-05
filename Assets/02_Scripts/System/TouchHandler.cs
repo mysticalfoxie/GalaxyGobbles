@@ -6,17 +6,10 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
     private GameObject _touchStartGameObject;
     private GameObject _touchEndGameObject;
     private GameObject _touchedGameObject;
-    private Camera _camera;
     
     private GameObject TouchedGameObject { get; set; }
 
     public event EventHandler Touch;
-
-    public override void Awake()
-    {
-        base.Awake();
-        _camera = Camera.main;
-    }
     
     public void Update()
     {
@@ -86,31 +79,18 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
         DimensionHelper.Instance.Convert2Dto3D(position, out _touchStartGameObject);
-        EnsureObjectAssigned(_touchStartGameObject, () => _touchStartGameObject = null);
-    }
-
-    private static void EnsureObjectAssigned(GameObject @object, Func<GameObject> onError)
-    {
-        try
-        {
-            // Provoking a UnityEngine.UnassignedReferenceException
-            @object.SetActive(true);
-        }
-        catch (UnassignedReferenceException)
-        {
-            Debug.LogWarning("UnassignedReferenceException. The player touched an unassigned game object.");
-            onError();
-        }
+        _touchStartGameObject.WhenNotAssigned(() => _touchStartGameObject = null);
     }
 
     private void HandleTouchInputUp()
     {
         if (_touchStartGameObject is null) return;
+        if (TouchInputSystem.Instance is null) return;
         if (!TouchInputSystem.Instance.IsFingerUp) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
 
         DimensionHelper.Instance.Convert2Dto3D(position, out _touchEndGameObject);
-        EnsureObjectAssigned(_touchEndGameObject, () => _touchEndGameObject = null);
+        _touchStartGameObject.WhenNotAssigned(() => _touchEndGameObject = null);
     }
 }

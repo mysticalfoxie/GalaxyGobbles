@@ -34,4 +34,27 @@ public static class GameObjectExtensions
 
     public static T GetRequiredComponent<T>(this MonoBehaviour @object)
         => @object.gameObject.GetRequiredComponent<T>();
+
+    public static bool IsAssigned(this GameObject gameObject)
+    {
+        if (gameObject is null) return false;
+        
+        try
+        {
+            // ReSharper disable once UnusedVariable
+            // This line is just to provoke an UnassignedReferenceException - not to actually do something
+            var name = gameObject.name;
+            return true;
+        }
+        catch (UnassignedReferenceException)
+        {
+            Debug.LogWarning("UnassignedReferenceException. The GameObject is not assigned.");
+            return false;
+        }
+    }
+
+    public static void WhenNotAssigned(this GameObject gameObject, Action action)
+    {
+        if (!gameObject.IsAssigned()) action();
+    }
 }
