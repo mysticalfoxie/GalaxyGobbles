@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mono.Cecil;
 using TMPro;
 using Unity.VisualScripting;
@@ -27,7 +28,8 @@ public class LevelSelector : MonoBehaviour
 
     void Awake()
     {
-        for (int i = 0; i < LevelSettings.Data.Levels.Length; i++)
+        var levels = GameSettings.Data.Levels.ToArray();
+        for (int i = 0; i < levels.Length; i++)
         {
             var lvlBtn = Instantiate(_levelButton);
             lvlBtn.transform!.SetParent(_parentLvlBtn.transform);
@@ -49,7 +51,7 @@ public class LevelSelector : MonoBehaviour
                 for (int j = 0; j < stars; j++)
                 {
                     var buttonStar = _levelButton.GetComponentInChildren<Sprite>(); 
-                    buttonStar.sprite = GoldenStarSprite;
+                    //buttonStar.sprite = GoldenStarSprite;
                 }
             }
             
