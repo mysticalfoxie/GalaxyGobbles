@@ -48,7 +48,7 @@ public class ItemRenderer : TouchableMonoBehaviour
     {
         var offset3d = new Vector3(offset.x, offset.y, 0);
         var position = value.gameObject.transform.position + offset3d;
-        var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
+        var screen = DimensionHelper.Instance.Camera.WorldToScreenPoint(position);
         gameObject.transform.position = screen;
     }
 

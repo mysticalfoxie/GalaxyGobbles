@@ -22,8 +22,6 @@ public class LevelSelector : MonoBehaviour
     public static int CurrentLevel;
 
     public int availableLevels;
-
-    public int SelectedLevel;
     //[SerializeField] TMP_Text _levelText;
 
     void Awake()
@@ -35,6 +33,11 @@ public class LevelSelector : MonoBehaviour
             lvlBtn.transform!.SetParent(_parentLvlBtn.transform);
             var lvlNum = lvlBtn.GetComponentInChildren<TMP_Text>();
             lvlNum.text = (i + 1).ToString();
+            
+            var buttonScript = lvlBtn.GetRequiredComponent<LevelButton>();
+            buttonScript.LevelIndex = i;
+            buttonScript.Clicked += LevelManager.Instance.LoadLevel; 
+            
             _buttons.Add(lvlBtn);
         }
     }
@@ -43,11 +46,13 @@ public class LevelSelector : MonoBehaviour
         UnlockedLevels = PlayerPrefs.GetInt("UnlockedLevels",0);
         for (int i = 0; i < _buttons.Count; i++)
         {
+            //    5            >= 7 -> true -> 
+            // Die freigeschaltenen Level größer oder gleich DIESES Level ist, dann Interactable true!
             if (UnlockedLevels >= i)
             {
                 var button = _buttons[i].GetComponent<Button>();
                 button.interactable = true;
-                int stars = PlayerPrefs.GetInt("stars " + i.ToString(), 0);
+                int stars = PlayerPrefs.GetInt("Stars" + i.ToString(), 0);
                 for (int j = 0; j < stars; j++)
                 {
                     var buttonStar = _levelButton.GetComponentInChildren<Sprite>(); 
@@ -56,12 +61,5 @@ public class LevelSelector : MonoBehaviour
             }
             
         }
-    }
-    
-    public void OpenScene(int levelNum)
-    {
-        SelectedLevel = levelNum;
-        MainMenu.Instance.SetElementsForStart();
-        SceneManager.LoadSceneAsync("0.1_Level");
     }
 }

@@ -163,22 +163,22 @@ public class MainMenu : MonoBehaviour
     {
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
-        if (StarsAcquired > PlayerPrefs.GetInt("Stars" + LevelSelector.CurrentLevel.ToString()))
+        
+        if (StarsAcquired > PlayerPrefs.GetInt("Stars" + LevelSelector.CurrentLevel)) 
+            PlayerPrefs.SetInt("Stars" + LevelSelector.CurrentLevel, StarsAcquired);
+
+        if (LevelSelector.CurrentLevel != LevelSelector.UnlockedLevels) 
+            return;
+        
+        if (StarsAcquired >= 1)
         {
-            PlayerPrefs.SetInt("Stars" + LevelSelector.CurrentLevel.ToString(), StarsAcquired);
+            LevelSelector.UnlockedLevels++;
+            PlayerPrefs.SetInt("UnlockedLevels", LevelSelector.UnlockedLevels);
+            _completeDayText.text = "You Completed Day " + (LevelManager.CurrentLevelIndex + 1);
         }
-        if ((LevelSelector.CurrentLevel) == LevelSelector.UnlockedLevels)
+        else
         {
-            if (StarsAcquired >= 1)
-            {
-                LevelSelector.UnlockedLevels++;
-                PlayerPrefs.SetInt("UnlockedLevels",LevelSelector.UnlockedLevels);
-                _completeDayText.text = "You Completed Day " + (LevelManager.CurrentLevelIndex + 1).ToString();
-            }
-            else
-            {
-                _completeDayText.text = "You dont Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
-            }
+            _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
         }
 
 
