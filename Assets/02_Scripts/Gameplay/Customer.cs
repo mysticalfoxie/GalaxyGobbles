@@ -71,7 +71,7 @@ public class Customer : SelectableMonoBehaviour
         => _state switch
         {
             CustomerState.WaitingForSeat => _waitForSeatSprite,
-            CustomerState.WaitingForMeal => DesiredItems.First().Sprites.First().Sprite,
+            CustomerState.WaitingForMeal => null, //DesiredItems.First().Sprites.First().Sprite,
             CustomerState.ThinkingAboutMeal => _thinkingSprite,
             CustomerState.WaitingForCheckout => _waitForCheckoutSprite,
             _ => null
