@@ -17,10 +17,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         base.Awake();
         
         Loading = true;
-        var selectedLevel = LevelSelector.selectedLevel - 1;
+        //var selectedLevel = LevelSelector.selectedLevel - 1;
         StartCoroutine(WaitUntilReferencesLoaded(() =>
         {
-            LoadLevel(selectedLevel < 0 ? 0 : selectedLevel);
+           // LoadLevel(selectedLevel < 0 ? 0 : selectedLevel);
             Loading = false;
         }));
     }

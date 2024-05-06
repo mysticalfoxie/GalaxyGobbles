@@ -39,7 +39,8 @@ public class MainMenu : MonoBehaviour
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
-    public static MainMenu Instance { get; private set; } 
+    public static MainMenu Instance { get; private set; }
+    public int StarsAcquired { get; set; }
 
 
     public void Awake()
@@ -158,12 +159,29 @@ public class MainMenu : MonoBehaviour
 #endif
     }
 
-    public void CompleteDay()
+    public void CompleteDay(int StarsAcquired)
     {
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
-        // _completeDayText.text = "You Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
-        // threw errors and I don't know which prefab you want to insert in the field :/
+        if (StarsAcquired > PlayerPrefs.GetInt("Stars" + LevelSelector.CurrentLevel.ToString()))
+        {
+            PlayerPrefs.SetInt("Stars" + LevelSelector.CurrentLevel.ToString(), StarsAcquired);
+        }
+        if ((LevelSelector.CurrentLevel) == LevelSelector.UnlockedLevels)
+        {
+            if (StarsAcquired >= 1)
+            {
+                LevelSelector.UnlockedLevels++;
+                PlayerPrefs.SetInt("UnlockedLevels",LevelSelector.UnlockedLevels);
+                _completeDayText.text = "You Completed Day " + (LevelManager.CurrentLevelIndex + 1).ToString();
+            }
+            else
+            {
+                _completeDayText.text = "You dont Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
+            }
+        }
+
+
     }
 
     public void BackAndSave()
