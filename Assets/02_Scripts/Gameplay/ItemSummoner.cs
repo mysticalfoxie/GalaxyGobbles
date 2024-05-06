@@ -1,5 +1,3 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemSummoner : MonoBehaviour
@@ -12,16 +10,5 @@ public class ItemSummoner : MonoBehaviour
     {
         _item = new Item(_itemData);
         _item.AlignTo(_alignTo);
-        StartCoroutine(nameof(OnOff));
-    }
-
-    private IEnumerator OnOff()
-    {
-        while (!gameObject.IsDestroyed())
-        {
-            yield return new WaitForSeconds(5);
-            if (_item.Hidden) _item.Show();
-            else _item.Hide();
-        }
     }
 }

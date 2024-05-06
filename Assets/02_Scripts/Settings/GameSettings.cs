@@ -10,6 +10,8 @@ public class GameSettings : ScriptableObject
 {
     [Header("General Settings")]
     [SerializeField] private int _noodleBoilingTime;
+    [SerializeField] private int _potCleaningTime;
+    [SerializeField] private int _noodleOvercookTime;
     
     [Header("References")]
     [Header("Prefabs")]
@@ -24,6 +26,8 @@ public class GameSettings : ScriptableObject
 
     #region Properties
     public int NoodleBoilingTime => _noodleBoilingTime;
+    public int PotCleaningTime => _potCleaningTime;
+    public int NoodleOvercookTime => _noodleOvercookTime;
     public GameObject PRE_Item => _itemPrefab;
     public GameObject PRE_SpriteRenderer => _spriteRendererPrefab;
     public GameObject PRE_Customer => _customerPrefab;
@@ -63,6 +67,8 @@ public class GameSettings : ScriptableObject
         settings._levels = Array.Empty<LevelData>();
         settings._items = Array.Empty<ItemData>();
         settings._noodleBoilingTime = 5;
+        settings._potCleaningTime = 5;
+        settings._noodleOvercookTime = 5;
         return settings;
     }
     #endregion

@@ -1025,7 +1025,7 @@ Transform:
   m_GameObject: {fileID: 874164116}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.96556, y: 0.3082, z: -4.4799}
+  m_LocalPosition: {x: 0.96556, y: 0.31, z: -4.4799}
   m_LocalScale: {x: 0.4070551, y: 0.1499463, z: 0.7765922}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1525,6 +1525,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3804887108394395426}
     m_Modifications:
+    - target: {fileID: 3366713248601728407, guid: 8f94b4e84b258624aa764189ce9e871a,
+        type: 3}
+      propertyPath: _itemOffset.y
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5636494850470310353, guid: 8f94b4e84b258624aa764189ce9e871a,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1548,7 +1553,7 @@ PrefabInstance:
     - target: {fileID: 5636494850470310353, guid: 8f94b4e84b258624aa764189ce9e871a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: 0.19800001
       objectReference: {fileID: 0}
     - target: {fileID: 5636494850470310353, guid: 8f94b4e84b258624aa764189ce9e871a,
         type: 3}
@@ -2109,12 +2114,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146120721}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ed72371857c44b1ad5b419d5ba0f251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemData: {fileID: 11400000, guid: ed3b90dfcfd6feb42a5d34537a29e7f5, type: 2}
+  _itemData: {fileID: 11400000, guid: 3a7967854209d6547a6caa3f8890a9ce, type: 2}
   _alignTo: {fileID: 917126244}
 --- !u!1001 &21975786183857148
 PrefabInstance:
@@ -2290,6 +2295,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3804887108394395426}
     m_Modifications:
+    - target: {fileID: 3366713248601728407, guid: 8f94b4e84b258624aa764189ce9e871a,
+        type: 3}
+      propertyPath: _itemOffset.y
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5636494850470310353, guid: 8f94b4e84b258624aa764189ce9e871a,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -2313,7 +2323,7 @@ PrefabInstance:
     - target: {fileID: 5636494850470310353, guid: 8f94b4e84b258624aa764189ce9e871a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.296
+      value: 0.194
       objectReference: {fileID: 0}
     - target: {fileID: 5636494850470310353, guid: 8f94b4e84b258624aa764189ce9e871a,
         type: 3}
@@ -3161,7 +3171,7 @@ PrefabInstance:
     - target: {fileID: 3417487757119890600, guid: 70444a7e554db564ab2dc1892972fd6a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3082
+      value: 0.2062
       objectReference: {fileID: 0}
     - target: {fileID: 3417487757119890600, guid: 70444a7e554db564ab2dc1892972fd6a,
         type: 3}
@@ -3208,8 +3218,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Noodle Bowl
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1553377910215513957, guid: 70444a7e554db564ab2dc1892972fd6a, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

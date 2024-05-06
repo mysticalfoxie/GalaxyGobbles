@@ -3,12 +3,16 @@ using UnityEngine;
  
 public class Item
 {
-    private ItemRenderer _renderer;
+    private readonly ItemRenderer _renderer;
 
     public Item(ItemData data, bool hideOnCreation = false)
     {
         Data = data;
-        if (!hideOnCreation) Show();
+        _renderer = CreateItemRenderer();
+        if (hideOnCreation) 
+            Hide();
+        else 
+            Show();
     }
 
     public ItemData Data { get; }
@@ -46,7 +50,12 @@ public class Item
     {
         if (_renderer is null) return;
         _renderer.Follow(value, offset);
-    } 
+    }
+
+    public void ForwardClickEventsTo(TouchableMonoBehaviour touchable)
+    {
+        Click += touchable.InvokeTouch;
+    }
 
     public void Destroy()
     {
@@ -56,8 +65,8 @@ public class Item
 
     private void Render()
     {
-        _renderer ??= CreateItemRenderer();
-        if (_renderer.Disabled) _renderer.Enable();
+        if (_renderer.Disabled) 
+            _renderer.Enable();
     }
 
     private ItemRenderer CreateItemRenderer()

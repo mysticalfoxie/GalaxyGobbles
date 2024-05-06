@@ -38,19 +38,21 @@ public class ItemRenderer : TouchableMonoBehaviour
     public void Disable()
     {
         Disabled = true;
+        gameObject.SetActive(!Disabled);
     }
 
     public void Enable()
     {
         Disabled = false;
+        gameObject.SetActive(!Disabled);
     }
     
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
         var offset3d = new Vector3(offset.x, offset.y, 0);
-        var position = value.gameObject.transform.position + offset3d;
+        var position = value.gameObject.transform.position;
         var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
-        gameObject.transform.position = screen;
+        gameObject.transform.position = screen + offset3d;
     }
 
     public void Follow(GameObject value, Vector2 offset = default)
