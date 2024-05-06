@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Item_Summoner : MonoBehaviour
+public class ItemSummoner : MonoBehaviour
 {
     [SerializeField] private ItemData _itemData;
     [SerializeField] private GameObject _alignTo;

@@ -1650,7 +1650,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _item
       value: 
-      objectReference: {fileID: 11400000, guid: 4f3a5eb0896495d4e87f2d983081d86d,
+      objectReference: {fileID: 11400000, guid: 473ac5396ce40ee42a3e708d8a226b03,
         type: 2}
     - target: {fileID: 4161994486104363440, guid: b4f5776ebab03cb438da0d97ea1fb2d2,
         type: 3}
@@ -2114,7 +2114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed72371857c44b1ad5b419d5ba0f251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemData: {fileID: 11400000, guid: 92cdbf3d8d2afb44d8193471db9d56aa, type: 2}
+  _itemData: {fileID: 11400000, guid: ed3b90dfcfd6feb42a5d34537a29e7f5, type: 2}
   _alignTo: {fileID: 917126244}
 --- !u!1001 &21975786183857148
 PrefabInstance:
@@ -3208,7 +3208,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Noodle Bowl
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1553377910215513957, guid: 70444a7e554db564ab2dc1892972fd6a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

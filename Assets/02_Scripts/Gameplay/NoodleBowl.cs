@@ -1,14 +1,16 @@
-using System;
+using System.Linq;
 
 public class NoodleBowl : TouchableMonoBehaviour
 {
-    public void Start()
-    {
-        //RenderSprite(References.Instance.Items.Noodles);
-    }
+    private Item _item;
+    private ItemData _itemData;
 
-    protected override void OnTouch()
+    public override void Awake()
     {
-        NoodlePotDistributor.AddNoodles();
+        base.Awake();
+
+        _itemData = GameSettings.Data.Items.First(x => x.Id == ItemId.ID_01_NoodleBowl);
+        _item = new Item(_itemData);
+        _item.AlignTo(this);
     }
 }

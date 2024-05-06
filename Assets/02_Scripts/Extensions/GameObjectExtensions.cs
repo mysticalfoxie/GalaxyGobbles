@@ -43,6 +43,8 @@ public static class GameObjectExtensions
         {
             // ReSharper disable once UnusedVariable
             // This line is just to provoke an UnassignedReferenceException - not to actually do something
+            // It tries to resolve the pointer on the gameobject but then throws an exception if it isn't assigned.
+            // These are mostly errors when you stop the debugging session or when a hot-reload takes place. 
             var name = gameObject.name;
             return true;
         }
@@ -53,8 +55,10 @@ public static class GameObjectExtensions
         }
     }
 
-    public static void WhenNotAssigned(this GameObject gameObject, Action action)
+    public static bool IsAssigned(this GameObject gameObject, Action actionsWhenNotAssigned)
     {
-        if (!gameObject.IsAssigned()) action();
+        var assigned = gameObject.IsAssigned();
+        if (!assigned) actionsWhenNotAssigned();
+        return assigned;
     }
 }

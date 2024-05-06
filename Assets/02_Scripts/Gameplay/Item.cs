@@ -15,6 +15,7 @@ public class Item
     public bool IsDestroyed { get; private set; }
     public bool Hidden { get; private set; }
     public event EventHandler Destroyed;
+    public event EventHandler Click;
 
     public void Show()
     {
@@ -32,13 +33,15 @@ public class Item
     {
         // TODO: Crafting REZEPTE 
     }
-    
+
+    public void AlignTo(MonoBehaviour value, Vector2 offset = default) => AlignTo(value.gameObject, offset);
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
         if (_renderer is null) return;
         _renderer.AlignTo(value, offset);
     }
-
+    
+    public void Follow(MonoBehaviour value, Vector2 offset = default) => Follow(value.gameObject, offset);
     public void Follow(GameObject value, Vector2 offset = default)
     {
         if (_renderer is null) return;
@@ -61,6 +64,7 @@ public class Item
     {
         var itemRenderer = Overlay.Instance.CreateItemRenderer(this);
         itemRenderer.Item = this;
+        itemRenderer.Click += (o, e) => Click?.Invoke(o, e);
         return itemRenderer;
     }
 }
