@@ -52,13 +52,6 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
         StartCoroutine(nameof(CloseStore));
     }
 
-    private IEnumerator CloseStore()
-    {
-        yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
-        MainMenu.Instance.CompleteDay(MainMenu.Instance.StarsAcquired);
-        Active = false;
-    }
-
     private void HandleCustomerArrival()
     {
         if (!_customers.ContainsKey((uint)Ticks + 1)) return;
@@ -68,5 +61,12 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
             .Value;
 
         CustomerHandler.Instance.SummonNewCustomer(customer);
+    }
+
+    private IEnumerator CloseStore()
+    {
+        yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
+        MainMenu.Instance.CompleteDay(MainMenu.Instance.StarsAcquired);
+        Active = false;
     }
 }

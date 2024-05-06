@@ -40,7 +40,7 @@ public class Customer : SelectableMonoBehaviour
     {
         _renderer = gameObject.GetComponent<MeshRenderer>();
         
-        var itemRenderer = this.GetAllChildren().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
+        var itemRenderer = this.GetChildrenRecursively().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
         _itemRenderer = itemRenderer[0];
         _itemBackgroundRenderer = itemRenderer[1];
 
@@ -71,7 +71,7 @@ public class Customer : SelectableMonoBehaviour
         => _state switch
         {
             CustomerState.WaitingForSeat => _waitForSeatSprite,
-            CustomerState.WaitingForMeal => DesiredItems.First().Sprite,
+            CustomerState.WaitingForMeal => null, //DesiredItems.First().Sprites.First().Sprite,
             CustomerState.ThinkingAboutMeal => _thinkingSprite,
             CustomerState.WaitingForCheckout => _waitForCheckoutSprite,
             _ => null
@@ -110,7 +110,7 @@ public class Customer : SelectableMonoBehaviour
     public IEnumerator OnThinkingStart()
     {
         yield return new WaitForSeconds(3);
-        _itemRenderer.sprite = DesiredItems.First().Sprite; // TODO: Multi-Item-Support
+        //_itemRenderer.sprite = DesiredItems.First().Sprites.First().Sprite; // TODO: Multi-Item-Support
         State = CustomerState.WaitingForMeal;
     }
 
@@ -129,7 +129,7 @@ public class Customer : SelectableMonoBehaviour
 
     public static Customer Create(CustomerData data)
     {
-        var customerGameObject = Instantiate(ReferencesSettings.Data.CustomerPrefab);
+        var customerGameObject = Instantiate(GameSettings.Data.PRE_Customer);
         var customer = customerGameObject.GetComponent<Customer>();
         customer.Data = data;
         return customer;

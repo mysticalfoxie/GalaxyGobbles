@@ -9,13 +9,13 @@ public class ItemReferences
 
     public ItemReferences()
     {
-        All = ItemSettings.Data.Items;
+        All = GameSettings.Data.Items;
         AnalyseDataAndAssignItems();
     }
 
     public void AnalyseDataAndAssignItems()
     {
-        Noodles = All.First(x => x.Type == ItemType.ITEM_01_Noodles);
+        Noodles = All.First(x => x.Id == ItemId.ID_01_NoodleBowl);
     }
 }
 

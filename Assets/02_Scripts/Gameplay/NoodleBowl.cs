@@ -1,14 +1,14 @@
 using System;
 
-public class NoodleBowl : ItemRendererBase
+public class NoodleBowl : TouchableMonoBehaviour
 {
     public void Start()
     {
-        RenderItem(References.Instance.Items.Noodles);
+        //RenderSprite(References.Instance.Items.Noodles);
     }
 
     protected override void OnTouch()
-    {   
+    {
         NoodlePotDistributor.AddNoodles();
     }
 }

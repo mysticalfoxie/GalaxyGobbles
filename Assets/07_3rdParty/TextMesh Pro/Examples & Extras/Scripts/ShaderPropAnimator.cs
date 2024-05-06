@@ -8,7 +8,7 @@ namespace TMPro.Examples
     public class ShaderPropAnimator : MonoBehaviour
     {
 
-        private Renderer m_Renderer;
+        private UnityEngine.Renderer m_Renderer;
         private Material m_Material;
 
         public AnimationCurve GlowCurve;
@@ -18,7 +18,7 @@ namespace TMPro.Examples
         void Awake()
         {
             // Cache a reference to object's renderer
-            m_Renderer = GetComponent<Renderer>();
+            m_Renderer = GetComponent<UnityEngine.Renderer>();
 
             // Cache a reference to object's material and create an instance by doing so.
             m_Material = m_Renderer.material;
