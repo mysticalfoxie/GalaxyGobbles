@@ -14,15 +14,10 @@ public class LevelSelector : MonoBehaviour
     public LevelObjects[] LevelObjects;
     public static int UnlockedLevels;
     [SerializeField] private GameObject _levelButton;
-    [SerializeField] Sprite GoldenStarSprite;
+    [SerializeField] private Sprite _goldenStarSprite;
 
     [SerializeField] private GameObject _parentLvlBtn;
     private List<GameObject> _buttons = new List<GameObject>();
-    
-    public static int CurrentLevel;
-
-    public int availableLevels;
-    //[SerializeField] TMP_Text _levelText;
 
     void Awake()
     {
@@ -46,20 +41,16 @@ public class LevelSelector : MonoBehaviour
         UnlockedLevels = PlayerPrefs.GetInt("UnlockedLevels",0);
         for (int i = 0; i < _buttons.Count; i++)
         {
-            //    5            >= 7 -> true -> 
-            // Die freigeschaltenen Level größer oder gleich DIESES Level ist, dann Interactable true!
-            if (UnlockedLevels >= i)
+            if (UnlockedLevels < i) continue;
+            var button = _buttons[i].GetComponent<Button>();
+            button.interactable = true;
+            var stars = PlayerPrefs.GetInt("Stars" + i.ToString(), 0);
+            for (int j = 0; j < stars; j++)
             {
-                var button = _buttons[i].GetComponent<Button>();
-                button.interactable = true;
-                int stars = PlayerPrefs.GetInt("Stars" + i.ToString(), 0);
-                for (int j = 0; j < stars; j++)
-                {
-                    var buttonStar = _levelButton.GetComponentInChildren<Sprite>(); 
-                    //buttonStar.sprite = GoldenStarSprite;
-                }
+                var buttonStars = _levelButton.GetComponentsInChildren<Image>(); 
+                buttonStars[j].sprite = _goldenStarSprite;
             }
-            
+
         }
     }
 }
