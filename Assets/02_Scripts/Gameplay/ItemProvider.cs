@@ -23,5 +23,7 @@ public class ItemProvider : TouchableMonoBehaviour
         var newItem = _item.Clone();
         if (!Sidebar.Instance.Inventory.TryAdd(newItem))
             newItem.Dispose();
+        else
+            newItem.Show();
     }
 }
