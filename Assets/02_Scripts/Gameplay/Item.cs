@@ -59,8 +59,8 @@ public class Item
 
     public void Destroy()
     {
-        Destroyed?.Invoke(this, EventArgs.Empty);
         IsDestroyed = true;
+        Destroyed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Render()

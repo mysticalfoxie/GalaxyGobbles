@@ -18,9 +18,7 @@ public class NoodlePot : TouchableMonoBehaviour
     public override void Awake()
     {
         base.Awake();
-
         InitializeItems();
-
         UpdateState(NoodlePotState.Empty);
     }
 
