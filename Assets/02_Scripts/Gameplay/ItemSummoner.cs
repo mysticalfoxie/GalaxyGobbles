@@ -8,7 +8,7 @@ public class ItemSummoner : MonoBehaviour
 
     public void Start()
     {
-        _item = new Item(_itemData);
+        _item = new Item(_itemData, true);
         _item.AlignTo(_alignTo);
     }
 }

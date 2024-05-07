@@ -16,7 +16,7 @@ public class NoodlePot : TouchableMonoBehaviour
     public NoodlePotState State { get; private set; }
 
     public override void Awake()
-    {
+    { 
         base.Awake();
         InitializeItems();
         UpdateState(NoodlePotState.Empty);
@@ -37,7 +37,7 @@ public class NoodlePot : TouchableMonoBehaviour
     private void OnCookedNoodlesTouched()
     {
         UpdateState(NoodlePotState.Empty);
-        var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_06_Noodles));
+        var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_07_Noodles), true);
         Sidebar.Instance.Inventory.Add(item);
     }
 
@@ -81,20 +81,20 @@ public class NoodlePot : TouchableMonoBehaviour
 
     private void InitializeItems()
     {
-        _emptyPotItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_02_NoodlePot_Empty), true);
-        _cookingItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_03_NoodlePot_Cooking), true);
-        _overcookedItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_05_NoodlePot_Overcooked), true);
-        _cookedItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_04_NoodlePot_Cooked), true);
+        _emptyPotItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_02_NoodlePot_Empty));
+        _cookingItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_03_NoodlePot_Cooking));
+        _overcookedItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_05_NoodlePot_Overcooked));
+        _cookedItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_04_NoodlePot_Cooked));
         
         _cookingItem.AlignTo(this, _itemOffset);
         _overcookedItem.AlignTo(this, _itemOffset);
         _cookedItem.AlignTo(this, _itemOffset);
         _emptyPotItem.AlignTo(this, _itemOffset);
         
-        _cookingItem.ForwardClickEventsTo(this);
-        _overcookedItem.ForwardClickEventsTo(this);
-        _cookedItem.ForwardClickEventsTo(this);
-        _emptyPotItem.ForwardClickEventsTo(this);
+        _cookingItem.ForwardTouchEventsTo(this);
+        _overcookedItem.ForwardTouchEventsTo(this);
+        _cookedItem.ForwardTouchEventsTo(this);
+        _emptyPotItem.ForwardTouchEventsTo(this);
     }
 
     private Item GetItemByState(NoodlePotState state)

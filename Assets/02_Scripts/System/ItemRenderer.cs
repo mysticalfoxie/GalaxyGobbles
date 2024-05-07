@@ -14,6 +14,8 @@ public class ItemRenderer : TouchableMonoBehaviour
     private SpriteData[] _sprites;
     private Item _item;
 
+    public bool Destroyed { get; private set; }
+    
     public Item Item
     {
         get => _item;
@@ -23,28 +25,10 @@ public class ItemRenderer : TouchableMonoBehaviour
     public bool Disabled { get; private set; }
     public event EventHandler Click;
 
-    public override void Awake()
-    {
-        base.Awake();
-        Overlay.Instance.RegisterItemRenderer(this);
-    }
-
     public void Update()
     {
         if (_follow.IsAssigned(() => _follow = null)) 
             AlignTo(_follow, _followOffset);
-    }
-
-    public void Disable()
-    {
-        Disabled = true;
-        gameObject.SetActive(!Disabled);
-    }
-
-    public void Enable()
-    {
-        Disabled = false;
-        gameObject.SetActive(!Disabled);
     }
     
     public void AlignTo(GameObject value, Vector2 offset = default)
@@ -66,8 +50,6 @@ public class ItemRenderer : TouchableMonoBehaviour
         _follow = null;
         _followOffset = default;
     }
-
-    
     
     protected override void OnTouch()
     {
@@ -148,8 +130,10 @@ public class ItemRenderer : TouchableMonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public void Destroy()
     {
-        Overlay.Instance?.DestroyItemRenderer(this);
+        if (Destroyed) return;
+        Destroyed = true;
+        Destroy(gameObject);
     }
 }

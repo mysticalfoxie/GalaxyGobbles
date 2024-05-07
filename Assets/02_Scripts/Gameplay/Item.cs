@@ -1,72 +1,67 @@
 using System;
 using UnityEngine;
  
-public class Item
+public class Item : IDisposable
 {
-    private readonly ItemRenderer _renderer;
+    private ItemRenderer _renderer;
+    private readonly bool _initialized;
 
-    public Item(ItemData data, bool hideOnCreation = false)
+    public Item(ItemData data, bool renderItemOnCreation = false)
     {
         Data = data;
-        _renderer = CreateItemRenderer();
-        if (hideOnCreation) 
-            Hide();
-        else 
-            Show();
+        if (renderItemOnCreation) Show();
+        else Hidden = true;
+        _initialized = true;
     }
 
     public ItemData Data { get; }
-    public bool IsDestroyed { get; private set; }
+    public GameObject AlignedTo { get; private set; }
+    public GameObject Following { get; private set; }
+    public Vector2 AlignmentOffset { get; private set; }
+    public Vector2 FollowOffset { get; private set; }
     public bool Hidden { get; private set; }
-    public event EventHandler Destroyed;
     public event EventHandler Click;
 
     public void Show()
     {
-        Render();
+        if (!Hidden && _initialized) return;
+        _renderer = CreateItemRenderer();
+        if (AlignedTo.IsAssigned()) _renderer.AlignTo(AlignedTo, AlignmentOffset);
+        if (Following.IsAssigned()) _renderer.Follow(Following, FollowOffset);
         Hidden = false;
     }
 
     public void Hide()
     {
-        _renderer.Disable();
+        if (Hidden) return;
+        _renderer.Destroy();
         Hidden = true;
-    }
-
-    public void Combine(Item item)
-    {
-        // TODO: Crafting REZEPTE 
     }
 
     public void AlignTo(MonoBehaviour value, Vector2 offset = default) => AlignTo(value.gameObject, offset);
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
+        AlignedTo = value;
+        AlignmentOffset = offset;
         if (_renderer is null) return;
         _renderer.AlignTo(value, offset);
+
+        var audio = new AudioSource();
+        audio.Play();
     }
     
     public void Follow(MonoBehaviour value, Vector2 offset = default) => Follow(value.gameObject, offset);
     public void Follow(GameObject value, Vector2 offset = default)
     {
+        Following = value;
+        FollowOffset = offset;
         if (_renderer is null) return;
         _renderer.Follow(value, offset);
     }
 
-    public void ForwardClickEventsTo(TouchableMonoBehaviour touchable)
+    public void ForwardTouchEventsTo(TouchableMonoBehaviour touchable)
     {
         Click += touchable.InvokeTouch;
-    }
-
-    public void Destroy()
-    {
-        IsDestroyed = true;
-        Destroyed?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void Render()
-    {
-        if (_renderer.Disabled) 
-            _renderer.Enable();
     }
 
     private ItemRenderer CreateItemRenderer()
@@ -75,5 +70,17 @@ public class Item
         itemRenderer.Item = this;
         itemRenderer.Click += (o, e) => Click?.Invoke(o, e);
         return itemRenderer;
+    }
+
+    public Item Clone(bool hideOnCreation = false)
+    {
+        return new Item(Data.Clone(), hideOnCreation);
+    }
+
+    public void Dispose()
+    {
+        if (_renderer is not null && !_renderer.Destroyed) _renderer.Destroy();
+        
+        GC.SuppressFinalize(this);
     }
 }

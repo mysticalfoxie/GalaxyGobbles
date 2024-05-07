@@ -11,4 +11,8 @@ public class RecipeData : ScriptableObject
     [Header("Combination (Item A + B)")]
     [SerializeField] private ItemId _itemA;
     [SerializeField] private ItemId _itemB;
+
+    public ItemId ItemA => _itemA;
+    public ItemId ItemB => _itemB;
+    public ItemId ItemC => _itemC;
 }

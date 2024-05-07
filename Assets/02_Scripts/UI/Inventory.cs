@@ -11,22 +11,37 @@ public class Inventory : MonoBehaviour
     {
         _positions = this.GetChildren().ToArray();
     }
-
-
+    
     public void Add(Item item)
     {
-        if (IsFull()) return;
+        TryAdd(item);
+    }
+    
+    public bool TryAdd(Item item)
+    {
+        if (TryCraftSomethingWith(item)) return false;
+        if (!item.Data.Deliverable) return false;
+        if (IsFull()) return false;
         
         _items.Add(item);
         RefreshView();
+        return true;
     }
 
     public bool IsFull() => _items.Count >= _positions.Length;
 
+    private bool TryCraftSomethingWith(Item item)
+    {
+        var recipe = _items.GetCraftableRecipesWith(item).FirstOrDefault(x => x.IsMatch);
+        if (!recipe.IsMatch) return false;
+        recipe.Fulfill();
+        return true;
+    } 
+        
     public void Remove(Item item, bool removeWithoutDestroy = false)
     {
         if (removeWithoutDestroy) 
-            item.Destroy();
+            item.Dispose();
         
         _items.Remove(item);
         RefreshView();
@@ -44,7 +59,7 @@ public class Inventory : MonoBehaviour
     public void Reset()
     {
         foreach (var item in _items)
-            item.Destroy();
+            item.Dispose();
         
         _items.Clear();
         RefreshView();

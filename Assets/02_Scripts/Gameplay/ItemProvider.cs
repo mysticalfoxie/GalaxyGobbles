@@ -1,22 +1,27 @@
+using System;
 using UnityEngine;
 
 public class ItemProvider : TouchableMonoBehaviour
 {
-    [Header("Provider Data")]
-    [SerializeField]
-    private ItemData _item;
+    [Header("Item Visualization")] [SerializeField] private Vector2 _offset;
+    [Header("Provider Data")] [SerializeField] private ItemData _itemData;
     
-    protected ItemData ItemData { get; private set; }
+    private Item _item;
 
     public override void Awake()
     {
+        if (_itemData is null) throw new ArgumentNullException($"The Component {nameof(ItemProvider)} has a field {nameof(_itemData)} that has to be assigned.");
+        
         base.Awake();
-        //RenderSprite(_item);
+        _item = new Item(_itemData, true);
+        _item.AlignTo(this, _offset);
+        _item.ForwardTouchEventsTo(this);
     }
     
     protected override void OnTouch()
     {
-        // TODO:
-        // Sidebar.Instance.Inventory.Create(ItemData);
+        var newItem = _item.Clone(true);
+        if (!Sidebar.Instance.Inventory.TryAdd(newItem)) return;
+        newItem.Dispose();
     }
 }

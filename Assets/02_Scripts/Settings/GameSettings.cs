@@ -23,6 +23,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private LevelData[] _levels;
     [SerializeField] private SpeciesData[] _species;
     [SerializeField] private ItemData[] _items;
+    [SerializeField] private RecipeData[] _recipes;
 
     #region Properties
     public int NoodleBoilingTime => _noodleBoilingTime;
@@ -35,6 +36,7 @@ public class GameSettings : ScriptableObject
     public IEnumerable<LevelData> Levels => _levels;
     public IEnumerable<SpeciesData> Species => _species;
     public IEnumerable<ItemData> Items => _items;
+    public IEnumerable<RecipeData> Recipes => _recipes;
     #endregion
     
     #region Boilerplate
