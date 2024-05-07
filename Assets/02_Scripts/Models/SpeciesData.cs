@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Species", menuName = "GameData/Species", order = 3)]
+[CreateAssetMenu(fileName = "Species", menuName = "Galaxy Gobbles/Species", order = 3)]
 public class SpeciesData : ScriptableObject
 {
     [SerializeField]

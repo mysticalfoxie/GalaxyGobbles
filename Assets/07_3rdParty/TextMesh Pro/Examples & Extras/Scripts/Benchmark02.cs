@@ -53,7 +53,7 @@ namespace TMPro.Examples
 
                     TextMesh textMesh = go.AddComponent<TextMesh>();
                     textMesh.font = Resources.Load<Font>("Fonts/ARIAL");
-                    textMesh.GetComponent<Renderer>().sharedMaterial = textMesh.font.material;
+                    textMesh.GetComponent<UnityEngine.Renderer>().sharedMaterial = textMesh.font.material;
 
                     textMesh.anchor = TextAnchor.LowerCenter;
                     textMesh.fontSize = 96;

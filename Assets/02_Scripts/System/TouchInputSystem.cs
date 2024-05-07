@@ -109,11 +109,13 @@ public sealed class TouchInputSystem : SingletonMonoBehaviour<TouchInputSystem>
 
     public static Vector2 GetTouchPosition()
     {
-        var touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+        var touchPosition = Touchscreen.current is not null 
+            && Touchscreen.current.primaryTouch is not null
+            ? Touchscreen.current.primaryTouch.position.ReadValue() : default;
         if (touchPosition != default) return touchPosition;
-        touchPosition = Mouse.current.position.ReadValue();
+        touchPosition = Mouse.current is not null ? Mouse.current.position.ReadValue() : default;
         if (touchPosition != default) return touchPosition;
-        return Pen.current.position.ReadValue();
+        return Pen.current is not null ? Pen.current.position.ReadValue() : default;
     }
 
 }

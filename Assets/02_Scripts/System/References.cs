@@ -12,35 +12,31 @@ public class References : SingletonMonoBehaviour<References>
     
     [Header("Settings")] 
     [SerializeField] 
-    private GeneralSettings _general;
-     
-    [SerializeField] 
-    private ItemSettings _items;
-     
-    [SerializeField] 
-    private LevelSettings _level;
- 
-    [SerializeField] 
-    private SpeciesSettings _species;
- 
-    [SerializeField] 
-    private ReferencesSettings _reference;
+    private GameSettings _settings;
     
     public override void Awake()
     {
         base.Awake();
         
         var scene = SceneManager.GetActiveScene();
-        var root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
-        AnalyseLevelObjects(root);
+        HandleLevelData(scene);
 
         Items = new ItemReferences();
-        
     }
+
+    private void HandleLevelData(Scene scene)
+    {
+        if (scene.buildIndex != LevelManager.MAIN_LEVEL_INDEX) return;
+        var root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
+        AnalyseLevelObjects(root);
+    }
+
+    public GameSettings GetLocalSettings() => _settings;
 
     private void AnalyseLevelObjects(GameObject root)
     {
-        foreach (var levelObject in root.GetAllChildren())
+        var levelObjects = root.GetChildrenRecursively().ToArray(); 
+        foreach (var levelObject in levelObjects)
         {
             // Saves more performance then using .ToArray()
             _allLevelObjects.Add(levelObject); 
@@ -53,11 +49,11 @@ public class References : SingletonMonoBehaviour<References>
         // Saves a lot performance rather then iterating 3 times over all level objects
         var table = levelObject.GetComponent<Table>();
         var waitArea = levelObject.GetComponent<WaitArea>();
-        var pots = levelObject.GetComponent<NoodlePot>();
+        var pot = levelObject.GetComponent<NoodlePot>();
         
         if (table is not null) _tables.Add(table);
         if (waitArea is not null) _waitAreas.Add(waitArea);
-        if (pots is not null) _noodlePots.Add(pots);
+        if (pot is not null) _noodlePots.Add(pot);
     }
 
     public IEnumerable<Table> Tables => _tables;
@@ -66,10 +62,4 @@ public class References : SingletonMonoBehaviour<References>
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
 
     public ItemReferences Items { get; private set; }
-    
-    public GeneralSettings GeneralSettings => _general;
-    public ItemSettings ItemSettings => _items;
-    public LevelSettings LevelSettings => _level;
-    public SpeciesSettings SpeciesSettings => _species;
-    public ReferencesSettings ReferenceSettings => _reference;
 }

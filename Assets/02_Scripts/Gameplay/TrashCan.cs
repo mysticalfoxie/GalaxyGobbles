@@ -1,22 +1,20 @@
-using System.Linq;
 using UnityEngine;
 
 public class TrashCan : TouchableMonoBehaviour
 {
-    private SpriteRenderer _renderer;
-
-    [SerializeField] private Sprite _sprite;
+    [Header("Item Visualization")]
+    [SerializeField] private ItemData _itemData;
+    [SerializeField] private Vector2 _offset;
     
+    private Item _item;
+
     public override void Awake()
-    {
-        _renderer = this
-            .GetChildren()
-            .Select(x => x.GetComponent<SpriteRenderer>())
-            .First(x => x is not null);
-        
-        _renderer.sprite = _sprite;
-        
+    {        
         base.Awake();
+
+        _item = new Item(_itemData, true);
+        _item.AlignTo(this, _offset);
+        _item.ForwardTouchEventsTo(this);
     }
 
     protected override void OnTouch()

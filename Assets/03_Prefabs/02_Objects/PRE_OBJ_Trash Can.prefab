@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8834225624388247154}
   - component: {fileID: 7859791705292487920}
   - component: {fileID: 821397376002333855}
-  - component: {fileID: 3556716335271126734}
   - component: {fileID: 1761637925900780969}
   m_Layer: 0
   m_Name: PRE_OBJ_Trash Can
@@ -86,27 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3556716335271126734
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3252135566979042909}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1761637925900780969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,9 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b158b0397b36467480a7c30bc71bce3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycastHitbox: {fileID: 3556716335271126734}
-  _raycastDistance: 10
-  _sprite: {fileID: 21300000, guid: edff8ecb9c091f94690aaa133431828b, type: 3}
+  _itemData: {fileID: 11400000, guid: cba5c2651806d62468e1119e37753e1f, type: 2}
+  _offset: {x: 0, y: 34}
 --- !u!1 &4786227112132725478
 GameObject:
   m_ObjectHideFlags: 0

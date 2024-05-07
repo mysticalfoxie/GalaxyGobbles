@@ -1,69 +1,74 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
     private readonly List<Item> _items = new();
-    private Image[] _renderers;
+    private GameObject[] _positions;
     
     public void Awake()
     {
-        _renderers = this
-            .GetChildren()
-            .Select(x => x.GetComponent<Image>())
-            .Where(x => x is not null)
-            .ToArray();
+        _positions = this.GetChildren().ToArray();
     }
-
-
+    
     public void Add(Item item)
     {
-        if (IsFull()) return;
+        TryAdd(item);
+    }
+    
+    public bool TryAdd(Item item)
+    {
+        if (TryCraftSomethingWith(item)) return false;
+        if (!item.Data.Deliverable) return false;
+        if (IsFull()) return false;
         
         _items.Add(item);
         RefreshView();
+        return true;
     }
 
-    public bool HasItem(Item item) => _items.Any(x => x == item);
-    
-    public bool HasItem(ItemData item) => _items.Any(x => x.Data == item);
+    public bool IsFull() => _items.Count >= _positions.Length;
 
-    public bool IsFull() => _items.Count >= _renderers.Length;
-
-    public void Remove(Item item)
+    private bool TryCraftSomethingWith(Item item)
     {
+        var recipe = _items.GetCraftableRecipesWith(item).FirstOrDefault(x => x.IsMatch);
+        if (!recipe.IsMatch) return false;
+        var newItem = recipe.Fulfill();
+        Replace(recipe.ItemA, newItem);
+        return true;
+    }
+
+    private void Replace(Item oldItem, Item newItem)
+    {
+        var index = _items.IndexOf(oldItem);
+        _items[index] = newItem;
+    }
+
+    public void Remove(Item item, bool removeWithoutDestroy = false)
+    {
+        if (removeWithoutDestroy) 
+            item.Dispose();
+        
         _items.Remove(item);
         RefreshView();
     }
 
     public void RefreshView()
     {
-        foreach (var spriteRenderer in _renderers)
-            spriteRenderer.sprite = null;
-
-        for (var i = 0; i < _renderers.Length; i++)
-            _renderers[i].sprite = i < _items.Count ? _items[i].Data.Sprite : null;
+        for (var index = 0; index < _items.Count; index++)
+        {
+            var item = _items[index];
+            item.AlignTo(_positions[index].gameObject);
+        }
     }
 
     public void Reset()
     {
+        foreach (var item in _items)
+            item.Dispose();
+        
         _items.Clear();
-        RefreshView();
-    }
-
-    public Item GetItemOfType(ItemData data)
-    {
-        return _items.FirstOrDefault(x => x.Data == data);
-    }
-
-    public void Create(ItemData itemData)
-    {
-        if (IsFull()) return;
-
-        var item = Item.Create(itemData);
-        _items.Add(item);
         RefreshView();
     }
 }

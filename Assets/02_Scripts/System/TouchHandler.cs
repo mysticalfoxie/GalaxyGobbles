@@ -6,22 +6,10 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
     private GameObject _touchStartGameObject;
     private GameObject _touchEndGameObject;
     private GameObject _touchedGameObject;
-    private Camera _camera;
     
     private GameObject TouchedGameObject { get; set; }
-    
-    [Header("Touch Detection System")]
-    [SerializeField]
-    [Range(1, 100)]
-    private float _raycastMaxRange = 20.0F;
 
     public event EventHandler Touch;
-
-    public override void Awake()
-    {
-        base.Awake();
-        _camera = Camera.main;
-    }
     
     public void Update()
     {
@@ -32,11 +20,12 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         CheckTouchState();
         ClearUpDownStateCache();
     }
-
+    
     private void UpdateStatesAndCallEvents()
     {
         if (TouchedGameObject is null) return;
-
+        if (!TouchedGameObject.IsAssigned(() => TouchedGameObject = null)) return;
+        
         var touched = TouchedGameObject;
         Touch?.Invoke(touched, EventArgs.Empty);
         var touchables = touched.GetComponents<TouchableMonoBehaviour>();
@@ -78,30 +67,19 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         if (!TouchInputSystem.Instance.IsFingerDown) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
-        _touchStartGameObject = RaycastGameObject(position);
+        Raycaster.Instance.Raycast(position, out _touchStartGameObject);
+        _touchStartGameObject.IsAssigned(() => _touchStartGameObject = null);
     }
 
     private void HandleTouchInputUp()
     {
         if (_touchStartGameObject is null) return;
+        if (TouchInputSystem.Instance is null) return;
         if (!TouchInputSystem.Instance.IsFingerUp) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
-        
-        _touchEndGameObject = RaycastGameObject(position);
-    }
-    
-    
-    public GameObject RaycastGameObject(Vector2 touchPosition)
-    {
-        if (_camera is null) return null;
-        
-        var ray = _camera.ScreenPointToRay(touchPosition);
-        Physics.Raycast(ray, out var raycast, _raycastMaxRange);
-        
-        if (raycast.transform is null) return null;
-        if (raycast.collider is null) return null;
 
-        return raycast.collider.gameObject;
+        Raycaster.Instance.Raycast(position, out _touchEndGameObject);
+        _touchStartGameObject.IsAssigned(() => _touchEndGameObject = null);
     }
 }

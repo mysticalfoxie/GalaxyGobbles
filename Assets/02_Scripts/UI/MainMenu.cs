@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -39,8 +40,7 @@ public class MainMenu : MonoBehaviour
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
-    public static MainMenu Instance { get; private set; } 
-
+    public static MainMenu Instance { get; private set; }
 
     public void Awake()
     {
@@ -160,10 +160,30 @@ public class MainMenu : MonoBehaviour
 
     public void CompleteDay()
     {
+        var starsAcquired = Progressbar.Progress;
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
-        // _completeDayText.text = "You Completed Day "+(LevelManager.CurrentLevelIndex+1).ToString();
-        // threw errors and I don't know which prefab you want to insert in the field :/
+        Debug.Log	($"Given Stars from Progressbar: {Progressbar.Progress}");
+        Debug.Log	($"Gain Stars from Progressbar: {starsAcquired}");
+        
+        if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex)) 
+            PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
+        
+        if (starsAcquired >= 1)
+        {
+            if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
+                LevelButton.UnlockedLevels++;
+            
+            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+            
+            _completeDayText.text = $"You Completed Day {LevelManager.CurrentLevelIndex + 1} and Acquired {starsAcquired} Stars!";
+        }
+        else
+        {
+            _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
+        }
+
+
     }
 
     public void BackAndSave()

@@ -4,10 +4,9 @@ public class NoodlePotDistributor : SingletonMonoBehaviour<NoodlePotDistributor>
 {
     public static void AddNoodles()
     {
-        var slot = References.Instance.NoodlePots.FirstOrDefault(x => x.Noodles is null);
+        var slot = References.Instance.NoodlePots.FirstOrDefault(x => x.State == NoodlePotState.Empty);
         if (slot is null) return;
 
-        var noodles = Noodles.Create();
-        slot.SetNoodles(noodles);
+        slot.StartCooking();
     }
 }
