@@ -83,6 +83,8 @@ public class ItemRenderer : TouchableMonoBehaviour
         rendererComponent.rectTransform.sizeDelta = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
         rendererComponent.rectTransform.transform.localPosition = sprite.Offset;
         rendererComponent.rectTransform.transform.localScale = Vector2.one;
+        rendererComponent.rectTransform.transform.localScale = Vector2.one;
+        rendererComponent.rectTransform.transform.localRotation = Quaternion.Euler(0F, 0F, sprite.Rotation);
         _renderers.Add(rendererGameObject, rendererComponent);
     }
 

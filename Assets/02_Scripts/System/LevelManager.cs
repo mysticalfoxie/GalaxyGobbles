@@ -13,14 +13,30 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     
     public bool Loading { get; private set; }
 
-    public void LoadLevel(int index)
+    public override void Awake()
+    {
+        base.Awake();
+        InitializeLevelForDebug();
+    }
+
+    private void InitializeLevelForDebug()
+    {
+        // For debugging sessions starting from the Main Level
+        if (!enabled) return;
+        if (SceneManager.GetActiveScene().buildIndex != MAIN_LEVEL_INDEX) return;
+        
+        LoadLevel(MAIN_LEVEL_INDEX, true);
+    }
+
+    public void LoadLevel(int index, bool skipSceneLoad = false)
     {
         CurrentLevelIndex = index;
         CurrentLevel = GameSettings.Data.Levels
             .OrderBy(x => x.Number)
             .ElementAt(index);
-        
+         
         MainMenu.Instance.SetElementsForStart();
+        if (skipSceneLoad) return;
         StartCoroutine(nameof(LoadScene));
     }
 

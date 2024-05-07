@@ -30,7 +30,7 @@ public class LevelSelector : MonoBehaviour
             
             var buttonScript = lvlBtn.GetRequiredComponent<LevelButton>();
             buttonScript.LevelIndex = i;
-            buttonScript.Clicked += LevelManager.Instance.LoadLevel; 
+            buttonScript.Clicked += index => LevelManager.Instance.LoadLevel(index); 
             
             _buttons.Add(lvlBtn);
         }
