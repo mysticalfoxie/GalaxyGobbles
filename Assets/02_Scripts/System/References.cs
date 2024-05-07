@@ -19,10 +19,16 @@ public class References : SingletonMonoBehaviour<References>
         base.Awake();
         
         var scene = SceneManager.GetActiveScene();
-        var root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
-        AnalyseLevelObjects(root);
+        HandleLevelData(scene);
 
         Items = new ItemReferences();
+    }
+
+    private void HandleLevelData(Scene scene)
+    {
+        if (scene.buildIndex != LevelManager.MAIN_LEVEL_INDEX) return;
+        var root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
+        AnalyseLevelObjects(root);
     }
 
     public GameSettings GetLocalSettings() => _settings;

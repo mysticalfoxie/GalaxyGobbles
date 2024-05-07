@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,7 +62,7 @@ public class ItemRenderer : TouchableMonoBehaviour
         var rendererGameObject = Instantiate(GameSettings.Data.PRE_SpriteRenderer);
         var rendererComponent = rendererGameObject.GetRequiredComponent<Image>();
         rendererComponent.transform.SetParent(gameObject.transform);
-        rendererComponent.sprite = sprite.Sprite; 
+        rendererComponent.sprite = sprite.Sprite;
         rendererComponent.rectTransform.sizeDelta = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
         rendererComponent.rectTransform.transform.localPosition = sprite.Offset;
         rendererComponent.rectTransform.transform.localScale = Vector2.one;

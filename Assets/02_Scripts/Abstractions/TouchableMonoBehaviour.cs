@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
 
-// TODO: Refactor to be part of the selection handler
-// Required so we recognize clicks in the void -> deselection
 public class TouchableMonoBehaviour : MonoBehaviour
 {
     private bool _touching;
@@ -13,10 +11,6 @@ public class TouchableMonoBehaviour : MonoBehaviour
 
     public virtual void Awake()
     {
-        var hitbox = GetComponent<Collider>();
-        if (hitbox is null)
-            throw new Exception($"The GameObject {gameObject.name} should be touchable but is missing a collider!");
-
         Touch += (_, _) => OnTouch();
     }
 
