@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -40,8 +41,6 @@ public class MainMenu : MonoBehaviour
     private bool _pausedGame;
     private bool _blockPauseMenu;
     public static MainMenu Instance { get; private set; }
-    public int StarsAcquired { get; set; }
-
 
     public void Awake()
     {
@@ -159,22 +158,25 @@ public class MainMenu : MonoBehaviour
 #endif
     }
 
-    public void CompleteDay(int starsAcquired)
+    public void CompleteDay()
     {
+        var starsAcquired = Progressbar.Progress;
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
+        Debug.Log	($"Given Stars from Progressbar: {Progressbar.Progress}");
+        Debug.Log	($"Gain Stars from Progressbar: {starsAcquired}");
         
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex)) 
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
-
-        if (LevelManager.CurrentLevelIndex != LevelSelector.UnlockedLevels) 
-            return;
         
         if (starsAcquired >= 1)
         {
-            LevelSelector.UnlockedLevels++;
+            if(LevelSelector.UnlockedLevels == LevelManager.CurrentLevelIndex)
+                LevelSelector.UnlockedLevels++;
+            
             PlayerPrefs.SetInt("UnlockedLevels", LevelSelector.UnlockedLevels);
-            _completeDayText.text = "You Completed Day " + (LevelManager.CurrentLevelIndex + 1);
+            
+            _completeDayText.text = $"You Completed Day {LevelManager.CurrentLevelIndex + 1} and Acquired {starsAcquired} Stars!";
         }
         else
         {
