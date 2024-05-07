@@ -11,7 +11,6 @@ using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
-    public LevelObjects[] LevelObjects;
     public static int UnlockedLevels;
     [SerializeField] private GameObject _levelButton;
     [SerializeField] private Sprite _goldenStarSprite;
