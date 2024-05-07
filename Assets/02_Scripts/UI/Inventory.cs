@@ -34,10 +34,17 @@ public class Inventory : MonoBehaviour
     {
         var recipe = _items.GetCraftableRecipesWith(item).FirstOrDefault(x => x.IsMatch);
         if (!recipe.IsMatch) return false;
-        recipe.Fulfill();
+        var newItem = recipe.Fulfill();
+        Replace(recipe.ItemA, newItem);
         return true;
-    } 
-        
+    }
+
+    private void Replace(Item oldItem, Item newItem)
+    {
+        var index = _items.IndexOf(oldItem);
+        _items[index] = newItem;
+    }
+
     public void Remove(Item item, bool removeWithoutDestroy = false)
     {
         if (removeWithoutDestroy) 

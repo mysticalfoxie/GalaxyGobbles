@@ -20,7 +20,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         CheckTouchState();
         ClearUpDownStateCache();
     }
-
+    
     private void UpdateStatesAndCallEvents()
     {
         if (TouchedGameObject is null) return;

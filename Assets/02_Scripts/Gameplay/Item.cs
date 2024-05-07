@@ -43,7 +43,7 @@ public class Item : IDisposable
     {
         AlignedTo = value;
         AlignmentOffset = offset;
-        if (_renderer is null) return;
+        if (_renderer.IsDestroyed()) return;
         _renderer.AlignTo(value, offset);
     }
     
@@ -52,7 +52,7 @@ public class Item : IDisposable
     {
         Following = value;
         FollowOffset = offset;
-        if (_renderer is null) return;
+        if (_renderer.IsDestroyed()) return;
         _renderer.Follow(value, offset);
     }
 
@@ -69,9 +69,9 @@ public class Item : IDisposable
         return itemRenderer;
     }
 
-    public Item Clone(bool hideOnCreation = false)
+    public Item Clone(bool showOnCreation = false)
     {
-        return new Item(Data.Clone(), hideOnCreation);
+        return new Item(Data.Clone(), showOnCreation);
     }
 
     public void Dispose()

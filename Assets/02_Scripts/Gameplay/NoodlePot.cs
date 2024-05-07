@@ -37,12 +37,13 @@ public class NoodlePot : TouchableMonoBehaviour
     private void OnCookedNoodlesTouched()
     {
         UpdateState(NoodlePotState.Empty);
-        var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_07_Noodles), true);
-        Sidebar.Instance.Inventory.Add(item);
+        var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_07_Noodles));
+        if (Sidebar.Instance.Inventory.TryAdd(item)) item.Show();
     }
 
     private void OnOvercookedNoodlesTouched()
     {
+        if (State != NoodlePotState.Overcooked) return;
         UpdateState(NoodlePotState.Cleaning);
         StartCoroutine(nameof(OnCleaningStart));
     }
@@ -58,10 +59,9 @@ public class NoodlePot : TouchableMonoBehaviour
 
     private IEnumerator OnCleaningStart()
     {
-        UpdateState(NoodlePotState.Cooking);
         var cleaningTime = GameSettings.Data.PotCleaningTime;
         yield return new WaitForSeconds(cleaningTime);
-        UpdateState(NoodlePotState.Cooked); 
+        UpdateState(NoodlePotState.Empty); 
     }
 
     private IEnumerator OnCookingStart()

@@ -15,6 +15,8 @@ public class ItemRenderer : TouchableMonoBehaviour
     private Item _item;
 
     public bool Destroyed { get; private set; }
+
+    public event EventHandler OnDestroyed; 
     
     public Item Item
     {
@@ -134,6 +136,7 @@ public class ItemRenderer : TouchableMonoBehaviour
     {
         if (Destroyed) return;
         Destroyed = true;
+        OnDestroyed?.Invoke(this, EventArgs.Empty);
         Destroy(gameObject);
     }
 }

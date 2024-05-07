@@ -1,9 +1,19 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Overlay : SingletonMonoBehaviour<Overlay>
 {
+    private readonly List<ItemRenderer> _renderers = new();
+    
+    public override void Awake()
+    {
+        base.Awake();
+
+        InheritedDDoL = true;
+    }
+
     public ItemRenderer CreateItemRenderer(Item item)
     {
         var instance = Instantiate(GameSettings.Data.PRE_Item);
@@ -12,6 +22,21 @@ public class Overlay : SingletonMonoBehaviour<Overlay>
         instance.transform.localPosition = Vector3.zero;
         instance.transform.localScale = Vector3.one;
         itemRenderer.Item = item;
+        _renderers.Add(itemRenderer);
+        itemRenderer.OnDestroyed += (_, _) 
+            => _renderers.Remove(itemRenderer);
+        
         return itemRenderer;
+    }
+
+    protected override void OnSceneChange(Scene scene)
+    {
+        var itemRenderers = _renderers.Where(x => !x.IsDestroyed()).ToArray();
+        foreach (var itemRenderer in itemRenderers)
+        {
+            itemRenderer.gameObject.SetActive(false);
+            itemRenderer.enabled = false;
+            itemRenderer.Destroy();
+        }
     }
 }

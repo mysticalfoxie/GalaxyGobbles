@@ -20,8 +20,8 @@ public class ItemProvider : TouchableMonoBehaviour
     
     protected override void OnTouch()
     {
-        var newItem = _item.Clone(true);
-        if (!Sidebar.Instance.Inventory.TryAdd(newItem)) return;
-        newItem.Dispose();
+        var newItem = _item.Clone();
+        if (!Sidebar.Instance.Inventory.TryAdd(newItem))
+            newItem.Dispose();
     }
 }

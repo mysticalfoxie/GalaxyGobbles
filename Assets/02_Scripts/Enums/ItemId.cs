@@ -10,4 +10,5 @@ public enum ItemId
     ID_06_Coffee,
     ID_07_Noodles,
     ID_08_Noodles_Red,
+    ID_09_Red_Ingredient
 }

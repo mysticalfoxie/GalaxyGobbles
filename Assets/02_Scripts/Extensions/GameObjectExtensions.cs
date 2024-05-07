@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class GameObjectExtensions
@@ -38,6 +39,7 @@ public static class GameObjectExtensions
     public static bool IsAssigned(this GameObject gameObject)
     {
         if (gameObject is null) return false;
+        if (gameObject.IsDestroyed()) return false;
         
         try
         {
@@ -60,5 +62,12 @@ public static class GameObjectExtensions
         var assigned = gameObject.IsAssigned();
         if (!assigned) actionsWhenNotAssigned();
         return assigned;
+    }
+
+    public static bool IsDestroyed(this MonoBehaviour behaviour)
+    {
+        if (behaviour is null) return true;
+        if (!behaviour.gameObject.IsAssigned()) return true;
+        return !behaviour.isActiveAndEnabled;
     }
 }
