@@ -11,7 +11,7 @@ public class Item : IDisposable
         Data = data;
         if (renderItemOnCreation) Show();
         else Hidden = true;
-        _initialized = true;
+        _initialized = true; 
     }
 
     public ItemData Data { get; }
@@ -45,9 +45,6 @@ public class Item : IDisposable
         AlignmentOffset = offset;
         if (_renderer is null) return;
         _renderer.AlignTo(value, offset);
-
-        var audio = new AudioSource();
-        audio.Play();
     }
     
     public void Follow(MonoBehaviour value, Vector2 offset = default) => Follow(value.gameObject, offset);

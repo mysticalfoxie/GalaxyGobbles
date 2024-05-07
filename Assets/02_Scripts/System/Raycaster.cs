@@ -38,7 +38,7 @@ public class Raycaster : SingletonMonoBehaviour<Raycaster>
         Physics.Raycast(ray, out var raycast, _raycastMaxRange);
 
         if (TryRaycastItems(vector2, out var item))
-        {
+        { 
             hit = item;
             return vector2;
         }
@@ -59,6 +59,12 @@ public class Raycaster : SingletonMonoBehaviour<Raycaster>
             .GroupBy(x => x.gameObject.transform.parent)
             .FirstOrDefault(x => x.Key.CompareTag("Item"))?
             .Key.gameObject;
+
+        if (item is not null) 
+            return item;
+        
+        var match = results.FirstOrDefault(x => x.gameObject.CompareTag("Item")).gameObject;
+        if (match is not null) item = match.gameObject;
         
         return item is not null;
     }
