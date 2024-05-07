@@ -27,11 +27,7 @@ public class Overlay : SingletonMonoBehaviour<Overlay>
         instance.transform.localPosition = Vector3.zero;
         instance.transform.localScale = Vector3.one;
         itemRenderer.Item = item;
-        item.Destroyed += (_, _) =>
-        {
-            Destroy(instance);
-            DestroyItemRenderer(itemRenderer);
-        };
+        item.Destroyed += (_, _) => DestroyItemRenderer(itemRenderer);
         
         _items.Add(itemRenderer);
         return itemRenderer;

@@ -49,10 +49,10 @@ public class ItemRenderer : TouchableMonoBehaviour
     
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
-        var offset3d = new Vector3(offset.x, offset.y, 0);
-        var position = value.gameObject.transform.position;
-        var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
-        gameObject.transform.position = screen + offset3d;
+        if (value.layer == LayerMask.NameToLayer("UI"))
+            AlignToUIObject(value, offset);
+        else
+            AlignTo3DObject(value, offset);
     }
 
     public void Follow(GameObject value, Vector2 offset = default)
@@ -67,6 +67,8 @@ public class ItemRenderer : TouchableMonoBehaviour
         _followOffset = default;
     }
 
+    
+    
     protected override void OnTouch()
     {
         Click?.Invoke(this, EventArgs.Empty);
@@ -89,6 +91,21 @@ public class ItemRenderer : TouchableMonoBehaviour
         var (rendererGameObject, _) = _renderers.First(x => x.Value.sprite == sprite.Sprite);
         _renderers.Remove(rendererGameObject);
         Destroy(rendererGameObject);
+    }
+
+    private void AlignToUIObject(GameObject value, Vector2 offset = default)
+    {
+        var offset3d = new Vector3(offset.x, offset.y, 0);
+        var position = value.transform.position;
+        gameObject.transform.position = position + offset3d;
+    }
+
+    private void AlignTo3DObject(GameObject value, Vector2 offset = default)
+    {
+        var offset3d = new Vector3(offset.x, offset.y, 0);
+        var position = value.gameObject.transform.position;
+        var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
+        gameObject.transform.position = screen + offset3d;
     }
 
     private void DetectChanges(SpriteData[] newSprites, out SpriteData[] removed, out SpriteData[] added)
