@@ -6,15 +6,11 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     private readonly List<Item> _items = new();
-    private Image[] _renderers;
+    private GameObject[] _positions;
     
     public void Awake()
     {
-        _renderers = this
-            .GetChildren()
-            .Select(x => x.GetComponent<Image>())
-            .Where(x => x is not null)
-            .ToArray();
+        _positions = this.GetChildren().ToArray();
     }
 
 
@@ -26,46 +22,33 @@ public class Inventory : MonoBehaviour
         RefreshView();
     }
 
-    public bool HasItem(Item item) => _items.Any(x => x == item);
+    public bool IsFull() => _items.Count >= _positions.Length;
 
-    public bool HasItem(ItemData item) => false; // _items.Any(x => x.Data == item);
-
-    public bool IsFull() => _items.Count >= _renderers.Length;
-
-    public void Remove(Item item)
+    public void Remove(Item item, bool removeWithoutDestroy = false)
     {
+        if (removeWithoutDestroy) 
+            item.Destroy();
+        
         _items.Remove(item);
         RefreshView();
     }
 
     public void RefreshView()
     {
-        foreach (var spriteRenderer in _renderers)
-            spriteRenderer.sprite = null;
-
-        for (var i = 0; i < _renderers.Length; i++)
-            _renderers[i].sprite = i < _items.Count ? null : null; // _items[i].Data.Sprite : null;
+        for (var index = 0; index < _items.Count; index++)
+        {
+            var item = _items[index];
+            item.AlignTo(_positions[index].gameObject);
+        }
     }
 
     public void Reset()
     {
+        foreach (var item in _items)
+            item.Destroy();
+        
         _items.Clear();
         RefreshView();
-    }
-
-    public Item GetItemOfType(ItemData data)
-    {
-        return null; // TODO: GetItemOfType
-                     // _items.FirstOrDefault(x => x.Data == data);
-    }
-
-    public void Create(ItemData itemData)
-    {
-        if (IsFull()) return;
-
-        // var item = Item.Create(itemData);
-        // _items.Add(item);
-        // RefreshView();
     }
 }
 

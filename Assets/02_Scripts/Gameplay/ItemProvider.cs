@@ -16,6 +16,7 @@ public class ItemProvider : TouchableMonoBehaviour
     
     protected override void OnTouch()
     {
-        Sidebar.Instance.Inventory.Create(ItemData);
+        // TODO:
+        // Sidebar.Instance.Inventory.Create(ItemData);
     }
 }

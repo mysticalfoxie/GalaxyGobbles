@@ -21,7 +21,8 @@ public class ItemRenderer : TouchableMonoBehaviour
     }
 
     public bool Disabled { get; private set; }
-    
+    public event EventHandler Click;
+
     public override void Awake()
     {
         base.Awake();
@@ -30,26 +31,28 @@ public class ItemRenderer : TouchableMonoBehaviour
 
     public void Update()
     {
-        if (_follow.IsAssigned()) 
+        if (_follow.IsAssigned(() => _follow = null)) 
             AlignTo(_follow, _followOffset);
     }
 
     public void Disable()
     {
         Disabled = true;
+        gameObject.SetActive(!Disabled);
     }
 
     public void Enable()
     {
         Disabled = false;
+        gameObject.SetActive(!Disabled);
     }
     
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
         var offset3d = new Vector3(offset.x, offset.y, 0);
-        var position = value.gameObject.transform.position + offset3d;
-        var screen = DimensionHelper.Instance.Camera.WorldToScreenPoint(position);
-        gameObject.transform.position = screen;
+        var position = value.gameObject.transform.position;
+        var screen = LevelManager.Instance.Camera.WorldToScreenPoint(position);
+        gameObject.transform.position = screen + offset3d;
     }
 
     public void Follow(GameObject value, Vector2 offset = default)
@@ -63,7 +66,12 @@ public class ItemRenderer : TouchableMonoBehaviour
         _follow = null;
         _followOffset = default;
     }
-    
+
+    protected override void OnTouch()
+    {
+        Click?.Invoke(this, EventArgs.Empty);
+    }
+
     protected void AddSprite(SpriteData sprite)
     {
         var rendererGameObject = Instantiate(GameSettings.Data.PRE_SpriteRenderer);
@@ -72,7 +80,7 @@ public class ItemRenderer : TouchableMonoBehaviour
         rendererComponent.sprite = sprite.Sprite; 
         rendererComponent.rectTransform.sizeDelta = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
         rendererComponent.rectTransform.transform.localPosition = sprite.Offset;
-        rendererComponent.rectTransform.transform.localScale = Vector2.one; 
+        rendererComponent.rectTransform.transform.localScale = Vector2.one;
         _renderers.Add(rendererGameObject, rendererComponent);
     }
 
