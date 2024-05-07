@@ -6,7 +6,8 @@ public class LevelButton : MonoBehaviour
 {
     [SerializeField] GameObject[] _starsObjects;
     [SerializeField] private Sprite _goldenStarSprite;
-
+    
+    public static int UnlockedLevels;
     public int LevelIndex { get; set; }
     public event Action<int> Clicked;
 

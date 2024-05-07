@@ -171,10 +171,10 @@ public class MainMenu : MonoBehaviour
         
         if (starsAcquired >= 1)
         {
-            if(LevelSelector.UnlockedLevels == LevelManager.CurrentLevelIndex)
-                LevelSelector.UnlockedLevels++;
+            if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
+                LevelButton.UnlockedLevels++;
             
-            PlayerPrefs.SetInt("UnlockedLevels", LevelSelector.UnlockedLevels);
+            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
             
             _completeDayText.text = $"You Completed Day {LevelManager.CurrentLevelIndex + 1} and Acquired {starsAcquired} Stars!";
         }

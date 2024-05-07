@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LevelSelector : MonoBehaviour
 {
-    public static int UnlockedLevels;
     [SerializeField] private GameObject _levelButtonPrefab;
     [SerializeField] private GameObject _parentLevelButton;
 
