@@ -1,55 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Mono.Cecil;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
     public static int UnlockedLevels;
-    [SerializeField] private GameObject _levelButton;
-    [SerializeField] private Sprite _goldenStarSprite;
+    [SerializeField] private GameObject _levelButtonPrefab;
+    [SerializeField] private GameObject _parentLevelButton;
 
-    [SerializeField] private GameObject _parentLvlBtn;
-    private List<GameObject> _buttons = new List<GameObject>();
-
-    void Awake()
+    private void Awake()
     {
         var levels = GameSettings.Data.Levels.ToArray();
-        for (int i = 0; i < levels.Length; i++)
+        for (var i = 0; i < levels.Length; i++)
         {
-            var lvlBtn = Instantiate(_levelButton);
-            lvlBtn.transform!.SetParent(_parentLvlBtn.transform);
-            var lvlNum = lvlBtn.GetComponentInChildren<TMP_Text>();
-            lvlNum.text = (i + 1).ToString();
-            
-            var buttonScript = lvlBtn.GetRequiredComponent<LevelButton>();
+            var levelButton = Instantiate(_levelButtonPrefab);
+            levelButton.transform!.SetParent(_parentLevelButton.transform);
+            var levelNumber = levelButton.GetComponentInChildren<TMP_Text>();
+            levelNumber.text = (i + 1).ToString();
+            var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
             buttonScript.LevelIndex = i;
-            buttonScript.Clicked += index => LevelManager.Instance.LoadLevel(index); 
-            
-            _buttons.Add(lvlBtn);
+            buttonScript.Clicked += index => LevelManager.Instance.LoadLevel(index);
+            buttonScript.AddStars();
         }
     }
-    void Start()
-    {
-        UnlockedLevels = PlayerPrefs.GetInt("UnlockedLevels",0);
-        for (int i = 0; i < _buttons.Count; i++)
-        {
-            if (UnlockedLevels < i) continue;
-            var button = _buttons[i].GetComponent<Button>();
-            button.interactable = true;
-            var stars = PlayerPrefs.GetInt("Stars" + i.ToString(), 0);
-            for (int j = 0; j < stars; j++)
-            {
-                var buttonStars = _levelButton.GetComponentsInChildren<Image>(); 
-                buttonStars[j].sprite = _goldenStarSprite;
-            }
 
-        }
-    }
 }

@@ -6281,10 +6281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f19b739478e3b46ac203797cc7e57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelButton: {fileID: 253076080554381719, guid: eff2d43a4d5725b49bfd60a2b8c848a2,
+  _levelButtonPrefab: {fileID: 253076080554381719, guid: eff2d43a4d5725b49bfd60a2b8c848a2,
     type: 3}
-  _goldenStarSprite: {fileID: 21300000, guid: c45c7f0e80b28884a8245e1fc1bc5c29, type: 3}
-  _parentLvlBtn: {fileID: 7734910233599593678}
+  _parentLevelButton: {fileID: 7734910233599593678}
 --- !u!1 &8077296504482260829
 GameObject:
   m_ObjectHideFlags: 0
@@ -7535,9 +7534,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f19b739478e3b46ac203797cc7e57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelButton: {fileID: 0}
-  _goldenStarSprite: {fileID: 0}
-  _parentLvlBtn: {fileID: 0}
+  _levelButtonPrefab: {fileID: 0}
+  _parentLevelButton: {fileID: 0}
 --- !u!1001 &4220853495465674069
 PrefabInstance:
   m_ObjectHideFlags: 0
