@@ -22,5 +22,4 @@ public class LevelSelector : MonoBehaviour
             buttonScript.AddStars();
         }
     }
-
 }

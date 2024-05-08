@@ -28,12 +28,12 @@ public class Progressbar : MonoBehaviour
 
     private void CheckSliderValue()
     {
-        if (_progressSlider.value >= _starOneReached)
+        if (_progressSlider.value >= _starOneReached && _progressSlider.value < _starTwoReached)
         {
             Progress = 1;
             Debug.Log("You reached Star 1!");
         }
-        else if (_progressSlider.value >= _starTwoReached)
+        else if (_progressSlider.value >= _starTwoReached && _progressSlider.value < _starThreeReached)
         {
             Progress = 2;
             Debug.Log("You reached Star 2!");
