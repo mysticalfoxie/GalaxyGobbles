@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public const int MAIN_MENU_SCENE_INDEX = 0;
+    
 //  [Header("Options")]
 //  [Header("Dropdown")]
     [Header("Menus")] 
@@ -106,7 +108,7 @@ public class MainMenu : MonoBehaviour
         _startMenu.SetActive(true);
         _blockPauseMenu = true;
         _sidebar.SetActive(false);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
     public void Options()
@@ -146,7 +148,7 @@ public class MainMenu : MonoBehaviour
         if (_blockPauseMenu == false) _blockPauseMenu = true;
         if (_sidebar)_sidebar.SetActive(false);
         _levelMap.SetActive(true);
-        SceneManager.LoadScene("0.0_StartScene");
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
