@@ -1,28 +1,32 @@
+using System.Linq;
 using UnityEngine;
 
 public class Table : TouchableMonoBehaviour
 {
-    [Header("Table Properties")]
-    [SerializeField]
-    private Transform _customerPosition;
+    private Chair[] _chairs;
 
     public override void Awake()
     {
         base.Awake();
         
         CancelSelectionOnTouch = false;
+        _chairs = GetComponentsInChildren<Chair>();
+        CanSeat = _chairs.Length > 0;
     }
 
-    public Customer SeatedCustomer { get; private set; }
+    public bool CanSeat { get; private set; }
+    public Customer Customer { get; private set; }
 
-    public void Seat(Customer customer)
+    public void Seat(Customer customer, Chair chair = null)
     {
-        customer.transform.position = _customerPosition.position;
-        SeatedCustomer = customer;
+        chair ??= _chairs.First();
+        var position = chair.transform.position + chair.Offset;
+        customer.transform.position = position;
+        Customer = customer;
     }
 
     public void ClearSeat()
     {
-        SeatedCustomer = null;
+        Customer = null;
     }
 }

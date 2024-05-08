@@ -28,14 +28,13 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
             return;
         }
         
-        slot.Customer = customer;
-        customer.gameObject.transform.position = slot.gameObject.transform.position;
+        slot.SetCustomer(customer);
     }
 
     public void RemoveCustomer(Customer customer)
     {
         var slot = _waitAreas.First(x => x.Customer == customer);
-        slot.Customer = null;
+        slot.RemoveCustomer();
         
         RestockSlots();
     }
@@ -44,10 +43,11 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
     {
         for (var i = 0; i < _waitAreas.Length; i++)
         {
-            _waitAreas[i].Customer ??= GetCustomerFromNextSlot(i);
-            if (_waitAreas[i].Customer is null) continue;
-            _waitAreas[i].Customer.gameObject.transform.position = _waitAreas[i].gameObject.transform.position;
-            _waitAreas[i].Customer.gameObject.SetActive(true);
+            var customer = GetCustomerFromNextSlot(i);
+            if (customer is null)
+                _waitAreas[i].RemoveCustomer();
+            else
+                _waitAreas[i].SetCustomer(customer);
         }
     }
 
@@ -64,7 +64,7 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
 
         var nextSlot = _waitAreas[iterator + 1];
         var customerO = nextSlot.Customer;
-        nextSlot.Customer = null; // TODO: Might kill the reference... Testing
+        nextSlot.RemoveCustomer();
         
         return customerO;
     }

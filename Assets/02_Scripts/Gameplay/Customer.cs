@@ -17,12 +17,13 @@ public class Customer : SelectableMonoBehaviour
 
     private CustomerState _state;
     private CustomerData _data;
-    private MeshRenderer _renderer;
     private Material _materialO;
     private SpriteRenderer _itemRenderer;
     private SpriteRenderer _itemBackgroundRenderer;
     
     public event EventHandler Leave;
+
+    public MeshRenderer Renderer { get; private set; }
 
     public CustomerData Data
     {
@@ -38,7 +39,7 @@ public class Customer : SelectableMonoBehaviour
 
     public override void Awake()
     {
-        _renderer = gameObject.GetComponent<MeshRenderer>();
+        Renderer = gameObject.GetComponent<MeshRenderer>();
         
         var itemRenderer = this.GetChildrenRecursively().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
         _itemRenderer = itemRenderer[0];
@@ -119,13 +120,13 @@ public class Customer : SelectableMonoBehaviour
 
     protected override void OnSelected()
     {
-        _materialO = _renderer.material;
-        _renderer.material = _selectedStateMaterial;
+        _materialO = Renderer.material;
+        Renderer.material = _selectedStateMaterial;
     }
 
     protected override void OnDeselected()
     {
-        _renderer.material = _materialO;
+        Renderer.material = _materialO;
     }
 
     public static Customer Create(CustomerData data)
