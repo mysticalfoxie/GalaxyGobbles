@@ -20,12 +20,6 @@ public class LevelButton : MonoBehaviour
         var button = GetComponent<Button>();
         button.interactable = true;
         UpdateStars	();
-        // var stars = PlayerPrefs.GetInt("Stars" + LevelIndex.ToString(), 0);
-        // for (var j = 0; j < stars; j++)
-        // {
-        //     var starImage = _starsObjects[j].GetComponent<Image>();
-        //     starImage.sprite = _goldenStarSprite;
-        // }
     }
 
     public void UpdateStars()

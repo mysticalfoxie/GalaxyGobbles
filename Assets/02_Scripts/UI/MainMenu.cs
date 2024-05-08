@@ -165,8 +165,6 @@ public class MainMenu : MonoBehaviour
         var starsAcquired = Progressbar.Progress;
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
-        Debug.Log	($"Given Stars from Progressbar: {Progressbar.Progress}");
-        Debug.Log	($"Gain Stars from Progressbar: {starsAcquired}");
         
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex)) 
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
