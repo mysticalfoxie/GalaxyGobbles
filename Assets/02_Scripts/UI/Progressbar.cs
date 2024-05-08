@@ -20,7 +20,13 @@ public class Progressbar : MonoBehaviour
         if (!_progressSlider) _progressSlider = gameObject.GetComponentInChildren<Slider>();
     }
 
-    private void Update()
+    public void ProgressSlider(int sliderValue)
+    {
+        _progressSlider.value++;
+        CheckSliderValue();
+    }
+
+    private void CheckSliderValue()
     {
         if (_progressSlider.value >= _starOneReached)
         {
@@ -37,11 +43,6 @@ public class Progressbar : MonoBehaviour
             Progress = 3;
             Debug.Log("You reached Star 3!");
         }
-    }
-
-    public void ProgressSlider(int sliderValue)
-    {
-        _progressSlider.value++;
     }
 
     public void OnClickFillProgressbar()

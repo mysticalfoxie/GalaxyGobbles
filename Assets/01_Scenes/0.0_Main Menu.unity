@@ -274,10 +274,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 439714675}
+      - m_Target: {fileID: 5541375075635396001}
         m_TargetAssemblyTypeName: Progressbar, Assembly-CSharp
         m_MethodName: ProgressSlider
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -333,7 +333,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 439714674}
-  - component: {fileID: 439714675}
   m_Layer: 5
   m_Name: DEBUG BUTTON
   m_TagString: Untagged
@@ -361,22 +360,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &439714675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439714673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdda0774e37c164ba670e45fce3668e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _progressSlider: {fileID: 0}
-  _starOneReached: 0
-  _starTwoReached: 0
-  _starThreeReached: 0
 --- !u!1 &603888931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,6 +1351,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6300356808072194397}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5541375075635396001 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7970681516642792214, guid: b8d81d98a93ab1a4197cf014ff586ae7,
+    type: 3}
+  m_PrefabInstance: {fileID: 6300356808072194397}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3079584909344103822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbdda0774e37c164ba670e45fce3668e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6300356808072194397
 PrefabInstance:
   m_ObjectHideFlags: 0
