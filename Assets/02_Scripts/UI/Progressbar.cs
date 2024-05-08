@@ -46,12 +46,19 @@ public class Progressbar : MonoBehaviour
 
         if (_progressSlider.value > 99)
         {
-            _allGoalClearedCheckmark.SetActive	(true);
+            _allGoalClearedCheckmark.SetActive(true);
         }
     }
     public void OnClickFillProgressbar()
     {
         _progressSlider.value++;
         Debug.Log($"Set Progressbar to {_progressSlider.value}");
+    }
+
+    public void Reset()
+    {
+        _progressSlider.value = 0;
+        _allGoalClearedCheckmark.SetActive(false);
+        Progress = 0;
     }
 }

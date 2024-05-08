@@ -1,10 +1,12 @@
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
-public class Sidebar : SingletonMonoBehaviour<Sidebar>
+public class Bottombar : SingletonMonoBehaviour<Bottombar>
 {
     public Inventory Inventory { get; private set; }
     public OpenStatus OpenStatus { get; private set; }
     public DaytimeDisplay DaytimeDisplay { get; private set; }
+    public Progressbar Progressbar { get; private set; }
     
     public override void Awake()
     {
@@ -13,6 +15,7 @@ public class Sidebar : SingletonMonoBehaviour<Sidebar>
         Inventory = GetComponentInChildren<Inventory>();
         OpenStatus = GetComponentInChildren<OpenStatus>();
         DaytimeDisplay = GetComponentInChildren<DaytimeDisplay>();
+        Progressbar = this.GetRequiredComponent<Progressbar>();
     }
 
     protected override void OnSceneChange(Scene scene)
@@ -20,5 +23,6 @@ public class Sidebar : SingletonMonoBehaviour<Sidebar>
         Inventory.Reset();
         OpenStatus.Reset();
         DaytimeDisplay.Reset();
+        Progressbar.Reset();
     }
 }

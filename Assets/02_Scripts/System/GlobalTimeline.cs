@@ -42,12 +42,12 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     private void HandleTimerDisplay()
     {
-        Sidebar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
+        Bottombar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
     }
 
     private void HandleStoreClosure()
     {
-        Sidebar.Instance.OpenStatus.UpdateTime((int)SecondsUntilClosure);
+        Bottombar.Instance.OpenStatus.UpdateTime((int)SecondsUntilClosure);
         if (SecondsUntilClosure != 0) return;
         StartCoroutine(nameof(CloseStore));
     }

@@ -19,6 +19,6 @@ public class TrashCan : TouchableMonoBehaviour
 
     protected override void OnTouch()
     {
-        Sidebar.Instance.Inventory.Reset();
+        Bottombar.Instance.Inventory.Reset();
     }
 }
