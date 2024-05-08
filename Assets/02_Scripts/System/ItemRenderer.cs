@@ -23,7 +23,6 @@ public class ItemRenderer : TouchableMonoBehaviour
         set => UpdateItem(value);
     }
 
-    public bool Disabled { get; private set; }
     public event EventHandler Click;
 
     public void Update()
