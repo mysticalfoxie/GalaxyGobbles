@@ -9,6 +9,7 @@ public class ItemRenderer : TouchableMonoBehaviour
 {
     private readonly Dictionary<GameObject, Image> _renderers = new();
     private GameObject _follow;
+    private Vector3 _followPositionO;
     private Vector2 _followOffset;
     private SpriteData[] _sprites;
     private Item _item;
@@ -25,12 +26,27 @@ public class ItemRenderer : TouchableMonoBehaviour
 
     public event EventHandler Click;
 
+    public override void Awake()
+    {
+        base.Awake();
+
+        gameObject.layer = LayerMask.NameToLayer("UI");
+    }
+
     public void Update()
     {
-        if (_follow.IsAssigned(() => _follow = null)) 
-            AlignTo(_follow, _followOffset);
+        FollowGameObject();
     }
-    
+
+    private void FollowGameObject()
+    {
+        if (!_follow.IsAssigned(() => { _follow = null; Destroy(); })) return;
+        if (_followPositionO == _follow.transform.position) return;
+        // Saving performance by only updating the position if really required. + Caching
+        _followPositionO = _follow.transform.position;
+        AlignTo(_follow, _followOffset);
+    }
+
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
         if (value.layer == LayerMask.NameToLayer("UI"))

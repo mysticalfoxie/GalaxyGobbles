@@ -23,6 +23,7 @@ public class Table : TouchableMonoBehaviour
         var position = chair.transform.position + chair.Offset;
         customer.transform.position = position;
         Customer = customer;
+        Customer.Table = this;
     }
 
     public void ClearSeat()

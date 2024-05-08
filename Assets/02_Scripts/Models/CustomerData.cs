@@ -19,10 +19,10 @@ public class CustomerData : ScriptableObject
 
     [Header("Customer Desires")]
     [SerializeField]
-    private ItemData[] _desiredItems;
+    private ItemId[] _desiredItems;
 
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;
-    public IEnumerable<ItemData> DesiredItems => _desiredItems;
+    public IEnumerable<ItemId> DesiredItems => _desiredItems;
 }

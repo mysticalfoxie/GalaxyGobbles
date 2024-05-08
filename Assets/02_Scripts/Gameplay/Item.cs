@@ -38,21 +38,26 @@ public class Item : IDisposable
         Hidden = true;
     }
 
+    public void AlignTo(Item value, Vector2 offset = default) => AlignTo(value._renderer?.gameObject, offset);
     public void AlignTo(MonoBehaviour value, Vector2 offset = default) => AlignTo(value.gameObject, offset);
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
+        if (!value.IsAssigned()) return; 
         AlignedTo = value;
         AlignmentOffset = offset;
         if (_renderer.IsDestroyed()) return;
         _renderer.AlignTo(value, offset);
     }
     
+    public void Follow(Item value, Vector2 offset = default) => Follow(value._renderer?.gameObject, offset);
     public void Follow(MonoBehaviour value, Vector2 offset = default) => Follow(value.gameObject, offset);
     public void Follow(GameObject value, Vector2 offset = default)
     {
+        if (!value.IsAssigned()) return; 
         Following = value;
         FollowOffset = offset;
         if (_renderer.IsDestroyed()) return;
+        _renderer.AlignTo(value, offset);
         _renderer.Follow(value, offset);
     }
 

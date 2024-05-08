@@ -1,9 +1,10 @@
 public abstract class SelectableMonoBehaviour : TouchableMonoBehaviour
 {
     public bool Selected { get; private set; }
-    
-    public virtual void Start()
+
+    public override void Awake()
     {
+        base.Awake();
         SelectionSystem.Instance.Register(this);
     }
 
@@ -13,7 +14,7 @@ public abstract class SelectableMonoBehaviour : TouchableMonoBehaviour
     {
         if (Selected) return;
         Selected = true;
-        OnSelected();        
+        OnSelected();
     }
 
     public void Deselect()

@@ -38,7 +38,7 @@ public class TableDistributor : MonoBehaviour
         if (table.Customer is null) return false;
         if (SelectionSystem.Instance.Selection is not null)
         {
-            SelectionSystem.Instance.Selection.Deselect();
+            SelectionSystem.Instance.Deselect();
             return true;
         }
             

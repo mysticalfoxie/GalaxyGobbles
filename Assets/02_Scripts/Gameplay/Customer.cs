@@ -8,22 +8,28 @@ public class Customer : SelectableMonoBehaviour
 {
     [Header("Assets")]
     [SerializeField] private Material _selectedStateMaterial;
-    [SerializeField] private Sprite _thinkingBackgroundSprite;
-    [SerializeField] private Sprite _thinkingSprite;
-    [SerializeField] private Sprite _waitForCheckoutSprite;
-    [SerializeField] private Sprite _waitForSeatSprite;
-
-    internal List<ItemData> DesiredItems;
-
-    private CustomerState _state;
-    private CustomerData _data;
-    private Material _materialO;
-    private SpriteRenderer _itemRenderer;
-    private SpriteRenderer _itemBackgroundRenderer;
     
+    [Header("Item Positioning")]
+    [SerializeField] private Vector2 _thinkBubbleOffset;
+    [SerializeField] private Vector2 _thinkBubbleItemOffset;
+    [SerializeField] private Vector2 _tableItemLeftOffset;
+    [SerializeField] private Vector2 _tableItemRightOffset;
+    [SerializeField] private Vector2 _tableOffset;
+
+    private CustomerData _data;
+    private CustomerState? _stateO;
+    private Material _materialO;
+    private ItemId[] _desiredItemsIds;
+    private Item[] _desiredItems;
+    private Item _chairItem;
+    private Item _moneyItem;
+    private Item _thinkBubble;
+    private Item _thinkDots;
+    private Item _thinkBubbleTable;
+
     public event EventHandler Leave;
 
-    public MeshRenderer Renderer { get; private set; }
+    public MeshRenderer MeshRenderer { get; private set; }
 
     public CustomerData Data
     {
@@ -31,102 +37,162 @@ public class Customer : SelectableMonoBehaviour
         set => UpdateData(value);
     }
 
-    public CustomerState State
-    {
-        get => _state;
-        set => UpdateStatus(value);
-    }
+    public Table Table { get; set; }
+    public CustomerState State { get; private set; }
 
     public override void Awake()
     {
-        Renderer = gameObject.GetComponent<MeshRenderer>();
-        
-        var itemRenderer = this.GetChildrenRecursively().Select(x => x.GetComponent<SpriteRenderer>()).ToArray();
-        _itemRenderer = itemRenderer[0];
-        _itemBackgroundRenderer = itemRenderer[1];
-
-        State = CustomerState.WaitingForSeat;
         base.Awake();
+        
+        InitializeItems();
+        MeshRenderer = gameObject.GetComponent<MeshRenderer>();
+    }
+
+    public void Start()
+    {
+        SetStatus(CustomerState.WaitingForSeat);
     }
 
     protected override void OnTouch()
     {
-        TryReceiveMeal();
+        if (TryReceiveMeal()) return;
         TryCheckout();
+        // TODO: Play sound uwu if you click them without needing to click them ;p ;p ;p
     }
 
     private void UpdateData(CustomerData data)
     {
         _data = data;
-        DesiredItems = Data.DesiredItems.ToList();
+        _desiredItemsIds = Data.DesiredItems.ToArray();
     }
 
-    private void UpdateStatus(CustomerState state)
+    public bool TryCheckout()
     {
-        _state = state;
-        _itemRenderer.sprite = GetStatusSprite();
-        _itemBackgroundRenderer.sprite = _itemRenderer.sprite is not null ? _thinkingBackgroundSprite : null;
-    }
-
-    private Sprite GetStatusSprite()
-        => _state switch
-        {
-            CustomerState.WaitingForSeat => _waitForSeatSprite,
-            CustomerState.WaitingForMeal => null, //DesiredItems.First().Sprites.First().Sprite,
-            CustomerState.ThinkingAboutMeal => _thinkingSprite,
-            CustomerState.WaitingForCheckout => _waitForCheckoutSprite,
-            _ => null
-        };
-
-    public void TryCheckout()
-    {
-        if (State != CustomerState.WaitingForCheckout) return;
+        if (State != CustomerState.WaitingForCheckout) return false;
         Leave?.Invoke(this, EventArgs.Empty);
         Destroy(gameObject);
+        return true;
     }
 
-    public void TryReceiveMeal()
+    public bool TryReceiveMeal()
     {
-        if (State != CustomerState.WaitingForMeal) return;
-        // TODO: 
-        // if (!Sidebar.Instance.Inventory.HasItem(DesiredItems.First())) return;
-        // var item = Sidebar.Instance.Inventory.GetItemOfType(DesiredItems.First());
-        // Sidebar.Instance.Inventory.Remove(item);
+        if (State != CustomerState.WaitingForMeal) return false;
         StartCoroutine(nameof(StartEating));
+        return true;
     }
 
     public IEnumerator StartEating()
     {
-        State = CustomerState.Eating;
-        _itemRenderer.sprite = null;
-        yield return new WaitForSeconds(5);
-        State = CustomerState.WaitingForCheckout;
+        SetStatus(CustomerState.Eating);
+        yield return new WaitForSeconds(GameSettings.Data.CustomerEatingTime);
+        SetStatus(CustomerState.WaitingForCheckout);
     }
 
     public void OnSeated()
     {
-        State = CustomerState.ThinkingAboutMeal;
+        SetStatus(CustomerState.ThinkingAboutMeal);
         StartCoroutine(nameof(OnThinkingStart));
     }
 
     public IEnumerator OnThinkingStart()
     {
-        yield return new WaitForSeconds(3);
-        //_itemRenderer.sprite = DesiredItems.First().Sprites.First().Sprite; // TODO: Multi-Item-Support
-        State = CustomerState.WaitingForMeal;
+        yield return new WaitForSeconds(GameSettings.Data.CustomerThinkingTime);
+        SetStatus(CustomerState.WaitingForMeal);
+    }
+
+    private void SetStatus(CustomerState state)
+    {
+        State = state;
+        UpdateVisualization();
+        _stateO = State;
+    }
+
+    private void UpdateVisualization()
+    {
+        HandleWaitingForSeat();
+        HandleThinkingAboutMeal();
+        HandleWaitingForMeal();
+    }
+
+    private void HandleWaitingForSeat()
+    {
+        if (State != CustomerState.WaitingForSeat) return;
+        if (_stateO == CustomerState.WaitingForSeat) return;
+        _thinkBubble.Show();
+        _thinkBubble.Follow(this, _thinkBubbleOffset);
+        _chairItem.Show();
+        _chairItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
+    }
+
+    private void HandleThinkingAboutMeal()
+    {
+        if (State != CustomerState.ThinkingAboutMeal) return;
+        if (_stateO == CustomerState.ThinkingAboutMeal) return;
+        _chairItem.Hide();
+        _thinkBubble.Hide();
+        _thinkBubbleTable.Show();
+        _thinkBubbleTable.Follow(Table, _tableOffset);
+        _thinkDots.Show();
+        _thinkDots.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+    }
+
+    private void HandleWaitingForMeal()
+    {
+        if (State != CustomerState.WaitingForMeal) return;
+        if (_stateO == CustomerState.WaitingForMeal) return;
+        _thinkDots.Hide();
+        RenderDesiredItems();
+    }
+
+    private void RenderDesiredItems()
+    {
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (_desiredItemsIds.Length == 0) throw new NotSupportedException("The desired items for a customer are empty.");
+        if (_desiredItemsIds.Length > 2) throw new NotSupportedException("At this point of development the customer cannot render more then 2 Items at once.");
+        if (_desiredItemsIds.Length == 1)
+        {
+            var item = new Item(GameSettings.Data.Items.First(x => x.Id == _desiredItemsIds[0]), true);
+            item.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+            item.ForwardTouchEventsTo(this);
+            _desiredItems = new[] { item };
+            return;
+        }
+
+        var itemL = new Item(GameSettings.Data.Items.First(x => x.Id == _desiredItemsIds[0]), true);
+        var itemR = new Item(GameSettings.Data.Items.First(x => x.Id == _desiredItemsIds[1]), true);
+        _desiredItems = new[] { itemL, itemR };
+        itemL.Follow(_thinkBubbleTable, _tableItemLeftOffset);
+        itemR.Follow(_thinkBubbleTable, _tableItemRightOffset);
+        itemL.ForwardTouchEventsTo(this);
+        itemR.ForwardTouchEventsTo(this);
     }
 
     public override bool IsSelectable() => State == CustomerState.WaitingForSeat;
 
+    private void InitializeItems()
+    {
+        var items = new[]
+        {
+            _chairItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_100_Chair)),
+            _moneyItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_101_Money)),
+            _thinkBubble = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_102_ThinkBubble)),
+            _thinkDots = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_103_ThinkDots)),
+            _thinkBubbleTable = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_104_ThinkBubbleTable)),
+        };
+        
+        foreach (var item in items)
+            item.ForwardTouchEventsTo(this);
+    }
+
     protected override void OnSelected()
     {
-        _materialO = Renderer.material;
-        Renderer.material = _selectedStateMaterial;
+        _materialO = MeshRenderer.material;
+        MeshRenderer.material = _selectedStateMaterial;
     }
 
     protected override void OnDeselected()
     {
-        Renderer.material = _materialO;
+        MeshRenderer.material = _materialO;
     }
 
     public static Customer Create(CustomerData data)

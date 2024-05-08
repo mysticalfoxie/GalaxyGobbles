@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,6 +42,12 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
 
     private void RestockSlots()
     {
+        StartCoroutine(nameof(OnRestockCustomers));
+    }
+
+    private IEnumerator OnRestockCustomers()
+    {
+        yield return new WaitForSeconds(GameSettings.Data.RestockCustomerDelay);
         for (var i = 0; i < _waitAreas.Length; i++)
         {
             var customer = GetCustomerFromNextSlot(i);

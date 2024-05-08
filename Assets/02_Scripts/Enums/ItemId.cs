@@ -10,5 +10,13 @@ public enum ItemId
     ID_06_Coffee,
     ID_07_Noodles,
     ID_08_Noodles_Red,
-    ID_09_Red_Ingredient
+    ID_09_Red_Ingredient,
+    
+    
+    
+    ID_100_Chair,
+    ID_101_Money,
+    ID_102_ThinkBubble,
+    ID_103_ThinkDots,
+    ID_104_ThinkBubbleTable,
 }

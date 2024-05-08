@@ -15,6 +15,9 @@ MonoBehaviour:
   _noodleBoilingTime: 5
   _potCleaningTime: 5
   _noodleOvercookTime: 5
+  _customerThinkingTime: 3
+  _customerEatingTime: 5
+  _restockCustomerDelay: 0.5
   _itemPrefab: {fileID: 3252135566979042909, guid: d3024749853fb9448b22b795707563bf,
     type: 3}
   _customerPrefab: {fileID: 3858524379104844713, guid: 7236d0a812a00394da9c1f861afed8bf,
@@ -27,7 +30,10 @@ MonoBehaviour:
   _species:
   - {fileID: 11400000, guid: 99ddd7ca94694d14f9aabbfc771cc8c2, type: 2}
   _items:
+  - {fileID: 11400000, guid: 1a85ff1968cea314da49289657273cf1, type: 2}
+  - {fileID: 11400000, guid: 546ab3197ec624f4cb990b0d6e411968, type: 2}
   - {fileID: 11400000, guid: 473ac5396ce40ee42a3e708d8a226b03, type: 2}
+  - {fileID: 11400000, guid: 6c6adb3aaf732034fbfbe496238378dd, type: 2}
   - {fileID: 11400000, guid: 92cdbf3d8d2afb44d8193471db9d56aa, type: 2}
   - {fileID: 11400000, guid: a21c84c1bda4f574bb5ea12d96982f16, type: 2}
   - {fileID: 11400000, guid: 340d2b526b6bf87479d5c1b399439062, type: 2}
@@ -35,5 +41,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3a7967854209d6547a6caa3f8890a9ce, type: 2}
   - {fileID: 11400000, guid: c8cd3c1a8fc10fd44bf1a8a35bd042f8, type: 2}
   - {fileID: 11400000, guid: ed3b90dfcfd6feb42a5d34537a29e7f5, type: 2}
+  - {fileID: 11400000, guid: d65111c4c23608144ad627068e03d5b0, type: 2}
+  - {fileID: 11400000, guid: 99004585eb36d2c44affde7b109f67e1, type: 2}
+  - {fileID: 11400000, guid: cba5c2651806d62468e1119e37753e1f, type: 2}
+  - {fileID: 11400000, guid: 55d9d9e9996fc44448dbc0c30819e674, type: 2}
   _recipes:
   - {fileID: 11400000, guid: 00df0418f9e51f5469a9e7a7052614e0, type: 2}
