@@ -440,6 +440,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5508630827087970000}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1075682902 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 516037496746875039, guid: b8d81d98a93ab1a4197cf014ff586ae7,
+    type: 3}
+  m_PrefabInstance: {fileID: 6300356808072194397}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1152201831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,6 +1558,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7970681516642792214, guid: b8d81d98a93ab1a4197cf014ff586ae7,
+        type: 3}
+      propertyPath: _allGoalClearedCheckmark
+      value: 
+      objectReference: {fileID: 1075682902}
     - target: {fileID: 8616829145983213132, guid: b8d81d98a93ab1a4197cf014ff586ae7,
         type: 3}
       propertyPath: m_AnchorMax.y

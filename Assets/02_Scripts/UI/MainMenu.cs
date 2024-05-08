@@ -182,8 +182,6 @@ public class MainMenu : MonoBehaviour
         {
             _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
         }
-
-
     }
 
     public void BackAndSave()

@@ -11,7 +11,7 @@ public class Progressbar : MonoBehaviour
     public static Progressbar Instance { get; set; }
 
     [SerializeField] private Slider _progressSlider;
-    private GameObject _allGoalClearedCheckmark;
+    [SerializeField] GameObject _allGoalClearedCheckmark;
     [SerializeField] TMP_Text _levelIndicator;
     [SerializeField] [Range(0, 100)] private int _starOneReached;
     [SerializeField] [Range(0, 100)] private int _starTwoReached;
