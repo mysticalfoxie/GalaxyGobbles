@@ -40,7 +40,7 @@ public class ItemRenderer : TouchableMonoBehaviour
 
     private void FollowGameObject()
     {
-        if (!_follow.IsAssigned(() => { _follow = null; Destroy(); })) return;
+        if (!_follow.IsAssigned(() => _follow = null)) return;
         if (_followPositionO == _follow.transform.position) return;
         // Saving performance by only updating the position if really required. + Caching
         _followPositionO = _follow.transform.position;

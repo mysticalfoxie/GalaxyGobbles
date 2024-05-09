@@ -21,8 +21,6 @@ public class References : SingletonMonoBehaviour<References>
         
         var scene = SceneManager.GetActiveScene();
         HandleLevelData(scene);
-
-        Items = new ItemReferences();
     }
 
     private void HandleLevelData(Scene scene)
@@ -47,7 +45,7 @@ public class References : SingletonMonoBehaviour<References>
 
     private void AssignLevelObjectsToLists(GameObject levelObject)
     {
-        // Saves a lot performance rather then iterating 3 times over all level objects
+        // Saves a lot of performance rather than iterating 3 times over all level objects
         var table = levelObject.GetComponent<Table>();
         var chair = levelObject.GetComponent<Chair>();
         var waitArea = levelObject.GetComponent<WaitArea>();
@@ -64,6 +62,4 @@ public class References : SingletonMonoBehaviour<References>
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;
     public IEnumerable<NoodlePot> NoodlePots => _noodlePots;
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
-
-    public ItemReferences Items { get; private set; }
 }

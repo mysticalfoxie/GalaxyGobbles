@@ -24,7 +24,7 @@ public class TableDistributor : MonoBehaviour
     private static void HandleTableAssignment(Table table, Chair chair)
     {
         if (SelectionSystem.Instance.Selection is not Customer customer) return;
-        if (customer.State != CustomerState.WaitingForSeat) return;
+        if (customer.StateMachine.State != CustomerState.WaitingForSeat) return;
 
         customer.Leave += OnCustomerLeave;
         WaitAreaHandler.Instance.RemoveCustomer(customer);

@@ -63,7 +63,7 @@ public class Item : IDisposable
 
     public void ForwardTouchEventsTo(TouchableMonoBehaviour touchable)
     {
-        Click += touchable.InvokeTouch;
+        Click += (_, _) => touchable.InvokeTouch(this, EventArgs.Empty);
     }
 
     private ItemRenderer CreateItemRenderer()

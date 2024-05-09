@@ -1,9 +1,13 @@
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Table : TouchableMonoBehaviour
 {
     private Chair[] _chairs;
+
+    [SerializeField] private Orientation _orientation;
+    public Orientation Orientation => _orientation;
 
     public override void Awake()
     {

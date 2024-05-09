@@ -18,5 +18,8 @@ public enum ItemId
     ID_101_Money,
     ID_102_ThinkBubble,
     ID_103_ThinkDots,
-    ID_104_ThinkBubbleTable,
+    ID_104_ThinkBubble_Table,
+    ID_105_ThinkBubble_Table_Multi_Horizontal,
+    ID_106_ThinkBubble_Table_Multi_Vertical,
+    ID_107_Eating,
 }
