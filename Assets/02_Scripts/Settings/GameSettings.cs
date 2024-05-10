@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -82,5 +83,11 @@ public class GameSettings : ScriptableObject
         settings._restockCustomerDelay = 5;
         return settings;
     }
+    #endregion
+    
+    #region Utilities
+
+    public static ItemData GetItemById(ItemId id) => Data.Items.First(x => x.Id == id);
+
     #endregion
 }

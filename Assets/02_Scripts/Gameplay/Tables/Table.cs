@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -28,6 +29,12 @@ public class Table : TouchableMonoBehaviour
         customer.transform.position = position;
         Customer = customer;
         Customer.Table = this;
+    }
+
+    protected override void OnTouch()
+    {
+        if (Customer.IsDestroyed()) return;
+        Customer.InvokeTouch(this, EventArgs.Empty);
     }
 
     public void ClearSeat()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Customer : SelectableMonoBehaviour
@@ -11,10 +12,10 @@ public class Customer : SelectableMonoBehaviour
     private Material _materialO;
 
     public event EventHandler Leave;
-    public event EventHandler DataChange;
 
     public CustomerStateMachine StateMachine { get; private set; }
     public MeshRenderer MeshRenderer { get; private set; }
+    public List<ItemId> DesiredItems { get; } = new();
 
     public CustomerData Data
     {
@@ -43,7 +44,9 @@ public class Customer : SelectableMonoBehaviour
     private void UpdateData(CustomerData data)
     {
         _data = data;
-        DataChange?.Invoke(this, EventArgs.Empty);
+        
+        DesiredItems.Clear();
+        DesiredItems.AddRange(_data.DesiredItems);
     }
 
     public bool TryCheckout()
@@ -58,6 +61,13 @@ public class Customer : SelectableMonoBehaviour
     public bool TryReceiveMeal()
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
+        if (DesiredItems.Count > 1)
+        {
+            DesiredItems.RemoveAt(1);
+            StateMachine.Renderer.RefreshDesiredItems();
+            return true;
+        }
+        
         StartCoroutine(nameof(StartEating));
         return true;
     }
@@ -80,8 +90,7 @@ public class Customer : SelectableMonoBehaviour
         yield return new WaitForSeconds(GameSettings.Data.CustomerThinkingTime);
         StateMachine.State = CustomerState.WaitingForMeal;
     }
-
-
+    
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;
 
     protected override void OnSelected()
