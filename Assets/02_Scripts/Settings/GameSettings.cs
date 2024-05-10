@@ -22,12 +22,16 @@ public class GameSettings : ScriptableObject
     [SerializeField] private GameObject _customerPrefab;
     [SerializeField] private GameObject _spriteRendererPrefab;
 
+    [Header("Music")] 
+    [SerializeField] private AudioData _mainMenuMusic;
+    [SerializeField] private AudioData _inGameMusic;
+
     [Header("Game Data")] 
     [SerializeField] private LevelData[] _levels;
     [SerializeField] private SpeciesData[] _species;
     [SerializeField] private ItemData[] _items;
     [SerializeField] private RecipeData[] _recipes;
-
+    
     #region Properties
     public float NoodleBoilingTime => _noodleBoilingTime;
     public float PotCleaningTime => _potCleaningTime;
@@ -44,6 +48,9 @@ public class GameSettings : ScriptableObject
     public IEnumerable<SpeciesData> Species => _species;
     public IEnumerable<ItemData> Items => _items;
     public IEnumerable<RecipeData> Recipes => _recipes;
+    
+    public AudioData MainMenuMusic => _mainMenuMusic;
+    public AudioData InGameMusic => _inGameMusic;
     #endregion
     
     #region Boilerplate
@@ -88,6 +95,13 @@ public class GameSettings : ScriptableObject
     #region Utilities
 
     public static ItemData GetItemById(ItemId id) => Data.Items.First(x => x.Id == id);
+    public static AudioData GetTrackBySceneIndex(int index) 
+        => index switch
+        {
+            0 => Data.MainMenuMusic,
+            1 => Data.InGameMusic,
+            _ => null
+        };
 
     #endregion
 }

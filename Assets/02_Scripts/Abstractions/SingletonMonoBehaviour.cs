@@ -27,7 +27,9 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
 
         Instance = (T)(object)this;
         
-        SceneManager.sceneUnloaded += OnSceneChange;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.activeSceneChanged += OnSceneChanged;
         
         if (!_dontDestroyOnLoad) return;
 
@@ -43,8 +45,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
         Instance = null;
     }
 
-    protected virtual void OnSceneChange(Scene scene)
-    {
-        
-    }
+    protected virtual void OnSceneChanged(Scene oldScene, Scene newScene) {}
+    protected virtual void OnSceneLoaded(Scene scene, LoadSceneMode mode) {}
+    protected virtual void OnSceneUnloaded(Scene scene) {}
 }

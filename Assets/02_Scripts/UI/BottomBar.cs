@@ -18,7 +18,7 @@ public class BottomBar : SingletonMonoBehaviour<BottomBar>
         Progressbar = this.GetRequiredComponent<Progressbar>();
     }
 
-    protected override void OnSceneChange(Scene scene)
+    protected override void OnSceneUnloaded(Scene scene)
     {
         Inventory.Reset();
         OpenStatus.Reset();
