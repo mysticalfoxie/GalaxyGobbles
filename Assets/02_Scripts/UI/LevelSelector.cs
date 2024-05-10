@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class LevelSelector : MonoBehaviour
             var levelNumber = levelButton.GetComponentInChildren<TMP_Text>();
             levelNumber.text = (i + 1).ToString();
             var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
+            levelButton.GetRequiredComponent<Button>().interactable = true; // unlock all levels for Gate I build.
             buttonScript.LevelIndex = i;
             buttonScript.Clicked += index => LevelManager.Instance.LoadLevel(index);
             buttonScript.AddStars();
