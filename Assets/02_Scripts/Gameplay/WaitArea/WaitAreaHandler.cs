@@ -13,7 +13,7 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
         base.Awake();
         
         _waitAreas = GetComponentsInChildren<WaitArea>()
-            .OrderBy(x => x.Order)
+            .OrderByDescending(x => x.Order)
             .ToArray();
     }
 
@@ -50,10 +50,10 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
         yield return new WaitForSeconds(GameSettings.Data.RestockCustomerDelay);
         for (var i = 0; i < _waitAreas.Length; i++)
         {
+            if (_waitAreas[i].Customer is not null) continue;
+            
             var customer = GetCustomerFromNextSlot(i);
-            if (customer is null)
-                _waitAreas[i].RemoveCustomer();
-            else
+            if (customer is not null)
                 _waitAreas[i].SetCustomer(customer);
         }
     }

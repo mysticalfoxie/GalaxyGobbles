@@ -180,7 +180,12 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
+            // Temporary for Gate I (Always succeed + pass to next level)
+            _completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
+            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+            
+            // Original: _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
         }
     }
 
