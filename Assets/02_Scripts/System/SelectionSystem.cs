@@ -41,6 +41,16 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
             return;
         }
 
+        Select(selectable);
+    }
+
+    public void Deselect()
+    {
+        Selection.Deselect();
+        Selection = null;
+    }
+
+    public void Select(SelectableMonoBehaviour selectable) {
         if (!selectable.IsSelectable()) return;
         if (Selection is not null)
             Selection.Deselect();

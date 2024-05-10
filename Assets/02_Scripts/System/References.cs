@@ -7,6 +7,7 @@ public class References : SingletonMonoBehaviour<References>
 {
     private readonly List<GameObject> _allLevelObjects = new();
     private readonly List<Table> _tables = new();
+    private readonly List<Chair> _chairs = new();
     private readonly List<WaitArea> _waitAreas = new();
     private readonly List<NoodlePot> _noodlePots = new();
     
@@ -20,8 +21,6 @@ public class References : SingletonMonoBehaviour<References>
         
         var scene = SceneManager.GetActiveScene();
         HandleLevelData(scene);
-
-        Items = new ItemReferences();
     }
 
     private void HandleLevelData(Scene scene)
@@ -46,20 +45,21 @@ public class References : SingletonMonoBehaviour<References>
 
     private void AssignLevelObjectsToLists(GameObject levelObject)
     {
-        // Saves a lot performance rather then iterating 3 times over all level objects
+        // Saves a lot of performance rather than iterating 3 times over all level objects
         var table = levelObject.GetComponent<Table>();
+        var chair = levelObject.GetComponent<Chair>();
         var waitArea = levelObject.GetComponent<WaitArea>();
         var pot = levelObject.GetComponent<NoodlePot>();
         
         if (table is not null) _tables.Add(table);
+        if (chair is not null) _chairs.Add(chair);
         if (waitArea is not null) _waitAreas.Add(waitArea);
         if (pot is not null) _noodlePots.Add(pot);
     }
 
     public IEnumerable<Table> Tables => _tables;
+    public IEnumerable<Chair> Chairs => _chairs;
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;
     public IEnumerable<NoodlePot> NoodlePots => _noodlePots;
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
-
-    public ItemReferences Items { get; private set; }
 }

@@ -11,20 +11,12 @@ public abstract class TimelineBase<T> : SingletonMonoBehaviour<T> where T : clas
     protected int Ticks { get; private set; }
     protected bool Active { get; set; }
 
-    public override void Awake()
-    {
-        base.Awake();
-        
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Active = scene.buildIndex == LevelManager.MAIN_LEVEL_INDEX;
     }
 
-    private void OnSceneUnloaded(Scene scene)
+    protected override void OnSceneUnloaded(Scene scene)
     {
         if (scene.buildIndex == LevelManager.MAIN_LEVEL_INDEX)
             Active = false;

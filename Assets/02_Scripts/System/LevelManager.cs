@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
     public const int MAIN_LEVEL_INDEX = 1;
+
+    [Header("Debug Settings")]
+    [Tooltip("The level you want to test, when starting debugging from the main level.")]
+    [Range(0, 20)]
+    [SerializeField] private int _debugLevel;
 
     public LevelManager() : base(true) { }
     
@@ -24,8 +31,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         // For debugging sessions starting from the Main Level
         if (!enabled) return;
         if (SceneManager.GetActiveScene().buildIndex != MAIN_LEVEL_INDEX) return;
-        
-        LoadLevel(MAIN_LEVEL_INDEX, true);
+
+        var debugLevel = Math.Max(Math.Min(_debugLevel, GameSettings.Data.Levels.Count()), 0);
+        LoadLevel(debugLevel, true);
     }
 
     public void LoadLevel(int index, bool skipSceneLoad = false)

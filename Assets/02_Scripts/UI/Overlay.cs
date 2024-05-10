@@ -29,7 +29,7 @@ public class Overlay : SingletonMonoBehaviour<Overlay>
         return itemRenderer;
     }
 
-    protected override void OnSceneChange(Scene scene)
+    protected override void OnSceneUnloaded(Scene scene)
     {
         var itemRenderers = _renderers.Where(x => !x.IsDestroyed()).ToArray();
         foreach (var itemRenderer in itemRenderers)

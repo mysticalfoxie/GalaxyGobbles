@@ -12,11 +12,6 @@ public class Inventory : MonoBehaviour
         _positions = this.GetChildren().ToArray();
     }
     
-    public void Add(Item item)
-    {
-        TryAdd(item);
-    }
-    
     public bool TryAdd(Item item)
     {
         if (TryCraftSomethingWith(item)) return false;
@@ -39,29 +34,15 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    private void Replace(Item oldItem, Item newItem)
+    public bool TryRemove(ItemId itemId, bool destroy = false)
     {
-        var index = _items.IndexOf(oldItem);
-        _items[index] = newItem;
-    }
-
-    public void Remove(Item item, bool removeWithoutDestroy = false)
-    {
-        if (removeWithoutDestroy) 
-            item.Dispose();
-        
+        var item = _items.FirstOrDefault(x => x.Data.Id == itemId);
+        if (item is null) return false;
+        if (destroy) item.Dispose();
         _items.Remove(item);
         RefreshView();
-    }
-
-    public void RefreshView()
-    {
-        for (var index = 0; index < _items.Count; index++)
-        {
-            var item = _items[index];
-            item.AlignTo(_positions[index].gameObject);
-        }
-    }
+        return true;
+    }    
 
     public void Reset()
     {
@@ -70,6 +51,21 @@ public class Inventory : MonoBehaviour
         
         _items.Clear();
         RefreshView();
+    }
+    
+    private void Replace(Item oldItem, Item newItem)
+    {
+        var index = _items.IndexOf(oldItem);
+        _items[index] = newItem;
+    }
+    
+    private void RefreshView()
+    {
+        for (var index = 0; index < _items.Count; index++)
+        {
+            var item = _items[index];
+            item.AlignTo(_positions[index].gameObject);
+        }
     }
 }
 

@@ -18,7 +18,7 @@ public class DaytimeDisplay : MonoBehaviour
         var mm = minutes.ToString().PadLeft(2, '0');
         var ss = seconds.ToString().PadLeft(2, '0');
         var minus = totalSeconds < 0 ? '-' : ' ';
-        _renderer.text = $"{minus}{mm}:{ss}";
+        _renderer.text = $"{minus}{mm}:{ss} ";
     }
 
     public void Reset()

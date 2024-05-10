@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public const int MAIN_MENU_SCENE_INDEX = 0;
+    
 //  [Header("Options")]
 //  [Header("Dropdown")]
     [Header("Menus")] 
@@ -106,7 +108,7 @@ public class MainMenu : MonoBehaviour
         _startMenu.SetActive(true);
         _blockPauseMenu = true;
         _sidebar.SetActive(false);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
     public void Options()
@@ -146,7 +148,7 @@ public class MainMenu : MonoBehaviour
         if (_blockPauseMenu == false) _blockPauseMenu = true;
         if (_sidebar)_sidebar.SetActive(false);
         _levelMap.SetActive(true);
-        SceneManager.LoadScene("0.0_StartScene");
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
@@ -163,8 +165,6 @@ public class MainMenu : MonoBehaviour
         var starsAcquired = Progressbar.Progress;
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
-        Debug.Log	($"Given Stars from Progressbar: {Progressbar.Progress}");
-        Debug.Log	($"Gain Stars from Progressbar: {starsAcquired}");
         
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex)) 
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
@@ -180,10 +180,13 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
+            // Temporary for Gate I (Always succeed + pass to next level)
+            _completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
+            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+            
+            // Original: _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
         }
-
-
     }
 
     public void BackAndSave()

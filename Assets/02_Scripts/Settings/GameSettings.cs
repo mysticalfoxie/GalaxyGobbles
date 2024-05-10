@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 // ReSharper disable InconsistentNaming
 
 public class GameSettings : ScriptableObject
 {
     [Header("General Settings")]
-    [SerializeField] private int _noodleBoilingTime;
-    [SerializeField] private int _potCleaningTime;
-    [SerializeField] private int _noodleOvercookTime;
+    [SerializeField] private float _noodleBoilingTime;
+    [SerializeField] private float _potCleaningTime;
+    [SerializeField] private float _noodleOvercookTime;
+    [SerializeField] private float _customerThinkingTime;
+    [SerializeField] private float _customerEatingTime;
+    [SerializeField] private float _restockCustomerDelay;
     
     [Header("References")]
     [Header("Prefabs")]
@@ -19,16 +22,24 @@ public class GameSettings : ScriptableObject
     [SerializeField] private GameObject _customerPrefab;
     [SerializeField] private GameObject _spriteRendererPrefab;
 
+    [Header("Music")] 
+    [SerializeField] private AudioData _mainMenuMusic;
+    [SerializeField] private AudioData _inGameMusic;
+
     [Header("Game Data")] 
     [SerializeField] private LevelData[] _levels;
     [SerializeField] private SpeciesData[] _species;
     [SerializeField] private ItemData[] _items;
     [SerializeField] private RecipeData[] _recipes;
-
+    
     #region Properties
-    public int NoodleBoilingTime => _noodleBoilingTime;
-    public int PotCleaningTime => _potCleaningTime;
-    public int NoodleOvercookTime => _noodleOvercookTime;
+    public float NoodleBoilingTime => _noodleBoilingTime;
+    public float PotCleaningTime => _potCleaningTime;
+    public float NoodleOvercookTime => _noodleOvercookTime;
+    public float CustomerThinkingTime => _customerThinkingTime;
+    public float CustomerEatingTime => _customerEatingTime;
+    public float RestockCustomerDelay => _restockCustomerDelay;
+    
     public GameObject PRE_Item => _itemPrefab;
     public GameObject PRE_SpriteRenderer => _spriteRendererPrefab;
     public GameObject PRE_Customer => _customerPrefab;
@@ -37,6 +48,9 @@ public class GameSettings : ScriptableObject
     public IEnumerable<SpeciesData> Species => _species;
     public IEnumerable<ItemData> Items => _items;
     public IEnumerable<RecipeData> Recipes => _recipes;
+    
+    public AudioData MainMenuMusic => _mainMenuMusic;
+    public AudioData InGameMusic => _inGameMusic;
     #endregion
     
     #region Boilerplate
@@ -45,7 +59,7 @@ public class GameSettings : ScriptableObject
     private static GameSettings _data;
     public static GameSettings Data => _data ??= GetOrCreateSettings();
 
-    
+
     internal static GameSettings GetOrCreateSettings()
     {
 #if UNITY_EDITOR
@@ -71,7 +85,23 @@ public class GameSettings : ScriptableObject
         settings._noodleBoilingTime = 5;
         settings._potCleaningTime = 5;
         settings._noodleOvercookTime = 5;
+        settings._customerThinkingTime = 5;
+        settings._customerEatingTime = 5;
+        settings._restockCustomerDelay = 5;
         return settings;
     }
+    #endregion
+    
+    #region Utilities
+
+    public static ItemData GetItemById(ItemId id) => Data.Items.First(x => x.Id == id);
+    public static AudioData GetTrackBySceneIndex(int index) 
+        => index switch
+        {
+            0 => Data.MainMenuMusic,
+            1 => Data.InGameMusic,
+            _ => null
+        };
+
     #endregion
 }
