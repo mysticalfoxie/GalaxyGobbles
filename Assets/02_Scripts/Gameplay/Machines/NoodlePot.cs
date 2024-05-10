@@ -38,7 +38,7 @@ public class NoodlePot : TouchableMonoBehaviour
     {
         UpdateState(NoodlePotState.Empty);
         var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_07_Noodles));
-        if (Bottombar.Instance.Inventory.TryAdd(item)) item.Show();
+        if (BottomBar.Instance.Inventory.TryAdd(item)) item.Show();
     }
 
     private void OnOvercookedNoodlesTouched()

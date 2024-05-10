@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
-public class Bottombar : SingletonMonoBehaviour<Bottombar>
+public class BottomBar : SingletonMonoBehaviour<BottomBar>
 {
     public Inventory Inventory { get; private set; }
     public OpenStatus OpenStatus { get; private set; }

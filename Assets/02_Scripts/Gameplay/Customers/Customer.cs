@@ -38,7 +38,6 @@ public class Customer : SelectableMonoBehaviour
     {
         if (TryReceiveMeal()) return;
         TryCheckout();
-        // TODO: Play sound uwu if you click them without needing to click them ;p ;p ;p
     }
 
     private void UpdateData(CustomerData data)
@@ -61,14 +60,14 @@ public class Customer : SelectableMonoBehaviour
     public bool TryReceiveMeal()
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
-        if (DesiredItems.Count > 1)
+        ReceiveItemsFromInventory();
+        if (DesiredItems.Count == 0)
         {
-            DesiredItems.RemoveAt(1);
-            StateMachine.Renderer.RefreshDesiredItems();
+            StartCoroutine(nameof(StartEating));
             return true;
         }
         
-        StartCoroutine(nameof(StartEating));
+        StateMachine.Renderer.RefreshDesiredItems();
         return true;
     }
 
@@ -89,6 +88,13 @@ public class Customer : SelectableMonoBehaviour
     {
         yield return new WaitForSeconds(GameSettings.Data.CustomerThinkingTime);
         StateMachine.State = CustomerState.WaitingForMeal;
+    }
+
+    private void ReceiveItemsFromInventory()
+    {
+        foreach (var item in DesiredItems.ToArray())
+            if (BottomBar.Instance.Inventory.TryRemove(item, true))
+                DesiredItems.Remove(item);
     }
     
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;
