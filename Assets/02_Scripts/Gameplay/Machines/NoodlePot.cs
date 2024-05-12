@@ -36,9 +36,17 @@ public class NoodlePot : TouchableMonoBehaviour
 
     private void OnCookedNoodlesTouched()
     {
-        UpdateState(NoodlePotState.Empty);
+        if (BottomBar.Instance.Inventory.IsFull()) return;
+        
         var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_07_Noodles));
-        if (BottomBar.Instance.Inventory.TryAdd(item)) item.Show();
+        if (!BottomBar.Instance.Inventory.TryAdd(item))
+        {
+            item.Dispose();
+            return;
+        }
+        
+        item.Show();
+        UpdateState(NoodlePotState.Empty);
     }
 
     private void OnOvercookedNoodlesTouched()
