@@ -20,9 +20,15 @@ public class CraftingSystem : SingletonMonoBehaviour<CraftingSystem>
 
     public static Item CraftItem(RecipeData recipe, Item item1, Item item2)
     {
-        if (recipe is null) throw new ArgumentNullException(nameof(recipe));
-        if (recipe.ItemA != item1.Data.Id) throw new NotSupportedException($"{nameof(recipe.ItemA)} does not fulfill the recipe with id {recipe.ItemC}.");
-        if (recipe.ItemB != item2.Data.Id) throw new NotSupportedException($"{nameof(recipe.ItemB)} does not fulfill the recipe with id {recipe.ItemC}.");
+        if (recipe is null) 
+            throw new ArgumentNullException(nameof(recipe));
+        
+        if (recipe.ItemA != item1.Data.Id && recipe.ItemB != item1.Data.Id) 
+            throw new NotSupportedException($"{nameof(recipe.ItemA)} does not exist in the recipe with id {recipe.ItemC}.");
+        
+        if (recipe.ItemB != item2.Data.Id && recipe.ItemA != item2.Data.Id) 
+            throw new NotSupportedException($"{nameof(recipe.ItemB)} does not exist in the recipe with id {recipe.ItemC}.");
+        
         var itemData = GameSettings.Data.Items.First(x => x.Id == recipe.ItemC);
         var item = new Item(itemData, !item1.Hidden);
         if (item1.AlignedTo.IsAssigned()) item.AlignTo(item1.AlignedTo);
