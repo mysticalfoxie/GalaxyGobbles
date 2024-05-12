@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b592865877cb54284a5d1d88aec9cfbb, type: 3}
   m_Name: Simulator Provider Settings - Copy
   m_EditorClassIdentifier: 
-  m_Logging: 1
+  m_Logging: 0
   m_AutomaticPerformanceModeEnabled: 1
+  m_AutomaticGameModeEnabled: 0
   m_EnableBoostOnStartup: 1
-  m_StatsLoggingFrequencyInFrames: 50
+  m_StatsLoggingFrequencyInFrames: -1
   m_IndexerSettings:
     m_Active: 1
     m_ThermalActionDelay: 10
