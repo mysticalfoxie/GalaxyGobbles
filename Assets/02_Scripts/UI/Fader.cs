@@ -9,7 +9,7 @@ public class Fader : SingletonMonoBehaviour<Fader>
     private static readonly int _fadeWhiteParameter = Animator.StringToHash("FadeWhite");
     
     public const string FADE_BLACK_ANIMATION_TAG = "FBS";
-    public const string FADE_WHITE_ANIMATION_TAG = "FBS";
+    public const string FADE_WHITE_ANIMATION_TAG = "FWS";
     
     private string _currentAnimationTag;
     private bool _animationInProgress;
