@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45727b172ebb4fe09c87fe798b253515, type: 3}
-  m_Name: LVL_01_Customer 01
+  m_Script: {fileID: 11500000, guid: bcb1b9afe62b4c538e7daeb03c7647f5, type: 3}
+  m_Name: ITEM_Cutting Board (Iso)
   m_EditorClassIdentifier: 
-  _minutesInGame: 0
-  _secondsInGame: 3
-  _species: {fileID: 11400000, guid: 99ddd7ca94694d14f9aabbfc771cc8c2, type: 2}
-  _desiredItems: 0600000006000000
-  _isAssassinationTarget: 1
+  _id: 0
+  _name: Cutting Board
+  _deliverable: 0
+  _sprites:
+  - {fileID: 11400000, guid: 5d700938ae7021d4a9fa7b1abaf6b9d1, type: 2}

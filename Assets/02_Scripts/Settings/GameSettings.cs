@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -93,6 +94,25 @@ public class GameSettings : ScriptableObject
     #endregion
     
     #region Utilities
+    
+#if UNITY_EDITOR
+    public void OnEnable()
+    {
+        _levels = LoadAssetsOfType<LevelData>();
+        _items = LoadAssetsOfType<ItemData>();
+        _recipes = LoadAssetsOfType<RecipeData>();
+        _species = LoadAssetsOfType<SpeciesData>();
+    }
+
+    public static T[] LoadAssetsOfType<T>() where T : UnityEngine.Object
+    {
+        return AssetDatabase
+            .FindAssets($"t:{typeof(T).Name}")
+            .Select(AssetDatabase.GUIDToAssetPath)
+            .Select(AssetDatabase.LoadAssetAtPath<T>)
+            .ToArray();
+    }
+#endif
 
     public static ItemData GetItemById(ItemId id) => Data.Items.First(x => x.Id == id);
     public static AudioData GetTrackBySceneIndex(int index) 

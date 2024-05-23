@@ -6,42 +6,33 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
 {
     public SelectableMonoBehaviour Selection { get; private set; }
 
-    public void Start()
+    private SelectionMode _selectionMode;
+
+    public SelectionMode SelectionMode
     {
-        TouchHandler.Instance.Touch += OnGameObjectTouched;
-    }
+        get => _selectionMode;
+        set => OnSelectionModeUpdate(value);
+    } 
+    
+    public void Start() 
+        => TouchHandler.Instance.Touch += OnGameObjectTouched;
+    
+    public void Register(TouchableMonoBehaviour touchable) 
+        => touchable.Touch += OnSelectableMonoBehaviourTouched;
 
     private void OnGameObjectTouched(object sender, EventArgs e)
     {
-        // ReSharper disable once ConvertIfStatementToSwitchStatement
         if (sender is not GameObject @object) return;
         if (@object.GetComponents<SelectableMonoBehaviour>().Any()) return;
-        if (@object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is { CancelSelectionOnTouch: false }) return;
-        if (Selection is null) return;
-        Selection.Deselect();
-        Selection = null;
+        var handler = GetHandlerForSelectionMode();
+        handler.OnGameObjectTouched(@object);
     }
 
-    public void Register(TouchableMonoBehaviour touchable)
+    private void OnSelectableMonoBehaviourTouched(object sender, EventArgs e)
     {
-        touchable.Touch += (@object, _) =>
-        {
-            if (@object is not SelectableMonoBehaviour se)
-                return;
-
-            HandleSelection(se);
-        };
-    }
-
-    private void HandleSelection(SelectableMonoBehaviour selectable)
-    {
-        if (selectable.Selected)
-        {
-            selectable.Deselect();
-            return;
-        }
-
-        Select(selectable);
+        if (sender is not SelectableMonoBehaviour selectable) return;
+        var handler = GetHandlerForSelectionMode();
+        handler.OnSelectableTouched(selectable);
     }
 
     public void Deselect()
@@ -58,4 +49,19 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
         selectable.Select();
         Selection = selectable;
     }
+
+    private void OnSelectionModeUpdate(SelectionMode value)
+    {
+        GetHandlerForSelectionMode(_selectionMode).OnDisable();
+        _selectionMode = value;
+        GetHandlerForSelectionMode(_selectionMode).OnEnable();
+    }
+    
+    private ISelectionHandler GetHandlerForSelectionMode(SelectionMode? mode = null)
+        => (mode ?? SelectionMode) switch
+        {
+            SelectionMode.Ingredients => IngredientSelectionHandler.Instance,
+            SelectionMode.Tables => TableSelectionHandler.Instance, 
+            _ => DefaultSelectionHandler.Instance
+        };
 }

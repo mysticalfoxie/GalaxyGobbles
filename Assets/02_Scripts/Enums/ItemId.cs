@@ -27,4 +27,6 @@ public enum ItemId
     ID_105_ThinkBubble_Table_Multi_Horizontal = 105,
     ID_106_ThinkBubble_Table_Multi_Vertical = 106,
     ID_107_Eating = 107,
+    ID_108_QuestionMark = 108,
+    ID_109_CuttingBoard = 109,
 }
