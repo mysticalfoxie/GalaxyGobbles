@@ -14,13 +14,12 @@ public class CustomerData : ScriptableObject
     protected uint _secondsInGame;
     
     [Header("Customer Specification")]
-    [SerializeField]
-    private SpeciesData _species;
+    [SerializeField] private SpeciesData _species;
+    [SerializeField] private ItemId[] _desiredItems;
 
-    [Header("Customer Desires")]
-    [SerializeField]
-    private ItemId[] _desiredItems;
-
+    [Header("Assassination")]
+    [SerializeField] private bool _isAssassinationTarget;
+    
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;

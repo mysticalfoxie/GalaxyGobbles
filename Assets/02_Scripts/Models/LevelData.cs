@@ -15,6 +15,11 @@ public class LevelData : ScriptableObject
     [SerializeField]
     [Range(0, 59)]
     private uint _closeAfterSeconds;
+
+    [Header("Assassination")] 
+    [Tooltip("Resolves to: \"You must kill the {TARGET_TEXT} that comes into the restaurant.\"")]
+    [SerializeField]
+    private string _targetText;
     
     [Header("Customers")]
     [SerializeField]
@@ -24,4 +29,5 @@ public class LevelData : ScriptableObject
     public uint CloseAfterMinutes => _closeAfterMinutes;
     public uint CloseAfterSeconds => _closeAfterSeconds;
     public IEnumerable<CustomerData> Customers => _customers;
+    public string TargetText => _targetText;
 }
