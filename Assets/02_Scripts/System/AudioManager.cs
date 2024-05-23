@@ -30,7 +30,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         _audio.clip = track.Source;
         _audio.volume = track.Volume / 100.0F;
         _audio.loop = track.Loop;
-        _audio.Play();
+        _audio.Play(); 
     }
 
     private void StopMusicFromScene()
@@ -43,6 +43,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     private void InitializeAudioSource()
     {
         _audio ??= this.GetRequiredComponent<AudioSource>();
+        if (!_audio.IsAssigned()) return;
         _audio.clip = null;
         _audio.loop = true;
         _audio.playOnAwake = false;
