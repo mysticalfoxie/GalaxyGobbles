@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -7,9 +8,13 @@ public class TableSelectionHandler : ISelectionHandler
 
     public void OnEnable()
     {
-        
+        Result?.Invoke(null, null);
+        Cancel?.Invoke(null, null);
     }
-    
+
+    public event EventHandler<object> Result;
+    public event EventHandler Cancel;
+
     public void OnGameObjectTouched(GameObject @object)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Customer", menuName = "Galaxy Gobbles/Customer", order = 2)]
 public class CustomerData : ScriptableObject
@@ -15,7 +16,7 @@ public class CustomerData : ScriptableObject
     
     [Header("Customer Specification")]
     [SerializeField] private SpeciesData _species;
-    [SerializeField] private ItemId[] _desiredItems;
+    [FormerlySerializedAs("_desiredItems")] [SerializeField] private string[] _desiredItemIds;
 
     [Header("Assassination")]
     [SerializeField] private bool _isAssassinationTarget;
@@ -23,5 +24,5 @@ public class CustomerData : ScriptableObject
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;
-    public IEnumerable<ItemId> DesiredItems => _desiredItems;
+    public IEnumerable<string> DesiredItemIds => _desiredItemIds;
 }

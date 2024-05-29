@@ -15,6 +15,7 @@ public class ItemRenderer : TouchableMonoBehaviour
     private Item _item;
 
     public bool Destroyed { get; private set; }
+    public object Initiator { get; set; }
 
     public event EventHandler OnDestroyed; 
     
@@ -128,7 +129,8 @@ public class ItemRenderer : TouchableMonoBehaviour
         DetectChanges(sprites, out var removed, out var added);
         foreach (var removedSprite in removed) RemoveSprite(removedSprite);
         foreach (var addedSprite in added) AddSprite(addedSprite);
-        IndexingSprites(); // Experimental... Don't know if it works with unity's "SetSiblingIndex"
+        IndexingSprites();
+        gameObject.name = string.IsNullOrWhiteSpace(item.Data.Name) ? "ITEM | Unnamed Item" : $"ITEM | {item.Data.Name.Trim()}";
         _sprites = sprites;
     }
 

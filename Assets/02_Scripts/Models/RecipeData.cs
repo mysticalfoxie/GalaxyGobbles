@@ -6,13 +6,13 @@ public class RecipeData : ScriptableObject
     [Header("Recipe Data\nItem A + Item B = Item C")]
     
     [Header("Result (Item C)")]
-    [SerializeField] private ItemId _itemC;
+    [SerializeField] private string _itemC;
     
     [Header("Combination (Item A + B)")]
-    [SerializeField] private ItemId _itemA;
-    [SerializeField] private ItemId _itemB;
+    [SerializeField] private string _itemA;
+    [SerializeField] private string _itemB;
 
-    public ItemId ItemA => _itemA;
-    public ItemId ItemB => _itemB;
-    public ItemId ItemC => _itemC;
+    public string ItemA => _itemA;
+    public string ItemB => _itemB;
+    public string ItemC => _itemC;
 }

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 // ReSharper disable InconsistentNaming
 
@@ -104,7 +104,7 @@ public class GameSettings : ScriptableObject
         _species = LoadAssetsOfType<SpeciesData>();
     }
 
-    public static T[] LoadAssetsOfType<T>() where T : UnityEngine.Object
+    public static T[] LoadAssetsOfType<T>() where T : Object
     {
         return AssetDatabase
             .FindAssets($"t:{typeof(T).Name}")
@@ -114,7 +114,12 @@ public class GameSettings : ScriptableObject
     }
 #endif
 
-    public static ItemData GetItemById(ItemId id) => Data.Items.First(x => x.Id == id);
+    public static ItemData GetItemById(string id)
+    {
+        return Data.Items.FirstOrDefault(x => x.Id == id)
+               ?? throw new ItemNotFoundException(id);
+    }
+
     public static AudioData GetTrackBySceneIndex(int index) 
         => index switch
         {

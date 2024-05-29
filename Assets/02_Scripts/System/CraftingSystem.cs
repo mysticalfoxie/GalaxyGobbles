@@ -30,7 +30,7 @@ public class CraftingSystem : SingletonMonoBehaviour<CraftingSystem>
             throw new NotSupportedException($"{nameof(recipe.ItemB)} does not exist in the recipe with id {recipe.ItemC}.");
         
         var itemData = GameSettings.Data.Items.First(x => x.Id == recipe.ItemC);
-        var item = new Item(itemData, !item1.Hidden);
+        var item = new Item(item1.Initiator, itemData, !item1.Hidden);
         if (item1.AlignedTo.IsAssigned()) item.AlignTo(item1.AlignedTo);
         if (item1.Following.IsAssigned()) item.Follow(item1.Following);
         item1.Dispose();

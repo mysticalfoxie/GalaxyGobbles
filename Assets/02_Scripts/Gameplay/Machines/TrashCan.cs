@@ -3,7 +3,6 @@ using UnityEngine;
 public class TrashCan : TouchableMonoBehaviour
 {
     [Header("Item Visualization")]
-    [SerializeField] private ItemData _itemData;
     [SerializeField] private Vector2 _offset;
     
     private Item _item;
@@ -12,9 +11,14 @@ public class TrashCan : TouchableMonoBehaviour
     {        
         base.Awake();
 
-        _item = new Item(_itemData, true);
+        _item = new Item(this, GameSettings.GetItemById(Identifiers.Value.Trash), true);
         _item.AlignTo(this, _offset);
         _item.ForwardTouchEventsTo(this);
+    }
+
+    private void OnValidate()
+    {
+        GameSettings.GetItemById(Identifiers.Value.Trash);
     }
 
     protected override void OnTouch()

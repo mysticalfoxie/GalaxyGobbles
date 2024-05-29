@@ -36,14 +36,14 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
         _items = new[]
         {
-            _chairItem = new Item(GameSettings.GetItemById(ItemId.ID_100_Chair)),
-            _moneyItem = new Item(GameSettings.GetItemById(ItemId.ID_101_Money)),
-            _thinkBubble = new Item(GameSettings.GetItemById(ItemId.ID_102_ThinkBubble)),
-            _thinkDots = new Item(GameSettings.GetItemById(ItemId.ID_103_ThinkDots)),
-            _thinkBubbleTable = new Item(GameSettings.GetItemById(ItemId.ID_104_ThinkBubble_Table)),
-            _thinkBubbleMultiHorizontalTable = new Item(GameSettings.GetItemById(ItemId.ID_105_ThinkBubble_Table_Multi_Horizontal)),
-            _thinkBubbleMultiVerticalTable = new Item(GameSettings.GetItemById(ItemId.ID_106_ThinkBubble_Table_Multi_Vertical)),
-            _eatingItem = new Item(GameSettings.GetItemById(ItemId.ID_107_Eating)),
+            _chairItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.WaitForSeat)),
+            _moneyItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.WaitForCheckout)),
+            _thinkBubble = new Item(this, GameSettings.GetItemById(Identifiers.Value.ThinkBubble)),
+            _thinkDots = new Item(this, GameSettings.GetItemById(Identifiers.Value.Thinking)),
+            _thinkBubbleTable = new Item(this, GameSettings.GetItemById(Identifiers.Value.ThinkBubbleTable)),
+            _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemById(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
+            _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemById(Identifiers.Value.ThinkBubbleTableMultiVertical)),
+            _eatingItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.Eating)),
         };
 
         foreach (var item in _items)
@@ -107,14 +107,14 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private void InitializeDesiredItems()
     {
         foreach (var oldDesiredItem in _desiredItems) oldDesiredItem.Dispose();
-        _desiredItems = Customer.DesiredItems.Count switch
+        _desiredItems = Customer.DesiredItemIds.Count switch
         {
             0 => throw new NotSupportedException("The desired items for a customer are empty."),
-            1 => new[] { new Item(GameSettings.GetItemById(Customer.DesiredItems[0]), true) },
+            1 => new[] { new Item(this, GameSettings.GetItemById(Customer.DesiredItemIds[0]), true) },
             2 => new[]
             {
-                new Item(GameSettings.GetItemById(Customer.DesiredItems[0]), true),
-                new Item(GameSettings.GetItemById(Customer.DesiredItems[1]), true)
+                new Item(this, GameSettings.GetItemById(Customer.DesiredItemIds[0]), true),
+                new Item(this, GameSettings.GetItemById(Customer.DesiredItemIds[1]), true)
             },
             > 2 => throw new NotSupportedException("At this point of development the customer cannot render more then 2 Items at once."),
             _ => throw new NotSupportedException()

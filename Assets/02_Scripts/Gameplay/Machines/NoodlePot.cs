@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class NoodlePot : TouchableMonoBehaviour
@@ -38,7 +37,7 @@ public class NoodlePot : TouchableMonoBehaviour
     {
         if (BottomBar.Instance.Inventory.IsFull()) return;
         
-        var item = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_07_Noodles));
+        var item = new Item(this, GameSettings.GetItemById(Identifiers.Value.Noodles));
         if (!BottomBar.Instance.Inventory.TryAdd(item))
         {
             item.Dispose();
@@ -89,10 +88,10 @@ public class NoodlePot : TouchableMonoBehaviour
 
     private void InitializeItems()
     {
-        _emptyPotItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_02_NoodlePot_Empty));
-        _cookingItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_03_NoodlePot_Cooking));
-        _overcookedItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_05_NoodlePot_Overcooked));
-        _cookedItem = new Item(GameSettings.Data.Items.First(x => x.Id == ItemId.ID_04_NoodlePot_Cooked));
+        _emptyPotItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.NoodlePotEmpty));
+        _cookingItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.NoodlePotCooking));
+        _overcookedItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.NoodlePotOvercooked));
+        _cookedItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.NoodlePotCooked));
         
         _cookingItem.AlignTo(this, _itemOffset);
         _overcookedItem.AlignTo(this, _itemOffset);
@@ -103,6 +102,15 @@ public class NoodlePot : TouchableMonoBehaviour
         _overcookedItem.ForwardTouchEventsTo(this);
         _cookedItem.ForwardTouchEventsTo(this);
         _emptyPotItem.ForwardTouchEventsTo(this);
+    }
+
+    private void OnValidate()
+    {
+        GameSettings.GetItemById(Identifiers.Value.Noodles);
+        GameSettings.GetItemById(Identifiers.Value.NoodlePotEmpty);
+        GameSettings.GetItemById(Identifiers.Value.NoodlePotCooking);
+        GameSettings.GetItemById(Identifiers.Value.NoodlePotOvercooked);
+        GameSettings.GetItemById(Identifiers.Value.NoodlePotCooked);
     }
 
     private Item GetItemByState(NoodlePotState state)

@@ -15,7 +15,7 @@ public class Customer : SelectableMonoBehaviour
 
     public CustomerStateMachine StateMachine { get; private set; }
     public MeshRenderer MeshRenderer { get; private set; }
-    public List<ItemId> DesiredItems { get; } = new();
+    public List<string> DesiredItemIds { get; } = new();
 
     public CustomerData Data
     {
@@ -44,8 +44,8 @@ public class Customer : SelectableMonoBehaviour
     {
         _data = data;
         
-        DesiredItems.Clear();
-        DesiredItems.AddRange(_data.DesiredItems);
+        DesiredItemIds.Clear();
+        DesiredItemIds.AddRange(_data.DesiredItemIds);
     }
 
     public bool TryCheckout()
@@ -61,7 +61,7 @@ public class Customer : SelectableMonoBehaviour
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
         ReceiveItemsFromInventory();
-        if (DesiredItems.Count == 0)
+        if (DesiredItemIds.Count == 0)
         {
             StartCoroutine(nameof(StartEating));
             return true;
@@ -92,9 +92,9 @@ public class Customer : SelectableMonoBehaviour
 
     private void ReceiveItemsFromInventory()
     {
-        foreach (var item in DesiredItems.ToArray())
+        foreach (var item in DesiredItemIds.ToArray())
             if (BottomBar.Instance.Inventory.TryRemove(item, true))
-                DesiredItems.Remove(item);
+                DesiredItemIds.Remove(item);
     }
     
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;

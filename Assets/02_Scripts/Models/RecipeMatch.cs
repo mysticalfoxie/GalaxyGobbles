@@ -5,7 +5,7 @@ public struct RecipeMatch
         RecipeData data = null,
         Item itemA = null,
         Item itemB = null,
-        ItemId itemC = default)
+        string itemC = default)
     {
         IsMatch = isMatch;
         Recipe = data;
@@ -18,5 +18,5 @@ public struct RecipeMatch
     public RecipeData Recipe { get; }
     public Item ItemA { get; }
     public Item ItemB { get; }
-    public ItemId ItemC { get; }
+    public string ItemC { get; }
 }

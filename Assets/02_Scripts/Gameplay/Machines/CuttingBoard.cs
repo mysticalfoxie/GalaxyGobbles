@@ -1,14 +1,16 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CuttingBoard : TouchableMonoBehaviour
 {
     [Header("Crafting Visualization")] 
     [SerializeField] private Vector2 _thinkingBubbleOffset;
+    [SerializeField] private Vector2 _cuttingBoardUIOffset;
     [SerializeField] private Vector2 _cuttingBoardOffset;
     [SerializeField] private Vector2 _itemOffset;
 
     private bool _menuOpened;
+    private Item _cuttingBoardUIItem;
     private Item _cuttingBoardItem;
     private Item _thinkingBubbleItem;
     private Item _emptyItem;
@@ -22,36 +24,66 @@ public class CuttingBoard : TouchableMonoBehaviour
 
     protected override void OnTouch()
     {
-        HandleOpenMenu();
-        HandleCloseMenu();
+        if (TryHandleOpenMenu()) return;
+        TryHandleCloseMenu();
     }
 
-    private void HandleOpenMenu()
+    private bool TryHandleOpenMenu()
     {
-        if (_menuOpened) return;
+        if (_menuOpened) return false;
         
         _thinkingBubbleItem.Show().AlignTo(this, _thinkingBubbleOffset);
-        _cuttingBoardItem.Show().AlignTo(_thinkingBubbleItem);
-        _emptyItem.Show().AlignTo(_cuttingBoardItem);
+        _cuttingBoardUIItem.Show().AlignTo(_thinkingBubbleItem, _cuttingBoardUIOffset);
+        _emptyItem.Show().AlignTo(_cuttingBoardUIItem, _itemOffset);
+
+        StartCoroutine(nameof(HandleIngredientSelection));
         
-        _menuOpened = true;
+        return _menuOpened = true;
     }
     
-    private void HandleCloseMenu()
+    private void TryHandleCloseMenu()
     {
         if (!_menuOpened) return;
-        
+
         _thinkingBubbleItem.Hide();
-        _cuttingBoardItem.Hide();
+        _cuttingBoardUIItem.Hide();
         _emptyItem.Hide();
         
         _menuOpened = false;
     }
 
+    private IEnumerator HandleIngredientSelection()
+    {
+        yield return SelectionSystem.Instance.WaitForIngredientSelection(ingredient =>
+        {
+            if (ingredient is null)
+                TryHandleCloseMenu();
+            else
+                OnIngredientSelected(ingredient);
+        });
+    }
+
+    private void OnIngredientSelected(ItemData data)
+    {
+        TryHandleCloseMenu();
+        var item = new Item(this, data);
+        if (!BottomBar.Instance.Inventory.TryAdd(item))
+            item.Dispose();
+    }
+
     private void InitializeItems()
     {
-        _cuttingBoardItem = new Item(GameSettings.GetItemById(ItemId.ID_109_CuttingBoard));
-        _emptyItem = new Item(GameSettings.GetItemById(ItemId.ID_108_QuestionMark));
-        _thinkingBubbleItem = new Item(GameSettings.GetItemById(ItemId.ID_104_ThinkBubble_Table));
+        var items = new[]
+        {
+            _cuttingBoardUIItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.CuttingBoardUI)),
+            _emptyItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.QuestionMark)),
+            _thinkingBubbleItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.ThinkBubbleCuttingBoard)),
+            _cuttingBoardItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.CuttingBoard), true)
+        };
+        
+        _cuttingBoardItem.AlignTo(this, _cuttingBoardOffset);
+
+        foreach (var item in items)
+            item.ForwardTouchEventsTo(this);
     }
 }
