@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,54 +5,52 @@ using UnityEngine;
 
 public class Identifiers : ScriptableObject
 { 
-    public const string EMPTY_STRING = "< not set >";
-    
     [Header("Machines")]
-    [SerializeField] private string _noodleBowl = EMPTY_STRING;
-    [SerializeField] private string _noodlePotEmpty = EMPTY_STRING;
-    [SerializeField] private string _noodlePotCooking = EMPTY_STRING;
-    [SerializeField] private string _noodlePotCooked = EMPTY_STRING;
-    [SerializeField] private string _noodlePotOvercooked = EMPTY_STRING;
-    [SerializeField] private string _cuttingBoard = EMPTY_STRING;
-    [SerializeField] private string _cuttingBoardUI = EMPTY_STRING;
-    [SerializeField] private string _trash = EMPTY_STRING;
+    [SerializeField] private ItemData _noodleBowl;
+    [SerializeField] private ItemData _noodlePotEmpty;
+    [SerializeField] private ItemData _noodlePotCooking;
+    [SerializeField] private ItemData _noodlePotCooked;
+    [SerializeField] private ItemData _noodlePotOvercooked;
+    [SerializeField] private ItemData _cuttingBoard;
+    [SerializeField] private ItemData _cuttingBoardUI;
+    [SerializeField] private ItemData _trash;
     
     [Header("States")]
-    [SerializeField] private string _waitForSeat = EMPTY_STRING;
-    [SerializeField] private string _waitForCheckout = EMPTY_STRING;
-    [SerializeField] private string _thinking = EMPTY_STRING;
-    [SerializeField] private string _thinkBubble = EMPTY_STRING;
-    [SerializeField] private string _eating = EMPTY_STRING;
-    [SerializeField] private string _questionMark = EMPTY_STRING;
-    [SerializeField] private string _thinkBubbleTable = EMPTY_STRING;
-    [SerializeField] private string _thinkBubbleTableMultiHorizontal = EMPTY_STRING;
-    [SerializeField] private string _thinkBubbleTableMultiVertical = EMPTY_STRING;
-    [SerializeField] private string _thinkBubbleCuttingBoard = EMPTY_STRING;
+    [SerializeField] private ItemData _waitForSeat;
+    [SerializeField] private ItemData _waitForCheckout;
+    [SerializeField] private ItemData _thinking;
+    [SerializeField] private ItemData _thinkBubble;
+    [SerializeField] private ItemData _eating;
+    [SerializeField] private ItemData _questionMark;
+    [SerializeField] private ItemData _thinkBubbleTable;
+    [SerializeField] private ItemData _thinkBubbleTableMultiHorizontal;
+    [SerializeField] private ItemData _thinkBubbleTableMultiVertical;
+    [SerializeField] private ItemData _thinkBubbleCuttingBoard;
     
     [Header("Items")]
-    [SerializeField] private string _noodles = EMPTY_STRING;
+    [SerializeField] private ItemData _noodles;
     
     #region Properties
 
-    public string NoodleBowl => _noodleBowl;
-    public string NoodlePotEmpty => _noodlePotEmpty;
-    public string NoodlePotCooking => _noodlePotCooking;
-    public string NoodlePotCooked => _noodlePotCooked;
-    public string NoodlePotOvercooked => _noodlePotOvercooked;
-    public string Noodles => _noodles;
-    public string WaitForSeat => _waitForSeat;
-    public string WaitForCheckout => _waitForCheckout;
-    public string ThinkBubble => _thinkBubble;
-    public string Thinking => _thinking;
-    public string ThinkBubbleTable => _thinkBubbleTable;
-    public string ThinkBubbleTableMultiHorizontal => _thinkBubbleTableMultiHorizontal;
-    public string ThinkBubbleTableMultiVertical => _thinkBubbleTableMultiVertical;
-    public string Eating => _eating;
-    public string QuestionMark => _questionMark;
-    public string CuttingBoardUI => _cuttingBoardUI;
-    public string CuttingBoard => _cuttingBoard;
-    public string ThinkBubbleCuttingBoard => _thinkBubbleCuttingBoard;
-    public string Trash => _trash;
+    public ItemData NoodleBowl => _noodleBowl;
+    public ItemData NoodlePotEmpty => _noodlePotEmpty;
+    public ItemData NoodlePotCooking => _noodlePotCooking;
+    public ItemData NoodlePotCooked => _noodlePotCooked;
+    public ItemData NoodlePotOvercooked => _noodlePotOvercooked;
+    public ItemData Noodles => _noodles;
+    public ItemData WaitForSeat => _waitForSeat;
+    public ItemData WaitForCheckout => _waitForCheckout;
+    public ItemData ThinkBubble => _thinkBubble;
+    public ItemData Thinking => _thinking;
+    public ItemData ThinkBubbleTable => _thinkBubbleTable;
+    public ItemData ThinkBubbleTableMultiHorizontal => _thinkBubbleTableMultiHorizontal;
+    public ItemData ThinkBubbleTableMultiVertical => _thinkBubbleTableMultiVertical;
+    public ItemData Eating => _eating;
+    public ItemData QuestionMark => _questionMark;
+    public ItemData CuttingBoardUI => _cuttingBoardUI;
+    public ItemData CuttingBoard => _cuttingBoard;
+    public ItemData ThinkBubbleCuttingBoard => _thinkBubbleCuttingBoard;
+    public ItemData Trash => _trash;
     
     #endregion
 
@@ -87,25 +84,25 @@ public class Identifiers : ScriptableObject
 
     private void OnValidate()
     {
-        GameSettings.GetItemById(NoodleBowl);
-        GameSettings.GetItemById(NoodlePotEmpty);
-        GameSettings.GetItemById(NoodlePotCooking);
-        GameSettings.GetItemById(NoodlePotCooked);
-        GameSettings.GetItemById(NoodlePotOvercooked);
-        GameSettings.GetItemById(Noodles);
-        GameSettings.GetItemById(WaitForSeat);
-        GameSettings.GetItemById(WaitForCheckout);
-        GameSettings.GetItemById(ThinkBubble);
-        GameSettings.GetItemById(Thinking);
-        GameSettings.GetItemById(ThinkBubbleTable);
-        GameSettings.GetItemById(ThinkBubbleTableMultiHorizontal);
-        GameSettings.GetItemById(ThinkBubbleTableMultiVertical);
-        GameSettings.GetItemById(Eating);
-        GameSettings.GetItemById(QuestionMark);
-        GameSettings.GetItemById(CuttingBoardUI);
-        GameSettings.GetItemById(CuttingBoard);
-        GameSettings.GetItemById(ThinkBubbleCuttingBoard);
-        GameSettings.GetItemById(Trash);
+        GameSettings.GetItemMatch(NoodleBowl);
+        GameSettings.GetItemMatch(NoodlePotEmpty);
+        GameSettings.GetItemMatch(NoodlePotCooking);
+        GameSettings.GetItemMatch(NoodlePotCooked);
+        GameSettings.GetItemMatch(NoodlePotOvercooked);
+        GameSettings.GetItemMatch(Noodles);
+        GameSettings.GetItemMatch(WaitForSeat);
+        GameSettings.GetItemMatch(WaitForCheckout);
+        GameSettings.GetItemMatch(ThinkBubble);
+        GameSettings.GetItemMatch(Thinking);
+        GameSettings.GetItemMatch(ThinkBubbleTable);
+        GameSettings.GetItemMatch(ThinkBubbleTableMultiHorizontal);
+        GameSettings.GetItemMatch(ThinkBubbleTableMultiVertical);
+        GameSettings.GetItemMatch(Eating);
+        GameSettings.GetItemMatch(QuestionMark);
+        GameSettings.GetItemMatch(CuttingBoardUI);
+        GameSettings.GetItemMatch(CuttingBoard);
+        GameSettings.GetItemMatch(ThinkBubbleCuttingBoard);
+        GameSettings.GetItemMatch(Trash);
     }
 
     #endregion

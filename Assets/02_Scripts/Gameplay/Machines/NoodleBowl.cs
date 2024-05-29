@@ -11,7 +11,7 @@ public class NoodleBowl : TouchableMonoBehaviour
     {
         base.Awake();
 
-        _itemData = GameSettings.GetItemById(Identifiers.Value.NoodleBowl);
+        _itemData = GameSettings.GetItemMatch(Identifiers.Value.NoodleBowl);
         _item = new Item(this, _itemData, true);
         _item.AlignTo(this, _itemOffset);
         _item.ForwardTouchEventsTo(this);

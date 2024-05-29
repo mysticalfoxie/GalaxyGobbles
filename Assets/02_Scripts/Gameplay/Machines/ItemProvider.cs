@@ -4,32 +4,32 @@ using UnityEngine;
 public class ItemProvider : TouchableMonoBehaviour
 {
     [Header("Item Data")] 
-    [SerializeField] private string _itemId = Identifiers.EMPTY_STRING;
+    [SerializeField] private ItemData _item;
     [SerializeField] private Vector2 _offset;
     
-    private Item _item;
-    
-    public string ItemId => _itemId;
+    private Item _itemCache;
+    public ItemData Item => _item;
 
     public override void Awake()
     {
         base.Awake();
         
-        var item = GameSettings.GetItemById(_itemId);
-        _item = new Item(this, item, true);
-        _item.AlignTo(this, _offset);
-        _item.ForwardTouchEventsTo(this);
+        var item = GameSettings.GetItemMatch(_item);
+        _itemCache = new Item(this, item, true);
+        _itemCache.AlignTo(this, _offset);
+        _itemCache.ForwardTouchEventsTo(this);
     }
 
     private void OnValidate()
     {
-        if (_itemId is null) throw new ArgumentNullException($"The field \"{nameof(_itemId)}\" of component \"{nameof(ItemProvider)}\" is not assigned.");
-        GameSettings.GetItemById(_itemId);
+        if (gameObject.scene == default) return; // Exclude validation of Prefabs
+        if (_item is null) throw new ArgumentNullException($"The item of item provider \"{name}\" is empty!");
+        GameSettings.GetItemMatch(_item);
     }
 
     protected override void OnTouch()
     {
-        var newItem = _item.Clone();
+        var newItem = _itemCache.Clone();
         if (!BottomBar.Instance.Inventory.TryAdd(newItem))
             newItem.Dispose();
         else

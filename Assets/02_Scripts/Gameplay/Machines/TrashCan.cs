@@ -11,14 +11,14 @@ public class TrashCan : TouchableMonoBehaviour
     {        
         base.Awake();
 
-        _item = new Item(this, GameSettings.GetItemById(Identifiers.Value.Trash), true);
+        _item = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Trash), true);
         _item.AlignTo(this, _offset);
         _item.ForwardTouchEventsTo(this);
     }
 
     private void OnValidate()
     {
-        GameSettings.GetItemById(Identifiers.Value.Trash);
+        GameSettings.GetItemMatch(Identifiers.Value.Trash);
     }
 
     protected override void OnTouch()

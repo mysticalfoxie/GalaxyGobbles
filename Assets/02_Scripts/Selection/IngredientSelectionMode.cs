@@ -18,11 +18,11 @@ public class IngredientSelectionHandler : ISelectionHandler
     {
         var canCancelSelection = @object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is not { CancelSelectionOnTouch: false };
         var itemProvider = @object.GetComponent<ItemProvider>() ?? GetItemProviderFromItemRenderer(@object);
-        var itemProviderItem = GameSettings.GetItemById(itemProvider?.ItemId);
+        var itemProviderItem = GameSettings.GetItemMatch(itemProvider?.Item);
         var isIngredient = !itemProviderItem.Deliverable;
         
         if (isIngredient)
-            Result?.Invoke(this, itemProvider.ItemId);
+            Result?.Invoke(this, itemProviderItem);
         else if (canCancelSelection)
             Cancel?.Invoke(this, null);
     }

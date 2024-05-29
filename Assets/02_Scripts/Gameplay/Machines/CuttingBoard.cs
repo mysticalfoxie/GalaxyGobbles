@@ -75,10 +75,10 @@ public class CuttingBoard : TouchableMonoBehaviour
     {
         var items = new[]
         {
-            _cuttingBoardUIItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.CuttingBoardUI)),
-            _emptyItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.QuestionMark)),
-            _thinkingBubbleItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.ThinkBubbleCuttingBoard)),
-            _cuttingBoardItem = new Item(this, GameSettings.GetItemById(Identifiers.Value.CuttingBoard), true)
+            _cuttingBoardUIItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.CuttingBoardUI)),
+            _emptyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.QuestionMark)),
+            _thinkingBubbleItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleCuttingBoard)),
+            _cuttingBoardItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.CuttingBoard), true)
         };
         
         _cuttingBoardItem.AlignTo(this, _cuttingBoardOffset);

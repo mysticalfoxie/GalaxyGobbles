@@ -34,9 +34,9 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public bool TryRemove(string itemId, bool destroy = false)
+    public bool TryRemove(ItemData value, bool destroy = false)
     {
-        var item = _items.FirstOrDefault(x => x.Data.Id == itemId);
+        var item = _items.FirstOrDefault(x => x.Data.name == value.name);
         if (item is null) return false;
         if (destroy) item.Dispose();
         _items.Remove(item);

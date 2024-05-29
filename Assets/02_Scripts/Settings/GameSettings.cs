@@ -102,22 +102,23 @@ public class GameSettings : ScriptableObject
         _items = LoadAssetsOfType<ItemData>();
         _recipes = LoadAssetsOfType<RecipeData>();
         _species = LoadAssetsOfType<SpeciesData>();
+        LevelMapper.Map();
     }
 
     public static T[] LoadAssetsOfType<T>() where T : Object
     {
-        return AssetDatabase
-            .FindAssets($"t:{typeof(T).Name}")
-            .Select(AssetDatabase.GUIDToAssetPath)
-            .Select(AssetDatabase.LoadAssetAtPath<T>)
+        return AssetDatabaseHelper
+            .LoadAssetsOfType<T>()
+            .Select(x => x.Value)
             .ToArray();
     }
 #endif
 
-    public static ItemData GetItemById(string id)
+    public static ItemData GetItemMatch(ItemData data)
     {
-        return Data.Items.FirstOrDefault(x => x.Id == id)
-               ?? throw new ItemNotFoundException(id);
+        var name = data?.name ?? throw new ArgumentNullException(nameof(data));
+        return Data.Items.FirstOrDefault(x => x.name == name)
+               ?? throw new ItemNotFoundException(data);
     }
 
     public static AudioData GetTrackBySceneIndex(int index) 
