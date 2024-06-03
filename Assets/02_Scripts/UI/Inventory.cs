@@ -42,7 +42,7 @@ public class Inventory : MonoBehaviour
         _items.Remove(item);
         RefreshView();
         return true;
-    }    
+    }
 
     public void Reset()
     {
@@ -51,6 +51,19 @@ public class Inventory : MonoBehaviour
         
         _items.Clear();
         RefreshView();
+    }
+
+    public void AddPoison(ItemData data)
+    {
+        if (!data.CanBecomePoison) return;
+        
+        // First item that is not poisoned yet.
+        var item = _items.FirstOrDefault(x => !x.Data.Poison); 
+        if (item is null) return;
+        
+        // Poison it
+        item.Data.Poison = data;
+        item.Refresh();
     }
     
     private void Replace(Item oldItem, Item newItem)

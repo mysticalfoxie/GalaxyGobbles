@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -15,18 +18,21 @@ public static class LevelMapper
 #endif
     }
 
-    private static void UpdateLevelAssets((string AssetPath, LevelData Value)[] levels, (string AssetPath, CustomerData Value)[] customers)
+    private static void UpdateLevelAssets(IEnumerable<(string AssetPath, LevelData Value)> levels, (string AssetPath, CustomerData Value)[] customers)
     {
         foreach (var level in levels)
         {
+            var filename = level.AssetPath.Split("/").Last();
             var newLevel = GetUpdatedLevelData(level, customers);
             AssetDatabase.DeleteAsset(level.AssetPath);
             AssetDatabase.CreateAsset(newLevel, level.AssetPath);
             AssetDatabase.SaveAssets();
+            
+            Debug.Log($"[LevelMapper] Mapped {newLevel._customers.Length} customer(s) to level data file \"{filename}\".");
         }
     }
 
-    private static LevelData GetUpdatedLevelData((string AssetPath, LevelData Value) level, (string AssetPath, CustomerData Value)[] customers)
+    private static LevelData GetUpdatedLevelData((string AssetPath, LevelData Value) level, IEnumerable<(string AssetPath, CustomerData Value)> customers)
     {
         var clone = ScriptableObject.CreateInstance<LevelData>();
         clone.name = level.Value.name;
@@ -38,7 +44,7 @@ public static class LevelMapper
         return clone;
     }
 
-    private static CustomerData[] GetCustomersForLevel((string AssetPath, LevelData Value) level, (string AssetPath, CustomerData Value)[] customers)
+    private static CustomerData[] GetCustomersForLevel((string AssetPath, LevelData Value) level, IEnumerable<(string AssetPath, CustomerData Value)> customers)
     {
         var levelNumber = GetLevelNumberFromLevelPath(level.AssetPath);
         var levelCustomers = customers

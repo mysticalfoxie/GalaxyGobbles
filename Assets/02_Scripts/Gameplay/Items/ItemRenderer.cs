@@ -68,6 +68,11 @@ public class ItemRenderer : TouchableMonoBehaviour
         _follow = null;
         _followOffset = default;
     }
+
+    public void Refresh()
+    {
+        Item = Item;
+    }
     
     protected override void OnTouch()
     {

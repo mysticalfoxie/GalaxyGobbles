@@ -85,6 +85,11 @@ public class Item : IDisposable
         return this;
     }
 
+    public void Refresh()
+    {
+        _renderer.Refresh();
+    }
+
     public Item ForwardTouchEventsTo(TouchableMonoBehaviour touchable)
     {
         Click += (_, _) => touchable?.InvokeTouch(this, EventArgs.Empty);

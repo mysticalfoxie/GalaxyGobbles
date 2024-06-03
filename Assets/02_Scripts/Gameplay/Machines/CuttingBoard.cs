@@ -56,7 +56,7 @@ public class CuttingBoard : TouchableMonoBehaviour
     {
         yield return SelectionSystem.Instance.WaitForIngredientSelection(ingredient =>
         {
-            if (ingredient is null)
+            if (ingredient is null || !ingredient.CanBecomePoison)
                 TryHandleCloseMenu();
             else
                 OnIngredientSelected(ingredient);
@@ -66,9 +66,7 @@ public class CuttingBoard : TouchableMonoBehaviour
     private void OnIngredientSelected(ItemData data)
     {
         TryHandleCloseMenu();
-        var item = new Item(this, data);
-        if (!BottomBar.Instance.Inventory.TryAdd(item))
-            item.Dispose();
+        BottomBar.Instance.Inventory.AddPoison(data);
     }
 
     private void InitializeItems()

@@ -48,9 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b0a51f11ba48718eb4996a5bac321c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycastHitbox: {fileID: 8570735524909806096}
-  _raycastDistance: 10
-  _item: {fileID: 0}
+  _item: {fileID: 11400000, guid: 473ac5396ce40ee42a3e708d8a226b03, type: 2}
+  _offset: {x: 0, y: 60}
 --- !u!33 &30424506262195884
 MeshFilter:
   m_ObjectHideFlags: 0
