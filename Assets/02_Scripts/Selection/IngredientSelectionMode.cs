@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using UnityEngine;
 
+// ReSharper disable ConvertIfStatementToSwitchStatement
+
 public class IngredientSelectionHandler : ISelectionHandler
 {
     public static IngredientSelectionHandler Instance { get; } = new();
@@ -14,10 +16,19 @@ public class IngredientSelectionHandler : ISelectionHandler
     public event EventHandler<object> Result;
     public event EventHandler Cancel;
 
-    public void OnGameObjectTouched(GameObject @object)
+    public void OnGameObjectTouched(GameObject @object, TouchEvent eventArgs)
     {
         var canCancelSelection = @object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is not { CancelSelectionOnTouch: false };
         var itemProvider = @object.GetComponent<ItemProvider>() ?? GetItemProviderFromItemRenderer(@object);
+        
+        eventArgs.CancelPropagation();
+        
+        if (!canCancelSelection && itemProvider is null) return;
+        if (canCancelSelection && itemProvider is null) {
+            Cancel?.Invoke(this, null);
+            return;
+        }
+
         var itemProviderItem = GameSettings.GetItemMatch(itemProvider?.Item);
         var isIngredient = !itemProviderItem.Deliverable;
         

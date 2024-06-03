@@ -43,6 +43,9 @@ public class CraftingSystem : SingletonMonoBehaviour<CraftingSystem>
         var recipe = _recipes.FirstOrDefault(x => x.ItemA.name == item1.Data.name && x.ItemB.name == item2.Data.name)
                      ?? _recipes.FirstOrDefault(x => x.ItemB.name == item1.Data.name && x.ItemA.name == item2.Data.name);
 
+        if (item1.Data.Poison is not null || item2.Data.Poison is not null)
+            return new RecipeMatch(false);
+
         return recipe is not null 
             ? new RecipeMatch(true, recipe, item1, item2, recipe.ItemC)
             : new RecipeMatch(false);

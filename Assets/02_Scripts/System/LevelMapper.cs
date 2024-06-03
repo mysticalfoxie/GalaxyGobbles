@@ -20,15 +20,24 @@ public static class LevelMapper
 
     private static void UpdateLevelAssets(IEnumerable<(string AssetPath, LevelData Value)> levels, (string AssetPath, CustomerData Value)[] customers)
     {
-        foreach (var level in levels)
+        try
         {
-            var filename = level.AssetPath.Split("/").Last();
-            var newLevel = GetUpdatedLevelData(level, customers);
-            AssetDatabase.DeleteAsset(level.AssetPath);
-            AssetDatabase.CreateAsset(newLevel, level.AssetPath);
-            AssetDatabase.SaveAssets();
-            
-            Debug.Log($"[LevelMapper] Mapped {newLevel._customers.Length} customer(s) to level data file \"{filename}\".");
+            foreach (var level in levels)
+            {
+                var filename = level.AssetPath.Split("/").Last();
+                var newLevel = GetUpdatedLevelData(level, customers);
+                AssetDatabase.DeleteAsset(level.AssetPath);
+                AssetDatabase.CreateAsset(newLevel, level.AssetPath);
+                AssetDatabase.SaveAssets();
+
+                Debug.Log($"[LevelMapper] Mapped {newLevel._customers.Length} customer(s) to level data file \"{filename}\".");
+            }
+        }
+        catch (UnityException ex)
+        {
+            var isUnavailableException = ex.Message.Contains("Creating asset") && ex.Message.Contains("failed.");
+            if (!isUnavailableException) throw;
+            Debug.Log("[LevelMapper] The asset database is currently unavailable.");
         }
     }
 

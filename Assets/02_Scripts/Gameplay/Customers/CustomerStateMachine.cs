@@ -39,6 +39,7 @@ public class CustomerStateMachine : MonoBehaviour
         HandleThinkingAboutMeal();
         HandleWaitingForMeal();
         HandleEating();
+        HandlePoisoned();
         HandleWaitingForCheckout();
         HandleLeaving();
     }
@@ -62,6 +63,13 @@ public class CustomerStateMachine : MonoBehaviour
         if (State != CustomerState.WaitingForMeal) return;
         if (_stateO == CustomerState.WaitingForMeal) return;
         Renderer.RenderWaitingForMeal();
+    }
+
+    private void HandlePoisoned()
+    {
+        if (State != CustomerState.Poisoned) return;
+        if (_stateO == CustomerState.Poisoned) return;
+        Renderer.RenderPoisoned();
     }
 
     private void HandleEating()

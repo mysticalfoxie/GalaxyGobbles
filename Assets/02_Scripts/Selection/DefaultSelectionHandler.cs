@@ -16,7 +16,7 @@ public class DefaultSelectionHandler : ISelectionHandler
     public event EventHandler<object> Result;
     public event EventHandler Cancel;
 
-    public void OnGameObjectTouched(GameObject @object)
+    public void OnGameObjectTouched(GameObject @object, TouchEvent eventArgs)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement
         if (@object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is { CancelSelectionOnTouch: false }) return;

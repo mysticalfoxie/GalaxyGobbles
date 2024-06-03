@@ -92,6 +92,12 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _eatingItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
     }
 
+    public void RenderPoisoned()
+    {
+        // // TODO: Continue tomorrow!
+        // throw new NotImplementedException();
+    }
+
     public void RefreshDesiredItems()
     {
         RenderDesiredItems();

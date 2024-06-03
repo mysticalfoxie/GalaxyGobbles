@@ -94,12 +94,6 @@ public class GameSettings : ScriptableObject
         settings._species = Array.Empty<SpeciesData>();
         settings._levels = Array.Empty<LevelData>();
         settings._items = Array.Empty<ItemData>();
-        settings._noodleBoilingTime = 5;
-        settings._potCleaningTime = 5;
-        settings._noodleOvercookTime = 5;
-        settings._customerThinkingTime = 5;
-        settings._customerEatingTime = 5;
-        settings._restockCustomerDelay = 5;
         return settings;
     }
     #endregion
@@ -142,8 +136,8 @@ public class GameSettings : ScriptableObject
     public static ItemData GetItemMatch(ItemData data)
     {
         var name = data?.name ?? throw new ArgumentNullException(nameof(data));
-        return Data.Items.FirstOrDefault(x => x.name == name)
-               ?? throw new ItemNotFoundException(data);
+        var item = Data.Items.FirstOrDefault(x => x.name == name) ?? throw new ItemNotFoundException(data);
+        return item.Clone();
     }
 
     public static AudioData GetTrackBySceneIndex(int index) 

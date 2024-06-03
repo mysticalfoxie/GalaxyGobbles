@@ -46,12 +46,12 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
         yield return WaitForObjectSelection(callback, SelectionMode.Tables);
     }
 
-    private void OnGameObjectTouched(object sender, EventArgs e)
+    private void OnGameObjectTouched(object sender, TouchEvent eventArgs)
     {
         if (sender is not GameObject @object) return;
         if (@object.GetComponents<SelectableMonoBehaviour>().Any()) return;
         var handler = GetHandlerForSelectionMode();
-        handler.OnGameObjectTouched(@object);
+        handler.OnGameObjectTouched(@object, eventArgs);
     }
 
     private void OnSelectableMonoBehaviourTouched(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Customer : SelectableMonoBehaviour
@@ -10,6 +11,7 @@ public class Customer : SelectableMonoBehaviour
 
     private CustomerData _data;
     private Material _materialO;
+    private bool _poisoned;
 
     public event EventHandler Leave;
 
@@ -75,7 +77,7 @@ public class Customer : SelectableMonoBehaviour
     {
         StateMachine.State = CustomerState.Eating;
         yield return new WaitForSeconds(GameSettings.Data.CustomerEatingTime);
-        StateMachine.State = CustomerState.WaitingForCheckout;
+        StateMachine.State = _poisoned ? CustomerState.Poisoned : CustomerState.WaitingForCheckout;
     }
 
     public void OnSeated()
@@ -94,7 +96,15 @@ public class Customer : SelectableMonoBehaviour
     {
         foreach (var item in DesiredItems.ToArray())
             if (BottomBar.Instance.Inventory.TryRemove(item, true))
-                DesiredItems.Remove(item);
+                OnItemReceived(item);
+    }
+
+    private void OnItemReceived(ItemData item)
+    {
+        DesiredItems.Remove(item);
+        if (item.Poison is null) return;
+        if (_data.Species.PoisonItems.All(x => x.name != item.Poison.name)) return;
+        _poisoned = true;
     }
     
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;

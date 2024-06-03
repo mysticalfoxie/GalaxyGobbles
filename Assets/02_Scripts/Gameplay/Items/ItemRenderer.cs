@@ -90,6 +90,7 @@ public class ItemRenderer : TouchableMonoBehaviour
         rendererComponent.rectTransform.transform.localScale = Vector2.one;
         rendererComponent.rectTransform.transform.localScale = Vector2.one;
         rendererComponent.rectTransform.transform.localRotation = Quaternion.Euler(0F, 0F, sprite.Rotation);
+        rendererComponent.color = sprite.ColorOverlay;
         _renderers.Add(rendererGameObject, rendererComponent);
     }
 
@@ -115,7 +116,7 @@ public class ItemRenderer : TouchableMonoBehaviour
         gameObject.transform.position = screen + offset3d;
     }
 
-    private void DetectChanges(SpriteData[] newSprites, out SpriteData[] removed, out SpriteData[] added)
+    private void DetectChanges(List<SpriteData> newSprites, out SpriteData[] removed, out SpriteData[] added)
     {
         added = newSprites
             .Where(x => x is not null)
@@ -130,13 +131,14 @@ public class ItemRenderer : TouchableMonoBehaviour
     private void UpdateItem(Item item)
     {
         _item = item ?? throw new ArgumentNullException(nameof(item));
-        var sprites = _item.Data.Sprites.ToArray();
+        var sprites = _item.Data.Sprites.ToList();
+        if (item.Data.Poison is not null) sprites.Add(GameSettings.Data.PoisonIcon);
         DetectChanges(sprites, out var removed, out var added);
         foreach (var removedSprite in removed) RemoveSprite(removedSprite);
         foreach (var addedSprite in added) AddSprite(addedSprite);
         IndexingSprites();
         gameObject.name = string.IsNullOrWhiteSpace(item.Data.Name) ? "ITEM | Unnamed Item" : $"ITEM | {item.Data.Name.Trim()}";
-        _sprites = sprites;
+        _sprites = sprites.ToArray();
     }
 
     private void IndexingSprites()
