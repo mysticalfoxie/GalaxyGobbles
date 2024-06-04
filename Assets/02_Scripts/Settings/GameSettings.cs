@@ -113,6 +113,7 @@ public class GameSettings : ScriptableObject
         
         DebugUtils.ClearConsole();
         Debug.Log("Console cleared...");
+        LevelMapper.Map();
         _levels = LoadAssetsOfType<LevelData>();
         Debug.Log($"[SettingsMapper] Mapped {_levels.Length} Level(s) to the Game Settings configuration.");
         _items = LoadAssetsOfType<ItemData>();
@@ -121,7 +122,6 @@ public class GameSettings : ScriptableObject
         Debug.Log($"[SettingsMapper] Mapped {_recipes.Length} Recipe(s) to the Game Settings configuration.");
         _species = LoadAssetsOfType<SpeciesData>();
         Debug.Log($"[SettingsMapper] Mapped {_species.Length} Species(es) to the Game Settings configuration.");
-        LevelMapper.Map();
     }
 
     public static T[] LoadAssetsOfType<T>() where T : Object

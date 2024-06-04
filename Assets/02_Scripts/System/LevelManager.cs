@@ -45,12 +45,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
          
         MainMenu.Instance.SetElementsForStart();
         if (skipSceneLoad) yield break;
-        
-        yield return LoadSceneAsync();
-    }
-
-    public IEnumerator LoadSceneAsync()
-    {
+     
         Loading = true;
         yield return SceneManager.LoadSceneAsync(MAIN_LEVEL_INDEX);
         Loading = false;
