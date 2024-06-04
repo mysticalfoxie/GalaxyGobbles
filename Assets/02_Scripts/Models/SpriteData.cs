@@ -17,12 +17,14 @@ public class SpriteData : ScriptableObject
     [SerializeField] private Sprite _sprite;
     [SerializeField] private Vector2 _offset;
     [SerializeField] private Vector2 _size;
+    [SerializeField] private Color _colorOverlay = Color.white;
     [SerializeField] private float _zRotation;
     [SerializeField] private int _zOrder;
 
     public Sprite Sprite => _sprite;
     public Vector2 Offset => _offset;
     public Vector2 Size => _size;
+    public Color ColorOverlay => _colorOverlay;
     public float Rotation => _zRotation;
     public int Order => _zOrder;
 }

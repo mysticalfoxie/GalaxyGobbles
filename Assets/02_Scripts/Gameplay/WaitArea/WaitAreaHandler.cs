@@ -24,8 +24,8 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
         {
             _outsideQueue.Add(customer);
             customer.gameObject.SetActive(false);
-            Debug.LogWarning("[Game Design] There are not enough slots for the customer to arrive in the store.");
-            Debug.LogWarning("[Game Design] Customer waits outside and will arrive as soon as there's an open slot.");
+            
+            Debug.Log("[Wait Area] A new customer waits outside and will arrive as soon as there's an open slot.");
             return;
         }
         
@@ -47,7 +47,7 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
 
     private IEnumerator OnRestockCustomers()
     {
-        yield return new WaitForSeconds(GameSettings.Data.RestockCustomerDelay);
+        yield return new WaitForSeconds(GameSettings.Data.QueueRestockDelay);
         for (var i = 0; i < _waitAreas.Length; i++)
         {
             if (_waitAreas[i].Customer is not null) continue;

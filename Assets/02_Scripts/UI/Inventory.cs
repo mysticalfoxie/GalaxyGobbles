@@ -6,7 +6,9 @@ public class Inventory : MonoBehaviour
 {
     private readonly List<Item> _items = new();
     private GameObject[] _positions;
-    
+
+    public IEnumerable<Item> Items => _items;
+
     public void Awake()
     {
         _positions = this.GetChildren().ToArray();
@@ -34,15 +36,13 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public bool TryRemove(ItemId itemId, bool destroy = false)
+    public void Remove(Item value, bool destroy = false)
     {
-        var item = _items.FirstOrDefault(x => x.Data.Id == itemId);
-        if (item is null) return false;
+        var item = _items.First(x => x.Data.name == value.Data.name);
         if (destroy) item.Dispose();
         _items.Remove(item);
         RefreshView();
-        return true;
-    }    
+    }
 
     public void Reset()
     {
@@ -51,6 +51,19 @@ public class Inventory : MonoBehaviour
         
         _items.Clear();
         RefreshView();
+    }
+
+    public void AddPoison(ItemData data)
+    {
+        if (!data.CanBecomePoison) return;
+        
+        // First item that is not poisoned yet.
+        var item = _items.FirstOrDefault(x => !x.Data.Poison); 
+        if (item is null) return;
+        
+        // Poison it
+        item.Data.Poison = data;
+        item.Refresh();
     }
     
     private void Replace(Item oldItem, Item newItem)

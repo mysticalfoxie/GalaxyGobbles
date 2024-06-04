@@ -14,10 +14,11 @@ public class Overlay : SingletonMonoBehaviour<Overlay>
         InheritedDDoL = true;
     }
 
-    public ItemRenderer CreateItemRenderer(Item item)
+    public ItemRenderer CreateItemRenderer(Item item, object initiator)
     {
         var instance = Instantiate(GameSettings.Data.PRE_Item);
         var itemRenderer = instance.GetRequiredComponent<ItemRenderer>();
+        itemRenderer.Initiator = initiator;
         instance.transform!.SetParent(gameObject.transform);
         instance.transform.localPosition = Vector3.zero;
         instance.transform.localScale = Vector3.one;

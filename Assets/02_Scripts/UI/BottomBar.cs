@@ -1,9 +1,9 @@
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class BottomBar : SingletonMonoBehaviour<BottomBar>
 {
     public Inventory Inventory { get; private set; }
+    public Bounties Bounties { get; private set; }
     public OpenStatus OpenStatus { get; private set; }
     public DaytimeDisplay DaytimeDisplay { get; private set; }
     public Progressbar Progressbar { get; private set; }
@@ -13,6 +13,7 @@ public class BottomBar : SingletonMonoBehaviour<BottomBar>
         base.Awake();
         InheritedDDoL = true;
         Inventory = GetComponentInChildren<Inventory>();
+        Bounties = GetComponentInChildren<Bounties>();
         OpenStatus = GetComponentInChildren<OpenStatus>();
         DaytimeDisplay = GetComponentInChildren<DaytimeDisplay>();
         Progressbar = this.GetRequiredComponent<Progressbar>();

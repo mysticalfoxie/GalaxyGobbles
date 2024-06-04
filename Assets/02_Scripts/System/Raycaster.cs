@@ -19,7 +19,12 @@ public class Raycaster : SingletonMonoBehaviour<Raycaster>
         Camera = Camera.main;
     }
 
-    public Vector3? RaycastPosition(Vector2 vector2)
+    public Vector2 Get2DPositionFrom3D(Vector3 position)
+    {
+        return Camera.WorldToScreenPoint(position);
+    }
+
+    public Vector3? Get3DPositionFrom2D(Vector2 vector2)
     {
         var ray = Camera.ScreenPointToRay(vector2);
         Physics.Raycast(ray, out var raycast, _raycastMaxRange);

@@ -11,9 +11,9 @@ public class References : SingletonMonoBehaviour<References>
     private readonly List<WaitArea> _waitAreas = new();
     private readonly List<NoodlePot> _noodlePots = new();
     
-    [Header("Settings")] 
-    [SerializeField] 
-    private GameSettings _settings;
+    [Header("Configurations")] 
+    [SerializeField] private GameSettings _settings;
+    [SerializeField] private Identifiers _identifiers;
     
     public override void Awake()
     {
@@ -62,4 +62,5 @@ public class References : SingletonMonoBehaviour<References>
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;
     public IEnumerable<NoodlePot> NoodlePots => _noodlePots;
     public IEnumerable<GameObject> LevelObjects => _allLevelObjects;
+    public static Identifiers Ids => Instance._identifiers;
 }

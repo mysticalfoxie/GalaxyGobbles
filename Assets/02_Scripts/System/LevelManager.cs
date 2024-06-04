@@ -33,10 +33,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         if (SceneManager.GetActiveScene().buildIndex != MAIN_LEVEL_INDEX) return;
 
         var debugLevel = Math.Max(Math.Min(_debugLevel, GameSettings.Data.Levels.Count()), 0);
-        LoadLevel(debugLevel, true);
+        StartCoroutine(LoadLevelAsync(debugLevel, true));
     }
 
-    public void LoadLevel(int index, bool skipSceneLoad = false)
+    public IEnumerator LoadLevelAsync(int index, bool skipSceneLoad = false)
     {
         CurrentLevelIndex = index;
         CurrentLevel = GameSettings.Data.Levels
@@ -44,11 +44,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             .ElementAt(index);
          
         MainMenu.Instance.SetElementsForStart();
-        if (skipSceneLoad) return;
-        StartCoroutine(nameof(LoadScene));
+        if (skipSceneLoad) yield break;
+        
+        yield return LoadSceneAsync();
     }
 
-    public IEnumerator LoadScene()
+    public IEnumerator LoadSceneAsync()
     {
         Loading = true;
         yield return SceneManager.LoadSceneAsync(MAIN_LEVEL_INDEX);

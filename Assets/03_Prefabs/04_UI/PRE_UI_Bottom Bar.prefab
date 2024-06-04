@@ -779,7 +779,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1123982894086642371}
-  - component: {fileID: 2418468549151554585}
+  - component: {fileID: 1411020807040111335}
   - component: {fileID: 3674136993992805631}
   - component: {fileID: 1090464611835608832}
   m_Layer: 5
@@ -808,10 +808,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -682, y: 5}
-  m_SizeDelta: {x: 500, y: -15}
+  m_AnchoredPosition: {x: -682, y: 25}
+  m_SizeDelta: {x: 500, y: -35}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &2418468549151554585
+--- !u!114 &1411020807040111335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -820,7 +820,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2667669973102896195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7142c4f351ddc484ba1389ca2afadd1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 58167cd18ed1454882cd48d7e79ff156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!222 &3674136993992805631
@@ -977,7 +977,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8705655522635258661
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1048,11 +1048,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1123982894086642371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3287644292523026046
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1127,7 +1127,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9014569611827167487
 CanvasRenderer:
   m_ObjectHideFlags: 0

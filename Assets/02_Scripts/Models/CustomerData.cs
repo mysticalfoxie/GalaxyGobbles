@@ -7,22 +7,21 @@ public class CustomerData : ScriptableObject
     [Header("Customer Arrival")]
     [SerializeField] 
     [Range(0, 10)] 
-    protected uint _minutesInGame;
+    internal uint _minutesInGame;
     
     [SerializeField] 
     [Range(0, 59)]
-    protected uint _secondsInGame;
+    internal uint _secondsInGame;
     
     [Header("Customer Specification")]
-    [SerializeField]
-    private SpeciesData _species;
+    [SerializeField] internal SpeciesData _species;
+    [SerializeField] internal ItemData[] _desiredItems;
 
-    [Header("Customer Desires")]
-    [SerializeField]
-    private ItemId[] _desiredItems;
-
+    [Header("Assassination")]
+    [SerializeField] internal bool _isAssassinationTarget;
+    
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;
     public SpeciesData Species => _species;
-    public IEnumerable<ItemId> DesiredItems => _desiredItems;
+    public IEnumerable<ItemData> DesiredItems => _desiredItems;
 }

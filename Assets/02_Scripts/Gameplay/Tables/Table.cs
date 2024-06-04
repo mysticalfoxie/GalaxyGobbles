@@ -6,8 +6,10 @@ public class Table : TouchableMonoBehaviour
 {
     private Chair[] _chairs;
 
+    [SerializeField] private Table _neighbourTable;
     [SerializeField] private Orientation _orientation;
     public Orientation Orientation => _orientation;
+    public Table NeighbourTable => _neighbourTable;
 
     public override void Awake()
     {

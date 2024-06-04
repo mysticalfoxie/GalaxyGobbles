@@ -23,14 +23,14 @@ public class CraftingSystem : SingletonMonoBehaviour<CraftingSystem>
         if (recipe is null) 
             throw new ArgumentNullException(nameof(recipe));
         
-        if (recipe.ItemA != item1.Data.Id && recipe.ItemB != item1.Data.Id) 
-            throw new NotSupportedException($"{nameof(recipe.ItemA)} does not exist in the recipe with id {recipe.ItemC}.");
+        if (recipe.ItemA.name != item1.Data.name && recipe.ItemB.name != item1.Data.name) 
+            throw new NotSupportedException($"Item \"{nameof(recipe.ItemA.name)}\" does not exist in the recipe for item \"{recipe.ItemC.name}\".");
         
-        if (recipe.ItemB != item2.Data.Id && recipe.ItemA != item2.Data.Id) 
-            throw new NotSupportedException($"{nameof(recipe.ItemB)} does not exist in the recipe with id {recipe.ItemC}.");
+        if (recipe.ItemB.name != item2.Data.name && recipe.ItemA.name != item2.Data.name) 
+            throw new NotSupportedException($"Item \"{nameof(recipe.ItemB.name)}\" does not exist in the recipe for item \"{recipe.ItemC.name}\".");
         
-        var itemData = GameSettings.Data.Items.First(x => x.Id == recipe.ItemC);
-        var item = new Item(itemData, !item1.Hidden);
+        var itemData = GameSettings.GetItemMatch(recipe.ItemC);
+        var item = new Item(item1.Initiator, itemData, !item1.Hidden);
         if (item1.AlignedTo.IsAssigned()) item.AlignTo(item1.AlignedTo);
         if (item1.Following.IsAssigned()) item.Follow(item1.Following);
         item1.Dispose();
@@ -40,8 +40,11 @@ public class CraftingSystem : SingletonMonoBehaviour<CraftingSystem>
 
     private RecipeMatch MatchRecipe(Item item1, Item item2)
     {
-        var recipe = _recipes.FirstOrDefault(x => x.ItemA == item1.Data.Id && x.ItemB == item2.Data.Id)
-                     ?? _recipes.FirstOrDefault(x => x.ItemB == item1.Data.Id && x.ItemA == item2.Data.Id);
+        var recipe = _recipes.FirstOrDefault(x => x.ItemA.name == item1.Data.name && x.ItemB.name == item2.Data.name)
+                     ?? _recipes.FirstOrDefault(x => x.ItemB.name == item1.Data.name && x.ItemA.name == item2.Data.name);
+
+        if (item1.Data.Poison is not null || item2.Data.Poison is not null)
+            return new RecipeMatch(false);
 
         return recipe is not null 
             ? new RecipeMatch(true, recipe, item1, item2, recipe.ItemC)

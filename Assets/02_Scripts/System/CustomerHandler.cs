@@ -13,13 +13,13 @@ public class CustomerHandler : SingletonMonoBehaviour<CustomerHandler>
         var customer = Customer.Create(data);
         _customers.Add(customer);
         WaitAreaHandler.Instance.AddCustomer(customer);
-        customer.Leave += OnCustomerLeave;
+        customer.Destroying += OnCustomerDestroyed;
     }
 
-    private void OnCustomerLeave(object sender, EventArgs e)
+    private void OnCustomerDestroyed(object sender, EventArgs e)
     {
         if (sender is not Customer customer) return;
-        customer.Leave -= OnCustomerLeave;
+        customer.Destroying -= OnCustomerDestroyed;
         _customers.Remove(customer);
     }
 

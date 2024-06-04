@@ -36,7 +36,7 @@ public static class GameObjectExtensions
     public static T GetRequiredComponent<T>(this MonoBehaviour @object)
         => @object.gameObject.GetRequiredComponent<T>();
 
-    public static bool IsAssigned(this GameObject gameObject)
+    public static bool IsAssigned(this UnityEngine.Object gameObject)
     {
         if (gameObject is null) return false;
         if (gameObject.IsDestroyed()) return false;
@@ -52,7 +52,7 @@ public static class GameObjectExtensions
         }
         catch (UnassignedReferenceException)
         {
-            Debug.LogWarning("UnassignedReferenceException. The GameObject is not assigned.");
+            Debug.LogWarning("UnassignedReferenceException. The Object is not assigned.");
             return false;
         }
     }

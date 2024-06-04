@@ -4,6 +4,8 @@ public enum CustomerState
     ThinkingAboutMeal,
     WaitingForMeal,
     Eating,
+    Poisoned,
     WaitingForCheckout,
-    Leaving
+    Leaving,
+    Dying
 }
