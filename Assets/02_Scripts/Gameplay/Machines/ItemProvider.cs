@@ -18,7 +18,7 @@ public class ItemProvider : TouchableMonoBehaviour
         _itemCache = new Item(this, item, true);
         _itemCache.AlignTo(this, _offset);
         _itemCache.ForwardTouchEventsTo(this);
-    }
+    } 
 
     private void OnValidate()
     {

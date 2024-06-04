@@ -15,6 +15,7 @@ public class CustomerItemRandomizer : MonoBehaviour
 
     private void RandomizeMeals()
     {
+#if UNITY_EDITOR
         if (!_randomizeMeals) return;
 
         var assets = AssetDatabaseHelper.LoadAssetsOfType<CustomerData>();
@@ -28,6 +29,7 @@ public class CustomerItemRandomizer : MonoBehaviour
             AssetDatabase.CreateAsset(customer, asset.AssetPath);
             AssetDatabase.SaveAssets();
         }
+#endif
     }
 
     private static CustomerData RandomizeItems(Random random, ItemData[] meals, CustomerData customer)

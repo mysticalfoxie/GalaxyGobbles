@@ -6,7 +6,9 @@ public class Inventory : MonoBehaviour
 {
     private readonly List<Item> _items = new();
     private GameObject[] _positions;
-    
+
+    public IEnumerable<Item> Items => _items;
+
     public void Awake()
     {
         _positions = this.GetChildren().ToArray();
@@ -34,14 +36,12 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public bool TryRemove(ItemData value, bool destroy = false)
+    public void Remove(Item value, bool destroy = false)
     {
-        var item = _items.FirstOrDefault(x => x.Data.name == value.name);
-        if (item is null) return false;
+        var item = _items.First(x => x.Data.name == value.Data.name);
         if (destroy) item.Dispose();
         _items.Remove(item);
         RefreshView();
-        return true;
     }
 
     public void Reset()

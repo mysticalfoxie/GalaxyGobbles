@@ -20,6 +20,7 @@ public static class LevelMapper
 
     private static void UpdateLevelAssets(IEnumerable<(string AssetPath, LevelData Value)> levels, (string AssetPath, CustomerData Value)[] customers)
     {
+#if UNITY_EDITOR
         try
         {
             foreach (var level in levels)
@@ -39,6 +40,7 @@ public static class LevelMapper
             if (!isUnavailableException) throw;
             Debug.Log("[LevelMapper] The asset database is currently unavailable.");
         }
+#endif
     }
 
     private static LevelData GetUpdatedLevelData((string AssetPath, LevelData Value) level, IEnumerable<(string AssetPath, CustomerData Value)> customers)

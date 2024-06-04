@@ -183,7 +183,7 @@ public class MainMenu : MonoBehaviour
         else
         {
             // Temporary for Gate I (Always succeed + pass to next level)
-            _completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
             if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
             

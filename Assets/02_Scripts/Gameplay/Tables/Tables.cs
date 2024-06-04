@@ -35,7 +35,7 @@ public class Tables : MonoBehaviour
         if (SelectionSystem.Instance.Selection is not Customer customer) return;
         if (customer.StateMachine.State != CustomerState.WaitingForSeat) return;
 
-        customer.Leave += OnCustomerLeave;
+        customer.Destroying += OnCustomerDestroyed;
         WaitAreaHandler.Instance.RemoveCustomer(customer);
         table.Seat(customer, chair);
         customer.Deselect();
@@ -69,12 +69,12 @@ public class Tables : MonoBehaviour
         }
     }
 
-    private static void OnCustomerLeave(object sender, EventArgs e)
+    private static void OnCustomerDestroyed(object sender, EventArgs e)
     {
         if (sender is not Customer customer) return;
         var table = References.Instance.Tables.FirstOrDefault(x => x.Customer == customer);
         if (table is null) return;
-        customer.Leave -= OnCustomerLeave;
+        customer.Destroying -= OnCustomerDestroyed;
         table.ClearSeat();
     }
 }

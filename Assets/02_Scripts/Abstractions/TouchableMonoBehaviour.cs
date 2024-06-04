@@ -20,5 +20,5 @@ public class TouchableMonoBehaviour : MonoBehaviour
     }
 
     public void InvokeTouch(object _, EventArgs eventArgs) 
-        => Touch?.Invoke(this, eventArgs);
+        => Touch?.Invoke(this, eventArgs); 
 }

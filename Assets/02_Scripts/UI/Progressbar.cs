@@ -20,7 +20,8 @@ public class Progressbar : MonoBehaviour
     private void Awake()
     {
         if (!_progressSlider) _progressSlider = gameObject.GetComponentInChildren<Slider>();
-        _levelIndicator.text = $"Level {LevelManager.CurrentLevelIndex + 1}";
+        var level = (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+        _levelIndicator.text = $"Level #{level}";
     }
 
     public void ProgressSlider(int sliderValue)

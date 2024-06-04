@@ -112,7 +112,7 @@ public class ItemRenderer : TouchableMonoBehaviour
     {
         var offset3d = new Vector3(offset.x, offset.y, 0);
         var position = value.gameObject.transform.position;
-        var screen = Raycaster.Instance.Camera.WorldToScreenPoint(position);
+        var screen = Raycaster.Instance.Get2DPositionFrom3D(position).ToVector3();
         gameObject.transform.position = screen + offset3d;
     }
 

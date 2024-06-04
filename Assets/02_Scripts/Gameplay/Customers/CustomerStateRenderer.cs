@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,7 +25,9 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item _thinkBubbleMultiHorizontalTable;
     private Item _thinkBubbleMultiVerticalTable;
     private Item _eatingItem;
+    private Item _dyingItem;
     private Item[] _items;
+    private Item _poisonedItem;
 
     public CustomerStateMachine StateMachine { get; private set; }
     public Customer Customer { get; private set; }
@@ -44,6 +47,8 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
             _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
             _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
+            _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
+            _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
         };
 
         foreach (var item in _items)
@@ -77,6 +82,8 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderWaitingForCheckout()
     {
         _eatingItem.Hide();
+        _thinkBubbleTable.Show();
+        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
         _moneyItem.Show();
         _moneyItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
     }
@@ -92,10 +99,15 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _eatingItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
     }
 
-    public void RenderPoisoned()
+    public void RenderDying()
     {
-        // // TODO: Continue tomorrow!
-        // throw new NotImplementedException();
+        // Interrupt everything!
+        foreach (var item in _items) item.Hide();
+        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
+
+        _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
+        _dyingItem.Show();
+        _dyingItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
 
     public void RefreshDesiredItems()
@@ -173,6 +185,44 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void Dispose()
     {
         foreach (var item in _items) item.Dispose();
+        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    public void RenderPoisoned()
+    {
+        _eatingItem.Hide();
+        _thinkBubbleTable.Hide();
+        _thinkBubble.Show().AlignTo(this, _thinkBubbleOffset);
+        _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
+        
+        StartCoroutine(nameof(StartPoisonCloudAnimation));
+    }
+
+    private IEnumerator StartPoisonCloudAnimation()
+    {
+        yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
+        
+        CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
+        CustomerPoisonRenderer.Instance.MovingEnded += OnMovingEnded;
+        CustomerPoisonRenderer.Instance.StartPoisonAnimation(Customer);
+        yield break;
+
+        void OnMovingEnded(object sender, EventArgs e)
+        {
+            CustomerPoisonRenderer.Instance.MovingEnded -= OnMovingEnded;
+            var target = Customer.Table.NeighbourTable.Customer;
+            if (target is not null) target.Kill();
+        }
+
+        void OnPoisonHidden(object sender, EventArgs e)
+        {
+            CustomerPoisonRenderer.Instance.PoisonHidden -= OnPoisonHidden;
+            
+            _thinkBubble.Hide();
+            _poisonedItem.Hide();
+            
+            Customer.StateMachine.State = CustomerState.WaitingForCheckout;
+        }
     }
 }

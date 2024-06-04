@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CustomerStateMachine : MonoBehaviour
@@ -39,6 +40,7 @@ public class CustomerStateMachine : MonoBehaviour
         HandleThinkingAboutMeal();
         HandleWaitingForMeal();
         HandleEating();
+        HandleDying();
         HandlePoisoned();
         HandleWaitingForCheckout();
         HandleLeaving();
@@ -69,7 +71,15 @@ public class CustomerStateMachine : MonoBehaviour
     {
         if (State != CustomerState.Poisoned) return;
         if (_stateO == CustomerState.Poisoned) return;
+
         Renderer.RenderPoisoned();
+    }
+
+    private void HandleDying()
+    {
+        if (State != CustomerState.Dying) return;
+        if (_stateO == CustomerState.Dying) return;
+        Renderer.RenderDying();
     }
 
     private void HandleEating()

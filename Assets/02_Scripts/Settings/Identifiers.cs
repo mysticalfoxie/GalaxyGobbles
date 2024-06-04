@@ -26,9 +26,15 @@ public class Identifiers : ScriptableObject
     [SerializeField] private ItemData _thinkBubbleTableMultiHorizontal;
     [SerializeField] private ItemData _thinkBubbleTableMultiVertical;
     [SerializeField] private ItemData _thinkBubbleCuttingBoard;
+    [SerializeField] private ItemData _poisonCloud;
+    [SerializeField] private ItemData _dying;
+    [SerializeField] private ItemData _poisoned;
     
     [Header("Items")]
     [SerializeField] private ItemData _noodles;
+
+    [Header("UI")] 
+    [SerializeField] private ItemData _bountyToken;
     
     #region Properties
 
@@ -51,6 +57,10 @@ public class Identifiers : ScriptableObject
     public ItemData CuttingBoard => _cuttingBoard;
     public ItemData ThinkBubbleCuttingBoard => _thinkBubbleCuttingBoard;
     public ItemData Trash => _trash;
+    public ItemData PoisonCloud => _poisonCloud;
+    public ItemData Dying => _dying;
+    public ItemData Poisoned => _poisoned;
+    public ItemData BountyToken => _bountyToken;
     
     #endregion
 
