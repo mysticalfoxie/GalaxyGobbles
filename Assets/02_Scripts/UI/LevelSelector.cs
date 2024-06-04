@@ -27,34 +27,10 @@ public class LevelSelector : MonoBehaviour
             buttonScript.AddStars();
             
             var ci = i;
-            buttonScript.Clicked += _ => OnLevelButtonClicked(ci);
+            // Calling MainMenu LoadLevel, so the Coroutine doesn't start within the LevelSelector.
+            // The initiator of the Coroutine needs to be the MainMenu, because the LevelSelector gets disabled a few ticks later.
+            // The main menu always persists and therefor start the coroutine, to avoid it being cancelled.
+            buttonScript.Clicked += _ => MainMenu.Instance.StartLoadingLevel(ci);;
         }
-    }
-
-    private void OnLevelButtonClicked(int index)
-    {
-        // The level is already loading -> Do nothing -> Return
-        if (_levelLoading) return;
-        
-        // Starting to load the level
-        _levelLoading = true;
-        
-        StartCoroutine(LoadLevelAsync(index));
-    }
-
-    private IEnumerator LoadLevelAsync(int index)
-    {
-        // TODO: Fade black before the scene loads
-        
-        // Before the new level has started loading  
-        yield return LevelManager.Instance.LoadLevelAsync(index);
-        // After the level has completely loaded
-        
-        // TODO: Fade back to the game when the scene has completely loaded! :)
-        // TODO: Show Bounty Screen
-        
-        // When done with level loading the button becomes clickable again
-        // -> Stay at the last line of the function
-        _levelLoading = false;
     }
 }
