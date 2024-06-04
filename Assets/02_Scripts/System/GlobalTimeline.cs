@@ -10,9 +10,9 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     public uint SecondsUntilClosure { get; private set; }
 
-    public new void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
 
         var operation = WaitUntilLevelLoaded(() =>
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Customer : SelectableMonoBehaviour
@@ -10,12 +11,14 @@ public class Customer : SelectableMonoBehaviour
 
     private CustomerData _data;
     private Material _materialO;
+    private bool _poisoned;
+    private bool _dying;
 
-    public event EventHandler Leave;
+    public event EventHandler Destroying;
 
     public CustomerStateMachine StateMachine { get; private set; }
     public MeshRenderer MeshRenderer { get; private set; }
-    public List<ItemId> DesiredItems { get; } = new();
+    public List<ItemData> DesiredItems { get; } = new();
 
     public CustomerData Data
     {
@@ -31,6 +34,7 @@ public class Customer : SelectableMonoBehaviour
         
         MeshRenderer = this.GetRequiredComponent<MeshRenderer>();
         StateMachine = this.GetRequiredComponent<CustomerStateMachine>();
+        Destroying += (_, _) => StateMachine.Renderer.Dispose();
     }
 
 
@@ -48,13 +52,12 @@ public class Customer : SelectableMonoBehaviour
         DesiredItems.AddRange(_data.DesiredItems);
     }
 
-    public bool TryCheckout()
+    public void TryCheckout()
     {
-        if (StateMachine.State != CustomerState.WaitingForCheckout) return false;
+        if (StateMachine.State != CustomerState.WaitingForCheckout) return;
         StateMachine.State = CustomerState.Leaving;
-        Leave?.Invoke(this, EventArgs.Empty);
+        Destroying?.Invoke(this, EventArgs.Empty);
         Destroy(gameObject);
-        return true;
     }
 
     public bool TryReceiveMeal()
@@ -74,8 +77,10 @@ public class Customer : SelectableMonoBehaviour
     public IEnumerator StartEating()
     {
         StateMachine.State = CustomerState.Eating;
-        yield return new WaitForSeconds(GameSettings.Data.CustomerEatingTime);
-        StateMachine.State = CustomerState.WaitingForCheckout;
+        yield return new CancellableWaitForSeconds(GameSettings.Data.CustomerEatingTime, () => _dying);
+        if (_dying) yield break;
+        
+        StateMachine.State = _poisoned ? CustomerState.Poisoned : CustomerState.WaitingForCheckout;
     }
 
     public void OnSeated()
@@ -86,15 +91,31 @@ public class Customer : SelectableMonoBehaviour
 
     public IEnumerator OnThinkingStart()
     {
-        yield return new WaitForSeconds(GameSettings.Data.CustomerThinkingTime);
+        yield return new CancellableWaitForSeconds(GameSettings.Data.CustomerThinkingTime, () => _dying);
+        if (_dying) yield break;
+        
         StateMachine.State = CustomerState.WaitingForMeal;
     }
 
     private void ReceiveItemsFromInventory()
     {
-        foreach (var item in DesiredItems.ToArray())
-            if (BottomBar.Instance.Inventory.TryRemove(item, true))
-                DesiredItems.Remove(item);
+        foreach (var item in BottomBar.Instance.Inventory.Items.ToArray())
+        {
+            var match = DesiredItems.FirstOrDefault(x => x.name == item.Data.name);
+            if (match is null) continue;
+
+            OnItemReceived(match, item);
+            BottomBar.Instance.Inventory.Remove(item, true);
+            return;
+        }
+    }
+
+    private void OnItemReceived(ItemData desiredItemData, Item inventoryItem)
+    {
+        DesiredItems.Remove(desiredItemData);
+        if (inventoryItem.Data.Poison is null) return;
+        if (_data.Species.PoisonItems.All(x => x.name != inventoryItem.Data.Poison.name)) return;
+        _poisoned = true;
     }
     
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;
@@ -116,5 +137,32 @@ public class Customer : SelectableMonoBehaviour
         var customer = customerGameObject.GetComponent<Customer>();
         customer.Data = data;
         return customer;
+    }
+
+    public void Kill()
+    {
+        StateMachine.State = CustomerState.Dying;
+        StartCoroutine(nameof(StartDying));
+    }
+
+    public IEnumerator StartDying()
+    {
+        yield return new WaitForSeconds(GameSettings.Data.CustomerDyingTime);
+        OnCustomerDied();
+    }
+
+    public void OnCustomerDied()
+    {
+        var bounty = Model.Create<BountyData>(model =>
+        {
+            model.WasTarget = _data._isAssassinationTarget;
+            model.Species = _data.Species;
+        });
+
+        if (!BottomBar.Instance.Bounties.TryAdd(bounty)) 
+            Debug.Log("[Bounties] Cannot pick up any more bounties.");
+        
+        Destroying?.Invoke(this, EventArgs.Empty);
+        Destroy(gameObject);
     }
 }

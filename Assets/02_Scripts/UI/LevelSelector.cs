@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,6 +9,8 @@ public class LevelSelector : MonoBehaviour
 {
     [SerializeField] private GameObject _levelButtonPrefab;
     [SerializeField] private GameObject _parentLevelButton;
+
+    private bool _levelLoading;
 
     private void Awake()
     {
@@ -20,8 +24,13 @@ public class LevelSelector : MonoBehaviour
             var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
             levelButton.GetRequiredComponent<Button>().interactable = true; // unlock all levels for Gate I build.
             buttonScript.LevelIndex = i;
-            buttonScript.Clicked += index => LevelManager.Instance.LoadLevel(index);
             buttonScript.AddStars();
+            
+            var ci = i;
+            // Calling MainMenu LoadLevel, so the Coroutine doesn't start within the LevelSelector.
+            // The initiator of the Coroutine needs to be the MainMenu, because the LevelSelector gets disabled a few ticks later.
+            // The main menu always persists and therefor start the coroutine, to avoid it being cancelled.
+            buttonScript.Clicked += _ => MainMenu.Instance.StartLoadingLevel(ci);;
         }
     }
 }

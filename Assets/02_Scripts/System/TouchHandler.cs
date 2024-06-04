@@ -9,7 +9,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
     
     private GameObject TouchedGameObject { get; set; }
 
-    public event EventHandler Touch;
+    public event EventHandler<TouchEvent> Touch;
     
     public void Update()
     {
@@ -27,10 +27,12 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         if (!TouchedGameObject.IsAssigned(() => TouchedGameObject = null)) return;
         
         var touched = TouchedGameObject;
-        Touch?.Invoke(touched, EventArgs.Empty);
+        var eventArgs = new TouchEvent(touched);
+        Touch?.Invoke(touched, eventArgs);
         var touchables = touched.GetComponents<TouchableMonoBehaviour>();
         TouchedGameObject = null;
-        
+
+        if (eventArgs.Cancelled) return;
         if (touchables.Length == 0) return;
         
         foreach (var touchable in touchables)

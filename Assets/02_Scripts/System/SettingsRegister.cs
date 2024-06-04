@@ -1,15 +1,27 @@
+using System;
 using UnityEditor;
 
 public static class SettingsRegister
 {
+    
 #if UNITY_EDITOR
+    
     [SettingsProvider]
-    public static SettingsProvider CreateReferenceSettingsProvider() 
+    public static SettingsProvider CreateGameSettingsProvider() 
         => AssetSettingsProvider
             .CreateProviderFromAssetPath("Galaxy Gobbles/Game Settings", GameSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated()
+            .EnsureSettingsCreated(() => GameSettings.GetOrCreateSettings())
+            .AppendSaveChangesEvent();
+    
+    [SettingsProvider]
+    public static SettingsProvider CreateIdentifierSettingsProvider() 
+        => AssetSettingsProvider
+            .CreateProviderFromAssetPath("Galaxy Gobbles/Identifiers", Identifiers.SETTINGS_PATH)
+            .EnsureSettingsCreated(() => Identifiers.GetOrCreateSettings())
             .AppendSaveChangesEvent();
 
+    #region Extensions
+    
     private static AssetSettingsProvider AppendSaveChangesEvent(this AssetSettingsProvider provider)
     {
         provider.inspectorUpdateHandler += () =>
@@ -23,11 +35,15 @@ public static class SettingsRegister
         return provider;
     }
 
-    private static AssetSettingsProvider EnsureSettingsCreated(this AssetSettingsProvider provider)
+    private static AssetSettingsProvider EnsureSettingsCreated(this AssetSettingsProvider provider, Action action)
     {
-        GameSettings.GetOrCreateSettings();
+        action();
         return provider;
     } 
+
+    #endregion
+    
 #endif
+    
 }
 

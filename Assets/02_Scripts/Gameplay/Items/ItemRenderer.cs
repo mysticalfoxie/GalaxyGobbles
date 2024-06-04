@@ -15,6 +15,7 @@ public class ItemRenderer : TouchableMonoBehaviour
     private Item _item;
 
     public bool Destroyed { get; private set; }
+    public object Initiator { get; set; }
 
     public event EventHandler OnDestroyed; 
     
@@ -67,6 +68,11 @@ public class ItemRenderer : TouchableMonoBehaviour
         _follow = null;
         _followOffset = default;
     }
+
+    public void Refresh()
+    {
+        Item = Item;
+    }
     
     protected override void OnTouch()
     {
@@ -84,6 +90,7 @@ public class ItemRenderer : TouchableMonoBehaviour
         rendererComponent.rectTransform.transform.localScale = Vector2.one;
         rendererComponent.rectTransform.transform.localScale = Vector2.one;
         rendererComponent.rectTransform.transform.localRotation = Quaternion.Euler(0F, 0F, sprite.Rotation);
+        rendererComponent.color = sprite.ColorOverlay;
         _renderers.Add(rendererGameObject, rendererComponent);
     }
 
@@ -105,11 +112,11 @@ public class ItemRenderer : TouchableMonoBehaviour
     {
         var offset3d = new Vector3(offset.x, offset.y, 0);
         var position = value.gameObject.transform.position;
-        var screen = Raycaster.Instance.Camera.WorldToScreenPoint(position);
+        var screen = Raycaster.Instance.Get2DPositionFrom3D(position).ToVector3();
         gameObject.transform.position = screen + offset3d;
     }
 
-    private void DetectChanges(SpriteData[] newSprites, out SpriteData[] removed, out SpriteData[] added)
+    private void DetectChanges(List<SpriteData> newSprites, out SpriteData[] removed, out SpriteData[] added)
     {
         added = newSprites
             .Where(x => x is not null)
@@ -124,12 +131,14 @@ public class ItemRenderer : TouchableMonoBehaviour
     private void UpdateItem(Item item)
     {
         _item = item ?? throw new ArgumentNullException(nameof(item));
-        var sprites = _item.Data.Sprites.ToArray();
+        var sprites = _item.Data.Sprites.ToList();
+        if (item.Data.Poison is not null) sprites.Add(GameSettings.Data.PoisonIcon);
         DetectChanges(sprites, out var removed, out var added);
         foreach (var removedSprite in removed) RemoveSprite(removedSprite);
         foreach (var addedSprite in added) AddSprite(addedSprite);
-        IndexingSprites(); // Experimental... Don't know if it works with unity's "SetSiblingIndex"
-        _sprites = sprites;
+        IndexingSprites();
+        gameObject.name = string.IsNullOrWhiteSpace(item.Data.Name) ? "ITEM | Unnamed Item" : $"ITEM | {item.Data.Name.Trim()}";
+        _sprites = sprites.ToArray();
     }
 
     private void IndexingSprites()

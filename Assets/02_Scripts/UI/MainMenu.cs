@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using System.Linq;
 using TMPro;
@@ -42,6 +43,7 @@ public class MainMenu : MonoBehaviour
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
+    private bool _levelLoading;
     public static MainMenu Instance { get; private set; }
 
     public void Awake()
@@ -181,7 +183,7 @@ public class MainMenu : MonoBehaviour
         else
         {
             // Temporary for Gate I (Always succeed + pass to next level)
-            _completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
             if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
             
@@ -215,5 +217,32 @@ public class MainMenu : MonoBehaviour
         _sfxSlider.value = PlayerPrefs.HasKey("SFXVolume")
             ? _currentSfxVolume = PlayerPrefs.GetFloat("SFXVolume")
             : PlayerPrefs.GetFloat("SFXVolume"); 
+    }
+
+    public void StartLoadingLevel(int index)
+    {
+        // The level is already loading -> Do nothing -> Return
+        if (_levelLoading) return;
+        
+        // Starting to load the level
+        _levelLoading = true;
+        
+        StartCoroutine(LoadLevelAsync(index));
+    }
+
+    private IEnumerator LoadLevelAsync(int index)
+    {
+        // TODO: Fade black before the scene loads
+        
+        // Before the new level has started loading  
+        yield return LevelManager.Instance.LoadLevelAsync(index);
+        // After the level has completely loaded
+        
+        // TODO: Fade back to the game when the scene has completely loaded! :)
+        // TODO: Show Bounty Screen
+        
+        // When done with level loading the button becomes clickable again
+        // -> Stay at the last line of the function
+        _levelLoading = false;
     }
 }

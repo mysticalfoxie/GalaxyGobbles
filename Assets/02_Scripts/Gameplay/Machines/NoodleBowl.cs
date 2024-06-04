@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class NoodleBowl : TouchableMonoBehaviour
@@ -12,8 +11,8 @@ public class NoodleBowl : TouchableMonoBehaviour
     {
         base.Awake();
 
-        _itemData = GameSettings.Data.Items.First(x => x.Id == ItemId.ID_01_NoodleBowl);
-        _item = new Item(_itemData, true);
+        _itemData = GameSettings.GetItemMatch(Identifiers.Value.NoodleBowl);
+        _item = new Item(this, _itemData, true);
         _item.AlignTo(this, _itemOffset);
         _item.ForwardTouchEventsTo(this);
     }

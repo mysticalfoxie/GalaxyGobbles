@@ -6,14 +6,16 @@ public class Item : IDisposable
     private ItemRenderer _renderer;
     private readonly bool _initialized;
 
-    public Item(ItemData data, bool renderItemOnCreation = false)
+    public Item(object initiator, ItemData data, bool renderItemOnCreation = false)
     {
+        Initiator = initiator;
         Data = data;
         if (renderItemOnCreation) Show();
         else Hidden = true;
         _initialized = true; 
     }
 
+    public object Initiator { get; }
     public ItemData Data { get; }
     public GameObject AlignedTo { get; private set; }
     public GameObject Following { get; private set; }
@@ -83,6 +85,11 @@ public class Item : IDisposable
         return this;
     }
 
+    public void Refresh()
+    {
+        _renderer.Refresh();
+    }
+
     public Item ForwardTouchEventsTo(TouchableMonoBehaviour touchable)
     {
         Click += (_, _) => touchable?.InvokeTouch(this, EventArgs.Empty);
@@ -91,7 +98,7 @@ public class Item : IDisposable
 
     public Item Clone(bool showOnCreation = false)
     {
-        return new Item(Data.Clone(), showOnCreation);
+        return new Item(this, Data.Clone(), showOnCreation);
     }
 
     public void Dispose()
@@ -104,7 +111,7 @@ public class Item : IDisposable
 
     private ItemRenderer CreateItemRenderer()
     {
-        var itemRenderer = Overlay.Instance.CreateItemRenderer(this);
+        var itemRenderer = Overlay.Instance.CreateItemRenderer(this, Initiator);
         itemRenderer.Item = this;
         itemRenderer.Click += (o, e) => Click?.Invoke(o, e);
         return itemRenderer;
