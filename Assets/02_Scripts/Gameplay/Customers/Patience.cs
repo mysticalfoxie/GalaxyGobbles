@@ -6,7 +6,6 @@ public class Patience : MonoBehaviour
 {
     private GameObject _heartsGameObject;
     private Hearts _hearts;
-    private float _patience;
     private bool _hasTicked;
 
     [Header("Visualization")]
@@ -14,6 +13,7 @@ public class Patience : MonoBehaviour
     [SerializeField] private Vector2 _heartsOffset;
 
     public Customer Customer { get; set; }
+    public float Value { get; private set; }
     public bool Ticking { get; private set; }
 
     public event EventHandler Angry; 
@@ -32,7 +32,7 @@ public class Patience : MonoBehaviour
         Ticking = true;
         _heartsGameObject.SetActive(true);
         _hearts.Follow(Customer, _heartsOffset);
-        _patience = 100.0F;
+        Value = 100.0F;
         StartCoroutine(nameof(OnStartTicking));
     }
 
@@ -56,15 +56,15 @@ public class Patience : MonoBehaviour
             if (CanTick()) OnTick();
         }
 
-        if (_patience <= 0.0F) 
+        if (Value <= 0.0F) 
             Angry?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnTick()
     {
         _hasTicked = true;
-        _patience -= GameSettings.Data.PatienceDropAmount;
-        _hearts.SetFillPercentage(_patience);
+        Value -= GameSettings.Data.PatienceDropAmount;
+        _hearts.SetFillPercentage(Value);
     }
 
     private bool CanTick()
@@ -72,7 +72,7 @@ public class Patience : MonoBehaviour
         if (!_hasTicked) return true;
         if (!this.IsAssigned()) return false;
         if (!isActiveAndEnabled) return false;
-        return _patience > 0.0F;
+        return Value > 0.0F;
     }
 
     public void Dispose()

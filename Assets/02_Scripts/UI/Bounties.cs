@@ -26,4 +26,9 @@ public class Bounties : MonoBehaviour
         
         return true;
     }
+
+    public void Reset()
+    {
+        _bounties.Clear();
+    }
 }

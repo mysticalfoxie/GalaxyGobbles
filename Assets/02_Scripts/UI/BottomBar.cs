@@ -6,7 +6,9 @@ public class BottomBar : SingletonMonoBehaviour<BottomBar>
     public Bounties Bounties { get; private set; }
     public OpenStatus OpenStatus { get; private set; }
     public DaytimeDisplay DaytimeDisplay { get; private set; }
-    public Progressbar Progressbar { get; private set; }
+    public ProgressBar ProgressBar { get; private set; }
+    public Score Score { get; private set; }
+    public LevelIndicator LevelIndicator { get; private set; }
     
     public override void Awake()
     {
@@ -16,7 +18,16 @@ public class BottomBar : SingletonMonoBehaviour<BottomBar>
         Bounties = GetComponentInChildren<Bounties>();
         OpenStatus = GetComponentInChildren<OpenStatus>();
         DaytimeDisplay = GetComponentInChildren<DaytimeDisplay>();
-        Progressbar = this.GetRequiredComponent<Progressbar>();
+        ProgressBar = GetComponentInChildren<ProgressBar>();
+        Score = GetComponentInChildren<Score>();
+        LevelIndicator = GetComponentInChildren<LevelIndicator>();
+    }
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex != LevelManager.MAIN_LEVEL_INDEX) return;
+        ProgressBar.OnLevelLoaded();
+        LevelIndicator.OnLevelLoaded();
     }
 
     protected override void OnSceneUnloaded(Scene scene)
@@ -24,6 +35,7 @@ public class BottomBar : SingletonMonoBehaviour<BottomBar>
         Inventory.Reset();
         OpenStatus.Reset();
         DaytimeDisplay.Reset();
-        Progressbar.Reset();
+        Bounties.Reset();
+        Score.Reset();
     }
 }

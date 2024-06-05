@@ -78,8 +78,10 @@ public class Customer : SelectableMonoBehaviour
     {
         if (StateMachine.State != CustomerState.WaitingForCheckout) return;
         StateMachine.State = CustomerState.Leaving;
-        Destroying?.Invoke(this, EventArgs.Empty);
-        Destroy(gameObject);
+        
+        new ScoreCalculation(Patience.Value, _data.DesiredItems).Apply();
+        
+        OnCustomerLeave();
     }
 
     public bool TryReceiveMeal()

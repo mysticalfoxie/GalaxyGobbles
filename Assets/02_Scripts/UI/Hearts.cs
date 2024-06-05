@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,6 +38,7 @@ public class Hearts : MonoBehaviour
     private void Update()
     {
         if (_follow is null) return;
+        if (!_follow.IsAssigned()) return;
         if (_follow.position == _followPositionO) return;
         
         _followPositionO = _follow.position;

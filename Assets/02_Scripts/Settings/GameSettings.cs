@@ -10,32 +10,45 @@ using Object = UnityEngine.Object;
 public class GameSettings : ScriptableObject
 {
     [Header("General Settings")]
+    [Header("Cooking")]
     [Tooltip("The amount of time it takes for the noodles to cook.")]
     [SerializeField] private float _noodleBoilingTime = 5.0F;
     [Tooltip("The amount of time it takes for the character to clean the overcooked noodle pot.")]
     [SerializeField] private float _potCleaningTime = 0.2F;
     [Tooltip("The amount of time it takes for the noodles to overcook. The timer starts after the noodles were cooked.")]
     [SerializeField] private float _noodleOvercookTime = 5.0F;
+    
+    [Header("Customer Behaviour")]
     [Tooltip("The amount of time it takes for the customer to think about his meal.")]
     [SerializeField] private float _customerThinkingTime = 3.0F;
     [Tooltip("The amount of time it takes for the customer to eat.")]
     [SerializeField] private float _customerEatingTime = 3.0F;
-    [Tooltip("The amount of time it takes for the customer to die from poison.")]
-    [SerializeField] private float _customerDyingTime = 3.0F;
     [Tooltip("The amount of time it takes for the customer to stock up the queue, when the one in front is seated.")]
     [SerializeField] private float _queueRestockDelay = 0.2F;
+    
+    [Header("Assassination")]
+    [Tooltip("The amount of time it takes for the customer to die from poison.")]
+    [SerializeField] private float _customerDyingTime = 3.0F;
     [Tooltip("The amount of time it takes for the poison cloud to disappear.")]
     [SerializeField] private float _poisonHideDelay = 2.0F;
     [Tooltip("The amount of time between the customers poisoning and his killing animation (Poison Cloud).")]
     [SerializeField] private float _customerKillDelay = 2.0F;
     [Tooltip("The amount of time it takes for the character to clean the table.")]
     [SerializeField] private float _tableCleaningTime = 2.0F;
+    
+    [Header("Customer Patience")]
     [Tooltip("The amount of time between each tick in the patience system.")]
     [SerializeField] private float _patienceTickDelay = 0.2F;
     [Tooltip("The percentage that drops with each tick from the patience. (0 = Leaving, 100 = Full)")]
     [SerializeField] private float _patienceDropAmount = 2.0F;
     [Tooltip("The amount of time between the angry think bubble and his leave.")]
     [SerializeField] private float _customerAngryLeaveTime = 2.0F;
+    
+    [Header("Scoring")]
+    [Tooltip("The base value each customer gives you when you successfully served them.")]
+    [SerializeField] private float _customerBaseScore = 1.0F;
+    [Tooltip("The maximum score you could receive from a single customer.")]
+    [SerializeField] private float _customerMaxScore = 4.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -77,6 +90,8 @@ public class GameSettings : ScriptableObject
     public float PatienceTickDelay => _patienceTickDelay;
     public float PatienceDropAmount => _patienceDropAmount;
     public float CustomerAngryLeavingTime => _customerAngryLeaveTime;
+    public float CustomerMaxScore => _customerMaxScore;
+    public float CustomerBaseScore => _customerBaseScore;
 
     public SpriteData PoisonIcon => _poisonIcon;
     

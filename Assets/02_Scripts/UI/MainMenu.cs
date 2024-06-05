@@ -164,7 +164,7 @@ public class MainMenu : MonoBehaviour
 
     public void CompleteDay()
     {
-        var starsAcquired = Progressbar.Progress;
+        var starsAcquired = ProgressBar.Progress;
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
         
@@ -178,7 +178,7 @@ public class MainMenu : MonoBehaviour
             
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
             
-            _completeDayText.text = $"You Completed Day {LevelManager.CurrentLevelIndex + 1} and Acquired {starsAcquired} Stars!";
+            //_completeDayText.text = $"You Completed Day {LevelManager.CurrentLevelIndex + 1} and Acquired {starsAcquired} Stars!";
         }
         else
         {
