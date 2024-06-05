@@ -30,6 +30,12 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _customerKillDelay = 2.0F;
     [Tooltip("The amount of time it takes for the character to clean the table.")]
     [SerializeField] private float _tableCleaningTime = 2.0F;
+    [Tooltip("The amount of time between each tick in the patience system.")]
+    [SerializeField] private float _patienceTickDelay = 0.2F;
+    [Tooltip("The percentage that drops with each tick from the patience. (0 = Leaving, 100 = Full)")]
+    [SerializeField] private float _patienceDropAmount = 2.0F;
+    [Tooltip("The amount of time between the angry think bubble and his leave.")]
+    [SerializeField] private float _customerAngryLeaveTime = 2.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -41,6 +47,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private GameObject _customerPrefab;
     [SerializeField] private GameObject _spriteRendererPrefab;
     [SerializeField] private GameObject _rectTransformPrefab;
+    [SerializeField] private GameObject _heartsPrefab;
 
     [Header("Music")] 
     [SerializeField] private AudioData _mainMenuMusic;
@@ -67,6 +74,9 @@ public class GameSettings : ScriptableObject
     public float PoisonHideDelay => _poisonHideDelay;
     public float CustomerKillDelay => _customerKillDelay;
     public float TableCleaningTime => _tableCleaningTime;
+    public float PatienceTickDelay => _patienceTickDelay;
+    public float PatienceDropAmount => _patienceDropAmount;
+    public float CustomerAngryLeavingTime => _customerAngryLeaveTime;
 
     public SpriteData PoisonIcon => _poisonIcon;
     
@@ -74,6 +84,7 @@ public class GameSettings : ScriptableObject
     public GameObject PRE_SpriteRenderer => _spriteRendererPrefab;
     public GameObject PRE_Customer => _customerPrefab;
     public GameObject PRE_RectTransform => _rectTransformPrefab;
+    public GameObject PRE_Hearts => _heartsPrefab;
     
     public IEnumerable<LevelData> Levels => _levels;
     public IEnumerable<SpeciesData> Species => _species;

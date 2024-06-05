@@ -41,6 +41,7 @@ public class CustomerStateMachine : MonoBehaviour
         HandleWaitingForMeal();
         HandleEating();
         HandleDying();
+        HandleAngry();
         HandlePoisoned();
         HandleWaitingForCheckout();
         HandleLeaving();
@@ -80,6 +81,13 @@ public class CustomerStateMachine : MonoBehaviour
         if (State != CustomerState.Dying) return;
         if (_stateO == CustomerState.Dying) return;
         Renderer.RenderDying();
+    }
+
+    private void HandleAngry()
+    {
+        if (State != CustomerState.Angry) return;
+        if (_stateO == CustomerState.Angry) return;
+        Renderer.RenderAngry();
     }
 
     private void HandleEating()

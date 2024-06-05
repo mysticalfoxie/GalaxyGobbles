@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Tables : MonoBehaviour
 {
-    public List<(Table, Table)> TablePairs = new();
+    public readonly List<(Table, Table)> TablePairs = new();
     
     public void Awake()
     {

@@ -39,10 +39,11 @@ public class Table : TouchableMonoBehaviour
     public void Seat(Customer customer, Chair chair = null)
     {
         chair ??= _chairs.First();
-        var position = chair.transform.position + chair.Offset;
+        var position = chair.transform.position + chair.CustomerOffset;
         customer.transform.position = position;
         Customer = customer;
         Customer.Table = this;
+        Customer.Chair = chair;
     }
 
     public void SetDirty()

@@ -7,5 +7,6 @@ public enum CustomerState
     Poisoned,
     WaitingForCheckout,
     Leaving,
-    Dying
+    Dying,
+    Angry,
 }

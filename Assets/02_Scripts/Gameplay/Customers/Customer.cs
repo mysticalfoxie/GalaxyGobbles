@@ -13,12 +13,20 @@ public class Customer : SelectableMonoBehaviour
     private Material _materialO;
     private bool _poisoned;
     private bool _dying;
+    private bool _visible;
 
     public event EventHandler Destroying;
-
+    
+    public Patience Patience { get; private set; }
     public CustomerStateMachine StateMachine { get; private set; }
     public MeshRenderer MeshRenderer { get; private set; }
     public List<ItemData> DesiredItems { get; } = new();
+
+    public bool Visible
+    {
+        get => _visible;
+        set => UpdateVisibility(value);
+    }
 
     public CustomerData Data
     {
@@ -27,6 +35,7 @@ public class Customer : SelectableMonoBehaviour
     }
 
     public Table Table { get; set; }
+    public Chair Chair { get; set; }
 
     public override void Awake()
     {
@@ -34,9 +43,12 @@ public class Customer : SelectableMonoBehaviour
         
         MeshRenderer = this.GetRequiredComponent<MeshRenderer>();
         StateMachine = this.GetRequiredComponent<CustomerStateMachine>();
+        Patience = this.GetRequiredComponent<Patience>();
         Destroying += (_, _) => StateMachine.Renderer.Dispose();
+        Destroying += (_, _) => Patience.Dispose();
+        Patience.Customer = this;
+        Patience.Angry += OnAngry;
     }
-
 
     protected override void OnTouch()
     {
@@ -50,6 +62,16 @@ public class Customer : SelectableMonoBehaviour
         
         DesiredItems.Clear();
         DesiredItems.AddRange(_data.DesiredItems);
+    }
+
+    private void UpdateVisibility(bool value)
+    {
+        _visible = value;
+
+        if (!_visible) return;
+        if (Patience.Ticking) return;
+        
+        Patience.StartTicking();
     }
 
     public void TryCheckout()
@@ -85,6 +107,7 @@ public class Customer : SelectableMonoBehaviour
 
     public void OnSeated()
     {
+        Patience.UpdateOffset();
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
     }
@@ -151,6 +174,26 @@ public class Customer : SelectableMonoBehaviour
         OnCustomerDied();
     }
 
+    private void OnAngry(object sender, EventArgs eventArgs)
+    {
+        if (_dying) return;
+        StateMachine.State = CustomerState.Angry;
+        StartCoroutine(nameof(StartAngryLeaving));
+    }
+
+    public IEnumerator StartAngryLeaving()
+    {
+        yield return new WaitForSeconds(GameSettings.Data.CustomerAngryLeavingTime);
+        OnCustomerLeave();
+    }
+
+    public void OnCustomerLeave()
+    {
+        WaitAreaHandler.Instance.RemoveCustomer(this);
+        Destroying?.Invoke(this, EventArgs.Empty);
+        Destroy(gameObject);
+    }
+
     public void OnCustomerDied()
     {
         var bounty = Model.Create<BountyData>(model =>
@@ -162,7 +205,6 @@ public class Customer : SelectableMonoBehaviour
         if (!BottomBar.Instance.Bounties.TryAdd(bounty)) 
             Debug.Log("[Bounties] Cannot pick up any more bounties.");
         
-        Destroying?.Invoke(this, EventArgs.Empty);
-        Destroy(gameObject);
+        OnCustomerLeave();
     }
 }
