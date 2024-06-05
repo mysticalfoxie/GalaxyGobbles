@@ -34,6 +34,7 @@ public class Tables : MonoBehaviour
     {
         if (SelectionSystem.Instance.Selection is not Customer customer) return;
         if (customer.StateMachine.State != CustomerState.WaitingForSeat) return;
+        if (table.RequiresCleaning) return;
 
         customer.Destroying += OnCustomerDestroyed;
         WaitAreaHandler.Instance.RemoveCustomer(customer);
@@ -50,7 +51,7 @@ public class Tables : MonoBehaviour
             SelectionSystem.Instance.Deselect();
             return true;
         }
-            
+        
         table.Customer.TryReceiveMeal();
         table.Customer.TryCheckout();
         
@@ -75,6 +76,10 @@ public class Tables : MonoBehaviour
         var table = References.Instance.Tables.FirstOrDefault(x => x.Customer == customer);
         if (table is null) return;
         customer.Destroying -= OnCustomerDestroyed;
+        
+        if (customer.StateMachine.State == CustomerState.Dying)
+            customer.Table.SetDirty();
+        
         table.ClearSeat();
     }
 }

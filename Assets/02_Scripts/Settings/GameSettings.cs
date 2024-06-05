@@ -28,6 +28,8 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _poisonHideDelay = 2.0F;
     [Tooltip("The amount of time between the customers poisoning and his killing animation (Poison Cloud).")]
     [SerializeField] private float _customerKillDelay = 2.0F;
+    [Tooltip("The amount of time it takes for the character to clean the table.")]
+    [SerializeField] private float _tableCleaningTime = 2.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -64,6 +66,7 @@ public class GameSettings : ScriptableObject
     public float QueueRestockDelay => _queueRestockDelay;
     public float PoisonHideDelay => _poisonHideDelay;
     public float CustomerKillDelay => _customerKillDelay;
+    public float TableCleaningTime => _tableCleaningTime;
 
     public SpriteData PoisonIcon => _poisonIcon;
     
@@ -133,16 +136,34 @@ public class GameSettings : ScriptableObject
             DebugUtils.ClearConsole();
             Debug.Log("[Console] Cleared all log entries.");
         }
+
+        MapCustomers();
+        MapGameData();
+    }
+    
+    [MenuItem("Galaxy Gobbles/Map Game Data to Settings")]
+    private static void MapGameData()
+    {
+        if (Data is null)
+        {
+            Debug.LogWarning("[SettingsMapper] There doesn't seem to be an instance at the moment.");
+            return;
+        }
         
+        Data._levels = LoadAssetsOfType<LevelData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._levels.Length} Level(s) to the Game Settings configuration.");
+        Data._items = LoadAssetsOfType<ItemData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._items.Length} Item(s) to the Game Settings configuration.");
+        Data._recipes = LoadAssetsOfType<RecipeData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._recipes.Length} Recipe(s) to the Game Settings configuration.");
+        Data._species = LoadAssetsOfType<SpeciesData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._species.Length} Species(es) to the Game Settings configuration.");
+    }
+    
+    [MenuItem("Galaxy Gobbles/Map Customers to Levels")]
+    private static void MapCustomers()
+    {
         LevelMapper.Map();
-        _levels = LoadAssetsOfType<LevelData>();
-        Debug.Log($"[SettingsMapper] Mapped {_levels.Length} Level(s) to the Game Settings configuration.");
-        _items = LoadAssetsOfType<ItemData>();
-        Debug.Log($"[SettingsMapper] Mapped {_items.Length} Item(s) to the Game Settings configuration.");
-        _recipes = LoadAssetsOfType<RecipeData>();
-        Debug.Log($"[SettingsMapper] Mapped {_recipes.Length} Recipe(s) to the Game Settings configuration.");
-        _species = LoadAssetsOfType<SpeciesData>();
-        Debug.Log($"[SettingsMapper] Mapped {_species.Length} Species(es) to the Game Settings configuration.");
     }
 
     public static T[] LoadAssetsOfType<T>() where T : Object
