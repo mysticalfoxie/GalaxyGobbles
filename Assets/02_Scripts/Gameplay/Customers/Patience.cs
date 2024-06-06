@@ -45,7 +45,7 @@ public class Patience : MonoBehaviour
     {
         if (Customer.Chair is null) return _heartsOffset;
         if (Customer.Chair.Direction != Direction.Right) return _heartsOffset;
-        return _heartsOffset * -1;
+        return _heartsOffset * new Vector2(-1, 1);
     }
 
     private IEnumerator OnStartTicking()

@@ -8,7 +8,7 @@ public class Raycaster : SingletonMonoBehaviour<Raycaster>
     
     [Header("Raycasting")]
     [SerializeField]
-    [Range(1, 100)]
+    [Range(1, 10000)]
     private float _raycastMaxRange = 10.0F;
 
     public Camera Camera { get; set; }

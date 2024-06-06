@@ -42,7 +42,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
     public void OnDestroy()
     {
         if (_dontDestroyOnLoad || InheritedDDoL) return;
-        if (Instance is MonoBehaviour mono)
+        if (Instance is MonoBehaviour mono && Application.isPlaying)
             Destroy(mono.gameObject);
         
         Instance = null;

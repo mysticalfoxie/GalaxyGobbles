@@ -88,6 +88,7 @@ public class Identifiers : ScriptableObject
 #endif
     }
 
+#if UNITY_EDITOR
     [MenuItem("Galaxy Gobbles/Reload Identifiers")]
     public static void ReloadSettings()
     {
@@ -95,6 +96,7 @@ public class Identifiers : ScriptableObject
         AssetDatabase.Refresh();
         _data = GetSettings();
     }
+#endif
 
     private void OnValidate()
     {
