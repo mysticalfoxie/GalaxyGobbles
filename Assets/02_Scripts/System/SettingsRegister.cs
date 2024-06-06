@@ -10,14 +10,14 @@ public static class SettingsRegister
     public static SettingsProvider CreateGameSettingsProvider() 
         => AssetSettingsProvider
             .CreateProviderFromAssetPath("Galaxy Gobbles/Game Settings", GameSettings.SETTINGS_PATH)
-            .EnsureSettingsCreated(() => GameSettings.GetOrCreateSettings())
+            .EnsureSettingsCreated(() => GameSettings.GetSettings())
             .AppendSaveChangesEvent();
     
     [SettingsProvider]
     public static SettingsProvider CreateIdentifierSettingsProvider() 
         => AssetSettingsProvider
             .CreateProviderFromAssetPath("Galaxy Gobbles/Identifiers", Identifiers.SETTINGS_PATH)
-            .EnsureSettingsCreated(() => Identifiers.GetOrCreateSettings())
+            .EnsureSettingsCreated(() => Identifiers.GetSettings())
             .AppendSaveChangesEvent();
 
     #region Extensions
