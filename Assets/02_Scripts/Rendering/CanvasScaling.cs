@@ -16,7 +16,7 @@ public class CanvasScaling : MonoBehaviour
 
     public void Update()
     {
-        if (UI.Instance is null) return;
+        if (!UI.Instance.IsAssigned()) return;
         if (_canvasScaler is null) return;
         
         var deviceHeight = UI.Instance.Canvas.pixelRect.height;

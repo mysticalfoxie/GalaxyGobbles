@@ -20,17 +20,15 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
 
     public virtual void Awake()
     {
-        if (Instance is not null)
+        if (Instance is not null && Application.isPlaying)
         {
-            if (Application.isEditor) return; 
-            
             Destroy(gameObject);
             return;
         }
 
         Instance = (T)(object)this;
         
-        if (Application.isEditor) return; 
+        if (!Application.isPlaying) return; 
         
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
