@@ -23,6 +23,7 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
         if (slot is null)
         {
             _outsideQueue.Add(customer);
+            customer.Visible = false;
             customer.gameObject.SetActive(false);
             
             Debug.Log("[Wait Area] A new customer waits outside and will arrive as soon as there's an open slot.");
@@ -30,11 +31,15 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
         }
         
         slot.SetCustomer(customer);
+        customer.Visible = true;
     }
 
     public void RemoveCustomer(Customer customer)
     {
-        var slot = _waitAreas.First(x => x.Customer == customer);
+        if (customer is null) return;
+        
+        var slot = _waitAreas.FirstOrDefault(x => x.Customer == customer);
+        if (slot is null) return;
         slot.RemoveCustomer();
         
         RestockSlots();
@@ -53,8 +58,10 @@ public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
             if (_waitAreas[i].Customer is not null) continue;
             
             var customer = GetCustomerFromNextSlot(i);
-            if (customer is not null)
-                _waitAreas[i].SetCustomer(customer);
+            if (customer is null) continue;
+            
+            _waitAreas[i].SetCustomer(customer);
+            customer.Visible = true;
         }
     }
 

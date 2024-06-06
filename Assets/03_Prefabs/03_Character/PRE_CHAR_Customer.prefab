@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7868007143398512020}
   - component: {fileID: 3239516355365469012}
   - component: {fileID: 2995851268222187606}
+  - component: {fileID: 7389781275386048634}
   - component: {fileID: 2753061189670565420}
   - component: {fileID: 8069748247752689074}
   - component: {fileID: 5434990498210040862}
@@ -83,6 +84,19 @@ MonoBehaviour:
   _tableItemBottomOffset: {x: 0, y: -50}
   _horizontalTableOffset: {x: 0, y: 180}
   _verticalTableOffset: {x: 0, y: 90}
+--- !u!114 &7389781275386048634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3858524379104844713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602b08a4fe59487b9a3702f7192753a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heartsOffset: {x: -70, y: 0}
 --- !u!33 &2753061189670565420
 MeshFilter:
   m_ObjectHideFlags: 0

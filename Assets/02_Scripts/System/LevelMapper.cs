@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -31,7 +29,7 @@ public static class LevelMapper
                 AssetDatabase.CreateAsset(newLevel, level.AssetPath);
                 AssetDatabase.SaveAssets();
 
-                Debug.Log($"[LevelMapper] Mapped {newLevel._customers.Length} customer(s) to level data file \"{filename}\".");
+                Debug.Log($"[LevelMapper] Mapped {newLevel.Customers.Count()} customer(s) to level data file \"{filename}\".");
             }
         }
         catch (UnityException ex)
@@ -45,13 +43,9 @@ public static class LevelMapper
 
     private static LevelData GetUpdatedLevelData((string AssetPath, LevelData Value) level, IEnumerable<(string AssetPath, CustomerData Value)> customers)
     {
-        var clone = ScriptableObject.CreateInstance<LevelData>();
-        clone.name = level.Value.name;
-        clone._targetText = level.Value._targetText;
-        clone._levelNumber = level.Value._levelNumber;
-        clone._closeAfterMinutes = level.Value._closeAfterMinutes;
-        clone._closeAfterSeconds = level.Value._closeAfterSeconds;
-        clone._customers = GetCustomersForLevel(level, customers);
+        var clone = level.Value.Clone();
+        var newCustomers = GetCustomersForLevel(level, customers);
+        clone.SetCustomers(newCustomers);
         return clone;
     }
 

@@ -10,24 +10,45 @@ using Object = UnityEngine.Object;
 public class GameSettings : ScriptableObject
 {
     [Header("General Settings")]
+    [Header("Cooking")]
     [Tooltip("The amount of time it takes for the noodles to cook.")]
     [SerializeField] private float _noodleBoilingTime = 5.0F;
     [Tooltip("The amount of time it takes for the character to clean the overcooked noodle pot.")]
     [SerializeField] private float _potCleaningTime = 0.2F;
     [Tooltip("The amount of time it takes for the noodles to overcook. The timer starts after the noodles were cooked.")]
     [SerializeField] private float _noodleOvercookTime = 5.0F;
+    
+    [Header("Customer Behaviour")]
     [Tooltip("The amount of time it takes for the customer to think about his meal.")]
     [SerializeField] private float _customerThinkingTime = 3.0F;
     [Tooltip("The amount of time it takes for the customer to eat.")]
     [SerializeField] private float _customerEatingTime = 3.0F;
-    [Tooltip("The amount of time it takes for the customer to die from poison.")]
-    [SerializeField] private float _customerDyingTime = 3.0F;
     [Tooltip("The amount of time it takes for the customer to stock up the queue, when the one in front is seated.")]
     [SerializeField] private float _queueRestockDelay = 0.2F;
+    
+    [Header("Assassination")]
+    [Tooltip("The amount of time it takes for the customer to die from poison.")]
+    [SerializeField] private float _customerDyingTime = 3.0F;
     [Tooltip("The amount of time it takes for the poison cloud to disappear.")]
     [SerializeField] private float _poisonHideDelay = 2.0F;
     [Tooltip("The amount of time between the customers poisoning and his killing animation (Poison Cloud).")]
     [SerializeField] private float _customerKillDelay = 2.0F;
+    [Tooltip("The amount of time it takes for the character to clean the table.")]
+    [SerializeField] private float _tableCleaningTime = 2.0F;
+    
+    [Header("Customer Patience")]
+    [Tooltip("The amount of time between each tick in the patience system.")]
+    [SerializeField] private float _patienceTickDelay = 0.2F;
+    [Tooltip("The percentage that drops with each tick from the patience. (0 = Leaving, 100 = Full)")]
+    [SerializeField] private float _patienceDropAmount = 2.0F;
+    [Tooltip("The amount of time between the angry think bubble and his leave.")]
+    [SerializeField] private float _customerAngryLeaveTime = 2.0F;
+    
+    [Header("Scoring")]
+    [Tooltip("The base value each customer gives you when you successfully served them.")]
+    [SerializeField] private float _customerBaseScore = 1.0F;
+    [Tooltip("The maximum score you could receive from a single customer.")]
+    [SerializeField] private float _customerMaxScore = 4.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -39,6 +60,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private GameObject _customerPrefab;
     [SerializeField] private GameObject _spriteRendererPrefab;
     [SerializeField] private GameObject _rectTransformPrefab;
+    [SerializeField] private GameObject _heartsPrefab;
 
     [Header("Music")] 
     [SerializeField] private AudioData _mainMenuMusic;
@@ -64,6 +86,12 @@ public class GameSettings : ScriptableObject
     public float QueueRestockDelay => _queueRestockDelay;
     public float PoisonHideDelay => _poisonHideDelay;
     public float CustomerKillDelay => _customerKillDelay;
+    public float TableCleaningTime => _tableCleaningTime;
+    public float PatienceTickDelay => _patienceTickDelay;
+    public float PatienceDropAmount => _patienceDropAmount;
+    public float CustomerAngryLeavingTime => _customerAngryLeaveTime;
+    public float CustomerMaxScore => _customerMaxScore;
+    public float CustomerBaseScore => _customerBaseScore;
 
     public SpriteData PoisonIcon => _poisonIcon;
     
@@ -71,6 +99,7 @@ public class GameSettings : ScriptableObject
     public GameObject PRE_SpriteRenderer => _spriteRendererPrefab;
     public GameObject PRE_Customer => _customerPrefab;
     public GameObject PRE_RectTransform => _rectTransformPrefab;
+    public GameObject PRE_Hearts => _heartsPrefab;
     
     public IEnumerable<LevelData> Levels => _levels;
     public IEnumerable<SpeciesData> Species => _species;
@@ -133,16 +162,34 @@ public class GameSettings : ScriptableObject
             DebugUtils.ClearConsole();
             Debug.Log("[Console] Cleared all log entries.");
         }
+
+        MapCustomers();
+        MapGameData();
+    }
+    
+    [MenuItem("Galaxy Gobbles/Map Game Data to Settings")]
+    private static void MapGameData()
+    {
+        if (Data is null)
+        {
+            Debug.LogWarning("[SettingsMapper] There doesn't seem to be an instance at the moment.");
+            return;
+        }
         
+        Data._levels = LoadAssetsOfType<LevelData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._levels.Length} Level(s) to the Game Settings configuration.");
+        Data._items = LoadAssetsOfType<ItemData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._items.Length} Item(s) to the Game Settings configuration.");
+        Data._recipes = LoadAssetsOfType<RecipeData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._recipes.Length} Recipe(s) to the Game Settings configuration.");
+        Data._species = LoadAssetsOfType<SpeciesData>();
+        Debug.Log($"[SettingsMapper] Mapped {Data._species.Length} Species(es) to the Game Settings configuration.");
+    }
+    
+    [MenuItem("Galaxy Gobbles/Map Customers to Levels")]
+    private static void MapCustomers()
+    {
         LevelMapper.Map();
-        _levels = LoadAssetsOfType<LevelData>();
-        Debug.Log($"[SettingsMapper] Mapped {_levels.Length} Level(s) to the Game Settings configuration.");
-        _items = LoadAssetsOfType<ItemData>();
-        Debug.Log($"[SettingsMapper] Mapped {_items.Length} Item(s) to the Game Settings configuration.");
-        _recipes = LoadAssetsOfType<RecipeData>();
-        Debug.Log($"[SettingsMapper] Mapped {_recipes.Length} Recipe(s) to the Game Settings configuration.");
-        _species = LoadAssetsOfType<SpeciesData>();
-        Debug.Log($"[SettingsMapper] Mapped {_species.Length} Species(es) to the Game Settings configuration.");
     }
 
     public static T[] LoadAssetsOfType<T>() where T : Object

@@ -26,6 +26,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item _thinkBubbleMultiVerticalTable;
     private Item _eatingItem;
     private Item _dyingItem;
+    private Item _angryItem;
     private Item[] _items;
     private Item _poisonedItem;
 
@@ -49,6 +50,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
             _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
             _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
+            _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
         };
 
         foreach (var item in _items)
@@ -108,6 +110,17 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
         _dyingItem.Show();
         _dyingItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
+    }
+
+    public void RenderAngry()
+    {
+        // Interrupt everything!
+        foreach (var item in _items) item.Hide();
+        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
+
+        _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
+        _angryItem.Show();
+        _angryItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
 
     public void RefreshDesiredItems()
