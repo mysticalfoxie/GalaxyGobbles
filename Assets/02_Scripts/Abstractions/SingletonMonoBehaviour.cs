@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,11 +22,15 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
     {
         if (Instance is not null)
         {
+            if (Application.isEditor) return; 
+            
             Destroy(gameObject);
             return;
         }
 
         Instance = (T)(object)this;
+        
+        if (Application.isEditor) return; 
         
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
