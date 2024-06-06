@@ -9,6 +9,7 @@ public class Customer : SelectableMonoBehaviour
     [Header("Assets")]
     [SerializeField] private Material _selectedStateMaterial;
 
+    private static GameObject _customerRoot;
     private CustomerData _data;
     private Material _materialO;
     private bool _poisoned;
@@ -40,7 +41,7 @@ public class Customer : SelectableMonoBehaviour
     public override void Awake()
     {
         base.Awake();
-        
+
         MeshRenderer = this.GetRequiredComponent<MeshRenderer>();
         StateMachine = this.GetRequiredComponent<CustomerStateMachine>();
         Patience = this.GetRequiredComponent<Patience>();
@@ -158,8 +159,11 @@ public class Customer : SelectableMonoBehaviour
 
     public static Customer Create(CustomerData data)
     {
+        if (!_customerRoot.IsAssigned()) _customerRoot = null;
+        _customerRoot ??= GameObject.Find("Customers") ?? References.Instance.RootObject;
         var customerGameObject = Instantiate(GameSettings.Data.PRE_Customer);
         var customer = customerGameObject.GetComponent<Customer>();
+        customerGameObject.transform!.SetParent(_customerRoot.transform);
         customer.Data = data;
         return customer;
     }

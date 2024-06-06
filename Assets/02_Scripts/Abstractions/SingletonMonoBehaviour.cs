@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,13 +20,15 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
 
     public virtual void Awake()
     {
-        if (Instance is not null)
+        if (Instance is not null && Application.isPlaying)
         {
             Destroy(gameObject);
             return;
         }
 
         Instance = (T)(object)this;
+        
+        if (!Application.isPlaying) return; 
         
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -39,7 +42,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
     public void OnDestroy()
     {
         if (_dontDestroyOnLoad || InheritedDDoL) return;
-        if (Instance is MonoBehaviour mono)
+        if (Instance is MonoBehaviour mono && Application.isPlaying)
             Destroy(mono.gameObject);
         
         Instance = null;

@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -73,28 +74,29 @@ public class Identifiers : ScriptableObject
     public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_Identifiers.asset";
     
     private static Identifiers _data;
-    public static Identifiers Value => _data ??= GetOrCreateSettings();
+    public static Identifiers Value => _data ??= GetSettings();
     
-    internal static Identifiers GetOrCreateSettings()
+    internal static Identifiers GetSettings()
     {
 #if UNITY_EDITOR
         var settings = AssetDatabase.LoadAssetAtPath<Identifiers>(SETTINGS_PATH);
         if (settings != null) return settings;
-        
-        settings = CreateDefaultSettings();
-        AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
-        AssetDatabase.SaveAssets();
-        
-        return settings;
+
+        throw new Exception("Could not find the identifiers configuration.");
 #else
         return References.Ids;
 #endif
     }
 
-    private static Identifiers CreateDefaultSettings()
+#if UNITY_EDITOR
+    [MenuItem("Galaxy Gobbles/Reload Identifiers")]
+    public static void ReloadSettings()
     {
-        return CreateInstance<Identifiers>();
+        AssetDatabase.ReleaseCachedFileHandles();
+        AssetDatabase.Refresh();
+        _data = GetSettings();
     }
+#endif
 
     private void OnValidate()
     {

@@ -114,32 +114,20 @@ public class GameSettings : ScriptableObject
     public const string SETTINGS_PATH = "Assets/10_Miscellaneous/03_Settings/CFG_Game Settings.asset";
     
     private static GameSettings _data;
-    public static GameSettings Data => _data ??= GetOrCreateSettings();
+    public static GameSettings Data => _data ??= GetSettings();
 
-    internal static GameSettings GetOrCreateSettings()
+    internal static GameSettings GetSettings()
     {
 #if UNITY_EDITOR
         var settings = AssetDatabase.LoadAssetAtPath<GameSettings>(SETTINGS_PATH);
         if (settings != null) return settings;
-        
-        settings = CreateDefaultSettings();
-        AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
-        AssetDatabase.SaveAssets();
-        
-        return settings;
+
+        throw new Exception("Could not find the GameSettings!");
 #else
         return References.Instance.GetLocalSettings();
 #endif
     }
 
-    private static GameSettings CreateDefaultSettings()
-    {
-        var settings = CreateInstance<GameSettings>();
-        settings._species = Array.Empty<SpeciesData>();
-        settings._levels = Array.Empty<LevelData>();
-        settings._items = Array.Empty<ItemData>();
-        return settings;
-    }
     #endregion
     
     #region Utilities
@@ -166,6 +154,15 @@ public class GameSettings : ScriptableObject
         MapCustomers();
         MapGameData();
     }
+
+#if UNITY_EDITOR
+    [MenuItem("Galaxy Gobbles/Reload Game Settings")]
+    public static void ReloadSettings()
+    {
+        AssetDatabase.ReleaseCachedFileHandles();
+        AssetDatabase.Refresh();
+        _data = GetSettings();
+    }
     
     [MenuItem("Galaxy Gobbles/Map Game Data to Settings")]
     private static void MapGameData()
@@ -191,6 +188,7 @@ public class GameSettings : ScriptableObject
     {
         LevelMapper.Map();
     }
+#endif
 
     public static T[] LoadAssetsOfType<T>() where T : Object
     {

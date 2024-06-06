@@ -10,11 +10,12 @@ public class References : SingletonMonoBehaviour<References>
     private readonly List<Chair> _chairs = new();
     private readonly List<WaitArea> _waitAreas = new();
     private readonly List<NoodlePot> _noodlePots = new();
+    private GameObject _root;
     
     [Header("Configurations")] 
     [SerializeField] private GameSettings _settings;
     [SerializeField] private Identifiers _identifiers;
-    
+
     public override void Awake()
     {
         base.Awake();
@@ -26,15 +27,15 @@ public class References : SingletonMonoBehaviour<References>
     private void HandleLevelData(Scene scene)
     {
         if (scene.buildIndex != LevelManager.MAIN_LEVEL_INDEX) return;
-        var root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
-        AnalyseLevelObjects(root);
+        _root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
+        AnalyseLevelObjects();
     }
 
     public GameSettings GetLocalSettings() => _settings;
 
-    private void AnalyseLevelObjects(GameObject root)
+    private void AnalyseLevelObjects()
     {
-        var levelObjects = root.GetChildrenRecursively().ToArray(); 
+        var levelObjects = _root.GetChildrenRecursively().ToArray(); 
         foreach (var levelObject in levelObjects)
         {
             // Saves more performance then using .ToArray()
@@ -57,6 +58,7 @@ public class References : SingletonMonoBehaviour<References>
         if (pot is not null) _noodlePots.Add(pot);
     }
 
+    public GameObject RootObject => _root;
     public IEnumerable<Table> Tables => _tables;
     public IEnumerable<Chair> Chairs => _chairs;
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;

@@ -1,20 +1,18 @@
+using UnityEngine;
+using UnityEngine.UI;
 
-    using System;
-    using TMPro;
-    using UnityEngine;
-
-    public class LevelIndicator : MonoBehaviour
+public class LevelIndicator : MonoBehaviour
     {
-        private TMP_Text _tmpText;
+        private Text _text;
 
         public void Awake()
         {
-            _tmpText = this.GetRequiredComponent<TMP_Text>();
+            _text = this.GetRequiredComponent<Text>();
         }
 
         public void OnLevelLoaded()
         {
             var level = (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
-            _tmpText.text = $"Level #{level}";
+            _text.text = $"Level #{level}";
         }
     }
