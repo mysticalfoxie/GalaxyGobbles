@@ -23,9 +23,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _levelMap;
     [SerializeField] private GameObject _options;
     [SerializeField] private GameObject _credits;
+    [SerializeField] private GameObject _targetScreen;
     
     [Header("Button")]
     [SerializeField] private GameObject _btnMainMenu;
+    [SerializeField] private GameObject _targetScreenButton;
+    
 
     [Header("Audio")]
     [SerializeField] private AudioMixer _audioMixer;
@@ -39,7 +42,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private bool _startWithoutMenu;
 
-    [SerializeField] TMP_Text _completeDayText;
+    [SerializeField] private TMP_Text _completeDayText;
+
+    [SerializeField] private TMP_Text _targetText;
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
@@ -91,7 +96,7 @@ public class MainMenu : MonoBehaviour
         _btnMainMenu.SetActive(false);
         Time.timeScale = 0.0f;
         _pauseMenu.SetActive(true);
-        _pausedGame = true;
+        _pausedGame = true; 
     }
 
     public void ResumeGame()
@@ -113,6 +118,21 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
+    public void TargetScreen()
+    {
+        if(Time.timeScale != 0f)Time.timeScale = 0.0f;
+        if(!_targetScreen)_targetScreen.SetActive(true);
+        var targetText = LevelManager.CurrentLevel.TargetText;
+        _targetText.text = $"You must kill the {targetText} that comes into the restaurant.";
+    }
+    
+    public void TargetScreenButton()
+    {
+        _targetScreen.SetActive(false);
+        if(Time.timeScale != 1f)Time.timeScale = 1f;
+        _sidebar.SetActive(true);
+    }
+    
     public void Options()
     {
         _options.SetActive(true);
