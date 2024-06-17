@@ -2,18 +2,18 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SingletonMonoBehaviour<T> : MonoBehaviour where T : class
+public class Singleton<T> : MonoBehaviour where T : class
 {
     private readonly bool _dontDestroyOnLoad;
     public static T Instance { get; private set; }
     
     protected bool InheritedDDoL { get; set; } 
 
-    protected SingletonMonoBehaviour()
+    protected Singleton()
     {
     }
 
-    protected SingletonMonoBehaviour(bool dontDestroyOnLoad)
+    protected Singleton(bool dontDestroyOnLoad)
     {
         _dontDestroyOnLoad = dontDestroyOnLoad;
     }

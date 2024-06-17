@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CraftingSystem : SingletonMonoBehaviour<CraftingSystem>
+public class CraftingSystem : Singleton<CraftingSystem>
 {
     private RecipeData[] _recipes;
 

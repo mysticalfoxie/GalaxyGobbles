@@ -18,12 +18,12 @@ public class TableSelectionHandler : ISelectionHandler
     public void OnGameObjectTouched(GameObject @object, TouchEvent eventArgs)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement
-        if (@object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is { CancelSelectionOnTouch: false }) return;
+        if (@object.GetComponents<Touchable>().FirstOrDefault() is { CancelSelectionOnTouch: false }) return;
         if (SelectionSystem.Instance.Selection is null) return;
         SelectionSystem.Instance.Deselect();
     }
 
-    public void OnSelectableTouched(SelectableMonoBehaviour selectable)
+    public void OnSelectableTouched(Selectable selectable)
     {
         if (selectable.Selected)
         {

@@ -1,7 +1,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class KittyBot : SingletonMonoBehaviour<KittyBot>
+public class KittyBot : Singleton<KittyBot>
 {
     public KittyBot()
     {

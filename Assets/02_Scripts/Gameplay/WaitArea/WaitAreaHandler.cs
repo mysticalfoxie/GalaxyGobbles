@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class WaitAreaHandler : SingletonMonoBehaviour<WaitAreaHandler>
+public class WaitAreaHandler : Singleton<WaitAreaHandler>
 {
     private readonly List<Customer> _outsideQueue = new();
     private WaitArea[] _waitAreas;

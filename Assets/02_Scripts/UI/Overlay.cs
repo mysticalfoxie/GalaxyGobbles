@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Overlay : SingletonMonoBehaviour<Overlay>
+public class Overlay : Singleton<Overlay>
 {
     private readonly List<ItemRenderer> _renderers = new();
     

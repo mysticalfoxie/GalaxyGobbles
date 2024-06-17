@@ -3,7 +3,7 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
-public class CameraScaling : SingletonMonoBehaviour<CameraScaling>
+public class CameraScaling : Singleton<CameraScaling>
 {
     private Camera _camera;
 

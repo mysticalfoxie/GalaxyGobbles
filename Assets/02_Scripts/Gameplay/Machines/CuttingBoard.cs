@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CuttingBoard : TouchableMonoBehaviour
+public class CuttingBoard : Touchable
 {
     [Header("Crafting Visualization")] 
     [SerializeField] private Vector2 _thinkingBubbleOffset;

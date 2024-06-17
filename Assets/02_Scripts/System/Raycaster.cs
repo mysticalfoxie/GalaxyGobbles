@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Raycaster : SingletonMonoBehaviour<Raycaster>
+public class Raycaster : Singleton<Raycaster>
 {
     
     [Header("Raycasting")]

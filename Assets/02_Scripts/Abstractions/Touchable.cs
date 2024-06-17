@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TouchableMonoBehaviour : MonoBehaviour
+public class Touchable : MonoBehaviour
 {
     private bool _touching;
 

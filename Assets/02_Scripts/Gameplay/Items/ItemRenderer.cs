@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Attached to the item Game Object. Controls the children. 
-public class ItemRenderer : TouchableMonoBehaviour
+public class ItemRenderer : Touchable
 {
     private readonly Dictionary<GameObject, Image> _renderers = new();
     private GameObject _follow;

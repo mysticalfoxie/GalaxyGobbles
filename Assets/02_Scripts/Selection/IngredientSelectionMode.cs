@@ -18,7 +18,7 @@ public class IngredientSelectionHandler : ISelectionHandler
 
     public void OnGameObjectTouched(GameObject @object, TouchEvent eventArgs)
     {
-        var canCancelSelection = @object.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is not { CancelSelectionOnTouch: false };
+        var canCancelSelection = @object.GetComponents<Touchable>().FirstOrDefault() is not { CancelSelectionOnTouch: false };
         var itemProvider = @object.GetComponent<ItemProvider>() ?? GetItemProviderFromItemRenderer(@object);
         
         eventArgs.CancelPropagation();
@@ -46,9 +46,9 @@ public class IngredientSelectionHandler : ISelectionHandler
         return provider;
     }
 
-    public void OnSelectableTouched(SelectableMonoBehaviour selectable)
+    public void OnSelectableTouched(Selectable selectable)
     {
-        if (selectable.GetComponents<TouchableMonoBehaviour>().FirstOrDefault() is not { CancelSelectionOnTouch: false })
+        if (selectable.GetComponents<Touchable>().FirstOrDefault() is not { CancelSelectionOnTouch: false })
             Cancel?.Invoke(this, null);
     }
     

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class References : SingletonMonoBehaviour<References>
+public class References : Singleton<References>
 {
     private readonly List<GameObject> _allLevelObjects = new();
     private readonly List<Table> _tables = new();

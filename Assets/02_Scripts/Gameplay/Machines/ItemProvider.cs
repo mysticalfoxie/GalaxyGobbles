@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ItemProvider : TouchableMonoBehaviour
+public class ItemProvider : Touchable
 {
     [Header("Item Data")] 
     [SerializeField] private ItemData _item;

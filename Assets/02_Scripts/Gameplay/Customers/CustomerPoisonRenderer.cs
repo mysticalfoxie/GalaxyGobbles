@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class CustomerPoisonRenderer : SingletonMonoBehaviour<CustomerPoisonRenderer>
+public class CustomerPoisonRenderer : Singleton<CustomerPoisonRenderer>
 {
     public const string ANIMATION_CLIP_NAME = "< Custom Animation >";
     

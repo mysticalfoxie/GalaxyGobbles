@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NoodleBowl : TouchableMonoBehaviour
+public class NoodleBowl : Touchable
 {
     private Item _item;
     private ItemData _itemData;

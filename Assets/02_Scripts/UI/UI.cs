@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-public class UI : SingletonMonoBehaviour<UI>
+public class UI : Singleton<UI>
 {
     public UI() : base(true) { }
 

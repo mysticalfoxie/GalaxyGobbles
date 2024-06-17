@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
+public class TouchHandler : Singleton<TouchHandler>
 {
     private GameObject _touchStartGameObject;
     private GameObject _touchEndGameObject;
@@ -29,7 +29,7 @@ public class TouchHandler : SingletonMonoBehaviour<TouchHandler>
         var touched = TouchedGameObject;
         var eventArgs = new TouchEvent(touched);
         Touch?.Invoke(touched, eventArgs);
-        var touchables = touched.GetComponents<TouchableMonoBehaviour>();
+        var touchables = touched.GetComponents<Touchable>();
         TouchedGameObject = null;
 
         if (eventArgs.Cancelled) return;

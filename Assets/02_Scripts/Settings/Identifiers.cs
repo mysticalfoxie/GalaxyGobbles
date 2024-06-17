@@ -35,6 +35,7 @@ public class Identifiers : ScriptableObject
     
     [Header("Items")]
     [SerializeField] private ItemData _noodles;
+    [SerializeField] private ItemData _sake;
 
     [Header("UI")] 
     [SerializeField] private ItemData _bountyToken;
@@ -66,6 +67,7 @@ public class Identifiers : ScriptableObject
     public ItemData Poisoned => _poisoned;
     public ItemData Cleaning => _cleaning;
     public ItemData BountyToken => _bountyToken;
+    public ItemData Sake => _sake;
     
     #endregion
 

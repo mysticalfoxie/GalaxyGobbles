@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Chair : TouchableMonoBehaviour
+public class Chair : Touchable
 {
     [FormerlySerializedAs("_offset")] [SerializeField] private Vector3 _customerOffset;
     [SerializeField] private Direction _heartDirection;

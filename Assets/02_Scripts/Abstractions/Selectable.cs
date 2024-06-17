@@ -1,4 +1,4 @@
-public abstract class SelectableMonoBehaviour : TouchableMonoBehaviour
+public abstract class Selectable : Touchable
 {
     public bool Selected { get; private set; }
 

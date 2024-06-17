@@ -1,6 +1,6 @@
 using System.Linq;
 
-public class NoodlePotDistributor : SingletonMonoBehaviour<NoodlePotDistributor>
+public class NoodlePotDistributor : Singleton<NoodlePotDistributor>
 {
     public static void AddNoodles()
     {

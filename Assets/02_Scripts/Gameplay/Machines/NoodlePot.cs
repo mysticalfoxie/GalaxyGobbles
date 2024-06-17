@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class NoodlePot : TouchableMonoBehaviour
+public class NoodlePot : Touchable
 {
     private Item _emptyPotItem;
     private Item _cookingItem;

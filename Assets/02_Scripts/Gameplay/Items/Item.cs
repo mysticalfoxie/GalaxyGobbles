@@ -90,7 +90,7 @@ public class Item : IDisposable
         _renderer.Refresh();
     }
 
-    public Item ForwardTouchEventsTo(TouchableMonoBehaviour touchable)
+    public Item ForwardTouchEventsTo(Touchable touchable)
     {
         Click += (_, _) => touchable?.InvokeTouch(this, EventArgs.Empty);
         return this;

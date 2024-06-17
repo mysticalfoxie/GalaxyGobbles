@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class Table : TouchableMonoBehaviour
+public class Table : Touchable
 {
     private Chair[] _chairs;
 

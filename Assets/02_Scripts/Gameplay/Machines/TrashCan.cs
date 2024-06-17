@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TrashCan : TouchableMonoBehaviour
+public class TrashCan : Touchable
 {
     [Header("Item Visualization")]
     [SerializeField] private Vector2 _offset;

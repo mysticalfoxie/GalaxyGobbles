@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class TimelineBase<T> : SingletonMonoBehaviour<T> where T : class
+public abstract class TimelineBase<T> : Singleton<T> where T : class
 {
     public event EventHandler Tick;
     private bool _destroyed;

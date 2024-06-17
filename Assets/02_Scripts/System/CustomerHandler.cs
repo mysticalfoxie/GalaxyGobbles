@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomerHandler : SingletonMonoBehaviour<CustomerHandler>
+public class CustomerHandler : Singleton<CustomerHandler>
 {
     private readonly List<Customer> _customers = new();
     public IEnumerable<Customer> Customers => _customers;

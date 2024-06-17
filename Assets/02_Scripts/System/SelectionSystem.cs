@@ -3,9 +3,9 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
+public class SelectionSystem : Singleton<SelectionSystem>
 {
-    public SelectableMonoBehaviour Selection { get; private set; }
+    public Selectable Selection { get; private set; }
 
     private SelectionMode _selectionMode;
 
@@ -18,7 +18,7 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
     public void Start() 
         => TouchHandler.Instance.Touch += OnGameObjectTouched;
     
-    public void Register(TouchableMonoBehaviour touchable) 
+    public void Register(Touchable touchable) 
         => touchable.Touch += OnSelectableMonoBehaviourTouched;
 
     public void Deselect()
@@ -27,7 +27,7 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
         Selection = null;
     }
 
-    public void Select(SelectableMonoBehaviour selectable) {
+    public void Select(Selectable selectable) {
         if (!selectable.IsSelectable()) return;
         if (Selection is not null)
             Selection.Deselect();
@@ -49,14 +49,14 @@ public class SelectionSystem : SingletonMonoBehaviour<SelectionSystem>
     private void OnGameObjectTouched(object sender, TouchEvent eventArgs)
     {
         if (sender is not GameObject @object) return;
-        if (@object.GetComponents<SelectableMonoBehaviour>().Any()) return;
+        if (@object.GetComponents<Selectable>().Any()) return;
         var handler = GetHandlerForSelectionMode();
         handler.OnGameObjectTouched(@object, eventArgs);
     }
 
     private void OnSelectableMonoBehaviourTouched(object sender, EventArgs e)
     {
-        if (sender is not SelectableMonoBehaviour selectable) return;
+        if (sender is not Selectable selectable) return;
         var handler = GetHandlerForSelectionMode();
         handler.OnSelectableTouched(selectable);
     }
