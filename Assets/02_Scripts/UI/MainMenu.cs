@@ -40,11 +40,14 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TMP_Text _successText;
     [SerializeField] private TMP_Text _targetText;
 
-    [Header("Stars in Complete Day Menu")] [SerializeField]
+    [Header("Stars & Bounty in Complete Day Menu")] [SerializeField]
     private GameObject _star1;
-
     [SerializeField] private GameObject _star2;
     [SerializeField] private GameObject _star3;
+
+    [SerializeField] private GameObject _bounty1;
+    [SerializeField] private GameObject _bounty2;
+    [SerializeField] private GameObject _bounty3;
 
     [Header("Debug")] [SerializeField] private bool _startWithoutMenu;
 
@@ -238,6 +241,11 @@ public class MainMenu : MonoBehaviour
         _star1.SetActive(starsAcquired >= 1);
         _star2.SetActive(starsAcquired >= 2);
         _star3.SetActive(starsAcquired >= 3);
+
+        //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bountys in Menu after Completed Day , Reveal the right Target else let it Empty!
+        _bounty1.SetActive(false);
+        _bounty2.SetActive(false);
+        _bounty3.SetActive(false);
     }
 
     public void BackAndSave()
