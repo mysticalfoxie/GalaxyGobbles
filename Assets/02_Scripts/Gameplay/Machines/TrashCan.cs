@@ -21,6 +21,12 @@ public class TrashCan : Touchable
         GameSettings.GetItemMatch(Identifiers.Value.Trash);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(0F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
+    }
+
     protected override void OnTouch()
     {
         BottomBar.Instance.Inventory.Reset();

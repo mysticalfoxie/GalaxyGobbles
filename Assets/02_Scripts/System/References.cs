@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class References : Singleton<References>
 {
@@ -15,6 +16,11 @@ public class References : Singleton<References>
     [Header("Configurations")] 
     [SerializeField] private GameSettings _settings;
     [SerializeField] private Identifiers _identifiers;
+    
+    [Header("Anchor Customer")]
+    [Tooltip("Please set a GameObject here from a customer, who has the desired scaling.\nThis customer will be the anchor for the species size calculation.")]
+    [SerializeField] private Customer _anchor;
+    [SerializeField] private SpeciesData _data;
 
     public override void Awake()
     {
@@ -22,6 +28,9 @@ public class References : Singleton<References>
         
         var scene = SceneManager.GetActiveScene();
         HandleLevelData(scene);
+        
+        AnchorCustomer.Data = Model.Create<CustomerData>(x => { x._species = _data; });
+        AnchorCustomer.gameObject.SetActive(false);
     }
 
     private void HandleLevelData(Scene scene)
@@ -59,6 +68,7 @@ public class References : Singleton<References>
     }
 
     public GameObject RootObject => _root;
+    public Customer AnchorCustomer => _anchor;
     public IEnumerable<Table> Tables => _tables;
     public IEnumerable<Chair> Chairs => _chairs;
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;

@@ -27,6 +27,12 @@ public class ItemProvider : Touchable
         GameSettings.GetItemMatch(_item);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(0F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
+    }
+
     protected override void OnTouch()
     {
         var newItem = _itemCache.Clone();

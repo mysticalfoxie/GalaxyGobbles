@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class CustomerData : ScriptableObject
     
     [Header("Customer Specification")]
     [SerializeField] internal SpeciesData _species;
-    [SerializeField] internal ItemData[] _desiredItems;
+    [SerializeField] internal ItemData[] _desiredItems = Array.Empty<ItemData>();
 
     [Header("Assassination")]
     [SerializeField] internal bool _isAssassinationTarget;

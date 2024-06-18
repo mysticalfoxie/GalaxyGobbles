@@ -63,6 +63,12 @@ public class CuttingBoard : Touchable
         });
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(.03F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
+    }
+
     private void OnIngredientSelected(ItemData data)
     {
         TryHandleCloseMenu();

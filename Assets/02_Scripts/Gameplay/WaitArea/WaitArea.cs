@@ -20,7 +20,7 @@ public class WaitArea : MonoBehaviour
             Customer = customer;
 
             var floorPosition = gameObject.transform.position;
-            var offsetY = Customer.MeshRenderer.bounds.size.y / 2;
+            var offsetY = Customer.Renderer.Bounds.size.y / 2;
             var position = new Vector3(floorPosition.x, floorPosition.y + offsetY, floorPosition.z);
             Customer.gameObject.transform.position = position;
             Customer.gameObject.SetActive(true);

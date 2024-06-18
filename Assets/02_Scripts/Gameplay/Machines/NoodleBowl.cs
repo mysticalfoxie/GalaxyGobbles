@@ -17,6 +17,12 @@ public class NoodleBowl : Touchable
         _item.ForwardTouchEventsTo(this);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(.1F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
+    }
+
     protected override void OnTouch()
     {
         NoodlePotDistributor.AddNoodles();

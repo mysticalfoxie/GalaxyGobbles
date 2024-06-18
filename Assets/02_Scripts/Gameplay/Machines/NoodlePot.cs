@@ -48,6 +48,12 @@ public class NoodlePot : Touchable
         UpdateState(NoodlePotState.Empty);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(.2F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
+    }
+
     private void OnOvercookedNoodlesTouched()
     {
         if (State != NoodlePotState.Overcooked) return;

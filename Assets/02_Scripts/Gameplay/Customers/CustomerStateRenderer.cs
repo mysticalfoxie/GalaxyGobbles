@@ -29,32 +29,30 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item _angryItem;
     private Item[] _items;
     private Item _poisonedItem;
+    private SpriteRenderer _spriteRenderer;
 
     public CustomerStateMachine StateMachine { get; private set; }
     public Customer Customer { get; private set; }
+
+    public Bounds Bounds => _spriteRenderer.bounds;
 
     public void Initialize(CustomerStateMachine stateMachine)
     {
         StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         Customer = StateMachine.Customer ?? throw new ArgumentNullException(nameof(Customer));
+        InitializeItems();
+    }
+    
+    public void OnCustomerDataSet()
+    {
+        if (Customer.Data is null) return;
+        InitializeCustomerSprites();
+    }
 
-        _items = new[]
-        {
-            _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
-            _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
-            _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
-            _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
-            _thinkBubbleTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
-            _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
-            _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
-            _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
-            _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
-            _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
-            _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
-        };
-
-        foreach (var item in _items)
-            item.ForwardTouchEventsTo(Customer);
+    public void RenderSeated()
+    {
+        //Customer.Chair.Direction
+        _spriteRenderer.sprite = Customer.Data.Species.SittingSprite;
     }
 
     public void RenderWaitingForSeat()
@@ -128,6 +126,23 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         RenderDesiredItems();
     }
 
+    public void Dispose()
+    {
+        foreach (var item in _items) item.Dispose();
+        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    public void RenderPoisoned()
+    {
+        _eatingItem.Hide();
+        _thinkBubbleTable.Hide();
+        _thinkBubble.Show().AlignTo(this, _thinkBubbleOffset);
+        _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
+        
+        StartCoroutine(nameof(StartPoisonCloudAnimation));
+    }
+
     private void RenderDesiredItems()
     {
         InitializeDesiredItems();
@@ -164,6 +179,24 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             unused.Hide();
     }
 
+    private void InitializeItems()
+    {
+        foreach (var item in _items = new[]
+                 {
+                     _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
+                     _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
+                     _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
+                     _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
+                     _thinkBubbleTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
+                     _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
+                     _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
+                     _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
+                     _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
+                     _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
+                     _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
+                 }) item.ForwardTouchEventsTo(Customer);
+    }
+
     private void CreateDesiredItems()
     {
         for (var i = 0; i < _desiredItems.Length; i++)
@@ -194,22 +227,16 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             1 => Customer.Table.Orientation == Orientation.Horizontal ? _tableItemRightOffset : _tableItemBottomOffset,
             _ => throw new IndexOutOfRangeException(nameof(index))
         };
-
-    public void Dispose()
+    
+    private void InitializeCustomerSprites()
     {
-        foreach (var item in _items) item.Dispose();
-        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
-        GC.SuppressFinalize(this);
-    }
+        _spriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+        _spriteRenderer.sprite = Customer.Data.Species.FrontSprite;
 
-    public void RenderPoisoned()
-    {
-        _eatingItem.Hide();
-        _thinkBubbleTable.Hide();
-        _thinkBubble.Show().AlignTo(this, _thinkBubbleOffset);
-        _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
-        
-        StartCoroutine(nameof(StartPoisonCloudAnimation));
+        var anchor = References.Instance.AnchorCustomer;
+        var scaleY = anchor.gameObject.transform.localScale.y / anchor.Data.Species.Scale * Customer.Data.Species.Scale;
+        var scaleX = transform.localScale.x / transform.localScale.y * scaleY;
+        transform.localScale = new Vector3(scaleX, scaleY, 1.0F);
     }
 
     private IEnumerator StartPoisonCloudAnimation()

@@ -12,14 +12,16 @@ public class Customer : Selectable
     private bool _poisoned;
     private bool _dying;
     private bool _visible;
-    private bool _orderedTwice; 
-
-    public event EventHandler Destroying;
+    private bool _orderedTwice;
     
+    public event EventHandler Destroying;
+
     public Patience Patience { get; private set; }
     public CustomerStateMachine StateMachine { get; private set; }
-    public MeshRenderer MeshRenderer { get; private set; }
+    public CustomerStateRenderer Renderer { get; private set; }
     public List<ItemData> DesiredItems { get; } = new();
+    public Table Table { get; set; }
+    public Chair Chair { get; set; }
 
     public bool Visible
     {
@@ -33,14 +35,11 @@ public class Customer : Selectable
         set => UpdateData(value);
     }
 
-    public Table Table { get; set; }
-    public Chair Chair { get; set; }
-
     public override void Awake()
     {
         base.Awake();
-
-        MeshRenderer = this.GetRequiredComponent<MeshRenderer>();
+        
+        Renderer = this.GetRequiredComponent<CustomerStateRenderer>();
         StateMachine = this.GetRequiredComponent<CustomerStateMachine>();
         Patience = this.GetRequiredComponent<Patience>();
         Destroying += (_, _) => StateMachine.Renderer.Dispose();
@@ -53,9 +52,9 @@ public class Customer : Selectable
     {
         if (StateMachine.State != CustomerState.WaitingForCheckout) return;
         StateMachine.State = CustomerState.Leaving;
-        
+
         new ScoreCalculation(Patience.Value, _data.DesiredItems).Apply();
-        
+
         OnCustomerLeave();
     }
 
@@ -68,7 +67,7 @@ public class Customer : Selectable
             StartCoroutine(nameof(StartEating));
             return true;
         }
-        
+
         StateMachine.Renderer.RefreshDesiredItems();
         return true;
     }
@@ -81,12 +80,13 @@ public class Customer : Selectable
         if (HandlePoisoned()) yield break;
         if (HandleOrderingTwice()) yield break;
         if (HandleOrderingSake()) yield break;
-        
+
         StateMachine.State = CustomerState.WaitingForCheckout;
     }
 
     public void OnSeated()
     {
+        Renderer.RenderSeated();
         Patience.UpdateOffset();
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
@@ -100,7 +100,7 @@ public class Customer : Selectable
         var doesNotOrder = Random.Range(1, 100) <= Data.Species.ChanceToNotOrder;
         StateMachine.State = doesNotOrder ? CustomerState.Leaving : CustomerState.WaitingForMeal;
     }
-    
+
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;
 
     public void Kill()
@@ -111,12 +111,10 @@ public class Customer : Selectable
 
     protected override void OnSelected()
     {
-        
     }
 
     protected override void OnDeselected()
     {
-        
     }
 
     protected override void OnTouch()
@@ -152,20 +150,20 @@ public class Customer : Selectable
             model.Species = _data.Species;
         });
 
-        if (!BottomBar.Instance.Bounties.TryAdd(bounty)) 
+        if (!BottomBar.Instance.Bounties.TryAdd(bounty))
             Debug.Log("[Bounties] Cannot pick up any more bounties.");
-        
+
         OnCustomerLeave();
     }
 
     private bool HandleOrderingSake()
     {
         if (Random.Range(1, 100) > Data.Species.ChanceToOrderSake) return false;
-        
+
         DesiredItems.Add(GameSettings.GetItemMatch(Identifiers.Value.Sake));
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
-        
+
         return true;
     }
 
@@ -181,13 +179,12 @@ public class Customer : Selectable
         if (_orderedTwice) return false;
         if (Random.Range(1, 100) > Data.Species.ChanceToOrderTwice) return false;
         _orderedTwice = true;
-        
+
         DesiredItems.AddRange(Data.DesiredItems);
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
-        
-        return true;
 
+        return true;
     }
 
     private void ReceiveItemsFromInventory()
@@ -206,9 +203,12 @@ public class Customer : Selectable
     private void UpdateData(CustomerData data)
     {
         _data = data;
-        
+
         DesiredItems.Clear();
         DesiredItems.AddRange(_data.DesiredItems);
+
+        if (!Renderer) return;
+        Renderer.OnCustomerDataSet();
     }
 
     private void UpdateVisibility(bool value)
@@ -217,7 +217,7 @@ public class Customer : Selectable
 
         if (!_visible) return;
         if (Patience.Ticking) return;
-        
+
         Patience.StartTicking();
     }
 
