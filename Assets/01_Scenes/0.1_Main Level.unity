@@ -1055,6 +1055,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -172.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4739925054265633389, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5282328976948330643, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1274,6 +1279,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8935987048708128379, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2296,7 +2306,7 @@ Camera:
   far clip plane: 700
   field of view: 60.395977
   orthographic: 1
-  orthographic size: 201.56735
+  orthographic size: 183.42586
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2

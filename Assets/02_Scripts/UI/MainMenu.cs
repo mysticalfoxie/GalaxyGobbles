@@ -13,8 +13,6 @@ public class MainMenu : MonoBehaviour
 {
     public const int MAIN_MENU_SCENE_INDEX = 0;
     
-//  [Header("Options")]
-//  [Header("Dropdown")]
     [Header("Menus")] 
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _startMenu;
@@ -28,8 +26,8 @@ public class MainMenu : MonoBehaviour
     [Header("Button")]
     [SerializeField] private GameObject _btnMainMenu;
     [SerializeField] private GameObject _targetScreenButton;
+    [SerializeField] private GameObject _continueButton;
     
-
     [Header("Audio")]
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private Slider _volumeSlider;
@@ -39,12 +37,21 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private float _currentMusicVolume;
     [SerializeField] private float _currentSfxVolume;
     
+    [Header("Images")]
     [SerializeField] private GameObject _backgroundImage;
-    [SerializeField] private bool _startWithoutMenu;
 
+    [Header("TMP Text ")]
     [SerializeField] private TMP_Text _completeDayText;
-
+    [SerializeField] private TMP_Text _successText;
     [SerializeField] private TMP_Text _targetText;
+    
+    [Header("Stars in Complete Day Menu")] 
+    [SerializeField] private GameObject _star1;
+    [SerializeField] private GameObject _star2;
+    [SerializeField] private GameObject _star3;
+    
+    [Header("Debug")]
+    [SerializeField] private bool _startWithoutMenu;
     
     private bool _pausedGame;
     private bool _blockPauseMenu;
@@ -77,13 +84,13 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        //SceneManager.LoadScene(1);
         _startMenu.SetActive(false);
         _levelMap.SetActive(true);
     }
 
     public void SetElementsForStart()
     {
+        if(_completeDayMenu) _completeDayMenu.SetActive(false);
         if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
         _levelMap.SetActive(false);
         _blockPauseMenu = false;
@@ -173,6 +180,12 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void ReplayLevel()
+    {
+        var operation = LevelManager.Instance.LoadLevelAsync(LevelManager.CurrentLevelIndex);
+        StartCoroutine(operation);
+    }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -182,11 +195,21 @@ public class MainMenu : MonoBehaviour
 #endif
     }
 
-    public void CompleteDay()
+    public void CompleteDayMenu()
     {
-        var starsAcquired = ProgressBar.Progress;
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
+        CalculateScore();
+    }
+
+    public void ContinueButton()
+    {
+        var operation = LevelManager.Instance.LoadLevelAsync(LevelManager.CurrentLevelIndex+1);
+        StartCoroutine(operation);
+    }
+    public void CalculateScore()
+    {
+        var starsAcquired = ProgressBar.Progress;
         
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex)) 
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
@@ -197,17 +220,36 @@ public class MainMenu : MonoBehaviour
                 LevelButton.UnlockedLevels++;
             
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-            
-            //_completeDayText.text = $"You Completed Day {LevelManager.CurrentLevelIndex + 1} and Acquired {starsAcquired} Stars!";
+
+            _continueButton.SetActive(true);
+            _completeDayText.text = "Congratulations, Level Completed!";
+            _successText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
         }
         else
         {
             // Temporary for Gate I (Always succeed + pass to next level)
-            //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            _completeDayText.text = "To Bad you didn't pass this Level!";
+            _successText.text = "You didn't completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
             if(LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-            
-            // Original: _completeDayText.text = "You didn't Completed Day " + (LevelManager.CurrentLevelIndex + 1);
+        }
+
+        if (starsAcquired == 1)
+        {
+            _star1.SetActive(true);
+        }
+
+        if (starsAcquired == 2)
+        {
+            _star1.SetActive(true);
+            _star2.SetActive(true);
+        }
+
+        if (starsAcquired == 3)
+        {
+            _star1.SetActive(true);
+            _star2.SetActive(true);
+            _star3.SetActive(true);
         }
     }
 

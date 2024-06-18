@@ -22,7 +22,7 @@ public class LevelSelector : MonoBehaviour
             var levelNumber = levelButton.GetComponentInChildren<TMP_Text>();
             levelNumber.text = (i + 1).ToString();
             var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
-            levelButton.GetRequiredComponent<Button>().interactable = true; // unlock all levels for Gate I build.
+            levelButton.GetRequiredComponent<Button>().interactable = true; // unlock all levels for Gate I build. ToDo:[! Delete for Goldmaster !]
             buttonScript.LevelIndex = i;
             buttonScript.AddStars();
             
@@ -30,7 +30,7 @@ public class LevelSelector : MonoBehaviour
             // Calling MainMenu LoadLevel, so the Coroutine doesn't start within the LevelSelector.
             // The initiator of the Coroutine needs to be the MainMenu, because the LevelSelector gets disabled a few ticks later.
             // The main menu always persists and therefor start the coroutine, to avoid it being cancelled.
-            buttonScript.Clicked += _ => MainMenu.Instance.StartLoadingLevel(ci);;
+            buttonScript.Clicked += _ => MainMenu.Instance.StartLoadingLevel(ci);
         }
     }
 }
