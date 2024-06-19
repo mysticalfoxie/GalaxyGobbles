@@ -86,6 +86,7 @@ public class Customer : Selectable
 
     public void OnSeated()
     {
+        Renderer.SetSeated();
         Renderer.RenderSeated();
         Patience.UpdateOffset();
         StateMachine.State = CustomerState.ThinkingAboutMeal;
@@ -109,13 +110,8 @@ public class Customer : Selectable
         StartCoroutine(nameof(StartDying));
     }
 
-    protected override void OnSelected()
-    {
-    }
-
-    protected override void OnDeselected()
-    {
-    }
+    protected override void OnSelected() => Renderer.OnSelected();
+    protected override void OnDeselected() => Renderer.OnDeselected();
 
     protected override void OnTouch()
     {

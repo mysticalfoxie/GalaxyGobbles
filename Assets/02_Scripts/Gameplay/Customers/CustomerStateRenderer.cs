@@ -143,6 +143,21 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         StartCoroutine(nameof(StartPoisonCloudAnimation));
     }
 
+    public void SetSeated()
+    {
+        _spriteRenderer.sprite = Customer.Data.Species.SittingSprite;
+        _spriteRenderer.flipX = Customer.Chair.Side == Direction.Left;
+    }
+    
+    public void OnSelected()
+    {
+        
+    }
+
+    public void OnDeselected()
+    {
+    }
+    
     private void RenderDesiredItems()
     {
         InitializeDesiredItems();

@@ -44,7 +44,7 @@ public class Patience : MonoBehaviour
     private Vector2 GetOffset()
     {
         if (Customer.Chair is null) return _heartsOffset;
-        if (Customer.Chair.Direction != Direction.Right) return _heartsOffset;
+        if (Customer.Chair.Side != Direction.Right) return _heartsOffset;
         return _heartsOffset * new Vector2(-1, 1);
     }
 
