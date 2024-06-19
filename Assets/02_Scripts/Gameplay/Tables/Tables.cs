@@ -13,18 +13,7 @@ public class Tables : MonoBehaviour
         FindTablePairs();
     }
 
-    public void Start()
-    {
-        foreach (var table in References.Instance.Tables) 
-            table.Touch += (_, _) => OnTableClick(table);
-        foreach (var chair in References.Instance.Chairs)
-            chair.Touch += (_, _) => OnChairClick(chair);
-    }
-
-    private static void OnChairClick(Chair chair) 
-        => OnTableClick(chair.Table, chair);
-
-    private static void OnTableClick(Table table, Chair chair = null)
+    public static void OnTableSelected(Table table, Chair chair = null)
     {
         if (TryHandleSeatedCustomer(table)) return;
         HandleTableAssignment(table, chair);

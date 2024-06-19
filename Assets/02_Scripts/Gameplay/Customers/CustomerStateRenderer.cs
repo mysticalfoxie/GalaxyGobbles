@@ -37,18 +37,26 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item _angryItem;
     private Item[] _items;
     private Item _poisonedItem;
-    private SpriteRenderer _spriteRenderer;
 
+    public SpriteRenderer SpriteRenderer { get; private set; }
     public CustomerStateMachine StateMachine { get; private set; }
     public Customer Customer { get; private set; }
 
-    public Bounds Bounds => _spriteRenderer.bounds;
+    public Bounds Bounds => SpriteRenderer.bounds;
 
     public void Initialize(CustomerStateMachine stateMachine)
     {
         StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         Customer = StateMachine.Customer ?? throw new ArgumentNullException(nameof(Customer));
         InitializeItems();
+    }
+
+    public void InitializeInEditorMode()
+    {
+        SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+        // SpriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
+        // SpriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
+        // SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
     }
     
     public void OnCustomerDataSet()
@@ -60,7 +68,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderSeated()
     {
         //Customer.Chair.Direction
-        _spriteRenderer.sprite = Customer.Data.Species.SittingSprite;
+        SpriteRenderer.sprite = Customer.Data.Species.SittingSprite;
     }
 
     public void RenderWaitingForSeat()
@@ -153,18 +161,18 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
     public void SetSeated()
     {
-        _spriteRenderer.sprite = Customer.Data.Species.SittingSprite;
-        _spriteRenderer.flipX = Customer.Chair.Side == Direction.Left;
+        SpriteRenderer.sprite = Customer.Data.Species.SittingSprite;
+        SpriteRenderer.flipX = Customer.Chair.Side == Direction.Left; 
     }
     
     public void OnSelected()
     {
-        _spriteRenderer.material.SetFloat(_materialPropertyEnabled, 1);
+        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 1);
     }
 
     public void OnDeselected()
     {
-        _spriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
+        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
     }
     
     private void RenderDesiredItems()
@@ -206,19 +214,19 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private void InitializeItems()
     {
         foreach (var item in _items = new[]
-                 {
-                     _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
-                     _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
-                     _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
-                     _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
-                     _thinkBubbleTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
-                     _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
-                     _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
-                     _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
-                     _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
-                     _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
-                     _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
-                 }) item.ForwardTouchEventsTo(Customer);
+         {
+             _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
+             _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
+             _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
+             _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
+             _thinkBubbleTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
+             _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
+             _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
+             _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
+             _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
+             _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
+             _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
+         }) item.ForwardTouchEventsTo(Customer);
     }
 
     private void CreateDesiredItems()
@@ -254,14 +262,18 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     
     private void InitializeCustomerSprites()
     {
-        _spriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
-        _spriteRenderer.sprite = Customer.Data.Species.FrontSprite;
-        _spriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
-        _spriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
-        _spriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
-
         var anchor = References.Instance.AnchorCustomer;
-        var scaleY = anchor.gameObject.transform.localScale.y / anchor.Data.Species.Scale * Customer.Data.Species.Scale;
+        InitializeCustomerSprites(Customer.Data.Species, anchor, anchor.Data.Species);
+    }
+
+    public void InitializeCustomerSprites(SpeciesData data, Customer anchor, SpeciesData anchorSpecies)
+    {
+        SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+        SpriteRenderer.sprite = data.FrontSprite;
+        SpriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
+        SpriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
+        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
+        var scaleY = anchor.gameObject.transform.localScale.y / anchorSpecies.Scale * data.Scale;
         var scaleX = transform.localScale.x / transform.localScale.y * scaleY;
         transform.localScale = new Vector3(scaleX, scaleY, 1.0F);
     }

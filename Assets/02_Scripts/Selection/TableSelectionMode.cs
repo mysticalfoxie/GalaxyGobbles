@@ -18,9 +18,44 @@ public class TableSelectionHandler : ISelectionHandler
     public void OnGameObjectTouched(GameObject @object, TouchEvent eventArgs)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement
-        if (@object.GetComponents<Touchable>().FirstOrDefault() is { CancelSelectionOnTouch: false }) return;
+        var touchable = @object.GetComponents<Touchable>().FirstOrDefault();
+        if (!touchable || touchable.CancelSelectionOnTouch) return;
         if (SelectionSystem.Instance.Selection is null) return;
+        eventArgs.CancelPropagation();
+
+        if (GetTouchedTable(@object, out var table))
+            Result?.Invoke(this, table);
+        else
+            Cancel?.Invoke(this, null);
+
         SelectionSystem.Instance.Deselect();
+    }
+
+    private static bool GetTouchedTable(GameObject @object, out TableSelectEvent eventArgs)
+    {
+        var chairs = @object.GetComponents<Chair>();
+        var tables = @object.GetComponents<Table>();
+
+        if (chairs.Length > 0)
+        {
+            var chair = chairs.First();
+            eventArgs = new TableSelectEvent
+            {
+                Table = chair.Table,
+                Chair = chair
+            };
+            
+            return true;
+        }
+
+        if (tables.Length > 0)
+        {
+            eventArgs = new TableSelectEvent { Table = tables.First() };
+            return true;
+        }
+
+        eventArgs = null;
+        return false;
     }
 
     public void OnSelectableTouched(Selectable selectable)
@@ -36,6 +71,5 @@ public class TableSelectionHandler : ISelectionHandler
 
     public void OnDisable()
     {
-        
     }
 }

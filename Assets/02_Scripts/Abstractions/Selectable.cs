@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class Selectable : Touchable
 {
     public bool Selected { get; private set; }
@@ -5,6 +7,8 @@ public abstract class Selectable : Touchable
     public override void Awake()
     {
         base.Awake();
+
+        if (!SelectionSystem.Instance) return;
         SelectionSystem.Instance.Register(this);
     }
 

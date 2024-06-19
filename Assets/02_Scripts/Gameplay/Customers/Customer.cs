@@ -5,6 +5,11 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(CustomerStateRenderer))]
+[RequireComponent(typeof(CustomerStateMachine))]
+[RequireComponent(typeof(Patience))]
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Customer : Selectable
 {
     private static GameObject _customerRoot;
@@ -46,6 +51,14 @@ public class Customer : Selectable
         Destroying += (_, _) => Patience.Dispose();
         Patience.Customer = this;
         Patience.Angry += OnAngry;
+    }
+
+    public void InitializeInEditorMode()
+    {
+        Renderer = this.GetRequiredComponent<CustomerStateRenderer>();
+        StateMachine = this.GetRequiredComponent<CustomerStateMachine>();
+        Patience = this.GetRequiredComponent<Patience>();
+        Renderer.InitializeInEditorMode();
     }
 
     public void TryCheckout()
@@ -110,7 +123,17 @@ public class Customer : Selectable
         StartCoroutine(nameof(StartDying));
     }
 
-    protected override void OnSelected() => Renderer.OnSelected();
+    protected override void OnSelected()
+    {
+        Renderer.OnSelected();
+        StartCoroutine(SelectionSystem.Instance.WaitForTableSelection(eventArgs =>
+        {
+            if (eventArgs?.Table is null) return;
+
+            Tables.OnTableSelected(eventArgs.Table, eventArgs.Chair);
+        }));
+    }
+
     protected override void OnDeselected() => Renderer.OnDeselected();
 
     protected override void OnTouch()
@@ -118,7 +141,7 @@ public class Customer : Selectable
         if (TryReceiveMeal()) return;
         TryCheckout();
     }
-
+    
     private IEnumerator StartDying()
     {
         yield return new WaitForSeconds(GameSettings.Data.CustomerDyingTime);

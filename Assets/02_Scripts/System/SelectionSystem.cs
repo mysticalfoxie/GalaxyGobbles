@@ -41,7 +41,7 @@ public class SelectionSystem : Singleton<SelectionSystem>
         yield return WaitForObjectSelection(callback, SelectionMode.Ingredients);
     }
 
-    public IEnumerator WaitForTableSelection(Action<Table> callback)
+    public IEnumerator WaitForTableSelection(Action<TableSelectEvent> callback)
     {
         yield return WaitForObjectSelection(callback, SelectionMode.Tables);
     }
