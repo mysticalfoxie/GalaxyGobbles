@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6646891082296250266}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.039448008, z: 0}
-  m_LocalScale: {x: 4.23, y: 21.566141, z: 4.2300096}
-  m_ConstrainProportionsScale: 1
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: -0, y: 0.0112, z: 0}
+  m_LocalScale: {x: 4.23, y: 13.8, z: 4.2300096}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6815391697392891644}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!33 &4232248666235562351
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -164,7 +164,32 @@ PrefabInstance:
     - target: {fileID: 2131836823188525109, guid: a31d755c695124d4ead32a6517e5155e,
         type: 3}
       propertyPath: m_Name
-      value: SM_BubbleTea_Machine (2) Variant
+      value: PRE__BubbleTea_Machine (2) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877638782195766944, guid: a31d755c695124d4ead32a6517e5155e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0731
+      objectReference: {fileID: 0}
+    - target: {fileID: 3862352378895229027, guid: a31d755c695124d4ead32a6517e5155e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3862352378895229027, guid: a31d755c695124d4ead32a6517e5155e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0043
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364826170216751396, guid: a31d755c695124d4ead32a6517e5155e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0567
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607795234849775686, guid: a31d755c695124d4ead32a6517e5155e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0567
       objectReference: {fileID: 0}
     - target: {fileID: 7615238930375239234, guid: a31d755c695124d4ead32a6517e5155e,
         type: 3}
