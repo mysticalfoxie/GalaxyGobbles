@@ -39,7 +39,7 @@ public class Table : Touchable
     public void Seat(Customer customer, Chair chair = null)
     {
         chair ??= _chairs.First();
-        var position = chair.transform.position + chair.CustomerOffset;
+        var position = chair.transform.position + customer.Data.Species.ChairOffsetHorizontal;
         customer.transform.position = position;
         Customer = customer;
         Customer.Table = this;

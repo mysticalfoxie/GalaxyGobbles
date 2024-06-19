@@ -12,6 +12,7 @@ public class Patience : MonoBehaviour
     [Tooltip("The offset of the hearts to the customer. This should be configured to the left side, because it's flipped later on when you seat your customer on a right seat.")]
     [SerializeField] private Vector2 _heartsOffset;
 
+    public static bool Disabled { get; set; }
     public Customer Customer { get; set; }
     public float Value { get; private set; }
     public bool Ticking { get; private set; }
@@ -62,6 +63,7 @@ public class Patience : MonoBehaviour
 
     private void OnTick()
     {
+        if (Disabled) return;
         _hasTicked = true;
         Value -= GameSettings.Data.PatienceDropAmount;
         _hearts.SetFillPercentage(Value);
@@ -77,6 +79,6 @@ public class Patience : MonoBehaviour
 
     public void Dispose()
     {
-        Destroy(_heartsGameObject);        
+        Destroy(_heartsGameObject);
     }
 }

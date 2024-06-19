@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Species", menuName = "Galaxy Gobbles/Species", order = 3)]
 public class SpeciesData : ScriptableObject
@@ -24,6 +25,12 @@ public class SpeciesData : ScriptableObject
     [Tooltip("The chance for the customer to order sake.")]
     [Range(0, 100)] [SerializeField] private float _chanceToOrderSake;
 
+    [Header("Positioning")] 
+    [Tooltip("The offset the customer has to a chair. (The chair used in the horizontal table prefab)\nThe x value becomes inverted for chairs that are positioned on the right. So keep in mind that your offset should be from the left chair.")]
+    [SerializeField] private Vector3 _chairOffsetHorizontal;
+    [Tooltip("The offset the customer has to a chair. (The chair used in the vertical table prefab)\nThe x value becomes inverted for chairs that are positioned on the right. So keep in mind that your offset should be from the left chair.")]
+    [SerializeField] private Vector3 _chairOffsetVertical;
+
     public string Name => _name;
     public float Scale => _scale;
     public Sprite FrontSprite => _frontSprite;
@@ -34,4 +41,6 @@ public class SpeciesData : ScriptableObject
     public float ChanceToNotOrder => _chanceToNotOrder;
     public float ChanceToOrderSake => _chanceToOrderSake;
     public float ChanceToOrderTwice => _chanceToOrderTwice;
+    public Vector3 ChairOffsetHorizontal => _chairOffsetHorizontal;
+    public Vector3 ChairOffsetVertical => _chairOffsetVertical;
 }

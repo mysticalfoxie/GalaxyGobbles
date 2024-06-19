@@ -1,14 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Chair : Touchable
 {
-    [SerializeField] private Vector3 _customerOffset;
-    [FormerlySerializedAs("_seatSide")] [SerializeField] private Direction _side;
+    [SerializeField] private Direction _side;
     
     public Table Table { get; private set; }
-    public Vector3 CustomerOffset => _customerOffset;
     public Direction Side => _side;
 
     public override void Awake()
