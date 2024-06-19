@@ -6,6 +6,14 @@ using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
 {
+    private static readonly int _materialPropertyEnabled = Shader.PropertyToID("_Enabled");
+    private static readonly int _materialPropertyThickness = Shader.PropertyToID("_Thickness");
+    private static readonly int _materialPropertyColor = Shader.PropertyToID("_Color");
+    
+    [Header("Selection Outline")]
+    [SerializeField] private float _outlineThickness;
+    [SerializeField] private Color _outlineColor;
+    
     [Header("Item Positioning")] 
     [SerializeField] private Vector2 _thinkBubbleOffset;
     [SerializeField] private Vector2 _thinkBubbleItemOffset;
@@ -151,11 +159,12 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     
     public void OnSelected()
     {
-        
+        _spriteRenderer.material.SetFloat(_materialPropertyEnabled, 1);
     }
 
     public void OnDeselected()
     {
+        _spriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
     }
     
     private void RenderDesiredItems()
@@ -247,6 +256,9 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         _spriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
         _spriteRenderer.sprite = Customer.Data.Species.FrontSprite;
+        _spriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
+        _spriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
+        _spriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
 
         var anchor = References.Instance.AnchorCustomer;
         var scaleY = anchor.gameObject.transform.localScale.y / anchor.Data.Species.Scale * Customer.Data.Species.Scale;

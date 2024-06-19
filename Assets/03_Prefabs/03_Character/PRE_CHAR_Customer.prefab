@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2995851268222187606}
   - component: {fileID: 7389781275386048634}
   - component: {fileID: 7614873849091536685}
+  - component: {fileID: 2448357205011040598}
   m_Layer: 0
   m_Name: PRE_CHAR_Customer
   m_TagString: Untagged
@@ -72,6 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a331b100cb34dce9d5859bb0176c9c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _outlineThickness: 25
+  _outlineColor: {r: 1, g: 0.91004884, b: 0.34193665, a: 0}
   _thinkBubbleOffset: {x: 70, y: 100}
   _thinkBubbleItemOffset: {x: 4, y: 8}
   _tableItemLeftOffset: {x: -70, y: 20}
@@ -113,7 +116,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 45100efee4169284294191117ff9c863, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -145,3 +148,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &2448357205011040598
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3858524379104844713}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.4999998, y: 5.12, z: 0.20000015}
+  m_Center: {x: -0.0000038146973, y: 0.00000047683716, z: 0}
