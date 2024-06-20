@@ -103,6 +103,7 @@ public class Customer : Selectable
         Renderer.SetSeated();
         Renderer.RenderSeated();
         Patience.UpdateOffset();
+        Patience.Add(GameSettings.Data.PatienceRegainOnSeated);
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
     }
@@ -251,6 +252,7 @@ public class Customer : Selectable
 
     private void OnItemReceived(ItemData desiredItemData, Item inventoryItem)
     {
+        Patience.Add(GameSettings.Data.PatienceRegainOnItemReceive);
         DesiredItems.Remove(desiredItemData);
         if (inventoryItem.Data.Poison is null) return;
         if (_data.Species.PoisonItems.All(x => x.name != inventoryItem.Data.Poison.name)) return;

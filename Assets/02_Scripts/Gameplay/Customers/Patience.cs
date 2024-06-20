@@ -34,6 +34,12 @@ public class Patience : MonoBehaviour
         StartCoroutine(nameof(OnStartTicking));
     }
 
+    public void Add(float amount)
+    {
+        Value = Math.Min(Value + amount, 100.0F);         
+        _hearts.SetFillPercentage(Value);
+    }
+    
     public void UpdateOffset()
     {
         _hearts.Offset = GetOffset();
