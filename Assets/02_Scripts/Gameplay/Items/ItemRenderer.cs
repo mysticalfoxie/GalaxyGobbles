@@ -108,6 +108,7 @@ public class ItemRenderer : Touchable
 
     protected void AddSprite(SpriteData sprite)
     {
+        if (sprite == null) return;
         var targetSize = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
         var rendererGameObject = Instantiate(GameSettings.Data.PRE_SpriteRenderer);
         var rendererComponent = rendererGameObject.GetRequiredComponent<Image>();
