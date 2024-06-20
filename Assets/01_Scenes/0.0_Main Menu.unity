@@ -393,7 +393,7 @@ PrefabInstance:
     - target: {fileID: 8903015417882845694, guid: e58b169550b8c6040888c739e87d4f2e,
         type: 3}
       propertyPath: m_Name
-      value: PRE_SYS_Light Setup
+      value: SYS | Light Setup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -949,11 +949,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5680489237586467486, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -22.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5697027949031273056, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1009,11 +1004,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SYS | UI
       objectReference: {fileID: 0}
-    - target: {fileID: 6868233380215160642, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -40
-      objectReference: {fileID: 0}
     - target: {fileID: 6875942832548571972, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1033,6 +1023,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7137807939187847664, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278716424
       objectReference: {fileID: 0}
     - target: {fileID: 7281741350972529541, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}

@@ -216,7 +216,8 @@ public class Customer : Selectable
 
     private void ReceiveItemsFromInventory()
     {
-        foreach (var item in BottomBar.Instance.Inventory.Items.ToArray())
+        var list = BottomBar.Instance.Inventory.Items.ToArray();
+        foreach (var item in list)
         {
             var match = DesiredItems.FirstOrDefault(x => x.name == item.Data.name);
             if (match is null) continue;

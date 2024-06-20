@@ -406,11 +406,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1148329136}
     m_Modifications:
+    - target: {fileID: 2937724813119325496, guid: 282436c2e30747843a9cb0637648cdef,
+        type: 3}
+      propertyPath: _side
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4886730010170058584, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: _neighbourTable
       value: 
       objectReference: {fileID: 1643619080}
+    - target: {fileID: 6911854942143871195, guid: 282436c2e30747843a9cb0637648cdef,
+        type: 3}
+      propertyPath: _side
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_Name
@@ -2320,7 +2330,7 @@ Camera:
   far clip plane: 700
   field of view: 60.395977
   orthographic: 1
-  orthographic size: 201.56735
+  orthographic size: 243.14062
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -3915,11 +3925,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1148329136}
     m_Modifications:
+    - target: {fileID: 2937724813119325496, guid: 282436c2e30747843a9cb0637648cdef,
+        type: 3}
+      propertyPath: _side
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4886730010170058584, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: _neighbourTable
       value: 
       objectReference: {fileID: 1421602722}
+    - target: {fileID: 6911854942143871195, guid: 282436c2e30747843a9cb0637648cdef,
+        type: 3}
+      propertyPath: _side
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_Name
@@ -4092,7 +4112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f7f445a2924df0877ef3e3bd38587f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _randomizeMeals: 1
+  _randomizeMeals: 0
 --- !u!1001 &21975786183857148
 PrefabInstance:
   m_ObjectHideFlags: 0
