@@ -17,8 +17,9 @@ public class Customer : Selectable
     private bool _poisoned;
     private bool _dying;
     private bool _visible;
+    private bool _selected;
     private bool _orderedTwice;
-    
+
     public event EventHandler Destroying;
 
     public Patience Patience { get; private set; }
@@ -43,7 +44,7 @@ public class Customer : Selectable
     public override void Awake()
     {
         base.Awake();
-        
+
         Renderer = this.GetRequiredComponent<CustomerStateRenderer>();
         StateMachine = this.GetRequiredComponent<CustomerStateMachine>();
         Patience = this.GetRequiredComponent<Patience>();
@@ -125,23 +126,30 @@ public class Customer : Selectable
 
     protected override void OnSelected()
     {
+        _selected = true;
         Renderer.OnSelected();
-        StartCoroutine(SelectionSystem.Instance.WaitForTableSelection(eventArgs =>
-        {
-            if (eventArgs?.Table is null) return;
-
-            Tables.OnTableSelected(eventArgs.Table, eventArgs.Chair);
-        }));
+        var operation = SelectionSystem.Instance.WaitForTableSelection(OnTableSelected, () => !_selected);
+        StartCoroutine(operation);
     }
 
-    protected override void OnDeselected() => Renderer.OnDeselected();
+    private static void OnTableSelected(TableSelectEvent eventArgs)
+    {
+        if (eventArgs?.Table is null) return;
+        Tables.OnTableSelected(eventArgs.Table, eventArgs.Chair);
+    }
+
+    protected override void OnDeselected()
+    {
+        _selected = false;
+        Renderer.OnDeselected();
+    }
 
     protected override void OnTouch()
     {
         if (TryReceiveMeal()) return;
         TryCheckout();
     }
-    
+
     private IEnumerator StartDying()
     {
         yield return new WaitForSeconds(GameSettings.Data.CustomerDyingTime);

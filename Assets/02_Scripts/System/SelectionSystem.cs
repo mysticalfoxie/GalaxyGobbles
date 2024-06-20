@@ -36,14 +36,14 @@ public class SelectionSystem : Singleton<SelectionSystem>
         Selection = selectable;
     }
 
-    public IEnumerator WaitForIngredientSelection(Action<ItemData> callback)
+    public IEnumerator WaitForIngredientSelection(Action<ItemData> callback, Func<bool> cancelled = null)
     {
-        yield return WaitForObjectSelection(callback, SelectionMode.Ingredients);
+        yield return WaitForObjectSelection(callback, cancelled ?? (() => false), SelectionMode.Ingredients);
     }
 
-    public IEnumerator WaitForTableSelection(Action<TableSelectEvent> callback)
+    public IEnumerator WaitForTableSelection(Action<TableSelectEvent> callback, Func<bool> cancelled = null)
     {
-        yield return WaitForObjectSelection(callback, SelectionMode.Tables);
+        yield return WaitForObjectSelection(callback, cancelled ?? (() => false), SelectionMode.Tables);
     }
 
     private void OnGameObjectTouched(object sender, TouchEvent eventArgs)
@@ -68,7 +68,7 @@ public class SelectionSystem : Singleton<SelectionSystem>
         GetHandlerForSelectionMode(_selectionMode).OnEnable();
     }
 
-    private IEnumerator WaitForObjectSelection<T>(Action<T> callback, SelectionMode mode) where T : class
+    private IEnumerator WaitForObjectSelection<T>(Action<T> callback, Func<bool> cancelled, SelectionMode mode) where T : class
     {
         SelectionMode = mode;
         var handler = GetHandlerForSelectionMode();
@@ -76,7 +76,7 @@ public class SelectionSystem : Singleton<SelectionSystem>
         handler.Cancel += OnSelectionCancelled;
         var waiting = true;
 
-        yield return new WaitWhile(() => waiting);
+        yield return new WaitWhile(() => waiting && !cancelled());
         SelectionMode = SelectionMode.Default;
         yield break;
 
