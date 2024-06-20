@@ -26,6 +26,7 @@ public class Patience : MonoBehaviour
     
     public void StartTicking()
     {
+        if (!isActiveAndEnabled) return;
         Ticking = true;
         _heartsGameObject.SetActive(true);
         _hearts.Follow(Customer, Customer.Data.Species.HeartsOffset);

@@ -243,9 +243,9 @@ public class MainMenu : MonoBehaviour
         _star3.SetActive(starsAcquired >= 3);
 
         //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bountys in Menu after Completed Day , Reveal the right Target else let it Empty!
-        _bounty1.SetActive(false);
-        _bounty2.SetActive(false);
-        _bounty3.SetActive(false);
+        if (_bounty1) _bounty1.SetActive(false);
+        if (_bounty2) _bounty2.SetActive(false);
+        if (_bounty3) _bounty3.SetActive(false);
     }
 
     public void BackAndSave()

@@ -29,7 +29,8 @@ public class References : Singleton<References>
         
         var scene = SceneManager.GetActiveScene();
         HandleLevelData(scene);
-        
+
+        if (!AnchorCustomer) return;
         AnchorCustomer.Data = Model.Create<CustomerData>(x => { x._species = _data; });
         AnchorCustomer.gameObject.SetActive(false);
     }

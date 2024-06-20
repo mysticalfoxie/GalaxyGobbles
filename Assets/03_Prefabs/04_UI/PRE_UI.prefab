@@ -2818,6 +2818,9 @@ MonoBehaviour:
   _star1: {fileID: 1300495652919179437}
   _star2: {fileID: 4508507698849869304}
   _star3: {fileID: 3202994032567511680}
+  _bounty1: {fileID: 0}
+  _bounty2: {fileID: 0}
+  _bounty3: {fileID: 0}
   _startWithoutMenu: 0
 --- !u!1 &3818058085329794242
 GameObject:
@@ -5677,7 +5680,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6391828689347179443}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 174c4e317f2d4e0b88201f640336eb28, type: 3}
   m_Name: 
@@ -5732,7 +5735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 0.75
+  m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
@@ -9004,6 +9007,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 373324288387600573}
     m_Modifications:
+    - target: {fileID: 312874494768880289, guid: b8d81d98a93ab1a4197cf014ff586ae7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4007155500705135798}
     - target: {fileID: 994390327686683097, guid: b8d81d98a93ab1a4197cf014ff586ae7,
         type: 3}
       propertyPath: m_Pivot.x
