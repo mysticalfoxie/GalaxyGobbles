@@ -1,15 +1,12 @@
 using System.Collections;
-using Unity.VisualScripting;
-using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : Singleton<MainMenu>
 {
     public const int MAIN_MENU_SCENE_INDEX = 0;
 
@@ -54,18 +51,6 @@ public class MainMenu : MonoBehaviour
     private bool _pausedGame;
     private bool _blockPauseMenu;
     private bool _levelLoading;
-    public static MainMenu Instance { get; private set; }
-
-    public void Awake()
-    {
-        if (Instance is not null)
-        {
-            Destroy(this);
-            return;
-        }
-
-        Instance = this;
-    }
 
     public void Start()
     {
@@ -76,6 +61,8 @@ public class MainMenu : MonoBehaviour
 
         /*
          * WIP: Used for Audio Control, later content!
+         * -> NOPE! Keep in mind we already have an AudioManager
+         * -> The main menu is not in charge to handle audio.
          * _backgroundAudio = FindObjectOfType<AudioSource>();
          * if(_backgroundAudio) _backgroundAudio.Play();
          */

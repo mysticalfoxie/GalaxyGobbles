@@ -35,7 +35,7 @@ public class LevelManager : Singleton<LevelManager>
         var debugLevel = Math.Max(Math.Min(_debugLevel, GameSettings.Data.Levels.Count()), 0);
         StartCoroutine(LoadLevelAsync(debugLevel, true));
     }
-
+ 
     public IEnumerator LoadLevelAsync(int index, bool skipSceneLoad = false)
     {
         CurrentLevelIndex = index;
