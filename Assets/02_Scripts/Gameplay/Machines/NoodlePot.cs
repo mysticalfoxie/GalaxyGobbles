@@ -99,10 +99,10 @@ public class NoodlePot : Touchable
         _overcookedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotOvercooked));
         _cookedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooked));
         
-        _cookingItem.AlignTo(this, _itemOffset);
-        _overcookedItem.AlignTo(this, _itemOffset);
-        _cookedItem.AlignTo(this, _itemOffset);
-        _emptyPotItem.AlignTo(this, _itemOffset);
+        _cookingItem.Follow(this, _itemOffset);
+        _overcookedItem.Follow(this, _itemOffset);
+        _cookedItem.Follow(this, _itemOffset);
+        _emptyPotItem.Follow(this, _itemOffset);
         
         _cookingItem.ForwardTouchEventsTo(this);
         _overcookedItem.ForwardTouchEventsTo(this);

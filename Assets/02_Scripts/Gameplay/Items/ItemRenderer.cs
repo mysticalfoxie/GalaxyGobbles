@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,13 +14,14 @@ public class ItemRenderer : Touchable
     private Vector3 _followPositionO;
     private Vector2 _followOffset;
     private SpriteData[] _sprites;
+    private int _cacheSkipCount = 1;
     private Item _item;
 
     public bool Destroyed { get; private set; }
     public object Initiator { get; set; }
 
-    public event EventHandler OnDestroyed; 
-    
+    public event EventHandler OnDestroyed;
+
     public Item Item
     {
         get => _item;
@@ -32,6 +35,14 @@ public class ItemRenderer : Touchable
         base.Awake();
 
         gameObject.layer = LayerMask.NameToLayer("UI");
+        
+        // Reset to force a re-render. Required because the CanvasScaling messes up the positions right after the Awake.
+        StartCoroutine(ResetPositionCache());
+        IEnumerator ResetPositionCache()
+        {
+            yield return new WaitForNextFrameUnit();
+            _followPositionO = default;
+        }
     }
 
     public void Update()
@@ -43,8 +54,13 @@ public class ItemRenderer : Touchable
     {
         if (Destroyed) return;
         if (!_follow.IsAssigned(() => _follow = null)) return;
+        if (_cacheSkipCount > 0)
+        {
+            _cacheSkipCount--;
+            _followPositionO = default;
+        } 
+        
         if (_followPositionO == _follow.transform.position) return;
-        // Saving performance by only updating the position if really required. + Caching
         _followPositionO = _follow.transform.position;
         AlignTo(_follow, _followOffset);
     }
@@ -61,10 +77,10 @@ public class ItemRenderer : Touchable
     {
         // It's on UI layer => UI Object 
         if (value.layer == LayerMask.NameToLayer("UI")) return true;
-        
+
         // It's a child of the overlay object -> Overlay = UI = 2D
         if (value.TryFindComponentInParents<Overlay>(out _)) return true;
-        
+
         return false;
     }
 
@@ -84,7 +100,7 @@ public class ItemRenderer : Touchable
     {
         Item = Item;
     }
-    
+
     protected override void OnTouch()
     {
         Click?.Invoke(this, EventArgs.Empty);
@@ -136,7 +152,7 @@ public class ItemRenderer : Touchable
             .Where(x => x is not null)
             .Where(x => !_sprites?.Contains(x) ?? true)
             .ToArray();
-        
+
         removed = _sprites?
             .Where(x => !newSprites.Contains(x))
             .ToArray() ?? Array.Empty<SpriteData>();
@@ -158,11 +174,11 @@ public class ItemRenderer : Touchable
     private void IndexingSprites()
     {
         if (_sprites is null) return;
-        
+
         var spriteRenderers = _sprites
             .OrderBy(x => x.Order)
             .ToDictionary(x => x, x => _renderers.First(y => y.Value.sprite == x.Sprite).Value);
-        
+
         for (var i = 0; i < spriteRenderers.Count; i++)
         {
             var image = spriteRenderers.ElementAt(i).Value;

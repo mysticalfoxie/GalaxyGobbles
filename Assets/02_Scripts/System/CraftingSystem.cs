@@ -31,7 +31,6 @@ public class CraftingSystem : Singleton<CraftingSystem>
         
         var itemData = GameSettings.GetItemMatch(recipe.ItemC);
         var item = new Item(item1.Initiator, itemData, !item1.Hidden);
-        if (item1.AlignedTo.IsAssigned()) item.AlignTo(item1.AlignedTo);
         if (item1.Following.IsAssigned()) item.Follow(item1.Following);
         item1.Dispose();
         item2.Dispose();

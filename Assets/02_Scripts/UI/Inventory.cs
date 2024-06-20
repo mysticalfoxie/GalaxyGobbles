@@ -77,7 +77,7 @@ public class Inventory : MonoBehaviour
         for (var index = 0; index < _items.Count; index++)
         {
             var item = _items[index];
-            item.AlignTo(_positions[index].gameObject);
+            item.Follow(_positions[index].gameObject);
         }
     }
 }

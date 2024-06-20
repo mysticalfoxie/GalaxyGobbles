@@ -16,7 +16,7 @@ public class ItemProvider : Touchable
         
         var item = GameSettings.GetItemMatch(_item);
         _itemCache = new Item(this, item, true);
-        _itemCache.AlignTo(this, _offset);
+        _itemCache.Follow(this, _offset);
         _itemCache.ForwardTouchEventsTo(this);
     } 
 

@@ -64,8 +64,8 @@ public class Table : Touchable
         if (RequiresCleaning) return;
         RequiresCleaning = true;
         
-        _tableThinkingBubbleItem.Show().AlignTo(this, _thinkBubbleOffset);
-        _cleaningItem.Show().AlignTo(_tableThinkingBubbleItem);
+        _tableThinkingBubbleItem.Show().Follow(this, _thinkBubbleOffset);
+        _cleaningItem.Show().Follow(_tableThinkingBubbleItem);
     }
 
     protected override void OnTouch()
@@ -85,7 +85,7 @@ public class Table : Touchable
     private IEnumerator StartCleaning()
     {
         _cleaningItem.Hide();
-        _thinkingDotsItem.Show().AlignTo(_tableThinkingBubbleItem);
+        _thinkingDotsItem.Show().Follow(_tableThinkingBubbleItem);
         yield return new WaitForSeconds(GameSettings.Data.TableCleaningTime);
         RequiresCleaning = false;
         _tableThinkingBubbleItem.Hide();

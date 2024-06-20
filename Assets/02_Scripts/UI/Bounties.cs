@@ -20,7 +20,7 @@ public class Bounties : MonoBehaviour
         
         var item = new Item(this, _token, true);
         var slot = _slots[_bounties.Count];
-        item.AlignTo(slot);
+        item.Follow(slot);
         bounty.Token = item;
         _bounties.Add(bounty);
         

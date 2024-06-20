@@ -12,7 +12,7 @@ public class TrashCan : Touchable
         base.Awake();
 
         _item = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Trash), true);
-        _item.AlignTo(this, _offset);
+        _item.Follow(this, _offset);
         _item.ForwardTouchEventsTo(this);
     }
 

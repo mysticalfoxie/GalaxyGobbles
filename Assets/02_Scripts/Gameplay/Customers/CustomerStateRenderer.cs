@@ -156,8 +156,8 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         _eatingItem.Hide();
         _thinkBubbleMeals.Hide();
-        _thinkBubble.Show().AlignTo(this, Customer.Data.Species.ThinkBubbleOffset);
-        _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
+        _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
+        _poisonedItem.Show().Follow(_thinkBubble, _thinkBubbleItemOffset);
         
         StartCoroutine(nameof(StartPoisonCloudAnimation));
     }
