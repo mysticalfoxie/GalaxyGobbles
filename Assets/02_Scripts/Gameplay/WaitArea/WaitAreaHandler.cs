@@ -66,6 +66,7 @@ public class WaitAreaHandler : Singleton<WaitAreaHandler>
         var outsideCustomer = _outsideQueue.FirstOrDefault();
         if (outsideCustomer is not null)
         {
+            _outsideQueue.Remove(outsideCustomer);
             _waitAreas[column][spot].SetCustomer(outsideCustomer);
             outsideCustomer.Visible = true;
         }

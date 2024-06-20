@@ -23,6 +23,7 @@ public class SelectionSystem : Singleton<SelectionSystem>
 
     public void Deselect()
     {
+        if (Selection is null) return;
         Selection.Deselect();
         Selection = null;
     }
