@@ -15,7 +15,6 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     [SerializeField] private Color _outlineColor;
     
     [Header("Item Positioning")] 
-    [SerializeField] private Vector2 _thinkBubbleOffset;
     [SerializeField] private Vector2 _thinkBubbleItemOffset;
     [SerializeField] private Vector2 _tableItemLeftOffset;
     [SerializeField] private Vector2 _tableItemTopOffset;
@@ -54,9 +53,6 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void InitializeInEditorMode()
     {
         SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
-        // SpriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
-        // SpriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
-        // SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
     }
     
     public void OnCustomerDataSet()
@@ -74,7 +70,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderWaitingForSeat()
     {
         _thinkBubble.Show();
-        _thinkBubble.Follow(this, _thinkBubbleOffset);
+        _thinkBubble.Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _chairItem.Show();
         _chairItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
@@ -121,7 +117,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         foreach (var item in _items) item.Hide();
         foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
 
-        _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
+        _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _dyingItem.Show();
         _dyingItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
@@ -132,7 +128,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         foreach (var item in _items) item.Hide();
         foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
 
-        _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
+        _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _angryItem.Show();
         _angryItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
@@ -153,7 +149,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         _eatingItem.Hide();
         _thinkBubbleTable.Hide();
-        _thinkBubble.Show().AlignTo(this, _thinkBubbleOffset);
+        _thinkBubble.Show().AlignTo(this, Customer.Data.Species.ThinkBubbleOffset);
         _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
         
         StartCoroutine(nameof(StartPoisonCloudAnimation));

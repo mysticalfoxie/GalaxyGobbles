@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: SPEC_Bob
   m_EditorClassIdentifier: 
   _name: Bob
-  _scale: 0.5
+  _scale: 0.6
   _frontSprite: {fileID: 21300000, guid: 3f2104bce34929a4498661bb71d9f172, type: 3}
   _backSprite: {fileID: 21300000, guid: de05c7c026e05da46b42d5fcb108f8bc, type: 3}
   _sideSprite: {fileID: 21300000, guid: c523e0af79e36b7429177963df660a32, type: 3}
-  _sittingSprite: {fileID: 21300000, guid: c523e0af79e36b7429177963df660a32, type: 3}
+  _sittingSprite: {fileID: 21300000, guid: 12032bd097782c348b12fa436fb042f9, type: 3}
   _poisonItems:
   - {fileID: 11400000, guid: 1a85ff1968cea314da49289657273cf1, type: 2}
   _chanceToNotOrder: 0
   _chanceToOrderTwice: 0
   _chanceToOrderSake: 0
+  _chairOffsetHorizontal: {x: 2.76001, y: 33.67248, z: 0}
+  _chairOffsetVertical: {x: 2.76001, y: 33.67248, z: 0}
+  _heartsOffset: {x: 72.10262, y: -2.10656}
+  _thinkBubbleOffset: {x: 81.00262, y: 131.6935}
