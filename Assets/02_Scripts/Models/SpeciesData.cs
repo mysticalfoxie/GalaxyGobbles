@@ -29,8 +29,10 @@ public class SpeciesData : ScriptableObject
     [SerializeField] private Vector3 _chairOffsetHorizontal;
     [Tooltip("The offset the customer has to a chair. (The chair used in the vertical table prefab)\nThe x value becomes inverted for chairs that are positioned on the right. So keep in mind that your offset should be from the left chair.")]
     [SerializeField] private Vector3 _chairOffsetVertical;
-    [Tooltip("The offset of the hearts to the customer. This needs to be configured to the left side, because it's flipped later on when you seat your customer on a right seat.")]
+    [Tooltip("The offset of the hearts to the customer. This needs to be configured to the right side, because it's flipped later on when you seat your customer on a left seat.")]
     [SerializeField] private Vector2 _heartsOffset;
+    [Tooltip("The offset of the thinking bubble in relation to the customer. This needs to be configured to the right side, because it's flipped later on.")]
+    [SerializeField] private Vector2 _thinkBubbleOffset;
 
     public string Name => _name;
     public float Scale => _scale;
@@ -45,4 +47,5 @@ public class SpeciesData : ScriptableObject
     public Vector3 ChairOffsetHorizontal => _chairOffsetHorizontal;
     public Vector3 ChairOffsetVertical => _chairOffsetVertical;
     public Vector2 HeartsOffset => _heartsOffset;
+    public Vector2 ThinkBubbleOffset => _thinkBubbleOffset;
 }

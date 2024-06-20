@@ -51,10 +51,21 @@ public class ItemRenderer : Touchable
 
     public void AlignTo(GameObject value, Vector2 offset = default)
     {
-        if (value.layer == LayerMask.NameToLayer("UI"))
+        if (IsUIObject(value))
             AlignToUIObject(value, offset);
         else
             AlignTo3DObject(value, offset);
+    }
+
+    private bool IsUIObject(GameObject value)
+    {
+        // It's on UI layer => UI Object 
+        if (value.layer == LayerMask.NameToLayer("UI")) return true;
+        
+        // It's a child of the overlay object -> Overlay = UI = 2D
+        if (value.TryFindComponentInParents<Overlay>(out _)) return true;
+        
+        return false;
     }
 
     public void Follow(GameObject value, Vector2 offset = default)
@@ -81,11 +92,14 @@ public class ItemRenderer : Touchable
 
     protected void AddSprite(SpriteData sprite)
     {
+        var targetSize = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
         var rendererGameObject = Instantiate(GameSettings.Data.PRE_SpriteRenderer);
         var rendererComponent = rendererGameObject.GetRequiredComponent<Image>();
+        rendererComponent.rectTransform.anchorMax = new Vector2(1, 1);
+        rendererComponent.rectTransform.anchorMin = new Vector2(1, 1);
         rendererComponent.transform.SetParent(gameObject.transform);
         rendererComponent.sprite = sprite.Sprite;
-        rendererComponent.rectTransform.sizeDelta = sprite.Size == default ? sprite.Sprite.texture.Size() : sprite.Size;
+        rendererComponent.rectTransform.sizeDelta = targetSize;
         rendererComponent.rectTransform.transform.localPosition = sprite.Offset;
         rendererComponent.rectTransform.transform.localScale = Vector2.one;
         rendererComponent.rectTransform.transform.localScale = Vector2.one;

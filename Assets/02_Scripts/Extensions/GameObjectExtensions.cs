@@ -64,6 +64,24 @@ public static class GameObjectExtensions
         }
     }
 
+    public static bool TryFindComponentInParents<T>(this GameObject gameObject, out T value) where T : Component
+    {
+        if (gameObject.transform.parent is null)
+        {
+            value = null;
+            return false;
+        }
+
+        var component = gameObject.transform.parent.gameObject.GetComponent<T>();
+        if (component)
+        {
+            value = component;
+            return true;
+        }
+        
+        return gameObject.transform.parent.gameObject.TryFindComponentInParents(out value);
+    }
+
     public static bool IsAssigned(this GameObject gameObject, Action actionsWhenNotAssigned)
     {
         var assigned = gameObject.IsAssigned();
