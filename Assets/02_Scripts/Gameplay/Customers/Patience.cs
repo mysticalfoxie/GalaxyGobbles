@@ -8,10 +8,6 @@ public class Patience : MonoBehaviour
     private Hearts _hearts;
     private bool _hasTicked;
 
-    [Header("Visualization")]
-    [Tooltip("The offset of the hearts to the customer. This should be configured to the left side, because it's flipped later on when you seat your customer on a right seat.")]
-    [SerializeField] private Vector2 _heartsOffset;
-
     public static bool Disabled { get; set; }
     public Customer Customer { get; set; }
     public float Value { get; private set; }
@@ -32,7 +28,7 @@ public class Patience : MonoBehaviour
     {
         Ticking = true;
         _heartsGameObject.SetActive(true);
-        _hearts.Follow(Customer, _heartsOffset);
+        _hearts.Follow(Customer, Customer.Data.Species.HeartsOffset);
         Value = 100.0F;
         StartCoroutine(nameof(OnStartTicking));
     }
@@ -44,9 +40,9 @@ public class Patience : MonoBehaviour
 
     private Vector2 GetOffset()
     {
-        if (Customer.Chair is null) return _heartsOffset;
-        if (Customer.Chair.Side != Direction.Right) return _heartsOffset;
-        return _heartsOffset * new Vector2(-1, 1);
+        if (Customer.Chair is null) return Customer.Data.Species.HeartsOffset;
+        if (Customer.Chair.Side != Direction.Right) return Customer.Data.Species.HeartsOffset;
+        return Customer.Data.Species.HeartsOffset * new Vector2(-1, 1);
     }
 
     private IEnumerator OnStartTicking()

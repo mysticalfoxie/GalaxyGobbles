@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ChairPositionCalculator : MonoBehaviour
+public class PositionCalculator3D : MonoBehaviour
 {
     [Header("Positions")]
     [SerializeField] private bool _lockPositionBefore;
