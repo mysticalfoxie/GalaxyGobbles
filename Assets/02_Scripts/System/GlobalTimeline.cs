@@ -66,7 +66,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
     private IEnumerator CloseStore()
     {
         yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
-        MainMenu.Instance.CompleteDay();
+        MainMenu.Instance.CompleteDayMenu();
         Active = false;
     }
 }

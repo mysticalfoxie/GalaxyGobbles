@@ -11,6 +11,8 @@ public class ItemData : ScriptableObject
     [SerializeField] private bool _deliverable;
     [Tooltip("If the item is able to be cut in the cutting board to become poison.")]
     [SerializeField] private bool _canBecomePoison;
+    [Tooltip("If the item is able to be combined with any sort of poison.")]
+    [SerializeField] private bool _canBecomePoisoned;
     [Tooltip("The base score you receive from this food.")]
     [SerializeField] private float _score = 1.0F;
     [Tooltip("The sprites required to render this item.")]
@@ -20,6 +22,7 @@ public class ItemData : ScriptableObject
     public IEnumerable<SpriteData> Sprites => _sprites;
     public bool Deliverable => _deliverable;
     public bool CanBecomePoison => _canBecomePoison;
+    public bool CanBecomePoisoned => _canBecomePoisoned;
     public float Score => _score;
     public ItemData Poison { get; set; }
 

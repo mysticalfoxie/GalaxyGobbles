@@ -1,6 +1,6 @@
 using UnityEngine.SceneManagement;
 
-public class BottomBar : SingletonMonoBehaviour<BottomBar>
+public class BottomBar : Singleton<BottomBar>
 {
     public Inventory Inventory { get; private set; }
     public Bounties Bounties { get; private set; }

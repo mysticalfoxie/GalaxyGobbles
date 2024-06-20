@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : SingletonMonoBehaviour<LevelManager>
+public class LevelManager : Singleton<LevelManager>
 {
     public const int MAIN_LEVEL_INDEX = 1;
 
@@ -35,7 +35,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         var debugLevel = Math.Max(Math.Min(_debugLevel, GameSettings.Data.Levels.Count()), 0);
         StartCoroutine(LoadLevelAsync(debugLevel, true));
     }
-
+ 
     public IEnumerator LoadLevelAsync(int index, bool skipSceneLoad = false)
     {
         CurrentLevelIndex = index;

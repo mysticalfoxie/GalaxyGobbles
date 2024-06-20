@@ -49,6 +49,10 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _customerBaseScore = 1.0F;
     [Tooltip("The maximum score you could receive from a single customer.")]
     [SerializeField] private float _customerMaxScore = 4.0F;
+    [Tooltip("The amount of patience that the customer regains after receiving being seated in percent.")]
+    [SerializeField] private float _patienceRegainOnSeated = 20.0F;
+    [Tooltip("The amount of patience that the customer regains after receiving an item in percent.")]
+    [SerializeField] private float _patienceRegainOnItemReceive = 20.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -92,6 +96,8 @@ public class GameSettings : ScriptableObject
     public float CustomerAngryLeavingTime => _customerAngryLeaveTime;
     public float CustomerMaxScore => _customerMaxScore;
     public float CustomerBaseScore => _customerBaseScore;
+    public float PatienceRegainOnItemReceive => _patienceRegainOnItemReceive;
+    public float PatienceRegainOnSeated => _patienceRegainOnSeated;
 
     public SpriteData PoisonIcon => _poisonIcon;
     

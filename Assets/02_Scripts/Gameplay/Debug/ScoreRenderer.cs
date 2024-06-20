@@ -1,14 +1,16 @@
 using TMPro;
 using UnityEngine;
 
-public class ScoreRenderer : MonoBehaviour
+public class ScoreRenderer : Singleton<ScoreRenderer>
 {
     public const string FORMAT = "0000000";
     
     private TMP_Text _tmpText;
     
-    public void Awake()
+    public override void Awake()
     {
+        InheritedDDoL = true;
+        base.Awake();
         _tmpText = this.GetRequiredComponent<TMP_Text>();
     }
 
@@ -24,5 +26,17 @@ public class ScoreRenderer : MonoBehaviour
         if (BottomBar.Instance is null) return FORMAT;
         if (BottomBar.Instance.Score is null) return FORMAT;
         return BottomBar.Instance.Score.Value.ToString(FORMAT);
+    }
+
+    public static void Hide()
+    {
+        if (!Instance) return;
+        Instance.gameObject.SetActive(false);
+    }
+
+    public static void Show()
+    {
+        if (!Instance) return;
+        Instance.gameObject.SetActive(true);
     }
 }

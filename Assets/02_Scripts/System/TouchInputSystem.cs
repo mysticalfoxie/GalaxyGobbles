@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 
-public sealed class TouchInputSystem : SingletonMonoBehaviour<TouchInputSystem>
+public sealed class TouchInputSystem : Singleton<TouchInputSystem>
 {
     public const string INPUT_PRESS = "Press";          //  Button down and Button up -> Press performed
     public const string INPUT_TAP = "Tap";              //  Only a click within .4s is a tap 

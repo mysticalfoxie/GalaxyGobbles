@@ -8,10 +8,7 @@ public class Patience : MonoBehaviour
     private Hearts _hearts;
     private bool _hasTicked;
 
-    [Header("Visualization")]
-    [Tooltip("The offset of the hearts to the customer. This should be configured to the left side, because it's flipped later on when you seat your customer on a right seat.")]
-    [SerializeField] private Vector2 _heartsOffset;
-
+    public static bool Disabled { get; set; }
     public Customer Customer { get; set; }
     public float Value { get; private set; }
     public bool Ticking { get; private set; }
@@ -29,13 +26,20 @@ public class Patience : MonoBehaviour
     
     public void StartTicking()
     {
+        if (!isActiveAndEnabled) return;
         Ticking = true;
         _heartsGameObject.SetActive(true);
-        _hearts.Follow(Customer, _heartsOffset);
+        _hearts.Follow(Customer, Customer.Data.Species.HeartsOffset);
         Value = 100.0F;
         StartCoroutine(nameof(OnStartTicking));
     }
 
+    public void Add(float amount)
+    {
+        Value = Math.Min(Value + amount, 100.0F);         
+        _hearts.SetFillPercentage(Value);
+    }
+    
     public void UpdateOffset()
     {
         _hearts.Offset = GetOffset();
@@ -43,9 +47,9 @@ public class Patience : MonoBehaviour
 
     private Vector2 GetOffset()
     {
-        if (Customer.Chair is null) return _heartsOffset;
-        if (Customer.Chair.Direction != Direction.Right) return _heartsOffset;
-        return _heartsOffset * new Vector2(-1, 1);
+        if (Customer.Chair is null) return Customer.Data.Species.HeartsOffset;
+        if (Customer.Chair.Side != Direction.Right) return Customer.Data.Species.HeartsOffset;
+        return Customer.Data.Species.HeartsOffset * new Vector2(-1, 1);
     }
 
     private IEnumerator OnStartTicking()
@@ -62,6 +66,7 @@ public class Patience : MonoBehaviour
 
     private void OnTick()
     {
+        if (Disabled) return;
         _hasTicked = true;
         Value -= GameSettings.Data.PatienceDropAmount;
         _hearts.SetFillPercentage(Value);
@@ -77,6 +82,6 @@ public class Patience : MonoBehaviour
 
     public void Dispose()
     {
-        Destroy(_heartsGameObject);        
+        Destroy(_heartsGameObject);
     }
 }

@@ -6,22 +6,27 @@ using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
 {
+    private static readonly int _materialPropertyEnabled = Shader.PropertyToID("_Enabled");
+    private static readonly int _materialPropertyThickness = Shader.PropertyToID("_Thickness");
+    private static readonly int _materialPropertyColor = Shader.PropertyToID("_Color");
+    
+    [Header("Selection Outline")]
+    [SerializeField] private float _outlineThickness;
+    [SerializeField] private Color _outlineColor;
+    
     [Header("Item Positioning")] 
-    [SerializeField] private Vector2 _thinkBubbleOffset;
     [SerializeField] private Vector2 _thinkBubbleItemOffset;
     [SerializeField] private Vector2 _tableItemLeftOffset;
     [SerializeField] private Vector2 _tableItemTopOffset;
     [SerializeField] private Vector2 _tableItemRightOffset;
     [SerializeField] private Vector2 _tableItemBottomOffset;
-    [SerializeField] private Vector2 _horizontalTableOffset;
-    [SerializeField] private Vector2 _verticalTableOffset;
 
     private Item[] _desiredItems = Array.Empty<Item>();
     private Item _chairItem;
     private Item _moneyItem;
     private Item _thinkBubble;
     private Item _thinkDots;
-    private Item _thinkBubbleTable;
+    private Item _thinkBubbleMeals;
     private Item _thinkBubbleMultiHorizontalTable;
     private Item _thinkBubbleMultiVerticalTable;
     private Item _eatingItem;
@@ -30,37 +35,40 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item[] _items;
     private Item _poisonedItem;
 
+    public SpriteRenderer SpriteRenderer { get; private set; }
     public CustomerStateMachine StateMachine { get; private set; }
     public Customer Customer { get; private set; }
+
+    public Bounds Bounds => SpriteRenderer.bounds;
 
     public void Initialize(CustomerStateMachine stateMachine)
     {
         StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         Customer = StateMachine.Customer ?? throw new ArgumentNullException(nameof(Customer));
+        InitializeItems();
+    }
 
-        _items = new[]
-        {
-            _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
-            _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
-            _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
-            _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
-            _thinkBubbleTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
-            _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
-            _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
-            _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
-            _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
-            _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
-            _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
-        };
+    public void InitializeInEditorMode()
+    {
+        SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+    }
+    
+    public void OnCustomerDataSet()
+    {
+        if (Customer.Data is null) return;
+        InitializeCustomerSprites();
+    }
 
-        foreach (var item in _items)
-            item.ForwardTouchEventsTo(Customer);
+    public void RenderSeated()
+    {
+        //Customer.Chair.Direction
+        SpriteRenderer.sprite = Customer.Data.Species.SittingSprite;
     }
 
     public void RenderWaitingForSeat()
     {
         _thinkBubble.Show();
-        _thinkBubble.Follow(this, _thinkBubbleOffset);
+        _thinkBubble.Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _chairItem.Show();
         _chairItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
@@ -69,10 +77,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         _chairItem.Hide();
         _thinkBubble.Hide();
-        _thinkBubbleTable.Show();
-        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
+        _thinkBubbleMeals.Show();
+        _thinkBubbleMeals.Follow(Customer, GetThinkingBubbleMealsOffset());
         _thinkDots.Show();
-        _thinkDots.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+        _thinkDots.Follow(_thinkBubbleMeals, _thinkBubbleItemOffset);
     }
 
     public void RenderWaitingForMeal()
@@ -84,10 +92,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderWaitingForCheckout()
     {
         _eatingItem.Hide();
-        _thinkBubbleTable.Show();
-        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
+        _thinkBubbleMeals.Show();
+        _thinkBubbleMeals.Follow(Customer, GetThinkingBubbleMealsOffset());
         _moneyItem.Show();
-        _moneyItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+        _moneyItem.Follow(_thinkBubbleMeals, _thinkBubbleItemOffset);
     }
 
     public void RenderEating()
@@ -95,10 +103,19 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _thinkBubbleMultiHorizontalTable.Hide();
         _thinkBubbleMultiVerticalTable.Hide();
         foreach (var item in _desiredItems) item.Hide();
-        _thinkBubbleTable.Show();
-        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
+        _thinkBubbleMeals.Show();
+        _thinkBubbleMeals.Follow(Customer, GetThinkingBubbleMealsOffset());
         _eatingItem.Show();
-        _eatingItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+        _eatingItem.Follow(_thinkBubbleMeals, _thinkBubbleItemOffset);
+    }
+
+    private Vector2 GetThinkingBubbleMealsOffset()
+    {
+        var offset = Customer.Table.Orientation == Orientation.Horizontal 
+            ? Customer.Data.Species.MealsThinkBubbleOffsetHorizontal 
+            : Customer.Data.Species.MealsThinkBubbleOffsetVertical;
+        if (Customer.Chair.Side == Direction.Right) offset = new Vector2(offset.x * -1, offset.y);
+        return offset;
     }
 
     public void RenderDying()
@@ -107,7 +124,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         foreach (var item in _items) item.Hide();
         foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
 
-        _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
+        _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _dyingItem.Show();
         _dyingItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
@@ -118,7 +135,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         foreach (var item in _items) item.Hide();
         foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
 
-        _thinkBubble.Show().Follow(this, _thinkBubbleOffset);
+        _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _angryItem.Show();
         _angryItem.Follow(_thinkBubble, _thinkBubbleItemOffset);
     }
@@ -128,6 +145,39 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         RenderDesiredItems();
     }
 
+    public void Dispose()
+    {
+        foreach (var item in _items) item.Dispose();
+        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    public void RenderPoisoned()
+    {
+        _eatingItem.Hide();
+        _thinkBubbleMeals.Hide();
+        _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
+        _poisonedItem.Show().Follow(_thinkBubble, _thinkBubbleItemOffset);
+        
+        StartCoroutine(nameof(StartPoisonCloudAnimation));
+    }
+
+    public void SetSeated()
+    {
+        SpriteRenderer.sprite = Customer.Data.Species.SittingSprite;
+        SpriteRenderer.flipX = Customer.Chair.Side == Direction.Left; 
+    }
+    
+    public void OnSelected()
+    {
+        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 1);
+    }
+
+    public void OnDeselected()
+    {
+        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
+    }
+    
     private void RenderDesiredItems()
     {
         InitializeDesiredItems();
@@ -154,14 +204,32 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
     private void InitializeThinkBubble()
     {
-        var thinkingBubbles = new List<Item> { _thinkBubbleMultiVerticalTable, _thinkBubbleMultiHorizontalTable, _thinkBubbleTable };
+        var thinkingBubbles = new List<Item> { _thinkBubbleMultiVerticalTable, _thinkBubbleMultiHorizontalTable, _thinkBubbleMeals };
         var thinkingBubble = GetTableThinkingBubble()
             .Show()
-            .Follow(Customer.Table, GetTableThinkingBubbleOffset())
+            .Follow(Customer, GetThinkingBubbleMealsOffset())
             .SendToBack();
         thinkingBubbles.Remove(thinkingBubble);
         foreach (var unused in thinkingBubbles.Where(unused => !unused.Hidden))
             unused.Hide();
+    }
+
+    private void InitializeItems()
+    {
+        foreach (var item in _items = new[]
+         {
+             _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
+             _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
+             _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
+             _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
+             _thinkBubbleMeals = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
+             _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
+             _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
+             _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
+             _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
+             _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
+             _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
+         }) item.ForwardTouchEventsTo(Customer);
     }
 
     private void CreateDesiredItems()
@@ -177,15 +245,12 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item GetTableThinkingBubble()
         => _desiredItems.Length switch
         {
-            1 => _thinkBubbleTable,
+            1 => _thinkBubbleMeals,
             2 => Customer.Table.Orientation == Orientation.Horizontal
                 ? _thinkBubbleMultiHorizontalTable
                 : _thinkBubbleMultiVerticalTable,
             _ => throw new NotSupportedException()
         };
-
-    private Vector2 GetTableThinkingBubbleOffset()
-        => Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset;
 
     private Vector2 GetItemOffsetByItemIndex(int index)
         => index switch
@@ -194,22 +259,26 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             1 => Customer.Table.Orientation == Orientation.Horizontal ? _tableItemRightOffset : _tableItemBottomOffset,
             _ => throw new IndexOutOfRangeException(nameof(index))
         };
-
-    public void Dispose()
+    
+    private void InitializeCustomerSprites()
     {
-        foreach (var item in _items) item.Dispose();
-        foreach (var desiredItem in _desiredItems) desiredItem.Dispose();
-        GC.SuppressFinalize(this);
+        var anchor = References.Instance.AnchorCustomer;
+        InitializeCustomerSprites(Customer.Data.Species, anchor, anchor.Data.Species);
     }
 
-    public void RenderPoisoned()
+    public void InitializeCustomerSprites(SpeciesData data, Customer anchor, SpeciesData anchorSpecies)
     {
-        _eatingItem.Hide();
-        _thinkBubbleTable.Hide();
-        _thinkBubble.Show().AlignTo(this, _thinkBubbleOffset);
-        _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
-        
-        StartCoroutine(nameof(StartPoisonCloudAnimation));
+        SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+        SpriteRenderer.sprite = data.FrontSprite;
+        SpriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
+        SpriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
+        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
+        var scaleY = anchor.gameObject.transform.localScale.y / anchorSpecies.Scale * data.Scale;
+        var scaleX = transform.localScale.x / transform.localScale.y * scaleY;
+        transform.localScale = new Vector3(scaleX, scaleY, 1.0F);
+        var boxCollider = this.GetRequiredComponent<BoxCollider>();
+        boxCollider.size = data.ColliderSize;
+        boxCollider.center = Vector3.zero;
     }
 
     private IEnumerator StartPoisonCloudAnimation()

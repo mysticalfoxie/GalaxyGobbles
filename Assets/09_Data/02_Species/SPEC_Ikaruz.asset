@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc82e74df7f449582f2b2acc8ebb126, type: 3}
+  m_Name: SPEC_Ikaruz
+  m_EditorClassIdentifier: 
+  _name: Ikaruz
+  _scale: 1
+  _frontSprite: {fileID: 21300000, guid: fefad589e14ee0040a428dbf029c3754, type: 3}
+  _backSprite: {fileID: 21300000, guid: 46d0a87ec7779de44a41c075dc6615dd, type: 3}
+  _sideSprite: {fileID: 21300000, guid: 99284e48c723e53448125418de3e266c, type: 3}
+  _sittingSprite: {fileID: 21300000, guid: 2f3ba4e50e1d4c542b5f2381e231811f, type: 3}
+  _poisonItems:
+  - {fileID: 11400000, guid: 1a85ff1968cea314da49289657273cf1, type: 2}
+  _chanceToNotOrder: 0
+  _chanceToOrderTwice: 0
+  _chanceToOrderSake: 0
+  _colliderSize: {x: 4.076937, y: 8.096776, z: 0.1}
+  _chairOffsetHorizontal: {x: -1.540039, y: 43.47248, z: -3.262823}
+  _chairOffsetVertical: {x: 6.349305, y: 43.43812, z: -6.614957}
+  _heartsOffset: {x: -82.39734, y: -7.758484}
+  _thinkBubbleOffset: {x: 142.1995, y: 123.4991}
+  _mealsThinkBubbleOffsetHorizontal: {x: 107.1118, y: 162.912}
+  _mealsThinkBubbleOffsetVertical: {x: 151.1639, y: 207.3207}

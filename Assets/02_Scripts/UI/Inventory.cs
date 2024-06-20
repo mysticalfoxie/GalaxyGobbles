@@ -58,7 +58,7 @@ public class Inventory : MonoBehaviour
         if (!data.CanBecomePoison) return;
         
         // First item that is not poisoned yet.
-        var item = _items.FirstOrDefault(x => !x.Data.Poison); 
+        var item = _items.FirstOrDefault(x => !x.Data.Poison && x.Data.CanBecomePoisoned); 
         if (item is null) return;
         
         // Poison it
@@ -77,7 +77,7 @@ public class Inventory : MonoBehaviour
         for (var index = 0; index < _items.Count; index++)
         {
             var item = _items[index];
-            item.AlignTo(_positions[index].gameObject);
+            item.Follow(_positions[index].gameObject);
         }
     }
 }

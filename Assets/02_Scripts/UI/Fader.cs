@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fader : SingletonMonoBehaviour<Fader>
+public class Fader : Singleton<Fader>
 {
     private static readonly int _fadeSpeedParameter = Animator.StringToHash("FadeSpeed");
     private static readonly int _fadeBlackParameter = Animator.StringToHash("FadeBlack");

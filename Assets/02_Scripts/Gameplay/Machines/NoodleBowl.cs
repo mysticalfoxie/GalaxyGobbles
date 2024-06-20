@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NoodleBowl : TouchableMonoBehaviour
+public class NoodleBowl : Touchable
 {
     private Item _item;
     private ItemData _itemData;
@@ -13,8 +13,14 @@ public class NoodleBowl : TouchableMonoBehaviour
 
         _itemData = GameSettings.GetItemMatch(Identifiers.Value.NoodleBowl);
         _item = new Item(this, _itemData, true);
-        _item.AlignTo(this, _itemOffset);
+        _item.Follow(this, _itemOffset);
         _item.ForwardTouchEventsTo(this);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(.1F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
     }
 
     protected override void OnTouch()

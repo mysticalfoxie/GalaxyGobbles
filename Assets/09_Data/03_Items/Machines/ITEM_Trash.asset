@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb1b9afe62b4c538e7daeb03c7647f5, type: 3}
   m_Name: ITEM_Trash
   m_EditorClassIdentifier: 
-  _id: ITEM_Trash
   _name: Trash
-  _deliverable: 1
+  _deliverable: 0
+  _canBecomePoison: 0
+  _canBecomePoisoned: 0
+  _score: 1
   _sprites:
   - {fileID: 11400000, guid: 3322ceaa5fc9be44ea232c33d7ff7333, type: 2}
   - {fileID: 11400000, guid: 7832caa81b9e7914fa3878d991bd99d0, type: 2}

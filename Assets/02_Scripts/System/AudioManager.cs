@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class AudioManager : SingletonMonoBehaviour<AudioManager>
+public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource _audio;
     

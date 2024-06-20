@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CuttingBoard : TouchableMonoBehaviour
+public class CuttingBoard : Touchable
 {
     [Header("Crafting Visualization")] 
     [SerializeField] private Vector2 _thinkingBubbleOffset;
@@ -32,9 +32,9 @@ public class CuttingBoard : TouchableMonoBehaviour
     {
         if (_menuOpened) return false;
         
-        _thinkingBubbleItem.Show().AlignTo(this, _thinkingBubbleOffset);
-        _cuttingBoardUIItem.Show().AlignTo(_thinkingBubbleItem, _cuttingBoardUIOffset);
-        _emptyItem.Show().AlignTo(_cuttingBoardUIItem, _itemOffset);
+        _thinkingBubbleItem.Show().Follow(this, _thinkingBubbleOffset);
+        _cuttingBoardUIItem.Show().Follow(_thinkingBubbleItem, _cuttingBoardUIOffset);
+        _emptyItem.Show().Follow(_cuttingBoardUIItem, _itemOffset);
 
         StartCoroutine(nameof(HandleIngredientSelection));
         
@@ -63,6 +63,12 @@ public class CuttingBoard : TouchableMonoBehaviour
         });
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.HSVToRGB(.03F, .7F, .7F);
+        Gizmos.DrawCube(transform.position, transform.lossyScale);
+    }
+
     private void OnIngredientSelected(ItemData data)
     {
         TryHandleCloseMenu();
@@ -79,7 +85,7 @@ public class CuttingBoard : TouchableMonoBehaviour
             _cuttingBoardItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.CuttingBoard), true)
         };
         
-        _cuttingBoardItem.AlignTo(this, _cuttingBoardOffset);
+        _cuttingBoardItem.Follow(this, _cuttingBoardOffset);
 
         foreach (var item in items)
             item.ForwardTouchEventsTo(this);

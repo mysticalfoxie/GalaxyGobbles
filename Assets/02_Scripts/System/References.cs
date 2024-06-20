@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
-public class References : SingletonMonoBehaviour<References>
+public class References : Singleton<References>
 {
     private readonly List<GameObject> _allLevelObjects = new();
     private readonly List<Table> _tables = new();
@@ -15,6 +16,11 @@ public class References : SingletonMonoBehaviour<References>
     [Header("Configurations")] 
     [SerializeField] private GameSettings _settings;
     [SerializeField] private Identifiers _identifiers;
+    
+    [Header("Anchor Customer")]
+    [Tooltip("Please set a GameObject here from a customer, who has the desired scaling.\nThis customer will be the anchor for the species size calculation.")]
+    [SerializeField] private Customer _anchor;
+    [SerializeField] private SpeciesData _data;
 
     public override void Awake()
     {
@@ -22,11 +28,16 @@ public class References : SingletonMonoBehaviour<References>
         
         var scene = SceneManager.GetActiveScene();
         HandleLevelData(scene);
+
+        if (!AnchorCustomer) return;
+        AnchorCustomer.Data = Model.Create<CustomerData>(x => { x._species = _data; });
+        AnchorCustomer.gameObject.SetActive(false);
     }
 
     private void HandleLevelData(Scene scene)
     {
         if (scene.buildIndex != LevelManager.MAIN_LEVEL_INDEX) return;
+        
         _root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
         AnalyseLevelObjects();
     }
@@ -59,6 +70,7 @@ public class References : SingletonMonoBehaviour<References>
     }
 
     public GameObject RootObject => _root;
+    public Customer AnchorCustomer => _anchor;
     public IEnumerable<Table> Tables => _tables;
     public IEnumerable<Chair> Chairs => _chairs;
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;

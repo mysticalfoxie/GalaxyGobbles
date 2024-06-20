@@ -17,9 +17,7 @@ public class Item : IDisposable
 
     public object Initiator { get; }
     public ItemData Data { get; }
-    public GameObject AlignedTo { get; private set; }
     public GameObject Following { get; private set; }
-    public Vector2 AlignmentOffset { get; private set; }
     public Vector2 FollowOffset { get; private set; }
     public bool Hidden { get; private set; }
     public event EventHandler Click;
@@ -28,7 +26,6 @@ public class Item : IDisposable
     {
         if (!Hidden && _initialized) return this;
         _renderer = CreateItemRenderer();
-        if (AlignedTo.IsAssigned()) _renderer.AlignTo(AlignedTo, AlignmentOffset);
         if (Following.IsAssigned()) _renderer.Follow(Following, FollowOffset);
         Hidden = false;
         return this;
@@ -39,18 +36,6 @@ public class Item : IDisposable
         if (Hidden) return this;
         _renderer.Destroy();
         Hidden = true;
-        return this;
-    }
-
-    public Item AlignTo(Item value, Vector2 offset = default) => AlignTo(value._renderer?.gameObject, offset);
-    public Item AlignTo(MonoBehaviour value, Vector2 offset = default) => AlignTo(value.gameObject, offset);
-    public Item AlignTo(GameObject value, Vector2 offset = default)
-    {
-        if (!value.IsAssigned()) return this; 
-        AlignedTo = value;
-        AlignmentOffset = offset;
-        if (_renderer.IsDestroyed()) return this;
-        _renderer.AlignTo(value, offset);
         return this;
     }
     
@@ -90,7 +75,7 @@ public class Item : IDisposable
         _renderer.Refresh();
     }
 
-    public Item ForwardTouchEventsTo(TouchableMonoBehaviour touchable)
+    public Item ForwardTouchEventsTo(Touchable touchable)
     {
         Click += (_, _) => touchable?.InvokeTouch(this, EventArgs.Empty);
         return this;
