@@ -52,6 +52,12 @@ public class MainMenu : Singleton<MainMenu>
     private bool _blockPauseMenu;
     private bool _levelLoading;
 
+    public override void Awake()
+    {
+        InheritedDDoL = true;
+        base.Awake();
+    }
+
     public void Start()
     {
         _startMenu.SetActive(!_startWithoutMenu);
@@ -166,7 +172,7 @@ public class MainMenu : Singleton<MainMenu>
         if (_blockPauseMenu == false) _blockPauseMenu = true;
         if (_sidebar) _sidebar.SetActive(false);
         _levelMap.SetActive(true);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
     public void ReplayLevel()

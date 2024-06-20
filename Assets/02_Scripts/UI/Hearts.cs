@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Hearts : MonoBehaviour
 {
+    private static readonly List<Hearts> _instances = new();
+    
     private GameObject _foregroundLayer;
     private GameObject _backgroundLayer;
     private Transform _follow;
@@ -23,6 +26,8 @@ public class Hearts : MonoBehaviour
 
     public void Awake()
     {
+        _instances.Add(this);
+        
         // Fetch layers
         var layer = this.GetChildren().ToArray();
         _backgroundLayer = layer.First();
@@ -98,5 +103,11 @@ public class Hearts : MonoBehaviour
     {
         _follow = behaviour.gameObject.transform;
         Offset = offset;
+    }
+
+    public static void Clear()
+    {
+        var instances = _instances.Where(instance => instance && instance.gameObject).ToArray();
+        foreach (var instance in instances) Destroy(instance.gameObject);
     }
 }

@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
 
-public class FPSCounter : MonoBehaviour
+public class FPSCounter : Singleton<FPSCounter>
 {
     private float _fps;
     private int _frames;
@@ -13,15 +12,17 @@ public class FPSCounter : MonoBehaviour
     [SerializeField] private float _capturingDelay = 1.0F;
     [SerializeField] private bool _displayDelta;
 
-    public void Awake()
+    public override void Awake()
     {
         if (!Debug.isDebugBuild) return;
+        base.Awake();
         
         _tmpText = this.GetRequiredComponent<TMP_Text>();
         _tmpText.text = "00";
         if (_displayDelta) _tmpText.text += $" (00.0ms)";
         
         StartCoroutine(nameof(StartSecondTicks));
+        Instance.gameObject.SetActive(false);
     }
 
     public void Update()
@@ -50,5 +51,18 @@ public class FPSCounter : MonoBehaviour
             var deltaString = (Time.deltaTime * 1000).ToString("0");
             _tmpText.text = $"{fpsString} ({deltaString}ms)";
         }
+    }
+
+    public static void Hide()
+    {
+        if (!Instance) return;
+        Instance.gameObject.SetActive(false);
+    }
+
+    public static void Show()
+    {
+        if (!Instance) return;
+        Instance.gameObject.SetActive(true);
+        Instance.StartCoroutine(nameof(StartSecondTicks));
     }
 }
