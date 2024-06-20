@@ -20,15 +20,13 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     [SerializeField] private Vector2 _tableItemTopOffset;
     [SerializeField] private Vector2 _tableItemRightOffset;
     [SerializeField] private Vector2 _tableItemBottomOffset;
-    [SerializeField] private Vector2 _horizontalTableOffset;
-    [SerializeField] private Vector2 _verticalTableOffset;
 
     private Item[] _desiredItems = Array.Empty<Item>();
     private Item _chairItem;
     private Item _moneyItem;
     private Item _thinkBubble;
     private Item _thinkDots;
-    private Item _thinkBubbleTable;
+    private Item _thinkBubbleMeals;
     private Item _thinkBubbleMultiHorizontalTable;
     private Item _thinkBubbleMultiVerticalTable;
     private Item _eatingItem;
@@ -79,10 +77,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         _chairItem.Hide();
         _thinkBubble.Hide();
-        _thinkBubbleTable.Show();
-        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
+        _thinkBubbleMeals.Show();
+        _thinkBubbleMeals.Follow(Customer, GetThinkingBubbleMealsOffset());
         _thinkDots.Show();
-        _thinkDots.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+        _thinkDots.Follow(_thinkBubbleMeals, _thinkBubbleItemOffset);
     }
 
     public void RenderWaitingForMeal()
@@ -94,10 +92,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderWaitingForCheckout()
     {
         _eatingItem.Hide();
-        _thinkBubbleTable.Show();
-        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
+        _thinkBubbleMeals.Show();
+        _thinkBubbleMeals.Follow(Customer, GetThinkingBubbleMealsOffset());
         _moneyItem.Show();
-        _moneyItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+        _moneyItem.Follow(_thinkBubbleMeals, _thinkBubbleItemOffset);
     }
 
     public void RenderEating()
@@ -105,10 +103,19 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _thinkBubbleMultiHorizontalTable.Hide();
         _thinkBubbleMultiVerticalTable.Hide();
         foreach (var item in _desiredItems) item.Hide();
-        _thinkBubbleTable.Show();
-        _thinkBubbleTable.Follow(Customer.Table, Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset);
+        _thinkBubbleMeals.Show();
+        _thinkBubbleMeals.Follow(Customer, GetThinkingBubbleMealsOffset());
         _eatingItem.Show();
-        _eatingItem.Follow(_thinkBubbleTable, _thinkBubbleItemOffset);
+        _eatingItem.Follow(_thinkBubbleMeals, _thinkBubbleItemOffset);
+    }
+
+    private Vector2 GetThinkingBubbleMealsOffset()
+    {
+        var offset = Customer.Table.Orientation == Orientation.Horizontal 
+            ? Customer.Data.Species.MealsThinkBubbleOffsetHorizontal 
+            : Customer.Data.Species.MealsThinkBubbleOffsetVertical;
+        if (Customer.Chair.Side == Direction.Right) offset = new Vector2(offset.x * -1, offset.y);
+        return offset;
     }
 
     public void RenderDying()
@@ -148,7 +155,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderPoisoned()
     {
         _eatingItem.Hide();
-        _thinkBubbleTable.Hide();
+        _thinkBubbleMeals.Hide();
         _thinkBubble.Show().AlignTo(this, Customer.Data.Species.ThinkBubbleOffset);
         _poisonedItem.Show().AlignTo(_thinkBubble, _thinkBubbleItemOffset);
         
@@ -197,10 +204,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
     private void InitializeThinkBubble()
     {
-        var thinkingBubbles = new List<Item> { _thinkBubbleMultiVerticalTable, _thinkBubbleMultiHorizontalTable, _thinkBubbleTable };
+        var thinkingBubbles = new List<Item> { _thinkBubbleMultiVerticalTable, _thinkBubbleMultiHorizontalTable, _thinkBubbleMeals };
         var thinkingBubble = GetTableThinkingBubble()
             .Show()
-            .Follow(Customer.Table, GetTableThinkingBubbleOffset())
+            .Follow(Customer, GetThinkingBubbleMealsOffset())
             .SendToBack();
         thinkingBubbles.Remove(thinkingBubble);
         foreach (var unused in thinkingBubbles.Where(unused => !unused.Hidden))
@@ -215,7 +222,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
              _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
              _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
              _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
-             _thinkBubbleTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
+             _thinkBubbleMeals = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
              _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
              _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
              _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
@@ -238,15 +245,12 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item GetTableThinkingBubble()
         => _desiredItems.Length switch
         {
-            1 => _thinkBubbleTable,
+            1 => _thinkBubbleMeals,
             2 => Customer.Table.Orientation == Orientation.Horizontal
                 ? _thinkBubbleMultiHorizontalTable
                 : _thinkBubbleMultiVerticalTable,
             _ => throw new NotSupportedException()
         };
-
-    private Vector2 GetTableThinkingBubbleOffset()
-        => Customer.Table.Orientation == Orientation.Horizontal ? _horizontalTableOffset : _verticalTableOffset;
 
     private Vector2 GetItemOffsetByItemIndex(int index)
         => index switch
@@ -272,6 +276,9 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         var scaleY = anchor.gameObject.transform.localScale.y / anchorSpecies.Scale * data.Scale;
         var scaleX = transform.localScale.x / transform.localScale.y * scaleY;
         transform.localScale = new Vector3(scaleX, scaleY, 1.0F);
+        var boxCollider = this.GetRequiredComponent<BoxCollider>();
+        boxCollider.size = data.ColliderSize;
+        boxCollider.center = Vector3.zero;
     }
 
     private IEnumerator StartPoisonCloudAnimation()

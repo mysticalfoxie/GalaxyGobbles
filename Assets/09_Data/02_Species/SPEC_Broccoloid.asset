@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SPEC_Broccoloid
   m_EditorClassIdentifier: 
   _name: Broccoloid
-  _scale: 0.4
+  _scale: 0.6
   _frontSprite: {fileID: 21300000, guid: 6d16292aa7f814a4383e074f1241f1b5, type: 3}
   _backSprite: {fileID: 21300000, guid: 1dfc60be3c827124c839953571ca2061, type: 3}
   _sideSprite: {fileID: 21300000, guid: 1b8cb22a8fe473248bb6ecd4fdbf910c, type: 3}
@@ -23,5 +23,10 @@ MonoBehaviour:
   _chanceToNotOrder: 0
   _chanceToOrderTwice: 0
   _chanceToOrderSake: 0
-  _chairOffsetHorizontal: {x: 22.58051, y: 37.1053, z: 0}
-  _chairOffsetVertical: {x: 7.930237, y: 37.1053, z: 0}
+  _colliderSize: {x: 7.410053, y: 10.34447, z: 0}
+  _chairOffsetHorizontal: {x: 1.06006, y: 37.1053, z: -5.362823}
+  _chairOffsetVertical: {x: 15.19989, y: 37.1053, z: 0}
+  _heartsOffset: {x: -76.79733, y: -38.83081}
+  _thinkBubbleOffset: {x: 104.1027, y: 143.0692}
+  _mealsThinkBubbleOffsetHorizontal: {x: 113.5546, y: 145.7487}
+  _mealsThinkBubbleOffsetVertical: {x: 144.1285, y: 130.2326}
