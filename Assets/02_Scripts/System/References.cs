@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-[ExecuteInEditMode]
 public class References : Singleton<References>
 {
     private readonly List<GameObject> _allLevelObjects = new();
@@ -38,7 +37,6 @@ public class References : Singleton<References>
     private void HandleLevelData(Scene scene)
     {
         if (scene.buildIndex != LevelManager.MAIN_LEVEL_INDEX) return;
-        if (!scene.isLoaded) return;
         
         _root = scene.GetRootGameObjects().First(x => x.CompareTag("Level Root Object"));
         AnalyseLevelObjects();
