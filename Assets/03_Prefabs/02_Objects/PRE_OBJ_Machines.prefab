@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 515640837465788160}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1009997, y: 0.3462183, z: -5.029}
+  m_LocalPosition: {x: -1.1009997, y: 0.64864373, z: -5.9729996}
   m_LocalScale: {x: 0.45057777, y: 0.07152758, z: 0.41925463}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93,7 +93,7 @@ Transform:
   m_GameObject: {fileID: 1810094466699902443}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5330005, y: 0.34526184, z: -4.586}
+  m_LocalPosition: {x: 1.5330005, y: 0.64768726, z: -5.5299997}
   m_LocalScale: {x: 0.27797204, y: 0.068208665, z: 0.41816345}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 2126152511560360957}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.15770996, y: 0.3446675, z: -2.971}
+  m_LocalPosition: {x: -0.15770996, y: 0.6478628, z: -2.9280005}
   m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -166,6 +166,74 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2126152511560360957}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2197749286324040181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 779507705763810099}
+  - component: {fileID: 4354906665096137512}
+  - component: {fileID: 7145287603838518450}
+  m_Layer: 0
+  m_Name: Sake Glasses
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &779507705763810099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197749286324040181}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.6430005, y: 0.6470158, z: -3.141}
+  m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2530000203062195001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4354906665096137512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197749286324040181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b0a51f11ba48718eb4996a5bac321c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _item: {fileID: 11400000, guid: fc1c302ca068f004ca8c7498b25b8928, type: 2}
+  _offset: {x: 0, y: 0}
+--- !u!65 &7145287603838518450
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197749286324040181}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -207,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 2845718028938292104}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.981781, y: 0.3446675, z: -2.971}
+  m_LocalPosition: {x: -0.981781, y: 0.6478628, z: -2.9280005}
   m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -275,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 4304839712824056412}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.57, y: 0.3446675, z: -2.971}
+  m_LocalPosition: {x: -0.57, y: 0.6478628, z: -2.9280005}
   m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -343,7 +411,7 @@ Transform:
   m_GameObject: {fileID: 4360441813552875610}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.6879998, y: 0.34357464, z: -4.699}
+  m_LocalPosition: {x: -1.6879998, y: 0.646, z: -5.6429996}
   m_LocalScale: {x: 0.32157356, y: 0.06975256, z: 0.423138}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -410,7 +478,7 @@ Transform:
   m_GameObject: {fileID: 4451414547786622986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.48795897, y: 0.34452456, z: -5.029}
+  m_LocalPosition: {x: -0.48795897, y: 0.64695, z: -5.973}
   m_LocalScale: {x: 0.45057777, y: 0.07152758, z: 0.41925463}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,7 +545,7 @@ Transform:
   m_GameObject: {fileID: 4620136284759179204}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.65, y: 0.33580473, z: -3.1899998}
+  m_LocalPosition: {x: -1.65, y: 0.639, z: -3.147}
   m_LocalScale: {x: 0.7470475, y: 0.11845757, z: 0.30658084}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -601,12 +669,12 @@ Transform:
   - {fileID: 3595563236619554445}
   - {fileID: 7542923339700658751}
   - {fileID: 8263871802381971443}
-  - {fileID: 3223296079299922489}
-  - {fileID: 1128135545820379725}
+  - {fileID: 5767831728890032466}
+  - {fileID: 779507705763810099}
   - {fileID: 2442701034221691954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7362377578352018446
+--- !u!1 &7099186006805441048
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -614,9 +682,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3223296079299922489}
-  - component: {fileID: 5865653290067581888}
-  - component: {fileID: 958625589386440310}
+  - component: {fileID: 5767831728890032466}
+  - component: {fileID: 2700807186937368654}
+  - component: {fileID: 3718481739773294960}
   m_Layer: 0
   m_Name: Coffee Machine
   m_TagString: Untagged
@@ -624,28 +692,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3223296079299922489
+--- !u!4 &5767831728890032466
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7362377578352018446}
+  m_GameObject: {fileID: 7099186006805441048}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5122045, y: 0.3438206, z: -2.9591}
+  m_LocalPosition: {x: 1.1659998, y: 0.6470158, z: -3.1410003}
   m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2530000203062195001}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5865653290067581888
+--- !u!114 &2700807186937368654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7362377578352018446}
+  m_GameObject: {fileID: 7099186006805441048}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1b0a51f11ba48718eb4996a5bac321c, type: 3}
@@ -653,81 +721,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _item: {fileID: 11400000, guid: 473ac5396ce40ee42a3e708d8a226b03, type: 2}
   _offset: {x: 0, y: 0}
---- !u!65 &958625589386440310
+--- !u!65 &3718481739773294960
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7362377578352018446}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &8584254129693984219
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1128135545820379725}
-  - component: {fileID: 4606386223284672550}
-  - component: {fileID: 8772842570311575486}
-  m_Layer: 0
-  m_Name: Sake Glasses
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1128135545820379725
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8584254129693984219}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5122045, y: 0.3438206, z: -2.9591}
-  m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2530000203062195001}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4606386223284672550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8584254129693984219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1b0a51f11ba48718eb4996a5bac321c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _item: {fileID: 11400000, guid: 473ac5396ce40ee42a3e708d8a226b03, type: 2}
-  _offset: {x: 0, y: 0}
---- !u!65 &8772842570311575486
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8584254129693984219}
+  m_GameObject: {fileID: 7099186006805441048}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
