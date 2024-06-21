@@ -10,13 +10,13 @@ using UnityEngine.UI;
 public class ItemRenderer : Touchable
 {
     private readonly Dictionary<GameObject, Image> _renderers = new();
+    private int _cacheSkipCount = 5;
     private GameObject _follow;
     private Vector3 _followPositionO;
     private Vector2 _followOffset;
     private SpriteData[] _sprites;
-    private int _cacheSkipCount = 1;
     private Item _item;
-
+    
     public bool Destroyed { get; private set; }
     public object Initiator { get; set; }
 
@@ -35,14 +35,6 @@ public class ItemRenderer : Touchable
         base.Awake();
 
         gameObject.layer = LayerMask.NameToLayer("UI");
-        
-        // Reset to force a re-render. Required because the CanvasScaling messes up the positions right after the Awake.
-        StartCoroutine(ResetPositionCache());
-        IEnumerator ResetPositionCache()
-        {
-            yield return new WaitForNextFrameUnit();
-            _followPositionO = default;
-        }
     }
 
     public void Update()
@@ -88,6 +80,7 @@ public class ItemRenderer : Touchable
     {
         _follow = value;
         _followOffset = offset;
+        AlignTo(_follow, _followOffset);
     }
 
     public void StopFollowing()
