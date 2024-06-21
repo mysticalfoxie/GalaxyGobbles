@@ -161,7 +161,6 @@ public class GameSettings : ScriptableObject
         MapGameData();
     }
 
-#if UNITY_EDITOR
     [MenuItem("Galaxy Gobbles/Reload Game Settings")]
     public static void ReloadSettings()
     {
@@ -194,8 +193,7 @@ public class GameSettings : ScriptableObject
     {
         LevelMapper.Map();
     }
-#endif
-
+    
     public static T[] LoadAssetsOfType<T>() where T : Object
     {
         return AssetDatabaseHelper
