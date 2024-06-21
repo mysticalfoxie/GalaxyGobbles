@@ -2362,7 +2362,7 @@ PrefabInstance:
     - target: {fileID: 668268908335689270, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -19.999756
+      value: -20.000122
       objectReference: {fileID: 0}
     - target: {fileID: 684485923637274751, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
@@ -2737,7 +2737,7 @@ PrefabInstance:
     - target: {fileID: 6868233380215160642, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -39.999756
+      value: -40.000122
       objectReference: {fileID: 0}
     - target: {fileID: 6875942832548571972, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
@@ -7053,7 +7053,7 @@ Camera:
   far clip plane: 700
   field of view: 60.395977
   orthographic: 1
-  orthographic size: 201.56735
+  orthographic size: 243.14062
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -7108,7 +7108,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -7882,7 +7882,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 45100efee4169284294191117ff9c863, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14238,6 +14238,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 580816173429825860, guid: bace138d997e9db449f3ca5d400f5e7b,
+        type: 3}
+      propertyPath: weight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5575486325107810599, guid: bace138d997e9db449f3ca5d400f5e7b,
         type: 3}
       propertyPath: m_Name
