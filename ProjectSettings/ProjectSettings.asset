@@ -145,7 +145,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.4.0
+  bundleVersion: 0.4.1
   preloadedAssets:
   - {fileID: 8171321636667593712, guid: d3271ddf13f31494aacedd2cab475c88, type: 2}
   - {fileID: 11400000, guid: 79dea58c3214ca24f80ee39ac6011f28, type: 2}
@@ -191,7 +191,7 @@ PlayerSettings:
   ForceSDCardPermission: 0
   CreateWallpaper: 0
   APKExpansionFiles: 0
-  keepLoadedShadersAlive: 0
+  keepLoadedShadersAlive: 1
   StripUnusedMeshComponents: 0
   strictShaderVariantMatching: 0
   VertexChannelCompressionMask: 4054
@@ -863,7 +863,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -883,11 +889,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 62a8283d-1aae-4f4d-90b3-2a78886a3256
+  cloudProjectId: bad87172-473d-4794-a7f6-af3c6f83e531
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: GalaxyGobbles
-  organizationId: schwaembaem
+  projectName: Galaxy Gobbles
+  organizationId: mysticalfoxie
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
