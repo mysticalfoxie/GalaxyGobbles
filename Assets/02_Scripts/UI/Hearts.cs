@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
+[RequireComponent(typeof(Canvas))]
 public class Hearts : MonoBehaviour
 {
     private static readonly List<Hearts> _instances = new();
@@ -24,7 +26,7 @@ public class Hearts : MonoBehaviour
     
     public Vector2 Offset { get; set; }
 
-    public void Awake()
+    public void OnEnable()
     {
         _instances.Add(this);
         
@@ -53,7 +55,7 @@ public class Hearts : MonoBehaviour
     private void OnValidate()
     {
         if (!_debugEnabled) return;
-        Awake();
+        OnEnable();
         SetFillPercentage(_percentage);
     }
 
