@@ -3,12 +3,13 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
-public class CameraScaling : Singleton<CameraScaling>
+public class CameraScaling : MonoBehaviour
 {
     private Camera _camera;
 
     [SerializeField] private float _constraint; 
 
+    public static CameraScaling Instance { get; private set; }
     public float Width { get; set; }
     public float Height { get; set; }
     
@@ -22,14 +23,14 @@ public class CameraScaling : Singleton<CameraScaling>
     public Vector3 BottomCenter { get; private set; }
     public Vector3 BottomRight { get; private set; }
     
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
-        
+        Instance = this;
         _camera = this.GetRequiredComponent<Camera>();
         _camera.orthographicSize = Calculate();
         CalculateAnchors();
     }
+
 
 #if UNITY_EDITOR
     public void Update()

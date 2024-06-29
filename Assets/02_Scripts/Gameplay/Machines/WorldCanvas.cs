@@ -1,9 +1,7 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 [ExecuteAlways]
 [RequireComponent(typeof(Canvas))]
-[RequireComponent(typeof(CanvasScaler))]
 [DisallowMultipleComponent]
 public class WorldCanvas : MonoBehaviour
 {
@@ -35,7 +33,8 @@ public class WorldCanvas : MonoBehaviour
 
     private void HandleCameraMapping()
     {
-        if (!_canvas.worldCamera) return;
+        if (_canvas.worldCamera) return;
+        if (!gameObject.scene.isLoaded) return;
         _canvas.worldCamera = Camera.main;
     }
 }

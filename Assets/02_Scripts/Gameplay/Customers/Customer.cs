@@ -5,11 +5,6 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(CustomerStateRenderer))]
-[RequireComponent(typeof(CustomerStateMachine))]
-[RequireComponent(typeof(Patience))]
-[RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class Customer : Selectable
 {
     private static GameObject _customerRoot;

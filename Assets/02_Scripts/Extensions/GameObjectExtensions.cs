@@ -32,10 +32,16 @@ public static class GameObjectExtensions
 
     public static T GetRequiredComponent<T>(this GameObject gameObject)
         => gameObject.GetComponent<T>() ?? throw new NullReferenceException($"Cannot find a component of type {typeof(T).Name} on GameObject {gameObject.name}.");
+    
+    public static T GetRequiredComponentInChildren<T>(this GameObject gameObject)
+        => gameObject.GetComponentInChildren<T>() ?? throw new NullReferenceException($"Cannot find a component of type {typeof(T).Name} in children of GameObject {gameObject.name}.");
 
     public static T GetRequiredComponent<T>(this MonoBehaviour @object)
         => @object.gameObject.GetRequiredComponent<T>();
 
+    public static T GetRequiredComponentInChildren<T>(this MonoBehaviour @object)
+        => @object.gameObject.GetRequiredComponentInChildren<T>();
+    
     public static bool IsAssigned(this UnityEngine.Object gameObject, Action whenNotAssigned = null)
     {
         if (gameObject is null) return false;

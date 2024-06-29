@@ -17,9 +17,6 @@ public class Patience : MonoBehaviour
 
     public void Awake()
     {
-        var overlay = Overlay.Instance.gameObject.transform;
-        _heartsGameObject = Instantiate(GameSettings.Data.PRE_Hearts);
-        _heartsGameObject!.transform.SetParent(overlay);
         _hearts = _heartsGameObject.GetRequiredComponent<Hearts>();
         _heartsGameObject.SetActive(false);
     }

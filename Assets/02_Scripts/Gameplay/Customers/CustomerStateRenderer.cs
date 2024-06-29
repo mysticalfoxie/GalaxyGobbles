@@ -50,7 +50,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
     public void InitializeInEditorMode()
     {
-        SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+        SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
     }
     
     public void OnCustomerDataSet()
@@ -268,7 +268,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
     public void InitializeCustomerSprites(SpeciesData data, Customer anchor, SpeciesData anchorSpecies)
     {
-        SpriteRenderer = this.GetRequiredComponent<SpriteRenderer>();
+        SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
         SpriteRenderer.sprite = data.FrontSprite;
         SpriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
         SpriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
