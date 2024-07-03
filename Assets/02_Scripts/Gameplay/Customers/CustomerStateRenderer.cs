@@ -6,16 +6,10 @@ using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
 {
-    private static readonly int _materialPropertyEnabled = Shader.PropertyToID("_Enabled");
-    private static readonly int _materialPropertyThickness = Shader.PropertyToID("_Thickness");
-    private static readonly int _materialPropertyColor = Shader.PropertyToID("_Color");
-    
-    [Header("Selection Outline")]
-    [SerializeField] private float _outlineThickness;
+    [Header("Selection Outline")] [SerializeField] private float _outlineThickness;
     [SerializeField] private Color _outlineColor;
-    
-    [Header("Item Positioning")] 
-    [SerializeField] private Vector2 _thinkBubbleItemOffset;
+
+    [Header("Item Positioning")] [SerializeField] private Vector2 _thinkBubbleItemOffset;
     [SerializeField] private Vector2 _tableItemLeftOffset;
     [SerializeField] private Vector2 _tableItemTopOffset;
     [SerializeField] private Vector2 _tableItemRightOffset;
@@ -34,6 +28,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private Item _angryItem;
     private Item[] _items;
     private Item _poisonedItem;
+    private Outline _outline;
 
     public SpriteRenderer SpriteRenderer { get; private set; }
     public CustomerStateMachine StateMachine { get; private set; }
@@ -45,14 +40,16 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         Customer = StateMachine.Customer ?? throw new ArgumentNullException(nameof(Customer));
+        _outline = GetComponent<Outline>() ?? GetComponentInChildren<Outline>() ?? throw new MissingComponentException();
         InitializeItems();
     }
 
     public void InitializeInEditorMode()
     {
         SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
+        _outline = GetComponent<Outline>() ?? GetComponentInChildren<Outline>() ?? throw new MissingComponentException();
     }
-    
+
     public void OnCustomerDataSet()
     {
         if (Customer.Data is null) return;
@@ -111,8 +108,8 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
 
     private Vector2 GetThinkingBubbleMealsOffset()
     {
-        var offset = Customer.Table.Orientation == Orientation.Horizontal 
-            ? Customer.Data.Species.MealsThinkBubbleOffsetHorizontal 
+        var offset = Customer.Table.Orientation == Orientation.Horizontal
+            ? Customer.Data.Species.MealsThinkBubbleOffsetHorizontal
             : Customer.Data.Species.MealsThinkBubbleOffsetVertical;
         if (Customer.Chair.Side == Direction.Right) offset = new Vector2(offset.x * -1, offset.y);
         return offset;
@@ -158,26 +155,19 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _thinkBubbleMeals.Hide();
         _thinkBubble.Show().Follow(this, Customer.Data.Species.ThinkBubbleOffset);
         _poisonedItem.Show().Follow(_thinkBubble, _thinkBubbleItemOffset);
-        
+
         StartCoroutine(nameof(StartPoisonCloudAnimation));
     }
 
     public void SetSeated()
     {
         SpriteRenderer.sprite = Customer.Data.Species.SittingSprite;
-        SpriteRenderer.flipX = Customer.Chair.Side == Direction.Left; 
-    }
-    
-    public void OnSelected()
-    {
-        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 1);
+        SpriteRenderer.flipX = Customer.Chair.Side == Direction.Left;
     }
 
-    public void OnDeselected()
-    {
-        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
-    }
-    
+    public void OnSelected() => _outline.Enable();
+    public void OnDeselected() => _outline.Disable();
+
     private void RenderDesiredItems()
     {
         InitializeDesiredItems();
@@ -217,19 +207,19 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private void InitializeItems()
     {
         foreach (var item in _items = new[]
-         {
-             _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
-             _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
-             _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
-             _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
-             _thinkBubbleMeals = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
-             _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
-             _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
-             _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
-             _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
-             _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
-             _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
-         }) item.ForwardTouchEventsTo(Customer);
+                 {
+                     _chairItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat)),
+                     _moneyItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout)),
+                     _thinkBubble = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubble)),
+                     _thinkDots = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)),
+                     _thinkBubbleMeals = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)),
+                     _thinkBubbleMultiHorizontalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiHorizontal)),
+                     _thinkBubbleMultiVerticalTable = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTableMultiVertical)),
+                     _eatingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Eating)),
+                     _dyingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Dying)),
+                     _poisonedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned)),
+                     _angryItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Angry)),
+                 }) item.ForwardTouchEventsTo(Customer);
     }
 
     private void CreateDesiredItems()
@@ -259,7 +249,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             1 => Customer.Table.Orientation == Orientation.Horizontal ? _tableItemRightOffset : _tableItemBottomOffset,
             _ => throw new IndexOutOfRangeException(nameof(index))
         };
-    
+
     private void InitializeCustomerSprites()
     {
         var anchor = References.Instance.AnchorCustomer;
@@ -270,9 +260,9 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
         SpriteRenderer.sprite = data.FrontSprite;
-        SpriteRenderer.material.SetFloat(_materialPropertyThickness, _outlineThickness);
-        SpriteRenderer.material.SetColor(_materialPropertyColor, _outlineColor);
-        SpriteRenderer.material.SetFloat(_materialPropertyEnabled, 0);
+        _outline.Disable();
+        _outline.SetColor(_outlineColor);
+        _outline.SetThickness(_outlineThickness);
         var scaleY = anchor.gameObject.transform.localScale.y / anchorSpecies.Scale * data.Scale;
         var scaleX = transform.localScale.x / transform.localScale.y * scaleY;
         transform.localScale = new Vector3(scaleX, scaleY, 1.0F);
@@ -284,7 +274,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private IEnumerator StartPoisonCloudAnimation()
     {
         yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
-        
+
         CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
         CustomerPoisonRenderer.Instance.MovingEnded += OnMovingEnded;
         CustomerPoisonRenderer.Instance.StartPoisonAnimation(Customer);
@@ -300,10 +290,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         void OnPoisonHidden(object sender, EventArgs e)
         {
             CustomerPoisonRenderer.Instance.PoisonHidden -= OnPoisonHidden;
-            
+
             _thinkBubble.Hide();
             _poisonedItem.Hide();
-            
+
             Customer.StateMachine.State = CustomerState.WaitingForCheckout;
         }
     }

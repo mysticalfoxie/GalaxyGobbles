@@ -57,6 +57,8 @@ public class GameSettings : ScriptableObject
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
     [SerializeField] private SpriteData _poisonIcon;
+    [Tooltip("The material used for applying an outline.")]
+    [SerializeField] private Material _outlineMaterial;
     
     [Header("References")]
     [Header("Prefabs")]
@@ -100,6 +102,7 @@ public class GameSettings : ScriptableObject
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
 
     public SpriteData PoisonIcon => _poisonIcon;
+    public Material OutlineMaterial => _outlineMaterial;
     
     public GameObject PRE_Item => _itemPrefab;
     public GameObject PRE_SpriteRenderer => _spriteRendererPrefab;
