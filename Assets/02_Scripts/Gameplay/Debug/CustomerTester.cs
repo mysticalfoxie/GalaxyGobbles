@@ -10,8 +10,6 @@ public class CustomerTester : MonoBehaviour
     
     [Header("Data")] 
     [SerializeField] private SpeciesData _species;
-    [SerializeField] private Customer _anchorCustomer;
-    [SerializeField] private SpeciesData _anchorCustomerSpecies;
     [SerializeField] private GameObject _chair;
     [SerializeField] private Direction _side;
     [SerializeField] private Orientation _orientation;
@@ -30,7 +28,7 @@ public class CustomerTester : MonoBehaviour
         HandlePositioning();
         
         if (HandleSeated()) return;
-        if (HandleDefault()) return;
+        HandleDefault();
     }
 
     private void HandleSpecies()
@@ -39,7 +37,7 @@ public class CustomerTester : MonoBehaviour
         _speciesO = _species;
 
         if (!_customer) return;
-        _customer.Renderer.InitializeCustomerSprites(_species, _anchorCustomer, _anchorCustomerSpecies);
+        _customer.Renderer.InitializeCustomerSprites(_species);
     }
 
     private void HandlePositioning()
@@ -63,12 +61,11 @@ public class CustomerTester : MonoBehaviour
         return true;
     }
 
-    private bool HandleDefault()
+    private void HandleDefault()
     {
-        if (!_default) return false;
+        if (!_default) return;
         _seated = false;
         _customer.Renderer.SpriteRenderer.sprite = _species.FrontSprite;
-        return true;
     }
 
     private bool HandleCustomerReference()

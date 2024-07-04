@@ -97,7 +97,6 @@ public class Customer : Selectable
     {
         Renderer.SetSeated();
         Renderer.RenderSeated();
-        Patience.UpdateOffset();
         Patience.Add(GameSettings.Data.PatienceRegainOnSeated);
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
@@ -267,7 +266,9 @@ public class Customer : Selectable
         _customerRoot ??= GameObject.Find("Customers") ?? References.Instance.RootObject;
         var customerGameObject = Instantiate(GameSettings.Data.PRE_Customer);
         var customer = customerGameObject.GetComponent<Customer>();
+        var scale = customerGameObject.transform.localScale;
         customerGameObject.transform!.SetParent(_customerRoot.transform);
+        customerGameObject.transform.localScale = scale;
         customer.Data = data;
         return customer;
     }

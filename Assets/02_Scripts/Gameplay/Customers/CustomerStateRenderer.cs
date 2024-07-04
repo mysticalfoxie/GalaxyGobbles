@@ -53,7 +53,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void OnCustomerDataSet()
     {
         if (Customer.Data is null) return;
-        InitializeCustomerSprites();
+        InitializeCustomerSprites(Customer.Data.Species);
     }
 
     public void RenderSeated()
@@ -250,22 +250,15 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             _ => throw new IndexOutOfRangeException(nameof(index))
         };
 
-    private void InitializeCustomerSprites()
-    {
-        var anchor = References.Instance.AnchorCustomer;
-        InitializeCustomerSprites(Customer.Data.Species, anchor, anchor.Data.Species);
-    }
-
-    public void InitializeCustomerSprites(SpeciesData data, Customer anchor, SpeciesData anchorSpecies)
+    public void InitializeCustomerSprites(SpeciesData data)
     {
         SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
         SpriteRenderer.sprite = data.FrontSprite;
         _outline.Disable();
         _outline.SetColor(_outlineColor);
         _outline.SetThickness(_outlineThickness);
-        var scaleY = anchor.gameObject.transform.localScale.y / anchorSpecies.Scale * data.Scale;
-        var scaleX = transform.localScale.x / transform.localScale.y * scaleY;
-        transform.localScale = new Vector3(scaleX, scaleY, 1.0F);
+        SpriteRenderer.transform.localScale = new Vector3(data.Scale, data.Scale, 1);
+
         var boxCollider = this.GetRequiredComponent<BoxCollider>();
         boxCollider.size = data.ColliderSize;
         boxCollider.center = Vector3.zero;
