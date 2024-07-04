@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
 {
-    [Header("Selection Outline")] [SerializeField] private float _outlineThickness;
+    [Header("Selection Outline")] [SerializeField] [Range(1.0F, 1.25F)] private float _outlineThickness;
     [SerializeField] private Color _outlineColor;
 
     [Header("Item Positioning")] [SerializeField] private Vector2 _thinkBubbleItemOffset;

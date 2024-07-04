@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a331b100cb34dce9d5859bb0176c9c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineThickness: 25
+  _outlineThickness: 1.05
   _outlineColor: {r: 1, g: 0.91004884, b: 0.34193665, a: 0}
   _thinkBubbleItemOffset: {x: 4, y: 8}
   _tableItemLeftOffset: {x: -70, y: 20}
@@ -799,7 +799,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fefad589e14ee0040a428dbf029c3754, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 12032bd097782c348b12fa436fb042f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -822,9 +822,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 347558f472df466f87eeb6cbcc774a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scale: 1.04
-  _color: {r: 1, g: 0.945375, b: 0.60099995, a: 0}
-  _enabled: 1
+  _scale: 1.05
+  _color: {r: 1, g: 0.91004884, b: 0.34193665, a: 0}
+  _enabled: 0
 --- !u!1 &6004745196141625156
 GameObject:
   m_ObjectHideFlags: 0

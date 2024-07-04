@@ -11,6 +11,7 @@ public class Outline : MonoBehaviour
     private Material _material;
     private SpriteRenderer _spriteRenderer;
     private MeshRenderer _meshRenderer;
+    private bool _initializing = true;
 
     private float _scaleO;
     [SerializeField] [Range(0.75F, 1.25F)] private float _scale;
@@ -28,14 +29,16 @@ public class Outline : MonoBehaviour
         _meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         if (_spriteRenderer) UpdateSpriteMaterial();
         if (_meshRenderer) UpdateMeshMaterial();
         
-        if (_enabledO != _enabled) OnEnabledChange(_enabled);
-        if (_colorO != _color) OnColorChange(_color);
-        if (Math.Abs(_scaleO - _scale) > 0.01) OnThicknessChange(_scale);
+        if (_enabledO != _enabled || _initializing) OnEnabledChange(_enabled);
+        if (_colorO != _color || _initializing) OnColorChange(_color);
+        if (Math.Abs(_scaleO - _scale) > 0.01 || _initializing) OnThicknessChange(_scale);
+
+        _initializing = false;
     }
 
     public void Enable() => OnEnabledChange(true);
