@@ -72,18 +72,21 @@ public class Item : IDisposable
     public Item SetLocalPosition(Vector2 position)
     {
         LocalPosition = position;
+        if (_renderer) _renderer.ForceUpdatePosition();
         return this;
     }
 
     public Item SetScale(Vector3 scale)
     {
         Scale = scale;
+        if (_renderer) _renderer.ForceUpdateScale();
         return this;
     }
     
     public Item SetRotation(Vector3 rotation)
     {
         Rotation = rotation;
+        if (_renderer) _renderer.ForceUpdateRotation();
         return this;
     }
 

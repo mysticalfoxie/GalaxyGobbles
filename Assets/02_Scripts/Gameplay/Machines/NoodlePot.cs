@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Globalization;
 using UnityEngine;
 
 public class NoodlePot : Touchable
@@ -99,7 +98,7 @@ public class NoodlePot : Touchable
     {
         _items = new[]
         {
-            _emptyPotItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotEmpty), dimension: ItemDisplayDimension.Dimension3D)),
+            _emptyPotItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotEmpty), true, ItemDisplayDimension.Dimension3D)),
             _cookingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooking), dimension: ItemDisplayDimension.Dimension3D)),
             _overcookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotOvercooked), dimension: ItemDisplayDimension.Dimension3D)),
             _cookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooked), dimension: ItemDisplayDimension.Dimension3D))
@@ -111,7 +110,6 @@ public class NoodlePot : Touchable
                 .SetLocalPosition(Vector2.zero)
                 .SetRotation(Vector2.zero)
                 .SetScale(new Vector2(_scale, _scale));
-
     }
 
     private void OnValidate()
