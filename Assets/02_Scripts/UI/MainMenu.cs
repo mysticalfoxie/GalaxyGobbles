@@ -158,7 +158,8 @@ public class MainMenu : Singleton<MainMenu>
     public void BackButton()
     {
         if (_options) _options.SetActive(false);
-        _levelMap.SetActive(false);
+        if (_credits) _credits.SetActive(false);
+        if (_levelMap) _levelMap.SetActive(false);
         _startMenu.SetActive(true);
     }
 
