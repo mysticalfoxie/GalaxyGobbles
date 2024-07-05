@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -34,17 +35,29 @@ public class MainMenu : Singleton<MainMenu>
     [Header("Images")] [SerializeField] private GameObject _backgroundImage;
 
     [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
-    [SerializeField] private TMP_Text _successText;
+    [SerializeField] private TMP_Text _levelText;
     [SerializeField] private TMP_Text _targetText;
 
-    [Header("Stars & Bounty in Complete Day Menu")] [SerializeField]
-    private GameObject _star1;
-    [SerializeField] private GameObject _star2;
-    [SerializeField] private GameObject _star3;
+    [Header("Stars & Bounty in Complete Day Menu")]
+    [SerializeField] private GameObject _starRevealed1;
+    [SerializeField] private GameObject _starRevealed2;
+    [SerializeField] private GameObject _starRevealed3;
+    [SerializeField] private GameObject _starUnrevealed1;
+    [SerializeField] private GameObject _starUnrevealed2;
+    [SerializeField] private GameObject _starUnrevealed3;
 
     [SerializeField] private GameObject _bounty1;
     [SerializeField] private GameObject _bounty2;
     [SerializeField] private GameObject _bounty3;
+
+    [SerializeField] private TMP_Text _valueScore;
+    [SerializeField] private TMP_Text _maxScore;
+    
+    [SerializeField] private GameObject _completeBountyStamp;
+    [SerializeField] private GameObject _failedBountyStamp;
+    [SerializeField] private GameObject _completeScoreStamp;
+    [SerializeField] private GameObject _failedScoreStamp;
+
 
     [Header("Debug")] [SerializeField] private bool _startWithoutMenu;
 
@@ -174,7 +187,6 @@ public class MainMenu : Singleton<MainMenu>
         if (_pauseMenu) _pauseMenu.SetActive(false);
         if (_blockPauseMenu == false) _blockPauseMenu = true;
         if (_sidebar) _sidebar.SetActive(false);
-        if(!_backgroundImage) _backgroundImage.SetActive(true);
         _levelMap.SetActive(true);
         SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
@@ -198,6 +210,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
+        _backgroundImage.SetActive(true);
         CalculateScore();
     }
 
@@ -210,7 +223,11 @@ public class MainMenu : Singleton<MainMenu>
     public void CalculateScore()
     {
         var starsAcquired = ProgressBar.Progress;
-
+        _maxScore.text = LevelManager.CurrentLevel.MaxScore.ToString(CultureInfo.InvariantCulture);
+        _valueScore.text = BottomBar.Instance.Score.Value.ToString(CultureInfo.InvariantCulture);
+        _levelText.text = "Level" +
+                          (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+        
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex))
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
 
@@ -222,22 +239,22 @@ public class MainMenu : Singleton<MainMenu>
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
 
             _continueButton.SetActive(true);
-            _completeDayText.text = "Congratulations, Level Completed!";
-            _successText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');  [ToDO Maybe need later...]
+            _completeScoreStamp	.SetActive(true);
         }
         else
         {
             // Temporary for Gate I (Always succeed + pass to next level)
-            _completeDayText.text = "To Bad you didn't pass this Level!";
-            _successText.text = "You didn't completed day #" +
-                                (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+            //_completeDayText.text = "You didn't pass this Level!"; [ToDO Maybe need later...]
+            _failedScoreStamp.SetActive(true);
+            if (_continueButton) _continueButton.SetActive(false);
             if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
         }
 
-        _star1.SetActive(starsAcquired >= 1);
-        _star2.SetActive(starsAcquired >= 2);
-        _star3.SetActive(starsAcquired >= 3);
+        _starRevealed1.SetActive(starsAcquired >= 1);
+        _starRevealed2.SetActive(starsAcquired >= 2);
+        _starRevealed3.SetActive(starsAcquired >= 3);
 
         //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bountys in Menu after Completed Day , Reveal the right Target else let it Empty!
         if (_bounty1) _bounty1.SetActive(false);
