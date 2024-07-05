@@ -18,7 +18,7 @@ public class Bounties : MonoBehaviour
     {
         if (_bounties.Count >= _slots.Length) return false;
         
-        var item = new Item(this, _token, true);
+        var item = new Item(new(this, _token, true));
         var slot = _slots[_bounties.Count];
         item.Follow(slot);
         bounty.Token = item;

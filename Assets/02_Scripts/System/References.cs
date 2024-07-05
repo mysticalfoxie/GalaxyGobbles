@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class References : Singleton<References>
 {
@@ -28,10 +27,6 @@ public class References : Singleton<References>
         
         var scene = SceneManager.GetActiveScene();
         HandleLevelData(scene);
-
-        if (!AnchorCustomer) return;
-        AnchorCustomer.Data = Model.Create<CustomerData>(x => { x._species = _data; });
-        AnchorCustomer.gameObject.SetActive(false);
     }
 
     private void HandleLevelData(Scene scene)
@@ -70,7 +65,6 @@ public class References : Singleton<References>
     }
 
     public GameObject RootObject => _root;
-    public Customer AnchorCustomer => _anchor;
     public IEnumerable<Table> Tables => _tables;
     public IEnumerable<Chair> Chairs => _chairs;
     public IEnumerable<WaitArea> WaitAreas => _waitAreas;

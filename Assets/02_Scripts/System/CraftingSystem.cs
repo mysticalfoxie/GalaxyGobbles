@@ -30,8 +30,8 @@ public class CraftingSystem : Singleton<CraftingSystem>
             throw new NotSupportedException($"Item \"{nameof(recipe.ItemB.name)}\" does not exist in the recipe for item \"{recipe.ItemC.name}\".");
         
         var itemData = GameSettings.GetItemMatch(recipe.ItemC);
-        var item = new Item(item1.Initiator, itemData, !item1.Hidden);
-        if (item1.Following.IsAssigned()) item.Follow(item1.Following);
+        var item = new Item(new(item1.Initiator, itemData, !item1.Hidden));
+        if (item1.Following) item.Follow(item1.Following);
         item1.Dispose();
         item2.Dispose();
         return item;

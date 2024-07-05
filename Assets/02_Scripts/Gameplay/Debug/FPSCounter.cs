@@ -32,7 +32,7 @@ public class FPSCounter : Singleton<FPSCounter>
 
     private IEnumerator StartSecondTicks()
     {
-        while (enabled && this.IsAssigned())
+        while (this && enabled)
         {
             yield return new WaitForSecondsRealtime(_capturingDelay);
             

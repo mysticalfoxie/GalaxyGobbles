@@ -24,7 +24,7 @@ public class CustomerPoisonRenderer : Singleton<CustomerPoisonRenderer>
     {
         base.Awake();
         
-        _poisonCloud = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.PoisonCloud));
+        _poisonCloud = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.PoisonCloud)));
     }
     
     public void StartPoisonAnimation(Customer poisonedCustomer)

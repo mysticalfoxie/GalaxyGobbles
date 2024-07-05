@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,13 +8,16 @@ using UnityEngine.UI;
 public class ItemRenderer : Touchable
 {
     private readonly Dictionary<GameObject, Image> _renderers = new();
+    private Vector3? _rotationO;
+    private Vector3? _scaleO;
     private int _cacheSkipCount = 5;
     private GameObject _follow;
     private Vector3 _followPositionO;
     private Vector2 _followOffset;
     private SpriteData[] _sprites;
     private Item _item;
-    
+    private BoxCollider _collider;
+
     public bool Destroyed { get; private set; }
     public object Initiator { get; set; }
 
@@ -39,22 +40,42 @@ public class ItemRenderer : Touchable
 
     public void Update()
     {
+        UpdateRotation();
+        UpdateScale();
+        if (UpdatePosition()) return;
         FollowGameObject();
     }
 
-    private void FollowGameObject()
+    public void UpdateRotation()
     {
-        if (Destroyed) return;
-        if (!_follow.IsAssigned(() => _follow = null)) return;
-        if (_cacheSkipCount > 0)
-        {
-            _cacheSkipCount--;
-            _followPositionO = default;
-        } 
-        
-        if (_followPositionO == _follow.transform.position) return;
-        _followPositionO = _follow.transform.position;
-        AlignTo(_follow, _followOffset);
+        if (_item is null) return;
+        if (!_item.Rotation.HasValue) return;
+        if (_rotationO == _item.Rotation) return;
+        var rotation = _item.Rotation.Value;
+        _rotationO = rotation;
+        gameObject.transform.rotation = new Quaternion(rotation.x, rotation.y, rotation.z, 0F);
+    }
+
+    public void UpdateScale()
+    {
+        if (_item is null) return;
+        if (!_item.Scale.HasValue) return;
+        var scale = _item.Scale.Value;
+        gameObject.transform.localScale = scale;
+    }
+
+    public bool UpdatePosition()
+    {
+        if (_item is null) return false;
+        if (!_item.LocalPosition.HasValue) return false;
+        transform.localPosition = _item.LocalPosition.Value;
+        return true;
+    }
+
+    public void SetParent(Transform parent)
+    {
+        if (!parent) throw new ArgumentException(nameof(parent));
+        transform.SetParent(parent);
     }
 
     public void AlignTo(GameObject value, Vector2 offset = default)
@@ -63,17 +84,6 @@ public class ItemRenderer : Touchable
             AlignToUIObject(value, offset);
         else
             AlignTo3DObject(value, offset);
-    }
-
-    private bool IsUIObject(GameObject value)
-    {
-        // It's on UI layer => UI Object 
-        if (value.layer == LayerMask.NameToLayer("UI")) return true;
-
-        // It's a child of the overlay object -> Overlay = UI = 2D
-        if (value.TryFindComponentInParents<Overlay>(out _)) return true;
-
-        return false;
     }
 
     public void Follow(GameObject value, Vector2 offset = default)
@@ -123,6 +133,33 @@ public class ItemRenderer : Touchable
         var (rendererGameObject, _) = _renderers.First(x => x.Value.sprite == sprite.Sprite);
         _renderers.Remove(rendererGameObject);
         Destroy(rendererGameObject);
+    }
+
+    private bool IsUIObject(GameObject value)
+    {
+        // It's on UI layer => UI Object 
+        if (value.layer == LayerMask.NameToLayer("UI")) return true;
+
+        // It's a child of the overlay object -> Overlay = UI = 2D
+        if (value.TryFindComponentInParents<Overlay>(out _)) return true;
+
+        return false;
+    }
+
+    private void FollowGameObject()
+    {
+        if (Destroyed) return;
+        if (!_follow) return;
+        
+        if (_cacheSkipCount > 0)
+        {
+            _cacheSkipCount--;
+            _followPositionO = default;
+        } 
+        
+        if (_followPositionO == _follow.transform.position) return;
+        _followPositionO = _follow.transform.position;
+        AlignTo(_follow, _followOffset);
     }
 
     private void AlignToUIObject(GameObject value, Vector2 offset = default)

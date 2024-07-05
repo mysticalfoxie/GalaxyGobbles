@@ -24,7 +24,7 @@ public class TouchHandler : Singleton<TouchHandler>
     private void UpdateStatesAndCallEvents()
     {
         if (TouchedGameObject is null) return;
-        if (!TouchedGameObject.IsAssigned(() => TouchedGameObject = null)) return;
+        if (!TouchedGameObject) return;
         
         var touched = TouchedGameObject;
         var eventArgs = new TouchEvent(touched);
@@ -70,7 +70,6 @@ public class TouchHandler : Singleton<TouchHandler>
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
         Raycaster.Instance.Raycast(position, out _touchStartGameObject);
-        _touchStartGameObject.IsAssigned(() => _touchStartGameObject = null);
     }
 
     private void HandleTouchInputUp()
@@ -82,6 +81,5 @@ public class TouchHandler : Singleton<TouchHandler>
         if (position == default) return;
 
         Raycaster.Instance.Raycast(position, out _touchEndGameObject);
-        _touchStartGameObject.IsAssigned(() => _touchEndGameObject = null);
     }
 }

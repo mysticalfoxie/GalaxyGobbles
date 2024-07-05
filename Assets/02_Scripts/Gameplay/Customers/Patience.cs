@@ -17,10 +17,8 @@ public class Patience : MonoBehaviour
 
     public void Awake()
     {
-        var overlay = Overlay.Instance.gameObject.transform;
-        _heartsGameObject = Instantiate(GameSettings.Data.PRE_Hearts);
-        _heartsGameObject!.transform.SetParent(overlay);
-        _hearts = _heartsGameObject.GetRequiredComponent<Hearts>();
+        _hearts = this.GetRequiredComponentInChildren<Hearts>();
+        _heartsGameObject = _hearts.gameObject;
         _heartsGameObject.SetActive(false);
     }
     
@@ -29,7 +27,6 @@ public class Patience : MonoBehaviour
         if (!isActiveAndEnabled) return;
         Ticking = true;
         _heartsGameObject.SetActive(true);
-        _hearts.Follow(Customer, Customer.Data.Species.HeartsOffset);
         Value = 100.0F;
         StartCoroutine(nameof(OnStartTicking));
     }
@@ -38,18 +35,6 @@ public class Patience : MonoBehaviour
     {
         Value = Math.Min(Value + amount, 100.0F);         
         _hearts.SetFillPercentage(Value);
-    }
-    
-    public void UpdateOffset()
-    {
-        _hearts.Offset = GetOffset();
-    }
-
-    private Vector2 GetOffset()
-    {
-        if (Customer.Chair is null) return Customer.Data.Species.HeartsOffset;
-        if (Customer.Chair.Side != Direction.Right) return Customer.Data.Species.HeartsOffset;
-        return Customer.Data.Species.HeartsOffset * new Vector2(-1, 1);
     }
 
     private IEnumerator OnStartTicking()
@@ -75,7 +60,7 @@ public class Patience : MonoBehaviour
     private bool CanTick()
     {
         if (!_hasTicked) return true;
-        if (!this.IsAssigned()) return false;
+        if (!this) return false;
         if (!isActiveAndEnabled) return false;
         return Value > 0.0F;
     }

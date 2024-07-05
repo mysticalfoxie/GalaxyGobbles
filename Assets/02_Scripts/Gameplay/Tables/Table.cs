@@ -28,9 +28,9 @@ public class Table : Touchable
         _chairs = GetComponentsInChildren<Chair>();
         CanSeat = _chairs.Length > 0;
 
-        _tableThinkingBubbleItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable));
-        _thinkingDotsItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking));
-        _cleaningItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Cleaning));
+        _tableThinkingBubbleItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)));
+        _thinkingDotsItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)));
+        _cleaningItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Cleaning)));
     }
 
     public bool CanSeat { get; private set; }
@@ -49,15 +49,6 @@ public class Table : Touchable
         Customer.Table = this;
         Customer.Chair = chair;
     }
-    /*
-     * Before
-     * UnityEditor.TransformWorldPlacementJSON:{"position":{"x":1252.0400390625,"y":18.527524948120118,"z":-101.66825103759766},"rotation":{"x":0.2588191032409668,"y":0.0,"z":0.0,"w":0.9659258127212524},"scale":{"x":0.17376121878623963,"y":0.16284774243831635,"z":1.0}}
-     *
-     * After
-     * UnityEditor.TransformWorldPlacementJSON:{"position":{"x":1263.800048828125,"y":47.400001525878909,"z":-110.19999694824219},"rotation":{"x":0.2588191032409668,"y":0.0,"z":0.0,"w":0.9659258127212524},"scale":{"x":0.17376121878623963,"y":0.16284774243831635,"z":1.0}}
-     *
-     * 
-     */
 
     public void SetDirty()
     {
@@ -78,7 +69,7 @@ public class Table : Touchable
             return;
         }
         
-        if (!Customer.IsAssigned()) return;
+        if (!Customer) return;
         Customer.InvokeTouch(this, EventArgs.Empty);
     }
 

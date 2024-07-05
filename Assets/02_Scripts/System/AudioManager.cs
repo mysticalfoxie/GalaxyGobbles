@@ -43,7 +43,7 @@ public class AudioManager : Singleton<AudioManager>
     private void InitializeAudioSource()
     {
         _audio ??= this.GetRequiredComponent<AudioSource>();
-        if (!_audio.IsAssigned()) return;
+        if (!_audio) return;
         _audio.clip = null;
         _audio.loop = true;
         _audio.playOnAwake = false;

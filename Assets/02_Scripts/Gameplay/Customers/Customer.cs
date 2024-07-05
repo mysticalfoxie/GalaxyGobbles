@@ -5,11 +5,6 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(CustomerStateRenderer))]
-[RequireComponent(typeof(CustomerStateMachine))]
-[RequireComponent(typeof(Patience))]
-[RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(SpriteRenderer))]
 public class Customer : Selectable
 {
     private static GameObject _customerRoot;
@@ -102,7 +97,6 @@ public class Customer : Selectable
     {
         Renderer.SetSeated();
         Renderer.RenderSeated();
-        Patience.UpdateOffset();
         Patience.Add(GameSettings.Data.PatienceRegainOnSeated);
         StateMachine.State = CustomerState.ThinkingAboutMeal;
         StartCoroutine(nameof(OnThinkingStart));
@@ -268,11 +262,13 @@ public class Customer : Selectable
 
     public static Customer Create(CustomerData data)
     {
-        if (!_customerRoot.IsAssigned()) _customerRoot = null;
+        if (!_customerRoot) _customerRoot = null;
         _customerRoot ??= GameObject.Find("Customers") ?? References.Instance.RootObject;
         var customerGameObject = Instantiate(GameSettings.Data.PRE_Customer);
         var customer = customerGameObject.GetComponent<Customer>();
+        var scale = customerGameObject.transform.localScale;
         customerGameObject.transform!.SetParent(_customerRoot.transform);
+        customerGameObject.transform.localScale = scale;
         customer.Data = data;
         return customer;
     }
