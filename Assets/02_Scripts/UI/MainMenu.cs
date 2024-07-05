@@ -220,7 +220,7 @@ public class MainMenu : Singleton<MainMenu>
         StartCoroutine(operation);
     }
 
-    public void CalculateScore()
+    private void CalculateScore()
     {
         var starsAcquired = ProgressBar.Progress;
         _maxScore.text = LevelManager.CurrentLevel.MaxScore.ToString(CultureInfo.InvariantCulture);
@@ -256,7 +256,7 @@ public class MainMenu : Singleton<MainMenu>
         _starRevealed2.SetActive(starsAcquired >= 2);
         _starRevealed3.SetActive(starsAcquired >= 3);
 
-        //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bountys in Menu after Completed Day , Reveal the right Target else let it Empty!
+        //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bounty in Menu after Completed Day , Reveal the right Target else let it Empty!
         if (_bounty1) _bounty1.SetActive(false);
         if (_bounty2) _bounty2.SetActive(false);
         if (_bounty3) _bounty3.SetActive(false);
@@ -269,14 +269,14 @@ public class MainMenu : Singleton<MainMenu>
         else BackButton();
     }
 
-    public void Save()
+    private void Save()
     {
         PlayerPrefs.SetFloat("MasterVolume", _currentVolume);
         PlayerPrefs.SetFloat("MusicVolume", _currentMusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", _currentSfxVolume);
     }
 
-    public void LoadSettings()
+    private void LoadSettings()
     {
         _volumeSlider.value = PlayerPrefs.HasKey("MasterVolume")
             ? _currentVolume = PlayerPrefs.GetFloat("MasterVolume")
