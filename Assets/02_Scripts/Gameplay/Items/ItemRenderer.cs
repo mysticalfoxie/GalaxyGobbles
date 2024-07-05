@@ -45,25 +45,8 @@ public class ItemRenderer : Touchable
         if (UpdatePosition()) return;
         FollowGameObject();
     }
-    
-    public void ForceUpdatePosition()
-    {
-        UpdatePosition();
-    }
 
-    public void ForceUpdateRotation()
-    {
-        _rotationO = null;
-        UpdateRotation();
-    }
-
-    public void ForceUpdateScale()
-    {
-        _scaleO = null;
-        UpdateScale();
-    }
-    
-    private void UpdateRotation()
+    public void UpdateRotation()
     {
         if (_item is null) return;
         if (!_item.Rotation.HasValue) return;
@@ -73,17 +56,15 @@ public class ItemRenderer : Touchable
         gameObject.transform.rotation = new Quaternion(rotation.x, rotation.y, rotation.z, 0F);
     }
 
-    private void UpdateScale()
+    public void UpdateScale()
     {
         if (_item is null) return;
         if (!_item.Scale.HasValue) return;
-        if (_scaleO == _item.Scale) return;
         var scale = _item.Scale.Value;
-        _scaleO = scale;
         gameObject.transform.localScale = scale;
     }
 
-    private bool UpdatePosition()
+    public bool UpdatePosition()
     {
         if (_item is null) return false;
         if (!_item.LocalPosition.HasValue) return false;
