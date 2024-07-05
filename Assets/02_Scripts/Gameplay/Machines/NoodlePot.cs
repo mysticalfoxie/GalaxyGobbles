@@ -37,7 +37,7 @@ public class NoodlePot : Touchable
     {
         if (BottomBar.Instance.Inventory.IsFull()) return;
         
-        var item = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Noodles));
+        var item = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Noodles)));
         if (!BottomBar.Instance.Inventory.TryAdd(item))
         {
             item.Dispose();
@@ -94,10 +94,10 @@ public class NoodlePot : Touchable
 
     private void InitializeItems()
     {
-        _emptyPotItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotEmpty));
-        _cookingItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooking));
-        _overcookedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotOvercooked));
-        _cookedItem = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooked));
+        _emptyPotItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotEmpty)));
+        _cookingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooking)));
+        _overcookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotOvercooked)));
+        _cookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooked)));
         
         _cookingItem.Follow(this, _itemOffset);
         _overcookedItem.Follow(this, _itemOffset);

@@ -11,7 +11,7 @@ public class TrashCan : Touchable
     {        
         base.Awake();
 
-        _item = new Item(this, GameSettings.GetItemMatch(Identifiers.Value.Trash), true);
+        _item = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Trash), true));
         _item.Follow(this, _offset);
         _item.ForwardTouchEventsTo(this);
     }

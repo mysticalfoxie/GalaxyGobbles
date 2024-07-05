@@ -3,23 +3,33 @@ using UnityEngine;
  
 public class Item : IDisposable
 {
+    private readonly ItemCreationContext _context;
     private ItemRenderer _renderer;
     private readonly bool _initialized;
 
-    public Item(object initiator, ItemData data, bool renderItemOnCreation = false)
+    public Item(ItemCreationContext context)
     {
-        Initiator = initiator;
-        Data = data;
-        if (renderItemOnCreation) Show();
+        _context = context;
+        Id = Guid.NewGuid();
+        Dimension = context.Dimension;
+        Initiator = context.Initiator;
+        Data = context.Data;
+        if (context.ShowAfterCreation) Show();
         else Hidden = true;
-        _initialized = true; 
+        _initialized = true;
     }
 
+    public Guid Id { get; }
     public object Initiator { get; }
+    public ItemDisplayDimension Dimension { get; }
     public ItemData Data { get; }
     public GameObject Following { get; private set; }
     public Vector2 FollowOffset { get; private set; }
     public bool Hidden { get; private set; }
+    public Transform Parent { get; private set; }
+    public Vector2? LocalPosition { get; private set; }
+    public Vector3? Rotation { get; private set; }
+    public Vector3? Scale { get; set; }
     public event EventHandler Click;
 
     public Item Show()
@@ -52,6 +62,31 @@ public class Item : IDisposable
         return this;
     }
 
+    public Item SetParent(Transform parent)
+    {
+        Parent = parent;
+        if (_renderer) _renderer.SetParent(parent);
+        return this;
+    }
+
+    public Item SetLocalPosition(Vector2 position)
+    {
+        LocalPosition = position;
+        return this;
+    }
+
+    public Item SetScale(Vector3 scale)
+    {
+        Scale = scale;
+        return this;
+    }
+    
+    public Item SetRotation(Vector3 rotation)
+    {
+        Rotation = rotation;
+        return this;
+    }
+
     public Item StopFollowing()
     {
         _renderer.StopFollowing();
@@ -81,9 +116,10 @@ public class Item : IDisposable
         return this;
     }
 
-    public Item Clone(bool showOnCreation = false)
+    public Item Clone()
     {
-        return new Item(this, Data.Clone(), showOnCreation);
+        var clone = new ItemCreationContext(this, Data.Clone(), _context.ShowAfterCreation, _context.Dimension);
+        return new Item(clone);
     }
 
     public void Dispose()

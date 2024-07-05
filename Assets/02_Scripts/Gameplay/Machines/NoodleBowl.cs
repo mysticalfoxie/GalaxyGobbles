@@ -12,7 +12,7 @@ public class NoodleBowl : Touchable
         base.Awake();
 
         _itemData = GameSettings.GetItemMatch(Identifiers.Value.NoodleBowl);
-        _item = new Item(this, _itemData, true);
+        _item = new Item(new(this, _itemData, true));
         _item.Follow(this, _itemOffset);
         _item.ForwardTouchEventsTo(this);
     }

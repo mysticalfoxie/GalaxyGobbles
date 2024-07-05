@@ -15,7 +15,7 @@ public class ItemProvider : Touchable
         base.Awake();
         
         var item = GameSettings.GetItemMatch(_item);
-        _itemCache = new Item(this, item, true);
+        _itemCache = new Item(new(this, item, true));
         _itemCache.Follow(this, _offset);
         _itemCache.ForwardTouchEventsTo(this);
     } 
