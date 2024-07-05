@@ -21,8 +21,8 @@ public class ApplyHorizontalOrVerticalLayoutGroupProperties : MonoBehaviour
         _layoutGroup ??= this.GetRequiredComponent<HorizontalOrVerticalLayoutGroup>();
         _rectTransform ??= this.GetRequiredComponent<RectTransform>();
 
-        if (!_layoutGroup.IsAssigned()) return;
-        if (!_rectTransform.IsAssigned()) return;
+        if (!_layoutGroup) return;
+        if (!_rectTransform) return;
         if (!AnyChanges()) return;
         
         _paddingXo = _paddingX;

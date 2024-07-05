@@ -151,7 +151,8 @@ public class ItemRenderer : Touchable
     private void FollowGameObject()
     {
         if (Destroyed) return;
-        if (!_follow.IsAssigned(() => _follow = null)) return;
+        if (!_follow) return;
+        
         if (_cacheSkipCount > 0)
         {
             _cacheSkipCount--;

@@ -5,16 +5,21 @@ public class NoodleBowl : Touchable
     private Item _item;
     private ItemData _itemData;
 
-    [Header("Item Visualization")] [SerializeField] private Vector2 _itemOffset;
+    [Header("Item Visualization")] 
+    [SerializeField] private RectTransform _canvas;
+    [SerializeField] [Range(0.1F, 5.0F)] private float _scale = 1;
 
     public override void Awake()
     {
         base.Awake();
 
         _itemData = GameSettings.GetItemMatch(Identifiers.Value.NoodleBowl);
-        _item = new Item(new(this, _itemData, true));
-        _item.Follow(this, _itemOffset);
-        _item.ForwardTouchEventsTo(this);
+        _item = new Item(new(this, _itemData, true, ItemDisplayDimension.Dimension3D))
+            .ForwardTouchEventsTo(this)
+            .SetParent(_canvas.transform)
+            .SetLocalPosition(Vector2.zero)
+            .SetRotation(Vector2.zero)
+            .SetScale(new Vector2(_scale, _scale));
     }
 
     private void OnDrawGizmos()

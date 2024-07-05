@@ -69,7 +69,7 @@ public class Table : Touchable
             return;
         }
         
-        if (!Customer.IsAssigned()) return;
+        if (!Customer) return;
         Customer.InvokeTouch(this, EventArgs.Empty);
     }
 

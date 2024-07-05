@@ -3,23 +3,24 @@ using UnityEngine;
 
 public class CuttingBoard : Touchable
 {
-    [Header("Crafting Visualization")] 
-    [SerializeField] private Vector2 _thinkingBubbleOffset;
-    [SerializeField] private Vector2 _cuttingBoardUIOffset;
-    [SerializeField] private Vector2 _cuttingBoardOffset;
-    [SerializeField] private Vector2 _itemOffset;
+    [Header("Crafting Visualization")] [SerializeField]
+    private GameObject _uiGameObject;
+
+    [SerializeField] private RectTransform _canvas;
+    [SerializeField] [Range(0.1F, 5.0F)] private float _scale = 1;
 
     private bool _menuOpened;
-    private Item _cuttingBoardUIItem;
-    private Item _cuttingBoardItem;
-    private Item _thinkingBubbleItem;
-    private Item _emptyItem;
 
     public override void Awake()
     {
         base.Awake();
 
-        InitializeItems();
+        new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.CuttingBoard), true))
+            .ForwardTouchEventsTo(this)
+            .SetParent(_canvas.transform)
+            .SetLocalPosition(Vector2.zero)
+            .SetRotation(Vector2.zero)
+            .SetScale(new Vector2(_scale, _scale));
     }
 
     protected override void OnTouch()
@@ -31,24 +32,19 @@ public class CuttingBoard : Touchable
     private bool TryHandleOpenMenu()
     {
         if (_menuOpened) return false;
-        
-        _thinkingBubbleItem.Show().Follow(this, _thinkingBubbleOffset);
-        _cuttingBoardUIItem.Show().Follow(_thinkingBubbleItem, _cuttingBoardUIOffset);
-        _emptyItem.Show().Follow(_cuttingBoardUIItem, _itemOffset);
 
+        _uiGameObject.SetActive(true);
         StartCoroutine(nameof(HandleIngredientSelection));
-        
+
         return _menuOpened = true;
     }
-    
+
     private void TryHandleCloseMenu()
     {
         if (!_menuOpened) return;
 
-        _thinkingBubbleItem.Hide();
-        _cuttingBoardUIItem.Hide();
-        _emptyItem.Hide();
-        
+        _uiGameObject.SetActive(false);
+
         _menuOpened = false;
     }
 
@@ -73,21 +69,5 @@ public class CuttingBoard : Touchable
     {
         TryHandleCloseMenu();
         BottomBar.Instance.Inventory.AddPoison(data);
-    }
-
-    private void InitializeItems()
-    {
-        var items = new[]
-        {
-            _cuttingBoardUIItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.CuttingBoardUI))),
-            _emptyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.QuestionMark))),
-            _thinkingBubbleItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleCuttingBoard))),
-            _cuttingBoardItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.CuttingBoard), true))
-        };
-        
-        _cuttingBoardItem.Follow(this, _cuttingBoardOffset);
-
-        foreach (var item in items)
-            item.ForwardTouchEventsTo(this);
     }
 }

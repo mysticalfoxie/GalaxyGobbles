@@ -19,7 +19,7 @@ public class CanvasScaling : MonoBehaviour
 
     public void Update()
     {
-        if (!UI.Instance.IsAssigned()) return;
+        if (!UI.Instance) return;
         if (_canvasScaler is null) return;
         if (Screen.height == _height) return;
         _height = Screen.height;

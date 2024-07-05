@@ -60,7 +60,7 @@ public class Patience : MonoBehaviour
     private bool CanTick()
     {
         if (!_hasTicked) return true;
-        if (!this.IsAssigned()) return false;
+        if (!this) return false;
         if (!isActiveAndEnabled) return false;
         return Value > 0.0F;
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using UnityEngine;
 
 public class NoodlePot : Touchable
@@ -9,13 +10,15 @@ public class NoodlePot : Touchable
     private Item _overcookedItem;
     private Item _cookedItem;
     private Item _item;
+    private Item[] _items;
 
-    [Header("Item Visualization")] [SerializeField] private Vector2 _itemOffset;
-    
+    [Header("Item Visualization")] [SerializeField] private RectTransform _canvas;
+    [SerializeField] [Range(0.1F, 5.0F)] private float _scale = 1;
+
     public NoodlePotState State { get; private set; }
 
     public override void Awake()
-    { 
+    {
         base.Awake();
         InitializeItems();
         UpdateState(NoodlePotState.Empty);
@@ -36,14 +39,14 @@ public class NoodlePot : Touchable
     private void OnCookedNoodlesTouched()
     {
         if (BottomBar.Instance.Inventory.IsFull()) return;
-        
+
         var item = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Noodles)));
         if (!BottomBar.Instance.Inventory.TryAdd(item))
         {
             item.Dispose();
             return;
         }
-        
+
         item.Show();
         UpdateState(NoodlePotState.Empty);
     }
@@ -74,7 +77,7 @@ public class NoodlePot : Touchable
     {
         var cleaningTime = GameSettings.Data.PotCleaningTime;
         yield return new WaitForSeconds(cleaningTime);
-        UpdateState(NoodlePotState.Empty); 
+        UpdateState(NoodlePotState.Empty);
     }
 
     private IEnumerator OnCookingStart()
@@ -94,20 +97,21 @@ public class NoodlePot : Touchable
 
     private void InitializeItems()
     {
-        _emptyPotItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotEmpty)));
-        _cookingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooking)));
-        _overcookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotOvercooked)));
-        _cookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooked)));
-        
-        _cookingItem.Follow(this, _itemOffset);
-        _overcookedItem.Follow(this, _itemOffset);
-        _cookedItem.Follow(this, _itemOffset);
-        _emptyPotItem.Follow(this, _itemOffset);
-        
-        _cookingItem.ForwardTouchEventsTo(this);
-        _overcookedItem.ForwardTouchEventsTo(this);
-        _cookedItem.ForwardTouchEventsTo(this);
-        _emptyPotItem.ForwardTouchEventsTo(this);
+        _items = new[]
+        {
+            _emptyPotItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotEmpty), dimension: ItemDisplayDimension.Dimension3D)),
+            _cookingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooking), dimension: ItemDisplayDimension.Dimension3D)),
+            _overcookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotOvercooked), dimension: ItemDisplayDimension.Dimension3D)),
+            _cookedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.NoodlePotCooked), dimension: ItemDisplayDimension.Dimension3D))
+        };
+
+        foreach (var item in _items)
+            item.ForwardTouchEventsTo(this)
+                .SetParent(_canvas.transform)
+                .SetLocalPosition(Vector2.zero)
+                .SetRotation(Vector2.zero)
+                .SetScale(new Vector2(_scale, _scale));
+
     }
 
     private void OnValidate()

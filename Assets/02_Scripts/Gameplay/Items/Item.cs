@@ -36,7 +36,7 @@ public class Item : IDisposable
     {
         if (!Hidden && _initialized) return this;
         _renderer = CreateItemRenderer();
-        if (Following.IsAssigned()) _renderer.Follow(Following, FollowOffset);
+        if (Following) _renderer.Follow(Following, FollowOffset);
         Hidden = false;
         return this;
     }
@@ -53,10 +53,10 @@ public class Item : IDisposable
     public Item Follow(MonoBehaviour value, Vector2 offset = default) => Follow(value.gameObject, offset);
     public Item Follow(GameObject value, Vector2 offset = default)
     {
-        if (!value.IsAssigned()) return this; 
+        if (!value) return this; 
         Following = value;
         FollowOffset = offset;
-        if (_renderer.IsDestroyed()) return this;
+        if (!_renderer) return this;
         _renderer.AlignTo(value, offset);
         _renderer.Follow(value, offset);
         return this;

@@ -32,7 +32,7 @@ public class Overlay : Singleton<Overlay>
 
     protected override void OnSceneUnloaded(Scene scene)
     {
-        var itemRenderers = _renderers.Where(x => !x.IsDestroyed()).ToArray();
+        var itemRenderers = _renderers.Where(x => x).ToArray();
         foreach (var itemRenderer in itemRenderers)
         {
             itemRenderer.gameObject.SetActive(false);

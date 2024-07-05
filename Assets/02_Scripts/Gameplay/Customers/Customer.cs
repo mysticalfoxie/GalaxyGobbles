@@ -262,7 +262,7 @@ public class Customer : Selectable
 
     public static Customer Create(CustomerData data)
     {
-        if (!_customerRoot.IsAssigned()) _customerRoot = null;
+        if (!_customerRoot) _customerRoot = null;
         _customerRoot ??= GameObject.Find("Customers") ?? References.Instance.RootObject;
         var customerGameObject = Instantiate(GameSettings.Data.PRE_Customer);
         var customer = customerGameObject.GetComponent<Customer>();
