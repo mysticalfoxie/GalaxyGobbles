@@ -223,7 +223,8 @@ public class MainMenu : Singleton<MainMenu>
     private void CalculateScore()
     {
         var starsAcquired = ProgressBar.Progress;
-        _maxScore.text = LevelManager.CurrentLevel.MaxScore.ToString(CultureInfo.InvariantCulture);
+        var maxScore = LevelManager.CurrentLevel.MaxScore;
+        _maxScore.text = Mathf.Floor(maxScore).ToString(CultureInfo.InvariantCulture);
         _valueScore.text = BottomBar.Instance.Score.Value.ToString(CultureInfo.InvariantCulture);
         _levelText.text = "Level" +
                           (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
@@ -239,8 +240,8 @@ public class MainMenu : Singleton<MainMenu>
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
 
             _continueButton.SetActive(true);
+            _completeScoreStamp.SetActive(true);
             //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');  [ToDO Maybe need later...]
-            _completeScoreStamp	.SetActive(true);
         }
         else
         {
