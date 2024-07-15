@@ -3,18 +3,16 @@ using UnityEngine;
 
 public class MainCharacter : Singleton<MainCharacter>
 {
-    private float? _targetX;
-    private float? _startX;
-    private float? _distance;
-    private float? _timeElapsed;
-    private float? _duration;
+    private Transform _target;
+    private Vector3 _maxPosition;
+    private Vector3 _minPosition;
+    private SpriteRenderer _renderer;
     private Action _callback;
 
-    public override void Awake()
-    {
-        InheritedDDoL = true;
-        base.Awake();
-    }
+    [Header("Sprites")] 
+    [SerializeField] private Sprite _side;
+    [SerializeField] private Sprite _back;
+    [SerializeField] private Sprite _front;
     
     [Header("Move Animation")]
     [Tooltip("A conversion multiplier from UU (unity units) to t (time in ms). UU * x / 1000 = t")]
@@ -25,17 +23,25 @@ public class MainCharacter : Singleton<MainCharacter>
     [SerializeField] private float _maxX;
     [SerializeField] private float _minX;
     [SerializeField] private float _gizmoY;
-    private Vector3 _maxPosition;
-    private Vector3 _minPosition;
+
+    public override void Awake()
+    {
+        InheritedDDoL = true;
+        base.Awake();
+    }
 
     public void OnEnable()
     {
         _maxPosition = transform.TransformPoint(new Vector3(_maxX, 0, 0));
         _minPosition = transform.TransformPoint(new Vector3(_minX, 0, 0));
+        _renderer = this.GetRequiredComponent<SpriteRenderer>();
+        _renderer.sprite = _front;
     }
 
     public void MoveTo(Transform target, Action callback)
     {
+        _target = target;
+        _callback = callback;
         var start = transform.position.x;
         var end = ClampTargetPosition(target).x;
         var distance = Mathf.Abs(end - start);
@@ -44,13 +50,28 @@ public class MainCharacter : Singleton<MainCharacter>
         AnimationBuilder
             .CreateNew(start, end, duration)
             .SetInterpolation(_interpolation)
-            .OnUpdate(x => transform.SetGlobalPositionX(x))
-            .OnComplete(callback)
+            .OnUpdate(OnAnimationTick)
+            .OnComplete(OnAnimationComplete)
             .OnlyPlayOnce()
             .Build()
             .Start();
     }
-    
+
+    private void OnAnimationTick(float value)
+    {
+        transform.SetGlobalPositionX(value);
+        _renderer.sprite = _side;
+        _renderer.flipX = _target.position.x > transform.position.x;
+        
+    }
+
+    private void OnAnimationComplete()
+    {
+        _renderer.sprite = _target.position.z > transform.position.z ? _back : _front;
+        _renderer.flipX = false;
+        _callback?.Invoke();
+    }
+
 
     public void OnDrawGizmos()
     {
