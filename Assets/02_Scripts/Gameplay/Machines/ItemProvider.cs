@@ -40,10 +40,13 @@ public class ItemProvider : Touchable
 
     protected override void OnTouch()
     {
-        var newItem = _itemCache.Clone();
-        if (!BottomBar.Instance.Inventory.TryAdd(newItem))
-            newItem.Dispose();
-        else
-            newItem.Show();
+        MainCharacter.Instance.MoveTo(transform, () =>
+        {
+            var newItem = _itemCache.Clone();
+            if (!BottomBar.Instance.Inventory.TryAdd(newItem))
+                newItem.Dispose();
+            else
+                newItem.Show();
+        });
     }
 }

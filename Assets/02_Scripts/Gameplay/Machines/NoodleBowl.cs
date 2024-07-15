@@ -30,6 +30,6 @@ public class NoodleBowl : Touchable
 
     protected override void OnTouch()
     {
-        NoodlePotDistributor.AddNoodles();
+        MainCharacter.Instance.MoveTo(transform, NoodlePotDistributor.AddNoodles);
     }
 }
