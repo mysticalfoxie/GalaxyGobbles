@@ -22,7 +22,9 @@ public class Score : MonoBehaviour
         var max = LevelManager.CurrentLevel.MaxScore;
         var value = Math.Min(Value, max);
         var percentage = 100.0F / max * value;
+        var scoreValue = BottomBar.Instance.Score.Value;
         BottomBar.Instance.ProgressBar.SetValue(percentage);
+        ProgressBar.Instance.SetScore(scoreValue);
     }
 
     public void Reset()

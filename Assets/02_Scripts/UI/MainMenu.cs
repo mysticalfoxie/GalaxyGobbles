@@ -240,6 +240,7 @@ public class MainMenu : Singleton<MainMenu>
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
 
             _continueButton.SetActive(true);
+            if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
             _completeScoreStamp.SetActive(true);
             //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');  [ToDO Maybe need later...]
         }
@@ -247,6 +248,7 @@ public class MainMenu : Singleton<MainMenu>
         {
             // Temporary for Gate I (Always succeed + pass to next level)
             //_completeDayText.text = "You didn't pass this Level!"; [ToDO Maybe need later...]
+            if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
             _failedScoreStamp.SetActive(true);
             if (_continueButton) _continueButton.SetActive(false);
             if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
