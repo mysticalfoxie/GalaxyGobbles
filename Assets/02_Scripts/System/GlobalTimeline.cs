@@ -9,6 +9,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
     private Dictionary<uint, CustomerData> _customers;
 
     public uint SecondsUntilClosure { get; private set; }
+    public bool Loading { get; private set; } = true;
 
     public override void Awake()
     {
@@ -21,9 +22,15 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
                 .ToDictionary(x => x.GetSeconds(), y => y);
             
             Tick += OnTimelineTick;
+            StartTicking();
         });
         
         StartCoroutine(operation);
+    }
+
+    public static IEnumerator WaitUntilTimelineLoaded()
+    {
+        yield return new WaitUntil(() => !Instance.Loading);
     }
 
     private static IEnumerator WaitUntilLevelLoaded(Action callback)
@@ -38,6 +45,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
         HandleCustomerArrival();
         HandleStoreClosure();
         HandleTimerDisplay();
+        Loading = false;
     }
 
     private void HandleTimerDisplay()

@@ -305,14 +305,16 @@ public class MainMenu : Singleton<MainMenu>
 
     private IEnumerator LoadLevelAsync(int index)
     {
-        // TODO: Fade black before the scene loads
+        yield return Fader.Instance.FadeBlackAsync();
 
         // Before the new level has started loading  
         yield return LevelManager.Instance.LoadLevelAsync(index);
         // After the level has completely loaded
 
-        // TODO: Fade back to the game when the scene has completely loaded! :)
+        // When it's still black, show the bounty screen, so this is the first thing the users sees after fading back.
         // TODO: Show Bounty Screen
+
+        yield return Fader.Instance.FadeWhiteAsync();
 
         // When done with level loading the button becomes clickable again
         // -> Stay at the last line of the function
