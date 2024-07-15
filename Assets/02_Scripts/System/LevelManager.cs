@@ -47,6 +47,7 @@ public class LevelManager : Singleton<LevelManager>
         if (skipSceneLoad) yield break;
         
         yield return LoadSceneAsync();
+        yield return GlobalTimeline.WaitUntilTimelineLoaded();
     }
 
     public IEnumerator LoadSceneAsync()
