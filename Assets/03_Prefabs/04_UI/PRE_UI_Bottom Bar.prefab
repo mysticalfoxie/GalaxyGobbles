@@ -1316,7 +1316,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 6434258340005914555}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1768,9 +1768,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1624214760449572400}
   - component: {fileID: 4416345099770596363}
-  - component: {fileID: 5520589076887829212}
   - component: {fileID: 7595013484456304868}
   - component: {fileID: 2908017481212702690}
+  - component: {fileID: 7252014220305307162}
   m_Layer: 5
   m_Name: TrashBin
   m_TagString: Untagged
@@ -1805,20 +1805,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6786670791341747924}
   m_CullTransparentMesh: 1
---- !u!114 &5520589076887829212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6786670791341747924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b158b0397b36467480a7c30bc71bce3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canvas: {fileID: 2008317713775799295}
-  _scale: 1
 --- !u!114 &7595013484456304868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,18 +1879,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6786670791341747924}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 7252014220305307162}
+        m_TargetAssemblyTypeName: TrashCan_UI, Assembly-CSharp
+        m_MethodName: TrashButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7252014220305307162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6786670791341747924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03b9f4025cb427f86012eea6b915285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7824031780390720142
 GameObject:
   m_ObjectHideFlags: 0
