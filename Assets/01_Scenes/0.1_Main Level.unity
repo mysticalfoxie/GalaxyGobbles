@@ -2228,7 +2228,12 @@ PrefabInstance:
     - target: {fileID: 577699917249000562, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -53.8
+      value: -53.80005
+      objectReference: {fileID: 0}
+    - target: {fileID: 668268908335689270, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 183.63
       objectReference: {fileID: 0}
     - target: {fileID: 668268908335689270, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
@@ -10877,6 +10882,7 @@ MonoBehaviour:
   _front: {fileID: 21300000, guid: 64d4b180069962b4c9b4253a5f689591, type: 3}
   _distanceToDurationMod: 1.8
   _interpolation: 12
+  _confirmationDistanceThreshold: 0.01
   _maxX: 4.89
   _minX: -4.04
   _gizmoY: -1.39
@@ -12242,11 +12248,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: dc4326844d9948c419f4927d91deb616,
         type: 2}
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _scale
-      value: 1.8
-      objectReference: {fileID: 0}
     - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Camera
@@ -12256,21 +12257,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ingredient Bowl (Squid)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.32157356
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05945267
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.4359021
       objectReference: {fileID: 0}
     - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
@@ -12613,7 +12599,7 @@ PrefabInstance:
     - target: {fileID: 3784486756144850194, guid: 034b71642ffdb5741af31c5d5bbfca74,
         type: 3}
       propertyPath: orthographic size
-      value: 201.56735
+      value: 243.14062
       objectReference: {fileID: 0}
     - target: {fileID: 6033037049903796583, guid: 034b71642ffdb5741af31c5d5bbfca74,
         type: 3}
@@ -12668,7 +12654,7 @@ PrefabInstance:
     - target: {fileID: 7640467561414709899, guid: 034b71642ffdb5741af31c5d5bbfca74,
         type: 3}
       propertyPath: orthographic size
-      value: 201.56735
+      value: 243.14062
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14037,17 +14023,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2530000202458365930}
     m_Modifications:
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _item
-      value: 
-      objectReference: {fileID: 11400000, guid: fc1c302ca068f004ca8c7498b25b8928,
-        type: 2}
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _scale
-      value: 1.8
-      objectReference: {fileID: 0}
     - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Camera
@@ -14057,21 +14032,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bubble Tea 02
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.32157356
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05945267
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.4359021
       objectReference: {fileID: 0}
     - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
@@ -14366,51 +14326,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2530000202458365930}
     m_Modifications:
-    - target: {fileID: 1610228851681738018, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: _item
       value: 
       objectReference: {fileID: 11400000, guid: 1a85ff1968cea314da49289657273cf1,
         type: 2}
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _scale
-      value: 1.8
-      objectReference: {fileID: 0}
     - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1387839194}
-    - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5080435294801898734, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Name
       value: Ingredient Bowl (Baby Bok Choy)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.32157356
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05945267
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.4359021
       objectReference: {fileID: 0}
     - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
@@ -14481,11 +14411,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a3f3062b63ef12344bd1301f87abc359,
         type: 2}
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _scale
-      value: 1.8
-      objectReference: {fileID: 0}
     - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Camera
@@ -15308,17 +15233,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2530000202458365930}
     m_Modifications:
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _item
-      value: 
-      objectReference: {fileID: 11400000, guid: fc1c302ca068f004ca8c7498b25b8928,
-        type: 2}
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _scale
-      value: 1.8
-      objectReference: {fileID: 0}
     - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Camera
@@ -15328,21 +15242,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bubble Tea 01
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.32157356
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05945267
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.4359021
       objectReference: {fileID: 0}
     - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
@@ -15525,11 +15424,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2530000202458365930}
     m_Modifications:
-    - target: {fileID: 1174827368323703048, guid: b81f715a00f6e6d48ad038f680b6dfda,
-        type: 3}
-      propertyPath: _scale
-      value: 1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 4980572500603900707, guid: b81f715a00f6e6d48ad038f680b6dfda,
         type: 3}
       propertyPath: m_Camera
@@ -15781,11 +15675,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 473ac5396ce40ee42a3e708d8a226b03,
         type: 2}
-    - target: {fileID: 1753125620355825349, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: _scale
-      value: 1.4
-      objectReference: {fileID: 0}
     - target: {fileID: 2421336792502428505, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}
       propertyPath: m_Camera
@@ -15795,21 +15684,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sake Glasses
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.32157356
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.05945267
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.4359021
       objectReference: {fileID: 0}
     - target: {fileID: 5771732587104242155, guid: bab719a746de0ac4eaeeb07f3da9aea9,
         type: 3}

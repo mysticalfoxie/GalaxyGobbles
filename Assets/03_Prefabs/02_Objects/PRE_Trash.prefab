@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 686404457521499841}
   - component: {fileID: 1701730304430690665}
   - component: {fileID: 2803979073648019526}
+  - component: {fileID: 5719328024787172566}
   m_Layer: 5
   m_Name: CV_Renderer
   m_TagString: Untagged
@@ -107,6 +108,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 228.69, y: 200.91, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5719328024787172566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769677337712421654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
 --- !u!1 &7536997148707254458
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7536997148707254458}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5330005, y: 0.64768726, z: -5.5299997}
   m_LocalScale: {x: 0.27797204, y: 0.068208665, z: 0.41816345}
   m_ConstrainProportionsScale: 0
@@ -153,4 +167,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 8938572713526720377}
-  _scale: 1
+  _scale: 1.2

@@ -54,4 +54,18 @@ public static class TransformExtensions
     public static void DivideGlobalPositionX(this Transform transform, float x) => transform.position = new(transform.position.x / x, transform.position.y, transform.position.z);
     public static void DivideGlobalPositionY(this Transform transform, float y) => transform.position = new(transform.position.x, transform.position.y / y, transform.position.z);
     public static void DivideGlobalPositionZ(this Transform transform, float z) => transform.position = new(transform.position.x, transform.position.y, transform.position.z / z);
+
+    public static void SetGlobalScale(this Transform transform, Vector3 vector)
+    {
+        if (!transform.parent)
+        {
+            transform.localScale = vector;
+            return;
+        }
+
+        var parentO = transform.parent;
+        transform.parent = null;
+        transform.localScale = vector;
+        transform.parent = parentO;
+    }
 }

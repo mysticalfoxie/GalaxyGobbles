@@ -59,10 +59,13 @@ public class GameSettings : ScriptableObject
     [SerializeField] private SpriteData _poisonIcon;
     [Tooltip("The material used for applying an outline.")]
     [SerializeField] private Material _outlineMaterial;
+    [Tooltip("The scale of the checkmark confirmation sprite.")]
+    [SerializeField] private Vector3 _checkmarkScale = new(10, 10, 1);
     
     [Header("References")]
     [Header("Prefabs")]
     [SerializeField] private GameObject _itemPrefab;
+    [SerializeField] private GameObject _checkmarkPrefab;
     [SerializeField] private GameObject _customerPrefab;
     [SerializeField] private GameObject _spriteRendererPrefab;
     [SerializeField] private GameObject _rectTransformPrefab;
@@ -100,6 +103,7 @@ public class GameSettings : ScriptableObject
     public float CustomerBaseScore => _customerBaseScore;
     public float PatienceRegainOnItemReceive => _patienceRegainOnItemReceive;
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
+    public Vector3 CheckmarkScale => _checkmarkScale;
 
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;
@@ -109,6 +113,7 @@ public class GameSettings : ScriptableObject
     public GameObject PRE_Customer => _customerPrefab;
     public GameObject PRE_RectTransform => _rectTransformPrefab;
     public GameObject PRE_Hearts => _heartsPrefab;
+    public GameObject PRE_Checkmark => _checkmarkPrefab;
     
     public IEnumerable<LevelData> Levels => _levels;
     public IEnumerable<SpeciesData> Species => _species;

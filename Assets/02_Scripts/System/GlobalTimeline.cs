@@ -69,7 +69,6 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
             .Value;
 
         CustomerHandler.Instance.SummonNewCustomer(customer);
-        
     }
 
     private IEnumerator CloseStore()
