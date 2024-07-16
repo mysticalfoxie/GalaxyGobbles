@@ -4,14 +4,15 @@ public class QueueFeedback : MonoBehaviour
 {
     private GameObject _gameObject;
     private bool _visibleO;
-    
-    [SerializeField] public bool _visible;
+
+    [SerializeField] private Vector3 _offset;
+    [SerializeField] private bool _visible;
 
     public void OnEnable()
     {
         _gameObject = Instantiate(GameSettings.Data.PRE_Checkmark);
         _gameObject.transform!.SetParent(transform);
-        _gameObject.transform.SetPositionAndRotation(transform.position.AddZ(-1), Quaternion.Euler(30, 0, 0));
+        _gameObject.transform.SetPositionAndRotation(transform.position.AddZ(-1).Add(_offset), Quaternion.Euler(30, 0, 0));
         _gameObject.transform.SetGlobalScale(GameSettings.Data.CheckmarkScale);
         _gameObject.SetActive(false);
         

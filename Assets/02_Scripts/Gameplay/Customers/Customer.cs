@@ -60,24 +60,34 @@ public class Customer : Selectable
     public void TryCheckout()
     {
         if (StateMachine.State != CustomerState.WaitingForCheckout) return;
-        StateMachine.State = CustomerState.Leaving;
 
-        new ScoreCalculation(Patience.Value, _data.DesiredItems).Apply();
+        KittyBot.Instance.MoveTo(Table.transform, () =>
+        {
+            StateMachine.State = CustomerState.Leaving;
 
-        OnCustomerLeave();
+            new ScoreCalculation(Patience.Value, _data.DesiredItems).Apply();
+
+            OnCustomerLeave();
+        });
     }
 
     public bool TryReceiveMeal()
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
-        ReceiveItemsFromInventory();
-        if (DesiredItems.Count == 0)
+        if (!HasItemMatch()) return false;
+        
+        KittyBot.Instance.MoveTo(Table.transform, () =>
         {
-            StartCoroutine(nameof(StartEating));
-            return true;
-        }
+            ReceiveItemsFromInventory();
+            if (DesiredItems.Count == 0)
+            {
+                StartCoroutine(nameof(StartEating));
+                return;
+            }
+            
+            StateMachine.Renderer.RefreshDesiredItems();
+        });
 
-        StateMachine.Renderer.RefreshDesiredItems();
         return true;
     }
 
@@ -219,8 +229,13 @@ public class Customer : Selectable
 
             OnItemReceived(match, item);
             BottomBar.Instance.Inventory.Remove(item, true);
-            return;
         }
+    }
+
+    private bool HasItemMatch()
+    {
+        var list = BottomBar.Instance.Inventory.Items.ToArray();
+        return list.Any(x => DesiredItems.Any(y => y.name == x.Data.name));
     }
 
     private void UpdateData(CustomerData data)
