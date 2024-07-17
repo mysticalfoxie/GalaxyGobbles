@@ -68,4 +68,14 @@ public static class TransformExtensions
         transform.localScale = vector;
         transform.parent = parentO;
     }
+    
+    public static float GetZAngleTo(this Transform transform, Vector3 to)
+    {
+        var vectorCA = Vector3.forward;
+        var vectorCB = to.Subtract(transform.position).normalized;
+        var multiply = vectorCA.x * vectorCB.x + vectorCA.y * vectorCB.y + vectorCA.z * vectorCB.z;
+        var radian = Mathf.Acos(multiply);
+        var angle = 180.0F / Mathf.PI * radian;
+        return vectorCB.x < 0 ? 360 - angle : angle;
+    }
 }

@@ -69,12 +69,12 @@ public class ProgressBar : Singleton<ProgressBar>
         Progress = 0;
         _scoreIndicator.text = 0.ToString(CultureInfo.InvariantCulture);
         
-        var max = _rectTransform.rect.width;
-        var starOneReachedX = max * 0.01F * _starOneReached;
-        var starTwoReached = max * 0.01F * _starTwoReached;
-        var starThreeReached = max * 0.01F * _starThreeReached;
-        _starOneReachedMark.anchoredPosition = new Vector2(starOneReachedX, _starOneReachedMark.anchoredPosition.y);
-        _starTwoReachedMark.anchoredPosition = new Vector2(starTwoReached, _starTwoReachedMark.anchoredPosition.y);
-        _starThreeReachedMark.anchoredPosition = new Vector2(starThreeReached, _starThreeReachedMark.anchoredPosition.y);
+        // var max = _rectTransform.rect.width;
+        // var starOneReachedX = max * 0.01F * _starOneReached;
+        // var starTwoReached = max * 0.01F * _starTwoReached;
+        // var starThreeReached = max * 0.01F * _starThreeReached;
+        // _starOneReachedMark.anchoredPosition = new Vector2(starOneReachedX, _starOneReachedMark.anchoredPosition.y);
+        // _starTwoReachedMark.anchoredPosition = new Vector2(starTwoReached, _starTwoReachedMark.anchoredPosition.y);
+        // _starThreeReachedMark.anchoredPosition = new Vector2(starThreeReached, _starThreeReachedMark.anchoredPosition.y);
     }
 }

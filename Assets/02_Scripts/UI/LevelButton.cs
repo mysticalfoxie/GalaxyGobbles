@@ -14,11 +14,7 @@ public class LevelButton : MonoBehaviour
     private float _canvasScaling = CanvasScaling.ScaleFactor;
 
     public event Action<int> Clicked;
-
-    public void Awake()
-    {
-    }
-
+    
     public void Update()
     {
         var buttonScale = _levelButton.transform.localScale;
@@ -29,6 +25,12 @@ public class LevelButton : MonoBehaviour
             var yScalingFactor = _canvasScaling * 0.75f;
             if (parentRect != null) parentRect.localScale = new Vector3(xScalingFactor, yScalingFactor, 0);
         }
+        RefreshStars();
+    }
+
+    public void RefreshStars()
+    {
+        AddStars();
     }
 
     public void AddStars()
