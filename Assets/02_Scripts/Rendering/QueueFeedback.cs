@@ -15,7 +15,6 @@ public class QueueFeedback : MonoBehaviour
         _gameObject.transform.SetPositionAndRotation(transform.position.AddZ(-1).Add(_offset), Quaternion.Euler(30, 0, 0));
         _gameObject.transform.SetGlobalScale(GameSettings.Data.CheckmarkScale);
         _gameObject.SetActive(false);
-        
     }
 
     public void Show()

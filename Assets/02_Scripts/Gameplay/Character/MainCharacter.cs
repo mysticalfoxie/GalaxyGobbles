@@ -80,9 +80,9 @@ public class MainCharacter : Singleton<MainCharacter>
             .Start();
     }
 
-    private void OnAnimationTick(float value)
+    private void OnAnimationTick((float c, float t) value)
     {
-        transform.SetGlobalPositionX(value);
+        transform.SetGlobalPositionX(value.c);
         _renderer.sprite = _side;
         _renderer.flipX = _target.position.x > transform.position.x;
         
