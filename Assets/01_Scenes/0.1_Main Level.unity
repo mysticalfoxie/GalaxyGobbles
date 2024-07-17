@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.013569536, g: 0.06325966, b: 0.20951855, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1671,7 +1671,7 @@ PrefabInstance:
     - target: {fileID: 6868233380215160642, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -39.999878
+      value: -39.999756
       objectReference: {fileID: 0}
     - target: {fileID: 6875942832548571972, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
@@ -9515,7 +9515,7 @@ MonoBehaviour:
   _side: {fileID: 21300000, guid: 57d1581be23b06f419632ba0f0dd0a5d, type: 3}
   _back: {fileID: 21300000, guid: fdf3dd71fa777bb42b3b35065e35b28f, type: 3}
   _front: {fileID: 21300000, guid: df860f892e7e45b46b28689df80993fd, type: 3}
-  _distanceToDurationMod: 1.7
+  _distanceToDurationMod: 1.2
   _interpolationX: 11
   _interpolationZ: 5
   _waitStation: {fileID: 15616273}
@@ -10020,7 +10020,7 @@ MonoBehaviour:
   _side: {fileID: 21300000, guid: 14b97a21ad6badb4ab1c51e1baad6f5a, type: 3}
   _back: {fileID: 21300000, guid: e639cecaed785f34c92487c08805eff2, type: 3}
   _front: {fileID: 21300000, guid: 64d4b180069962b4c9b4253a5f689591, type: 3}
-  _distanceToDurationMod: 1.8
+  _distanceToDurationMod: 3.5
   _interpolation: 12
   _confirmationDistanceThreshold: 0.01
   _maxX: 4.89
