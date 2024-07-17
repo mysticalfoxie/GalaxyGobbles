@@ -24,7 +24,7 @@ public class Animation : IDisposable
         AnimationHandler.Instance.Tick += OnTick;
     }
 
-    public event EventHandler<float> Tick;
+    public event EventHandler<(float c, float t)> Tick;
     public event EventHandler Complete;
     public event EventHandler Disposed;
 
@@ -54,7 +54,7 @@ public class Animation : IDisposable
         var t = Mathf.Max(Mathf.Min(1 / _d * _t, 1), 0);
         var x = AnimationFunctions.Interpolate(_i, _a, _b, t);
         _c = _a > _b ? Mathf.Max(x, _b) : Mathf.Min(x, _b);
-        Tick?.Invoke(this, _c);
+        Tick?.Invoke(this, (_c, _t));
     }
 
     public void Start()

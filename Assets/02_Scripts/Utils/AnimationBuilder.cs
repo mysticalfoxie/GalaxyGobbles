@@ -12,7 +12,7 @@ public class AnimationBuilder
     private Animation _animation;
     private Action _completeCallback;
     private Action _disposedCallback;
-    private Action<float> _updateCallback;
+    private Action<(float c, float t)> _updateCallback;
 
     private AnimationBuilder() { }
     
@@ -69,7 +69,7 @@ public class AnimationBuilder
         return this;
     }
 
-    public AnimationBuilder OnUpdate(Action<float> callback)
+    public AnimationBuilder OnUpdate(Action<(float c, float t)> callback)
     {
         _updateCallback = callback;
         return this;
@@ -98,7 +98,15 @@ public class AnimationBuilder
         return this;
     }
 
-    private void OnAnimationTick(object sender, float value)
+    public bool TryStop()
+    {
+        if (_animation is null) return false;
+        _animation.Dispose();
+        _completeCallback?.Invoke();
+        return true;
+    }
+
+    private void OnAnimationTick(object sender, (float c, float t) value)
     {
         _updateCallback?.Invoke(value);
     }
