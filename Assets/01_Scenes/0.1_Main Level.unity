@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.013569536, g: 0.06325966, b: 0.20951855, a: 1}
+  m_IndirectSpecularColor: {r: 0.013821637, g: 0.06304462, b: 0.2080954, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -413,7 +413,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
       propertyPath: m_Name
-      value: Table #2
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 8526927676575434126, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
@@ -527,7 +527,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_Name
-      value: Table #7
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
@@ -780,6 +780,11 @@ PrefabInstance:
     - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2457,7 +2462,7 @@ GameObject:
   - component: {fileID: 827857768}
   - component: {fileID: 827857769}
   m_Layer: 0
-  m_Name: Wait Area Slot #4
+  m_Name: Wait Area Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2581,6 +2586,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2603,7 +2613,7 @@ GameObject:
   - component: {fileID: 862440254}
   - component: {fileID: 862440255}
   m_Layer: 0
-  m_Name: Wait Area Slot #1
+  m_Name: Wait Area Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2649,7 +2659,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: daae0d3d90333634ab64d63a8b566f22,
         type: 3}
       propertyPath: m_Name
-      value: Table #4
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 8526927676575434126, guid: daae0d3d90333634ab64d63a8b566f22,
         type: 3}
@@ -3221,7 +3231,7 @@ GameObject:
   - component: {fileID: 981271786}
   - component: {fileID: 981271787}
   m_Layer: 0
-  m_Name: Wait Area Slot #2
+  m_Name: Wait Area Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4823,7 +4833,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
       propertyPath: m_Name
-      value: Table #3 OLD
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
@@ -5072,7 +5082,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
       propertyPath: m_Name
-      value: Table #1 OLD
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
@@ -5735,7 +5745,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
       propertyPath: m_Name
-      value: Table #2 OLD
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
@@ -6281,6 +6291,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6815,6 +6830,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6837,7 +6857,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
       propertyPath: m_Name
-      value: Table #1
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 8526927676575434126, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
@@ -7048,7 +7068,7 @@ GameObject:
   - component: {fileID: 1565090118}
   - component: {fileID: 1565090119}
   m_Layer: 0
-  m_Name: Wait Area Slot #3
+  m_Name: Wait Area Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7312,7 +7332,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: daae0d3d90333634ab64d63a8b566f22,
         type: 3}
       propertyPath: m_Name
-      value: Table #3
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 8526927676575434126, guid: daae0d3d90333634ab64d63a8b566f22,
         type: 3}
@@ -7686,7 +7706,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_Name
-      value: Table #8
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
@@ -7784,6 +7804,8 @@ PrefabInstance:
     - {fileID: 7348998853332751845, guid: 282436c2e30747843a9cb0637648cdef, type: 3}
     - {fileID: 4886730010170058584, guid: 282436c2e30747843a9cb0637648cdef, type: 3}
     - {fileID: 8014271425664886820, guid: 282436c2e30747843a9cb0637648cdef, type: 3}
+    - {fileID: 3414117320110181817, guid: 282436c2e30747843a9cb0637648cdef, type: 3}
+    - {fileID: 706256345555217723, guid: 282436c2e30747843a9cb0637648cdef, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7225807560907720707, guid: 282436c2e30747843a9cb0637648cdef, type: 3}
     m_AddedGameObjects: []
@@ -7856,7 +7878,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_Name
-      value: Table #5
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
@@ -8966,6 +8988,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9063,6 +9090,11 @@ PrefabInstance:
     - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -9640,7 +9672,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
       propertyPath: m_Name
-      value: Table #4 OLD
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: b0a98be9277162742a9b93384ec8ee18,
         type: 3}
@@ -10786,6 +10818,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2190222103433229448, guid: d73dcd0e10ddf49488de5954929bedda,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10873,7 +10910,7 @@ PrefabInstance:
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_Name
-      value: Table #6
+      value: Table
       objectReference: {fileID: 0}
     - target: {fileID: 7601848452853255849, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
@@ -11552,7 +11589,7 @@ PrefabInstance:
     - target: {fileID: 3405470099855427775, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
       propertyPath: m_Name
-      value: Noodle Pot #1
+      value: Noodle Pot
       objectReference: {fileID: 0}
     - target: {fileID: 5842360435000049080, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
@@ -13472,7 +13509,7 @@ PrefabInstance:
     - target: {fileID: 3405470099855427775, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
       propertyPath: m_Name
-      value: Noodle Pot #2
+      value: Noodle Pot
       objectReference: {fileID: 0}
     - target: {fileID: 5842360435000049080, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
