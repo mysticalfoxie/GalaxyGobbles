@@ -29,12 +29,6 @@ public class MainCharacter : Singleton<MainCharacter>
     [SerializeField] private float _minX;
     [SerializeField] private float _gizmoY;
 
-    public override void Awake()
-    {
-        InheritedDDoL = true;
-        base.Awake();
-    }
-
     public void OnEnable()
     {
         _maxPosition = transform.TransformPoint(new Vector3(_maxX, 0, 0));
@@ -45,7 +39,7 @@ public class MainCharacter : Singleton<MainCharacter>
 
     public void MoveTo(Transform target, Action callback)
     {
-        var id = Guid.NewGuid();
+        var id = Guid.NewGuid(); 
         _queue.Add(id, (target, callback));
         
         var distance = Mathf.Abs(target.transform.position.x - transform.position.x);
