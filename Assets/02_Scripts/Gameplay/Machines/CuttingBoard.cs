@@ -25,8 +25,11 @@ public class CuttingBoard : Touchable
 
     protected override void OnTouch()
     {
-        if (TryHandleOpenMenu()) return;
-        TryHandleCloseMenu();
+        MainCharacter.Instance.MoveTo(transform, () =>
+        {
+            if (TryHandleOpenMenu()) return;
+            TryHandleCloseMenu();
+        });
     }
 
     private bool TryHandleOpenMenu()

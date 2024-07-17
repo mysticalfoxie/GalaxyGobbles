@@ -54,7 +54,7 @@ public class CustomerPoisonRenderer : Singleton<CustomerPoisonRenderer>
         StartCoroutine(asyncOperation);
     }
 
-    private IEnumerator StartMoveAnimationInternal(Animation moveAnimation)
+    private IEnumerator StartMoveAnimationInternal(UnityEngine.Animation moveAnimation)
     {
         MovingStarted?.Invoke(this, EventArgs.Empty);
         moveAnimation.Play(ANIMATION_CLIP_NAME);
@@ -62,7 +62,7 @@ public class CustomerPoisonRenderer : Singleton<CustomerPoisonRenderer>
         OnMoveAnimationFinished();
     }
 
-    private Animation CreateMoveAnimation(Vector2 startPosition2D, Vector2 targetPosition2D)
+    private UnityEngine.Animation CreateMoveAnimation(Vector2 startPosition2D, Vector2 targetPosition2D)
     {
         var clip = new AnimationClip { legacy = true };
         var speed = 1.0F / (_animationSpeed <= 0 ? 1.0F : _animationSpeed); // 1 / 2 = 0.5  (ex.: 2 speed mod => double time => faster)  
@@ -70,7 +70,7 @@ public class CustomerPoisonRenderer : Singleton<CustomerPoisonRenderer>
         var yCurve = AnimationCurve.EaseInOut(0, startPosition2D.y, speed, targetPosition2D.y);
         clip.SetCurve("", typeof(RectTransformWrapper), $"{nameof(RectTransformWrapper.X)}", xCurve);
         clip.SetCurve("", typeof(RectTransformWrapper), $"{nameof(RectTransformWrapper.Y)}", yCurve);
-        var followerAnimation = _follower.AddComponent<Animation>();
+        var followerAnimation = _follower.AddComponent<UnityEngine.Animation>();
         followerAnimation.AddClip(clip, ANIMATION_CLIP_NAME);
         return followerAnimation;
     }

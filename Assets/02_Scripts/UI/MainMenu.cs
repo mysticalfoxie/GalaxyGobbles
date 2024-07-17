@@ -240,6 +240,7 @@ public class MainMenu : Singleton<MainMenu>
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
 
             _continueButton.SetActive(true);
+            if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
             _completeScoreStamp.SetActive(true);
             //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');  [ToDO Maybe need later...]
         }
@@ -247,6 +248,7 @@ public class MainMenu : Singleton<MainMenu>
         {
             // Temporary for Gate I (Always succeed + pass to next level)
             //_completeDayText.text = "You didn't pass this Level!"; [ToDO Maybe need later...]
+            if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
             _failedScoreStamp.SetActive(true);
             if (_continueButton) _continueButton.SetActive(false);
             if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
@@ -305,14 +307,16 @@ public class MainMenu : Singleton<MainMenu>
 
     private IEnumerator LoadLevelAsync(int index)
     {
-        // TODO: Fade black before the scene loads
+        yield return Fader.Instance.FadeBlackAsync();
 
         // Before the new level has started loading  
         yield return LevelManager.Instance.LoadLevelAsync(index);
         // After the level has completely loaded
 
-        // TODO: Fade back to the game when the scene has completely loaded! :)
+        // When it's still black, show the bounty screen, so this is the first thing the users sees after fading back.
         // TODO: Show Bounty Screen
+
+        yield return Fader.Instance.FadeWhiteAsync();
 
         // When done with level loading the button becomes clickable again
         // -> Stay at the last line of the function

@@ -25,8 +25,11 @@ public class NoodlePot : Touchable
 
     protected override void OnTouch()
     {
-        if (State == NoodlePotState.Cooked) OnCookedNoodlesTouched();
-        if (State == NoodlePotState.Overcooked) OnOvercookedNoodlesTouched();
+        MainCharacter.Instance.MoveTo(transform, () =>
+        {
+            if (State == NoodlePotState.Cooked) OnCookedNoodlesTouched();
+            if (State == NoodlePotState.Overcooked) OnOvercookedNoodlesTouched();
+        });
     }
 
     public void StartCooking()

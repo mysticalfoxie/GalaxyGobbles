@@ -22,7 +22,7 @@ public abstract class TimelineBase<T> : Singleton<T> where T : class
             Active = false;
     }
 
-    public void Start()
+    protected void StartTicking()
     {
         StartCoroutine(nameof(TimelineTick));
     }

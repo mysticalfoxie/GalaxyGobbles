@@ -60,6 +60,8 @@ GameObject:
   - component: {fileID: 2674305733312039923}
   - component: {fileID: 5692421877060706799}
   - component: {fileID: 6402671245619303976}
+  - component: {fileID: 7509876060393763658}
+  - component: {fileID: 7067970562479498168}
   m_Layer: 5
   m_Name: CV_Renderer
   m_TagString: Untagged
@@ -154,3 +156,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 228.69, y: 200.91, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7509876060393763658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6339507492717932294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
+--- !u!114 &7067970562479498168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6339507492717932294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0

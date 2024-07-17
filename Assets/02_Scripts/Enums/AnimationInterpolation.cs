@@ -1,0 +1,23 @@
+public enum AnimationInterpolation
+{
+    Linear,
+    EaseInSine,
+    EaseOutSine,
+    EaseInOutSine,
+    EaseInQuart,
+    EaseOutQuart,
+    EaseInOutQuart,
+    EaseOutQuad,
+    EaseInQuad,
+    EaseInOutQuad,
+    EaseInCubic,
+    EaseOutCubic,
+    EaseInOutCubic,
+    ElasticIn,
+    ElasticOut,
+    ElasticInOut,
+    BounceIn,
+    BounceOut,
+    BounceInOut,
+    Funzies01,
+}

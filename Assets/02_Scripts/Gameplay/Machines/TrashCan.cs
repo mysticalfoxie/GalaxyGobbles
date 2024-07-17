@@ -31,6 +31,6 @@ public class TrashCan : Touchable
 
     protected override void OnTouch()
     {
-        BottomBar.Instance.Inventory.Reset();
+        MainCharacter.Instance.MoveTo(transform, BottomBar.Instance.Inventory.Reset);
     }
 }

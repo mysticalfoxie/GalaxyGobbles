@@ -27,6 +27,18 @@ public class Bounties : MonoBehaviour
         return true;
     }
 
+    // ToDo: This need to be called when the level ends.
+    public bool IsTargetAssassinated()
+    {
+        return _bounties.Any(x => x.WasTarget);
+    }
+
+    // ToDo: This is required for revealing the bounty images in the end screen.
+    public BountyData[] GetBounties()
+    {
+        return _bounties.ToArray();
+    }
+
     public void Reset()
     {
         _bounties.Clear();

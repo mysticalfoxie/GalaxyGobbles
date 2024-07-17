@@ -6,12 +6,32 @@ public class LevelButton : MonoBehaviour
 {
     [SerializeField] GameObject[] _starsObjects;
     [SerializeField] private Sprite _goldenStarSprite;
-    
+    [SerializeField] private GameObject _levelButton;
+
     public static int UnlockedLevels;
     public int LevelIndex { get; set; }
     public static object Instance { get; set; }
+    private float _canvasScaling = CanvasScaling.ScaleFactor;
 
     public event Action<int> Clicked;
+    
+    public void Update()
+    {
+        var buttonScale = _levelButton.transform.localScale;
+        if (buttonScale != Vector3.one * (_canvasScaling * 0.75f))
+        {
+            RectTransform parentRect = (_levelButton.transform as RectTransform);
+            var xScalingFactor = _canvasScaling * 0.75f;
+            var yScalingFactor = _canvasScaling * 0.75f;
+            if (parentRect != null) parentRect.localScale = new Vector3(xScalingFactor, yScalingFactor, 0);
+        }
+        RefreshStars();
+    }
+
+    public void RefreshStars()
+    {
+        AddStars();
+    }
 
     public void AddStars()
     {
@@ -19,7 +39,7 @@ public class LevelButton : MonoBehaviour
         if (unlockedLevels < LevelIndex) return;
         var button = GetComponent<Button>();
         button.interactable = true;
-        UpdateStars	();
+        UpdateStars();
     }
 
     public void UpdateStars()
@@ -31,6 +51,7 @@ public class LevelButton : MonoBehaviour
             starImage.sprite = _goldenStarSprite;
         }
     }
+
     public void OnClick()
     {
         Clicked?.Invoke(LevelIndex);

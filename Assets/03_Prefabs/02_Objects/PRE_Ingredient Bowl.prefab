@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5080435294801898734}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.25831282, y: 0, z: 0, w: 0.96606135}
+  m_LocalRotation: {x: 0.2583132, y: 0, z: 0, w: 0.96606123}
   m_LocalPosition: {x: -0.981781, y: 0.6478628, z: -2.9280005}
   m_LocalScale: {x: 0.32157356, y: 0.05945267, z: 0.4359021}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4334567734129949643}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.94, y: 0, z: 0}
 --- !u!114 &1753125620355825349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b0a51f11ba48718eb4996a5bac321c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _item: {fileID: 0}
+  _item: {fileID: 11400000, guid: fc1c302ca068f004ca8c7498b25b8928, type: 2}
   _canvas: {fileID: 4334567734129949643}
-  _scale: 1.5
+  _scale: 1.8
 --- !u!1 &7392411991454450379
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,6 +61,12 @@ GameObject:
   - component: {fileID: 7044590302450300766}
   - component: {fileID: 1610228851681738018}
   - component: {fileID: 965658488170508146}
+  - component: {fileID: 2081306095624241160}
+  - component: {fileID: 1909251838329535420}
+  - component: {fileID: 431127882466389220}
+  - component: {fileID: 461992321577949209}
+  - component: {fileID: 8149154763186987023}
+  - component: {fileID: 5216261481943043008}
   m_Layer: 5
   m_Name: CV_Renderer
   m_TagString: Untagged
@@ -155,3 +161,81 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 228.69, y: 200.91, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2081306095624241160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392411991454450379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
+--- !u!114 &1909251838329535420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392411991454450379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
+--- !u!114 &431127882466389220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392411991454450379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
+--- !u!114 &461992321577949209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392411991454450379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
+--- !u!114 &8149154763186987023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392411991454450379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0
+--- !u!114 &5216261481943043008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392411991454450379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35369567dc34ca2944a486e37eb22fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visible: 0

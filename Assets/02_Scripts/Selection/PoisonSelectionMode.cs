@@ -31,17 +31,14 @@ public class IngredientSelectionHandler : ISelectionHandler
 
         var itemProviderItem = GameSettings.GetItemMatch(itemProvider.Item);
         if (itemProviderItem.CanBecomePoison)
-            Result?.Invoke(this, itemProviderItem);
+            Result?.Invoke(this, itemProviderItem); 
         else if (canCancelSelection)
             Cancel?.Invoke(this, null);
     }
 
     private static ItemProvider GetItemProviderFromItemRenderer(GameObject gameObject)
-    {
-        var renderer = gameObject.GetComponent<ItemRenderer>();
-        if (renderer is null) return null;
-        if (renderer.Initiator is not ItemProvider provider) return null;
-        return provider;
+    { 
+        return gameObject.GetComponentInParent<ItemProvider>();
     }
 
     public void OnSelectableTouched(Selectable selectable)
