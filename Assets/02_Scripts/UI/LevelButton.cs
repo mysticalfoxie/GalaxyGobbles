@@ -22,11 +22,11 @@ public class LevelButton : MonoBehaviour
     public void Update()
     {
         var buttonScale = _levelButton.transform.localScale;
-        if (buttonScale != Vector3.one * _canvasScaling)
+        if (buttonScale != Vector3.one * (_canvasScaling * 0.75f))
         {
             RectTransform parentRect = (_levelButton.transform as RectTransform);
-            var xScalingFactor = _canvasScaling;
-            var yScalingFactor = _canvasScaling;
+            var xScalingFactor = _canvasScaling * 0.75f;
+            var yScalingFactor = _canvasScaling * 0.75f;
             if (parentRect != null) parentRect.localScale = new Vector3(xScalingFactor, yScalingFactor, 0);
         }
     }
