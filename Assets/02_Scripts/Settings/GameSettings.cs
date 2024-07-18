@@ -104,7 +104,7 @@ public class GameSettings : ScriptableObject
     public float PatienceRegainOnItemReceive => _patienceRegainOnItemReceive;
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
     public Vector3 CheckmarkScale => _checkmarkScale;
-
+    
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;
     

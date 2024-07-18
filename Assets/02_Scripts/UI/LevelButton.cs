@@ -4,27 +4,26 @@ using UnityEngine.UI;
 
 public class LevelButton : MonoBehaviour
 {
-    [SerializeField] GameObject[] _starsObjects;
+    [SerializeField] private GameObject[] _starsObjects;
     [SerializeField] private Sprite _goldenStarSprite;
     [SerializeField] private GameObject _levelButton;
 
     public static int UnlockedLevels;
     public int LevelIndex { get; set; }
-    public static object Instance { get; set; }
-    private float _canvasScaling = CanvasScaling.ScaleFactor;
 
     public event Action<int> Clicked;
     
     public void Update()
     {
-        var buttonScale = _levelButton.transform.localScale;
-        if (buttonScale != Vector3.one * (_canvasScaling * 0.75f))
-        {
-            RectTransform parentRect = (_levelButton.transform as RectTransform);
-            var xScalingFactor = _canvasScaling * 0.75f;
-            var yScalingFactor = _canvasScaling * 0.75f;
-            if (parentRect != null) parentRect.localScale = new Vector3(xScalingFactor, yScalingFactor, 0);
-        }
+        // var buttonScale = _levelButton.transform.localScale;
+        // if (buttonScale != Vector3.one * (CanvasScaling.ScaleFactor * GameSettings.Data.LevelButtonScale))
+        // {
+        //     var parentRect = _levelButton.transform as RectTransform;
+        //     var xScalingFactor = CanvasScaling.ScaleFactor * GameSettings.Data.LevelButtonScale;
+        //     var yScalingFactor = CanvasScaling.ScaleFactor * GameSettings.Data.LevelButtonScale;
+        //     if (parentRect) parentRect!.localScale = new Vector3(xScalingFactor, yScalingFactor, 0);
+        // }
+        
         RefreshStars();
     }
 
@@ -37,7 +36,7 @@ public class LevelButton : MonoBehaviour
     {
         var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
         if (unlockedLevels < LevelIndex) return;
-        var button = GetComponent<Button>();
+        var button = this.GetRequiredComponent<Button>();
         button.interactable = true;
         UpdateStars();
     }
@@ -45,9 +44,9 @@ public class LevelButton : MonoBehaviour
     public void UpdateStars()
     {
         var stars = PlayerPrefs.GetInt("Stars" + LevelIndex.ToString(), 0);
-        for (var j = 0; j < stars; j++)
+        for (var i = 0; i < stars; i++)
         {
-            var starImage = _starsObjects[j].GetComponent<Image>();
+            var starImage = _starsObjects[i].GetRequiredComponent<Image>();
             starImage.sprite = _goldenStarSprite;
         }
     }

@@ -27,7 +27,6 @@ public class LevelSelector : MonoBehaviour
             var levelNumber = levelButton.GetComponentInChildren<TMP_Text>();
             levelNumber.text = "Level "+(i + 1).ToString();
             var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
-            levelButton.GetRequiredComponent<Button>().interactable = true; // unlock all levels for Gate I build. ToDo:[! Delete for Goldmaster !]
             buttonScript.LevelIndex = i;
             buttonScript.AddStars();
             
