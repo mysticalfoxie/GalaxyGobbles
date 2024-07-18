@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
 {
-    [Header("Selection Outline")] 
-    [SerializeField] [Range(1.0F, 1.25F)] private float _outlineThickness;
+    [Header("Selection Outline")] [SerializeField] [Range(1.0F, 1.25F)]
+    private float _outlineThickness;
+
     [SerializeField] private Color _outlineColor;
 
-    [Header("Thinking Bubbles")] 
-    [SerializeField] private RectTransform _canvasRectangle;
+    [Header("Thinking Bubbles")] [SerializeField] private RectTransform _canvasRectangle;
+    [SerializeField] private RectTransform _canvasAssetsRectangle;
     [SerializeField] private GameObject _thinkingBubble;
     [SerializeField] private Vector2 _singleMealCanvasPosition;
+    [SerializeField] private Vector2 _singleMealCanvasFlippedPositionOffset;
     [SerializeField] private Vector2 _singleMealCanvasScale;
     [SerializeField] private Vector2 _comboMealCanvasPosition;
+    [SerializeField] private Vector2 _comboMealCanvasFlippedPositionOffset;
     [SerializeField] private Vector2 _comboMealCanvasScale;
     [SerializeField] private Transform _singleMealItemPosition;
     [SerializeField] private Transform _comboMealItem1Position;
     [SerializeField] private Transform _comboMealItem2Position;
     [SerializeField] [Range(0.25F, 2F)] private float _itemScale = 1.0F;
-    
+
     private Item[] _desiredItems = Array.Empty<Item>();
     private Item _chairItem;
     private Item _moneyItem;
@@ -72,18 +75,21 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderThinkingAboutMeal()
     {
         HideAllItems();
+        RenderThinkingBubble();
         RenderItem(_thinkDots);
     }
 
     public void RenderWaitingForMeal()
     {
         HideAllItems();
+        RenderThinkingBubble();
         RenderDesiredItems();
     }
 
     public void RenderWaitingForCheckout()
     {
         HideAllItems();
+        RenderThinkingBubble();
         RenderItem(_moneyItem);
     }
 
@@ -97,6 +103,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     public void RenderDying()
     {
         HideAllItems();
+        RenderThinkingBubble();
         RenderItem(_dyingItem);
     }
 
@@ -152,9 +159,20 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         _thinkingBubble.SetActive(true);
         _canvasRectangle.sizeDelta = multipleItems ? _comboMealCanvasScale : _singleMealCanvasScale;
         _canvasRectangle.localPosition = multipleItems ? _comboMealCanvasPosition : _singleMealCanvasPosition;
+        HandleThinkingBubbleOrientation(multipleItems);
         var boxCollider = _canvasRectangle.GetComponent<BoxCollider>();
         if (!boxCollider) return;
-        boxCollider.size =  _canvasRectangle.sizeDelta;
+        boxCollider.size = _canvasRectangle.sizeDelta;
+    }
+
+    private void HandleThinkingBubbleOrientation(bool multipleItems)
+    {
+        if (Customer.Chair?.Side != Direction.Right) return;
+
+        var offset = multipleItems ? _comboMealCanvasFlippedPositionOffset : _singleMealCanvasFlippedPositionOffset;
+        _canvasRectangle.anchoredPosition = _canvasRectangle.anchoredPosition.ToVector3().MultiplyX(-1).Add(offset);
+        if (_canvasAssetsRectangle.transform.localScale.x > 0)
+            _canvasAssetsRectangle.transform.localScale = _canvasAssetsRectangle.transform.localScale.MultiplyX(-1);
     }
 
     private void InitializeDesiredItems()
@@ -191,7 +209,8 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         foreach (var item in _items = new[]
                  {
                      _chairItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat), dimension: ItemDisplayDimension.Dimension3D)),
-                     _moneyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout), dimension: ItemDisplayDimension.Dimension3D)),
+                     _moneyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout),
+                         dimension: ItemDisplayDimension.Dimension3D)),
                      _thinkDots = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking), dimension: ItemDisplayDimension.Dimension3D)),
                      _eatingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Eating), dimension: ItemDisplayDimension.Dimension3D)),
                      _dyingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Dying), dimension: ItemDisplayDimension.Dimension3D)),
@@ -205,10 +224,10 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         for (var i = 0; i < _desiredItems.Length; i++)
             _desiredItems[i]
                 .SetParent(_thinkingBubble.transform)
-                .SetLocalPosition(_desiredItems.Length == 1 
-                    ? _singleMealItemPosition.localPosition 
-                    : i == 0 
-                        ? _comboMealItem1Position.localPosition 
+                .SetLocalPosition(_desiredItems.Length == 1
+                    ? _singleMealItemPosition.localPosition
+                    : i == 0
+                        ? _comboMealItem1Position.localPosition
                         : _comboMealItem2Position.localPosition)
                 .SetRotation(new Vector3(0, 0, 0))
                 .SetScale(new Vector3(_itemScale, _itemScale, 1.0F))
@@ -233,27 +252,27 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private IEnumerator StartPoisonCloudAnimation()
     {
         yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
-    
+
         CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
         CustomerPoisonRenderer.Instance.MovingEnded += OnMovingEnded;
         CustomerPoisonRenderer.Instance.StartPoisonAnimation(Customer);
         yield break;
-    
+
         void OnMovingEnded(object sender, EventArgs e)
         {
             CustomerPoisonRenderer.Instance.MovingEnded -= OnMovingEnded;
-            
+
             var target = Customer.Table.NeighbourTable.Customer;
             if (target is not null) target.Kill();
         }
-    
+
         void OnPoisonHidden(object sender, EventArgs e)
         {
             CustomerPoisonRenderer.Instance.PoisonHidden -= OnPoisonHidden;
-    
+
             _thinkingBubble.SetActive(false);
             HideAllItems();
-    
+
             Customer.StateMachine.State = CustomerState.WaitingForCheckout;
         }
     }

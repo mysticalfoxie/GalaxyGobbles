@@ -52,7 +52,8 @@ public class Tables : MonoBehaviour
         var tables = References.Instance.Tables.ToArray();
         foreach (var table in tables)
         {
-            if (table.NeighbourTable is null) throw new Exception($"The table with name '{table.name}' does not have a neighbour table defined!");
+            if (!table || !table.isActiveAndEnabled) continue;
+            if (table.NeighbourTable is null) throw new Exception($"[Tables] The table with name '{table.name}' does not have a neighbour table defined!");
             if (table.NeighbourTable.NeighbourTable != table) continue;
             if (TablePairs.Any(x => x.Item1 == table || x.Item2 == table)) continue;
             TablePairs.Add((table, table.NeighbourTable));
