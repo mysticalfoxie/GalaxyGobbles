@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 253076080554381719}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalScale: {x: 0.6406398, y: 0.6406398, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7915492948222209590}
@@ -66,13 +66,13 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.90099996, g: 0.90099996, b: 0.90099996, a: 1}
-    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 0.695, g: 0.695, b: 0.695, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.44654083, g: 0.44654083, b: 0.44654083, a: 0.5019608}
+    m_DisabledColor: {r: 0.492, g: 0.492, b: 0.492, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 818618509555792594}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:

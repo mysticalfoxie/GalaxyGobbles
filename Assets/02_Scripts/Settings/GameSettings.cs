@@ -61,6 +61,8 @@ public class GameSettings : ScriptableObject
     [SerializeField] private Material _outlineMaterial;
     [Tooltip("The scale of the checkmark confirmation sprite.")]
     [SerializeField] private Vector3 _checkmarkScale = new(10, 10, 1);
+    [Tooltip("The scale of the level buttons.")]
+    [SerializeField] private float _levelButtonScale = 0.85F;
     
     [Header("References")]
     [Header("Prefabs")]
@@ -104,7 +106,8 @@ public class GameSettings : ScriptableObject
     public float PatienceRegainOnItemReceive => _patienceRegainOnItemReceive;
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
     public Vector3 CheckmarkScale => _checkmarkScale;
-
+    public float LevelButtonScale => _levelButtonScale;
+    
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;
     
