@@ -12,18 +12,13 @@ public class LevelButton : MonoBehaviour
     public int LevelIndex { get; set; }
 
     public event Action<int> Clicked;
-    
-    public void Update()
+
+    public void OnEnable()
     {
-        // var buttonScale = _levelButton.transform.localScale;
-        // if (buttonScale != Vector3.one * (CanvasScaling.ScaleFactor * GameSettings.Data.LevelButtonScale))
-        // {
-        //     var parentRect = _levelButton.transform as RectTransform;
-        //     var xScalingFactor = CanvasScaling.ScaleFactor * GameSettings.Data.LevelButtonScale;
-        //     var yScalingFactor = CanvasScaling.ScaleFactor * GameSettings.Data.LevelButtonScale;
-        //     if (parentRect) parentRect!.localScale = new Vector3(xScalingFactor, yScalingFactor, 0);
-        // }
-        
+        var xScalingFactor = GameSettings.Data.LevelButtonScale;
+        var yScalingFactor = GameSettings.Data.LevelButtonScale;
+        transform.localScale *= new Vector2(xScalingFactor, yScalingFactor);
+
         RefreshStars();
     }
 
