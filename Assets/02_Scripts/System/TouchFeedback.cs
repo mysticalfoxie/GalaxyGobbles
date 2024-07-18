@@ -22,7 +22,7 @@ public class TouchFeedback : Singleton<TouchFeedback>
     private void PlayFeedbackAnimation(Vector2 position)
     {
         var touchAnimation = Instantiate(_touchAnimation);
-        touchAnimation.GetRequiredComponent<>()
+        var component = touchAnimation.GetRequiredComponent<TouchAnimation>();
         touchAnimation.transform!.SetParent(UI.Instance.transform, true);
     }
 }
