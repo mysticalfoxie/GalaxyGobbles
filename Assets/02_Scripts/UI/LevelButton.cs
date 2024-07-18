@@ -43,7 +43,7 @@ public class LevelButton : MonoBehaviour
 
     public void UpdateStars()
     {
-        var stars = PlayerPrefs.GetInt("Stars" + LevelIndex, 0);
+        var stars = PlayerPrefs.GetInt("Stars" + LevelIndex.ToString(), 0);
         for (var i = 0; i < stars; i++)
         {
             var starImage = _starsObjects[i].GetRequiredComponent<Image>();
