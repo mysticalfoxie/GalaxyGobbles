@@ -145,12 +145,8 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.4.7
-  preloadedAssets:
-  - {fileID: 8171321636667593712, guid: d3271ddf13f31494aacedd2cab475c88, type: 2}
-  - {fileID: 11400000, guid: 79dea58c3214ca24f80ee39ac6011f28, type: 2}
-  - {fileID: 11400000, guid: 28d44ae88f28cf941b4fab6a7021cf4d, type: 2}
-  - {fileID: 11400000, guid: aa63014528acca34382463e3137ab022, type: 2}
+  bundleVersion: 0.4.8
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -269,8 +265,8 @@ PlayerSettings:
   useCustomGradlePropertiesTemplate: 0
   useCustomGradleSettingsTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 1
-  AndroidTargetDevices: 0
+  AndroidTargetArchitectures: 3
+  AndroidTargetDevices: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: 
@@ -803,7 +799,8 @@ PlayerSettings:
     tvOS: UNITY_POST_PROCESSING_STACK_V2
   additionalCompilerArguments: {}
   platformArchitecture: {}
-  scriptingBackend: {}
+  scriptingBackend:
+    Android: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration: {}
   managedStrippingLevel: {}
