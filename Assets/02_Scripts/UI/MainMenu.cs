@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Globalization;
 using TMPro;
@@ -37,7 +38,8 @@ public class MainMenu : Singleton<MainMenu>
     [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private TMP_Text _targetText;
-
+    [SerializeField] private TMP_Text _totalScoreValue;
+    
     [Header("Stars & Bounty in Complete Day Menu")]
     [SerializeField] private GameObject _starRevealed1;
     [SerializeField] private GameObject _starRevealed2;
@@ -65,26 +67,25 @@ public class MainMenu : Singleton<MainMenu>
     private bool _blockPauseMenu;
     private bool _levelLoading;
 
+    public int TotalStars;
+
     public override void Awake()
     {
         InheritedDDoL = true;
         base.Awake();
+        TotalStars = PlayerPrefs.GetInt("TotalStars");
     }
 
     public void Start()
     {
         _startMenu.SetActive(!_startWithoutMenu);
-
         LoadSettings();
-        //  _backgroundImage.SetActive(true);
+    }
 
-        /*
-         * WIP: Used for Audio Control, later content!
-         * -> NOPE! Keep in mind we already have an AudioManager
-         * -> The main menu is not in charge to handle audio.
-         * _backgroundAudio = FindObjectOfType<AudioSource>();
-         * if(_backgroundAudio) _backgroundAudio.Play();
-         */
+    private void Update()
+    {
+        TotalStars = PlayerPrefs.GetInt("TotalStars");
+        _totalScoreValue.text = TotalStars.ToString();
     }
 
     public void StartGame()
@@ -201,7 +202,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         Application.Quit();
 
-#if UNITY_EDITOR // UwU
+#if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #endif
     }
@@ -228,9 +229,14 @@ public class MainMenu : Singleton<MainMenu>
         _valueScore.text = BottomBar.Instance.Score.Value.ToString(CultureInfo.InvariantCulture);
         _levelText.text = "Level" +
                           (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
-        
+
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex))
+        {
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
+            var NewStars = TotalStars + starsAcquired; 
+            PlayerPrefs.SetInt("TotalStars", NewStars);
+            PlayerPrefs.Save();
+        }
 
         if (starsAcquired >= 1)
         {
@@ -263,8 +269,10 @@ public class MainMenu : Singleton<MainMenu>
         if (_bounty1) _bounty1.SetActive(false);
         if (_bounty2) _bounty2.SetActive(false);
         if (_bounty3) _bounty3.SetActive(false);
-    }
 
+        PlayerPrefs.Save();
+    }
+    
     public void BackAndSave()
     {
         Save();
@@ -277,6 +285,7 @@ public class MainMenu : Singleton<MainMenu>
         PlayerPrefs.SetFloat("MasterVolume", _currentVolume);
         PlayerPrefs.SetFloat("MusicVolume", _currentMusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", _currentSfxVolume);
+        PlayerPrefs.Save();
     }
 
     private void LoadSettings()
