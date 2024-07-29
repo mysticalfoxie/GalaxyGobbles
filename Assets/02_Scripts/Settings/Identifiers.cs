@@ -4,6 +4,7 @@ using UnityEngine;
 
 // ReSharper disable InconsistentNaming
 
+[CreateAssetMenu(fileName = "CFG_Identifiers", menuName = "Galaxy Gobbles/Configurations/Identifiers", order = 2)]
 public class Identifiers : ScriptableObject
 { 
     [Header("Machines")]

@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 // ReSharper disable InconsistentNaming
 
+[CreateAssetMenu(fileName = "CFG_Game Settings", menuName = "Galaxy Gobbles/Configurations/Game Settings", order = 2)]
 public class GameSettings : ScriptableObject
 {
     [Header("General Settings")]
