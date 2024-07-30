@@ -8,17 +8,15 @@ public class AudioSettings : ScriptableObject
     #region Serialized Fields
 
     [Header("Music")] 
-    [SerializeField] private AudioData _tensionMusic;
     [SerializeField] private AudioData _uiMusic;
+    [SerializeField] private AudioData _levelMusic;
+    [SerializeField] private AudioData _tensionMusic;
     [SerializeField] private AudioData _winMusic;
     [SerializeField] private AudioData _looseMusic;
 
     [Header("SFX")] 
     [SerializeField] private AudioData _customerEnters;
     [SerializeField] private AudioData _customerBeaming;
-    [SerializeField] private AudioData _complainsBroccoloid;
-    [SerializeField] private AudioData _complainsIcarus;
-    [SerializeField] private AudioData _complainsBob;
     [SerializeField] private AudioData _brocoloidVoiceLove;
     [SerializeField] private AudioData _brocoloidVoiceHappy;
     [SerializeField] private AudioData _brocoloidVoiceAngry;
@@ -30,8 +28,6 @@ public class AudioSettings : ScriptableObject
     [SerializeField] private AudioData _bobVoiceAngry;
     [SerializeField] private AudioData _puffChairDrop;
     [SerializeField] private AudioData _click;
-    [SerializeField] private AudioData _moneyPaidServedGood;
-    [SerializeField] private AudioData _moneyPaidServedPerfect;
     [SerializeField] private AudioData _eatingSound;
     [SerializeField] private AudioData _moneyPaid;
     [SerializeField] private AudioData _fartNoise;
@@ -51,6 +47,7 @@ public class AudioSettings : ScriptableObject
     [SerializeField] private AudioData _teaIsReady;
     [SerializeField] private AudioData _clickDrink;
     [SerializeField] private AudioData _ambientSound;
+    [SerializeField] private AudioData _potCleaning;
 
     #endregion
 
@@ -58,13 +55,11 @@ public class AudioSettings : ScriptableObject
 
     public AudioData TensionMusic => _tensionMusic;
     public AudioData UiMusic => _uiMusic;
+    public AudioData LevelMusic => _levelMusic;
     public AudioData WinMusic => _winMusic;
     public AudioData LooseMusic => _looseMusic;
     public AudioData CustomerEnters => _customerEnters;
     public AudioData CustomerBeaming => _customerBeaming;
-    public AudioData ComplainsBroccoloid => _complainsBroccoloid;
-    public AudioData ComplainsIcarus => _complainsIcarus;
-    public AudioData ComplainsBob => _complainsBob;
     public AudioData BrocoloidVoiceLove => _brocoloidVoiceLove;
     public AudioData BrocoloidVoiceHappy => _brocoloidVoiceHappy;
     public AudioData BrocoloidVoiceAngry => _brocoloidVoiceAngry;
@@ -76,8 +71,6 @@ public class AudioSettings : ScriptableObject
     public AudioData BobVoiceAngry => _bobVoiceAngry;
     public AudioData PuffChairDrop => _puffChairDrop;
     public AudioData Click => _click;
-    public AudioData MoneyPaidServedGood => _moneyPaidServedGood;
-    public AudioData MoneyPaidServedPerfect => _moneyPaidServedPerfect;
     public AudioData EatingSound => _eatingSound;
     public AudioData MoneyPaid => _moneyPaid;
     public AudioData FartNoise => _fartNoise;
@@ -97,6 +90,7 @@ public class AudioSettings : ScriptableObject
     public AudioData TeaIsReady => _teaIsReady;
     public AudioData ClickDrink => _clickDrink;
     public AudioData AmbientSound => _ambientSound;
+    public AudioData PotCleaning => _potCleaning;
     
     #endregion
 
@@ -118,6 +112,14 @@ public class AudioSettings : ScriptableObject
         return References.Instance.GetAudioSettings();
 #endif
     }
+
+    public static AudioData GetTrackBySceneIndex(int index) 
+        => index switch
+        {
+            0 => Data.UiMusic,
+            1 => Data.LevelMusic,
+            _ => null
+        };
 
     #endregion
 }

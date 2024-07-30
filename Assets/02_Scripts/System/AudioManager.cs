@@ -1,33 +1,56 @@
 using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    private AudioSource _musicAudioSource;
-    private AudioSourceContainer[] _sfxAudioSources;
+    private AudioSource[] _musicAudioSources;
+    private AudioSource[] _sfxAudioSources;
     
     public AudioManager() : base(true) { }
 
     public override void Awake()
     {
         base.Awake();
-        InitializeAudioSource();
+        InitializeAudioSources();
     }
 
-    public void Play(AudioData audioData)
+    public void PlayMusic(AudioData audioData, bool looped = true)
+    {
+        var source = _musicAudioSources.FirstOrDefault(x => !x.isPlaying);
+        if (source is null)
+        {
+            Debug.LogWarning($"[Audio Manager] Cannot play another music track, because all {_musicAudioSources.Length} containers are already playing.");
+            return;
+        }
+
+        source.PlayAudioData(audioData, looped);
+    }
+
+    public void PlaySFX(AudioData audioData, bool looped = false, float? delay = null)
     {
         if (!audioData) throw new ArgumentNullException(nameof(audioData));
 
-        var audioSource = _sfxAudioSources.FirstOrDefault(x => !x.Playing);
-        if (audioSource is null) return;
+        var source = _sfxAudioSources.FirstOrDefault(x => !x.isPlaying);
+        if (source is null)
+        {
+            Debug.LogWarning($"[Audio Manager] Cannot play another SFX, because all {_sfxAudioSources.Length} containers are already playing.");
+            return;
+        }
 
-        audioSource.Playing = true;
-        audioSource.Source.PlayAudioData(audioData);
+        source.PlayAudioData(audioData, looped, delay: delay);
+    }
 
-        StartCoroutine(CheckForCompleteState(audioSource));
+    public void Stop(AudioData audioData)
+    {
+        var source = _sfxAudioSources
+            .Concat(_musicAudioSources)
+            .Where(x => x.isPlaying)
+            .FirstOrDefault(x => x.clip == audioData.Source);
+        
+        if (source is null) return;
+        StopAudio(source);
     }
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode _)
@@ -37,45 +60,54 @@ public class AudioManager : Singleton<AudioManager>
 
     protected override void OnSceneUnloaded(Scene scene)
     {
-        StopMusicFromScene();
-    }
-
-    private static IEnumerator CheckForCompleteState(AudioSourceContainer container)
-    {
-        yield return new WaitForSeconds(container.Source.clip.length);
-        yield return new WaitUntil(() => !container.Source.isPlaying);
-        container.Playing = false;
+        StopMusic();
     }
     
     private void LoadMusicForScene(int sceneBuildIndex)
     {
-        var audioData = GameSettings.GetTrackBySceneIndex(sceneBuildIndex);
+        var audioData = AudioSettings.GetTrackBySceneIndex(sceneBuildIndex);
         if (audioData is null) return;
-        _musicAudioSource.PlayAudioData(audioData, true);
+        
+        var container = _musicAudioSources.First(x => !x.isPlaying);
+        container.PlayAudioData(audioData, true);
     }
 
-    private void StopMusicFromScene()
+    private void StopMusic()
     {
-        if (_musicAudioSource.isPlaying) _musicAudioSource.Stop();
-        _musicAudioSource.clip = null;
-        _musicAudioSource.volume = 1.0F;
+        foreach (var container in _musicAudioSources.Concat(_sfxAudioSources)) 
+            StopAudio(container);
     }
-    
-    private void InitializeAudioSource()
+
+    private static void StopAudio(AudioSource source)
+    {
+        if (source.isPlaying) source.Stop();
+        source.clip = null;
+        source.volume = 1.0F;
+    }
+
+    private void InitializeAudioSources()
     {
         if (!this) return;
-        var sources = GetComponents<AudioSource>();
-        _musicAudioSource = sources.First(x => x.outputAudioMixerGroup.name.ToLower() == "music");
-        _musicAudioSource.clip = null;
-        _musicAudioSource.loop = true;
-        _musicAudioSource.playOnAwake = false;
-        _musicAudioSource.mute = false;
+
+        var sources = GetComponents<AudioSource>()
+            .Select(InitializeAudioSource)
+            .ToArray();
+        
+        _musicAudioSources = sources
+            .Where(x => x.outputAudioMixerGroup.name.ToLower() == "music")
+            .ToArray();
         
         _sfxAudioSources = sources
             .Where(x => x.outputAudioMixerGroup.name.ToLower() == "sfx")
-            .Select(x => new AudioSourceContainer(x))
             .ToArray();
     }
-    
-    private void OnDrawGizmos() => InitializeAudioSource();
+
+    private static AudioSource InitializeAudioSource(AudioSource source)
+    {
+        source.clip = null;
+        source.loop = false;
+        source.playOnAwake = false;
+        source.mute = false;
+        return source;
+    }
 }

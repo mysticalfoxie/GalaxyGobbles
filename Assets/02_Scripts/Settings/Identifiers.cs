@@ -36,10 +36,21 @@ public class Identifiers : ScriptableObject
     
     [Header("Items")]
     [SerializeField] private ItemData _noodles;
+    [SerializeField] private ItemData _eyeBubbleTea;
     [SerializeField] private ItemData _sake;
+    
+    [Header("Ingredients")]
+    [SerializeField] private ItemData _eyes;
+    [SerializeField] private ItemData _squid;
+    [SerializeField] private ItemData _babyBokChoy;
 
     [Header("UI")] 
     [SerializeField] private ItemData _bountyToken;
+    
+    [Header("Species")]
+    [SerializeField] private SpeciesData _ikaruz;
+    [SerializeField] private SpeciesData _bob;
+    [SerializeField] private SpeciesData _broccoloid;
     
     #region Properties
 
@@ -68,7 +79,14 @@ public class Identifiers : ScriptableObject
     public ItemData Poisoned => _poisoned;
     public ItemData Cleaning => _cleaning;
     public ItemData BountyToken => _bountyToken;
+    public ItemData Eyes => _eyes;
+    public ItemData Squid => _squid;
+    public ItemData BabyBokChoy => _babyBokChoy;
+    public ItemData EyeBubbleTea => _eyeBubbleTea;
     public ItemData Sake => _sake;
+    public SpeciesData Bob => _bob;
+    public SpeciesData Ikaruz => _ikaruz;
+    public SpeciesData Broccoloid => _broccoloid;
     
     #endregion
 

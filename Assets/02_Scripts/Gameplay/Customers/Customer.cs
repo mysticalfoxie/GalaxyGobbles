@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Customer : Selectable
 {
@@ -60,56 +59,56 @@ public class Customer : Selectable
     public void TryCheckout()
     {
         if (StateMachine.State != CustomerState.WaitingForCheckout) return;
+        KittyBot.Instance.MoveTo(Table.transform, OnCheckout);
+    }
 
-        KittyBot.Instance.MoveTo(Table.transform, () =>
-        {
-            StateMachine.State = CustomerState.Leaving;
-
-            new ScoreCalculation(Patience.Value, _data.DesiredItems).Apply();
-
-            OnCustomerLeave();
-        });
+    private void OnCheckout()
+    {
+        StateMachine.State = CustomerState.Leaving;
+        new ScoreCalculation(Patience.Value, _data.DesiredItems).Apply();
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.MoneyPaid);
+        OnCustomerLeave();
     }
 
     public bool TryReceiveMeal()
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
         if (!HasItemMatch()) return false;
-        
-        KittyBot.Instance.MoveTo(Table.transform, () =>
-        {
-            ReceiveItemsFromInventory();
-            if (DesiredItems.Count == 0)
-            {
-                StartCoroutine(nameof(StartEating));
-                return;
-            }
-            
-            StateMachine.Renderer.RefreshDesiredItems();
-        });
+
+        KittyBot.Instance.MoveTo(Table.transform, OnReceiveMeal);
 
         return true;
+    }
+
+    private void OnReceiveMeal()
+    {
+        ReceiveItemsFromInventory();
+        if (DesiredItems.Count == 0)
+        {
+            StartCoroutine(nameof(StartEating));
+            return;
+        }
+
+        StateMachine.Renderer.RefreshDesiredItems();
     }
 
     public IEnumerator StartEating()
     {
         StateMachine.State = CustomerState.Eating;
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.EatingSound);
         yield return new CancellableWaitForSeconds(GameSettings.Data.CustomerEatingTime, () => _dying);
         if (_dying) yield break;
         if (HandlePoisoned()) yield break;
-        if (HandleOrderingTwice()) yield break;
-        if (HandleOrderingSake()) yield break;
+        // if (HandleOrderingTwice()) yield break;
+        // if (HandleOrderingSake()) yield break;
 
         StateMachine.State = CustomerState.WaitingForCheckout;
     }
 
     public void OnSeated()
     {
-        Renderer.SetSeated();
-        Renderer.RenderSeated();
-        Patience.Add(GameSettings.Data.PatienceRegainOnSeated);
-        StateMachine.State = CustomerState.ThinkingAboutMeal;
-        StartCoroutine(nameof(OnThinkingStart));
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.CustomerBeaming);
+        StartCoroutine(BeamToChair());
     }
 
     public IEnumerator OnThinkingStart()
@@ -117,8 +116,8 @@ public class Customer : Selectable
         yield return new CancellableWaitForSeconds(GameSettings.Data.CustomerThinkingTime, () => _dying);
         if (_dying) yield break;
 
-        var doesNotOrder = Random.Range(1, 100) <= Data.Species.ChanceToNotOrder;
-        StateMachine.State = doesNotOrder ? CustomerState.Leaving : CustomerState.WaitingForMeal;
+        StateMachine.State = CustomerState.WaitingForMeal;
+        AudioManager.Instance.PlaySFX(GetCustomerVoice());
     }
 
     public override bool IsSelectable() => StateMachine.State == CustomerState.WaitingForSeat;
@@ -133,13 +132,20 @@ public class Customer : Selectable
     {
         _selected = true;
         Renderer.OnSelected();
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.Click);
+        AudioManager.Instance.PlaySFX(GetCustomerVoice());
         var operation = SelectionSystem.Instance.WaitForTableSelection(OnTableSelected, () => !_selected);
         StartCoroutine(operation);
     }
 
     private static void OnTableSelected(TableSelectEvent eventArgs)
     {
-        if (eventArgs?.Table is null) return;
+        if (eventArgs?.Table is null)
+        {
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.ErrorNah);
+            return;
+        }
+        
         Tables.OnTableSelected(eventArgs.Table, eventArgs.Chair);
     }
 
@@ -157,6 +163,8 @@ public class Customer : Selectable
 
     private IEnumerator StartDying()
     {
+        AudioManager.Instance.PlaySFX(GetCustomerAngryVoice());
+        AudioManager.Instance.PlayMusic(AudioSettings.Data.TensionMusic, false);
         yield return new WaitForSeconds(GameSettings.Data.CustomerDyingTime);
         OnCustomerDied();
     }
@@ -174,6 +182,48 @@ public class Customer : Selectable
         Destroy(gameObject);
     }
 
+    private AudioData GetCustomerVoice()
+        => Patience.State switch
+        {
+            PatienceCategory.Love => GetCustomerLoveVoice(),
+            PatienceCategory.Happy => GetCustomerHappyVoice(),
+            PatienceCategory.Angry => GetCustomerAngryVoice(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+    private AudioData GetCustomerAngryVoice()
+    {
+        if (Data.Species.name == Identifiers.Value.Ikaruz.name)
+            return AudioSettings.Data.IcarusVoiceAngry;
+        if (Data.Species.name == Identifiers.Value.Bob.name)
+            return AudioSettings.Data.BobVoiceAngry;
+        if (Data.Species.name == Identifiers.Value.Broccoloid.name)
+            return AudioSettings.Data.BrocoloidVoiceAngry;
+        throw new NotSupportedException($"[Leave Audio] Could not match the species {Data.Species.name} to the preserved species.");
+    }
+
+    private AudioData GetCustomerHappyVoice()
+    {
+        if (Data.Species.name == Identifiers.Value.Ikaruz.name)
+            return AudioSettings.Data.IcarusVoiceHappy;
+        if (Data.Species.name == Identifiers.Value.Bob.name)
+            return AudioSettings.Data.BobVoiceHappy;
+        if (Data.Species.name == Identifiers.Value.Broccoloid.name)
+            return AudioSettings.Data.BrocoloidVoiceHappy;
+        throw new NotSupportedException($"[Leave Audio] Could not match the species {Data.Species.name} to the preserved species.");
+    }
+
+    private AudioData GetCustomerLoveVoice()
+    {
+        if (Data.Species.name == Identifiers.Value.Ikaruz.name)
+            return AudioSettings.Data.IcarusVoiceLove;
+        if (Data.Species.name == Identifiers.Value.Bob.name)
+            return AudioSettings.Data.BobVoiceLove;
+        if (Data.Species.name == Identifiers.Value.Broccoloid.name)
+            return AudioSettings.Data.BrocoloidVoiceLove;
+        throw new NotSupportedException($"[Leave Audio] Could not match the species {Data.Species.name} to the preserved species.");
+    }
+
     private void OnCustomerDied()
     {
         var bounty = Model.Create<BountyData>(model =>
@@ -188,36 +238,63 @@ public class Customer : Selectable
         OnCustomerLeave();
     }
 
-    private bool HandleOrderingSake()
-    {
-        if (Random.Range(1, 100) > Data.Species.ChanceToOrderSake) return false;
-
-        DesiredItems.Add(GameSettings.GetItemMatch(Identifiers.Value.Sake));
-        StateMachine.State = CustomerState.ThinkingAboutMeal;
-        StartCoroutine(nameof(OnThinkingStart));
-
-        return true;
-    }
+    // private bool HandleOrderingSake()
+    // {
+    //     if (Random.Range(1, 100) > Data.Species.ChanceToOrderSake) return false;
+    //
+    //     DesiredItems.Add(GameSettings.GetItemMatch(Identifiers.Value.Sake));
+    //     StateMachine.State = CustomerState.ThinkingAboutMeal;
+    //     StartCoroutine(nameof(OnThinkingStart));
+    //
+    //     return true;
+    // }
 
     private bool HandlePoisoned()
     {
         if (!_poisoned) return false;
         StateMachine.State = CustomerState.Poisoned;
+        StartCoroutine(nameof(StartPoisonCloudAnimation));
         return true;
     }
 
-    private bool HandleOrderingTwice()
+    private IEnumerator StartPoisonCloudAnimation()
     {
-        if (_orderedTwice) return false;
-        if (Random.Range(1, 100) > Data.Species.ChanceToOrderTwice) return false;
-        _orderedTwice = true;
+        yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
 
-        DesiredItems.AddRange(Data.DesiredItems);
-        StateMachine.State = CustomerState.ThinkingAboutMeal;
-        StartCoroutine(nameof(OnThinkingStart));
+        CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
+        CustomerPoisonRenderer.Instance.MovingEnded += OnMovingEnded;
+        CustomerPoisonRenderer.Instance.StartPoisonAnimation(this);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.FartNoise);
+        yield break;
 
-        return true;
+        void OnMovingEnded(object sender, EventArgs e)
+        {
+            CustomerPoisonRenderer.Instance.MovingEnded -= OnMovingEnded;
+
+            var target = Table.NeighbourTable.Customer;
+            if (target is not null) target.Kill();
+        }
+
+        void OnPoisonHidden(object sender, EventArgs e)
+        {
+            CustomerPoisonRenderer.Instance.PoisonHidden -= OnPoisonHidden;
+            Renderer.OnPoisonHidden();
+            StateMachine.State = CustomerState.WaitingForCheckout;
+        }
     }
+
+    // private bool HandleOrderingTwice()
+    // {
+    //     if (_orderedTwice) return false;
+    //     if (Random.Range(1, 100) > Data.Species.ChanceToOrderTwice) return false;
+    //     _orderedTwice = true;
+    //
+    //     DesiredItems.AddRange(Data.DesiredItems);
+    //     StateMachine.State = CustomerState.ThinkingAboutMeal;
+    //     StartCoroutine(nameof(OnThinkingStart));
+    //
+    //     return true;
+    // }
 
     private void ReceiveItemsFromInventory()
     {
@@ -259,9 +336,21 @@ public class Customer : Selectable
         Patience.StartTicking();
     }
 
+    private IEnumerator BeamToChair()
+    {
+        yield return new WaitForSeconds(GameSettings.Data.CustomerBeamingTime);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.PuffChairDrop);
+        Renderer.SetSeated();
+        Renderer.RenderSeated();
+        Patience.Add(GameSettings.Data.PatienceRegainOnSeated);
+        StateMachine.State = CustomerState.ThinkingAboutMeal;
+        StartCoroutine(nameof(OnThinkingStart));
+    }
+
     private void OnItemReceived(ItemData desiredItemData, Item inventoryItem)
     {
         Patience.Add(GameSettings.Data.PatienceRegainOnItemReceive);
+        AudioManager.Instance.PlaySFX(GetCustomerVoice());
         DesiredItems.Remove(desiredItemData);
         if (inventoryItem.Data.Poison is null) return;
         if (_data.Species.PoisonItems.All(x => x.name != inventoryItem.Data.Poison.name)) return;
@@ -272,6 +361,7 @@ public class Customer : Selectable
     {
         if (_dying) return;
         StateMachine.State = CustomerState.Angry;
+        AudioManager.Instance.PlaySFX(GetCustomerVoice());
         StartCoroutine(nameof(StartAngryLeaving));
     }
 

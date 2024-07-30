@@ -77,6 +77,7 @@ public class Table : Touchable
     {
         _cleaningItem.Hide();
         _thinkingDotsItem.Show().Follow(_tableThinkingBubbleItem);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.LaserScanCleaning);
         yield return new WaitForSeconds(GameSettings.Data.TableCleaningTime);
         RequiresCleaning = false;
         _tableThinkingBubbleItem.Hide();
