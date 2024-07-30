@@ -147,6 +147,11 @@ public class MainMenu : Singleton<MainMenu>
         _sidebar.SetActive(true);
     }
 
+    public void credits()
+    {
+        _credits.SetActive(true);
+    }
+
     public void Options()
     {
         _options.SetActive(true);
