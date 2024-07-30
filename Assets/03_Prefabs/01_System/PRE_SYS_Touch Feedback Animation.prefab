@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 7617097635005875856}
   - component: {fileID: 3894640645650361170}
   - component: {fileID: 1211518945006788675}
-  - component: {fileID: -1403368115348703538}
-  - component: {fileID: 2230401221811903165}
+  - component: {fileID: 6650384775949075104}
   m_Layer: 5
   m_Name: PRE_SYS_Touch Feedback Animation
   m_TagString: Untagged
@@ -61,9 +60,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -77,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-1403368115348703538
+--- !u!114 &6650384775949075104
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,27 +85,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 4090944165806112397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c70f9ca5506c4472a2766ad6225af67e, type: 3}
+  m_Script: {fileID: 11500000, guid: cbf10c73810d4a6589c97d433ea481e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &2230401221811903165
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4090944165806112397}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b67e28a3baa7b514c8750da4372e9727, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  _sprites:
+  - {fileID: -301406869, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1433212836, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1742108750, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1581700111, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1911429521, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 818282778, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 279320997, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -2103941567, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1971165620, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 485457438, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 765685176, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 891788817, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1640884616, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 38182407, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -1369917019, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1734595689, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -348910071, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 836244997, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -1460298740, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -883256598, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 1231483667, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -1030280386, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -1341681181, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: 964213859, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -575082687, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  - {fileID: -1431004709, guid: d9758218348d124428dab83904dc9e70, type: 3}
+  _speed: 4.43
+  _playOnAwake: 1
+  _playOnce: 1
+  _loop: 0
