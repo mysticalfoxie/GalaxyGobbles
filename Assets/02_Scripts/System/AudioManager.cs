@@ -21,7 +21,7 @@ public class AudioManager : Singleton<AudioManager>
         var source = _musicAudioSources.FirstOrDefault(x => !x.isPlaying);
         if (source is null)
         {
-            Debug.LogWarning($"[Audio Manager] Cannot play another music track, because all {_musicAudioSources.Length} containers are already playing.");
+            Debug.LogWarning($"[Audio Manager] Cannot play Music Track \"{audioData.name}\", because all {_musicAudioSources.Length} containers are already playing.");
             return;
         }
 
@@ -35,7 +35,7 @@ public class AudioManager : Singleton<AudioManager>
         var source = _sfxAudioSources.FirstOrDefault(x => !x.isPlaying);
         if (source is null)
         {
-            Debug.LogWarning($"[Audio Manager] Cannot play another SFX, because all {_sfxAudioSources.Length} containers are already playing.");
+            Debug.LogWarning($"[Audio Manager] Cannot play SFX \"{audioData.name}\", because all {_sfxAudioSources.Length} containers are already playing.");
             return;
         }
 
@@ -53,6 +53,12 @@ public class AudioManager : Singleton<AudioManager>
         StopAudio(source);
     }
 
+    public void StopAll()
+    {
+        foreach (var container in _musicAudioSources.Concat(_sfxAudioSources)) 
+            StopAudio(container);
+    }
+
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode _)
     {
         LoadMusicForScene(scene.buildIndex);
@@ -60,7 +66,7 @@ public class AudioManager : Singleton<AudioManager>
 
     protected override void OnSceneUnloaded(Scene scene)
     {
-        StopMusic();
+        StopAll();
     }
     
     private void LoadMusicForScene(int sceneBuildIndex)
@@ -70,12 +76,6 @@ public class AudioManager : Singleton<AudioManager>
         
         var container = _musicAudioSources.First(x => !x.isPlaying);
         container.PlayAudioData(audioData, true);
-    }
-
-    private void StopMusic()
-    {
-        foreach (var container in _musicAudioSources.Concat(_sfxAudioSources)) 
-            StopAudio(container);
     }
 
     private static void StopAudio(AudioSource source)

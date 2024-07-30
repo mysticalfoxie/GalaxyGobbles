@@ -211,7 +211,7 @@ public class MainMenu : Singleton<MainMenu>
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
         _backgroundImage.SetActive(true);
-        AudioManager.Instance.Stop(AudioSettings.Data.AmbientSound);
+        AudioManager.Instance.StopAll();
         CalculateScore();
     }
 
