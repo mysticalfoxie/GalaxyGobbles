@@ -37,6 +37,18 @@ public class Patience : MonoBehaviour
         _hearts.SetFillPercentage(Value);
     }
 
+    public PatienceCategory State => GetStateByValue();
+
+    private PatienceCategory GetStateByValue()
+    {
+        if (Value <= GameSettings.Data.CustomerAngryThreshold)
+            return PatienceCategory.Angry;
+        if (Value < GameSettings.Data.CustomerLoveThreshold)
+            return PatienceCategory.Happy;
+        
+        return PatienceCategory.Love;
+    }
+
     private IEnumerator OnStartTicking()
     {
         while (CanTick())
