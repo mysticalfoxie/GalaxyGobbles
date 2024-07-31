@@ -164,7 +164,6 @@ public class Customer : Selectable
     private IEnumerator StartDying()
     {
         AudioManager.Instance.PlaySFX(GetCustomerAngryVoice());
-        AudioManager.Instance.PlayMusic(AudioSettings.Data.TensionMusic, false);
         yield return new WaitForSeconds(GameSettings.Data.CustomerDyingTime);
         OnCustomerDied();
     }
@@ -259,6 +258,8 @@ public class Customer : Selectable
 
     private IEnumerator StartPoisonCloudAnimation()
     {
+        AudioManager.Instance.PlaySFX(GetCustomerAngryVoice());
+        AudioManager.Instance.PlayMusic(AudioSettings.Data.TensionMusic);
         yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
 
         CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
