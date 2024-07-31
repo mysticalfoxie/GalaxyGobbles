@@ -35,6 +35,9 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _customerKillDelay = 2.0F;
     [Tooltip("The amount of time it takes for the character to clean the table.")]
     [SerializeField] private float _tableCleaningTime = 2.0F;
+
+    [Header("Store Behaviour")] [Tooltip("The delay between serving the last customer and the store to be fully closed in seconds.")] 
+    [SerializeField] private float _closureDelay = 1.0F;
     
     [Header("Customer Patience")]
     [Tooltip("The amount of time between each tick in the patience system.")]
@@ -107,6 +110,7 @@ public class GameSettings : ScriptableObject
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
     public Vector3 CheckmarkScale => _checkmarkScale;
     public float LevelButtonScale => _levelButtonScale;
+    public float ClosureDelay => _closureDelay;
     
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;
