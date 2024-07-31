@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 
 public class AnimationBuilder
@@ -7,7 +8,6 @@ public class AnimationBuilder
     private float _b;
     private float _d = 1.0F;
     private AnimationInterpolation _i = AnimationInterpolation.EaseInOutCubic;
-    private Func<(float a, float b, float c, float t), bool> _ccc;
     private bool _playOnce;
     private bool _looped;
     private Animation _animation;
@@ -15,7 +15,9 @@ public class AnimationBuilder
     private Action _disposedCallback;
     private Action<(float c, float t)> _updateCallback;
 
-    private AnimationBuilder() { }
+    private AnimationBuilder()
+    {
+    }
     
     public static AnimationBuilder CreateNew()
     {
@@ -58,12 +60,6 @@ public class AnimationBuilder
         return this;
     }
 
-    public AnimationBuilder SetCustomCompleteCheck(Func<(float a, float b, float c, float t), bool> completeCheck)
-    {
-        _ccc = completeCheck;
-        return this;
-    }
-
     public AnimationBuilder OnlyPlayOnce()
     {
         _playOnce = true;
@@ -91,7 +87,7 @@ public class AnimationBuilder
     public AnimationBuilder Build()
     {
         if (_animation is not null) throw new InvalidOperationException("The animation has already been built.");
-        _animation = new Animation(_a, _b, _d, _i, _ccc);
+        _animation = new Animation(_a, _b, _d, _i);
         _animation.Complete += OnAnimationComplete;
         _animation.Disposed += OnAnimationDisposed;
         _animation.Tick += OnAnimationTick;
