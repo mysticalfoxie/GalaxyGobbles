@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class NoodleBowl : Touchable
 {
-    private Item _item;
     private ItemData _itemData;
 
     [Header("Item Visualization")] 
@@ -14,7 +13,7 @@ public class NoodleBowl : Touchable
         base.Awake();
 
         _itemData = GameSettings.GetItemMatch(Identifiers.Value.NoodleBowl);
-        _item = new Item(new(this, _itemData, true, ItemDisplayDimension.Dimension3D))
+        new Item(new(this, _itemData, true, ItemDisplayDimension.Dimension3D))
             .ForwardTouchEventsTo(this)
             .SetParent(_canvas.transform)
             .SetLocalPosition(Vector2.zero)
@@ -30,6 +29,12 @@ public class NoodleBowl : Touchable
 
     protected override void OnTouch()
     {
-        MainCharacter.Instance.MoveTo(transform, NoodlePotDistributor.AddNoodles);
+        MainCharacter.Instance.MoveTo(transform, OnInteract);
+    }
+
+    private static void OnInteract()
+    {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.ClickFood);
+        NoodlePotDistributor.AddNoodles();
     }
 }

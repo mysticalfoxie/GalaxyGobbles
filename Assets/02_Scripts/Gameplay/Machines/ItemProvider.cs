@@ -40,13 +40,25 @@ public class ItemProvider : Touchable
 
     protected override void OnTouch()
     {
-        MainCharacter.Instance.MoveTo(transform, () =>
-        {
-            var newItem = _itemCache.Clone();
-            if (!BottomBar.Instance.Inventory.TryAdd(newItem))
-                newItem.Dispose();
-            else
-                newItem.Show();
-        });
+        MainCharacter.Instance.MoveTo(transform, OnInteract);
+    }
+
+    private void OnInteract()
+    {
+        var newItem = _itemCache.Clone();
+        if (BottomBar.Instance.Inventory.TryAdd(newItem))
+            OnItemAdded(newItem);
+        else
+            newItem.Dispose();
+    }
+
+    private static void OnItemAdded(Item item)
+    {
+        item.Show();
+        
+        if (item.Data.name == Identifiers.Value.Sake.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.ClickDrink);
+        else if (item.Data.name == Identifiers.Value.EyeBubbleTea.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.ClickDrink);
     }
 }
