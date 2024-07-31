@@ -33,6 +33,9 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private float _currentSfxVolume;
 
     [Header("Images")] [SerializeField] private GameObject _backgroundImage;
+    [SerializeField] private GameObject _creditsPage1;
+    [SerializeField] private GameObject _creditsPage2;
+    [SerializeField] private GameObject _creditsPage3;
 
     [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
     [SerializeField] private TMP_Text _levelText;
@@ -147,9 +150,19 @@ public class MainMenu : Singleton<MainMenu>
         _sidebar.SetActive(true);
     }
 
-    public void credits()
+    public void Credits()
     {
         _credits.SetActive(true);
+    }
+
+    public void CreditsNextBtn()
+    {
+        if(_creditsPage1) _creditsPage2.SetActive(true);
+    }
+
+    public void CreditsBackBtn()
+    {
+        
     }
 
     public void Options()
