@@ -32,7 +32,7 @@ public class LevelManager : Singleton<LevelManager>
         if (!enabled) return;
         if (SceneManager.GetActiveScene().buildIndex != MAIN_LEVEL_INDEX) return;
 
-        var debugLevel = Math.Max(Math.Min(_debugLevel, GameSettings.Data.Levels.Count()), 0);
+        var debugLevel = Math.Max(Math.Min(_debugLevel, GameSettings.Data.Levels.Count() - 1), 0);
         StartCoroutine(LoadLevelAsync(debugLevel, true));
     }
  
@@ -44,10 +44,16 @@ public class LevelManager : Singleton<LevelManager>
             .ElementAt(index);
          
         MainMenu.Instance.SetElementsForStart();
-        if (skipSceneLoad) yield break;
+        if (skipSceneLoad)
+        {
+            AudioManager.Instance.PlayMusic(AudioSettings.Data.AmbientSound);
+            yield break;
+        }
         
         yield return LoadSceneAsync();
         yield return GlobalTimeline.WaitUntilTimelineLoaded();
+        
+        AudioManager.Instance.PlayMusic(AudioSettings.Data.AmbientSound);
     }
 
     public IEnumerator LoadSceneAsync()

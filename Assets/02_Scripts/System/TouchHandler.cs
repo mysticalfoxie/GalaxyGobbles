@@ -68,7 +68,9 @@ public class TouchHandler : Singleton<TouchHandler>
         if (TouchInputSystem.Instance is null) return;
         if (!TouchInputSystem.Instance.IsFingerDown) return;
         var position = TouchInputSystem.GetTouchPosition();
+        TouchFeedback.Instance.TryPlayFeedbackAnimation(position);
         if (position == default) return;
+        if (!Raycaster.Instance) return; 
         Raycaster.Instance.Raycast(position, out _touchStartGameObject);
     }
 
@@ -79,7 +81,7 @@ public class TouchHandler : Singleton<TouchHandler>
         if (!TouchInputSystem.Instance.IsFingerUp) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
-
+        if (!Raycaster.Instance) return;
         Raycaster.Instance.Raycast(position, out _touchEndGameObject);
     }
 }

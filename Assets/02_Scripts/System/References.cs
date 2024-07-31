@@ -13,13 +13,9 @@ public class References : Singleton<References>
     private GameObject _root;
     
     [Header("Configurations")] 
-    [SerializeField] private GameSettings _settings;
+    [SerializeField] private GameSettings _gameSettings;
+    [SerializeField] private AudioSettings _audioSettings;
     [SerializeField] private Identifiers _identifiers;
-    
-    [Header("Anchor Customer")]
-    [Tooltip("Please set a GameObject here from a customer, who has the desired scaling.\nThis customer will be the anchor for the species size calculation.")]
-    [SerializeField] private Customer _anchor;
-    [SerializeField] private SpeciesData _data;
 
     public override void Awake()
     {
@@ -37,7 +33,8 @@ public class References : Singleton<References>
         AnalyseLevelObjects();
     }
 
-    public GameSettings GetLocalSettings() => _settings;
+    public GameSettings GetLocalSettings() => _gameSettings;
+    public AudioSettings GetAudioSettings() => _audioSettings;
 
     private void AnalyseLevelObjects()
     {
