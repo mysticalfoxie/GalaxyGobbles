@@ -31,8 +31,17 @@ public class Inventory : MonoBehaviour
     {
         var recipe = _items.GetCraftableRecipesWith(item).FirstOrDefault(x => x.IsMatch);
         if (!recipe.IsMatch) return false;
+        
         var newItem = recipe.Fulfill();
         Replace(recipe.ItemA, newItem);
+        
+        if (item.Data.name == Identifiers.Value.BabyBokChoy.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.IngredientBokChoyAdded);
+        else if (item.Data.name == Identifiers.Value.Eyes.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.IngredientEyeAdded);
+        else if (item.Data.name == Identifiers.Value.Squid.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.IngredientSquidAdded);
+        
         return true;
     }
 

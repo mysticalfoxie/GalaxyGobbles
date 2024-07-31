@@ -107,11 +107,11 @@ public class MainCharacter : Singleton<MainCharacter>
     }
 
 
-    public void OnDrawGizmos()
+    public void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
-        var p1 = new Vector3(_minX, _gizmoY, transform.localPosition.z);
-        var p2 = new Vector3(_maxX, _gizmoY, transform.localPosition.z);
+        var p1 = new Vector3(_minX, _gizmoY, 0);
+        var p2 = new Vector3(_maxX, _gizmoY, 0);
         Gizmos.DrawLine(transform.TransformPoint(p1), transform.TransformPoint(p2));
     }
     

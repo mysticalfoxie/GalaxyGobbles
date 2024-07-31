@@ -37,6 +37,7 @@ public class Tables : MonoBehaviour
         if (table.Customer is null) return false;
         if (SelectionSystem.Instance.Selection is not null)
         {
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.ErrorNah);
             SelectionSystem.Instance.Deselect();
             return true;
         }

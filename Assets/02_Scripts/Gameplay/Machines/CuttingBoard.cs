@@ -72,5 +72,6 @@ public class CuttingBoard : Touchable
     {
         TryHandleCloseMenu();
         BottomBar.Instance.Inventory.AddPoison(data);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.PoisonIsAdded);
     }
 }

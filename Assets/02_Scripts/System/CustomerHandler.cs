@@ -26,5 +26,6 @@ public class CustomerHandler : Singleton<CustomerHandler>
     public IEnumerator WaitUntilCustomersLeave()
     {
         yield return new WaitWhile(() => _customers.Count != 0);
+        yield return new WaitForSeconds(GameSettings.Data.ClosureDelay);
     }
 }
