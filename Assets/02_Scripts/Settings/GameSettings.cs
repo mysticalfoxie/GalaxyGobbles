@@ -48,6 +48,8 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _customerAngryLeaveTime = 2.0F;
     [Tooltip("The threshold of when a customer is considered \"loving\" in percent. (0 = Leaving, 100 = Full)")]
     [SerializeField] private float _customerLoveThreshold = 80.0F;
+    [Tooltip("The threshold of when a customer is considered \"angry\" in percent. (0 = Leaving, 100 = Full)")]
+    [SerializeField] private float _customerAngryThreshold = 20.0F;
     [Tooltip("The amount of patience that the customer regains after receiving being seated in percent.")]
     [SerializeField] private float _patienceRegainOnSeated = 20.0F;
     [Tooltip("The amount of patience that the customer regains after receiving an item in percent.")]
@@ -109,6 +111,7 @@ public class GameSettings : ScriptableObject
     public Vector3 CheckmarkScale => _checkmarkScale;
     public float LevelButtonScale => _levelButtonScale;
     public float CustomerLoveThreshold => _customerLoveThreshold;
+    public float CustomerAngryThreshold => _customerAngryThreshold;
     public float CustomerBeamingTime => _customerBeamingTime;
     
     public SpriteData PoisonIcon => _poisonIcon;

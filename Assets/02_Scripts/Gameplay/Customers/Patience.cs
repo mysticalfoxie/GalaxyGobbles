@@ -41,7 +41,7 @@ public class Patience : MonoBehaviour
 
     private PatienceCategory GetStateByValue()
     {
-        if (Value <= 0)
+        if (Value <= GameSettings.Data.CustomerAngryThreshold)
             return PatienceCategory.Angry;
         if (Value < GameSettings.Data.CustomerLoveThreshold)
             return PatienceCategory.Happy;
