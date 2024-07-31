@@ -64,12 +64,6 @@ public class GameSettings : ScriptableObject
     [Tooltip("The scale of the level buttons.")]
     [SerializeField] private float _levelButtonScale = 0.85F;
     
-    [Header("Animations")]
-    [Tooltip("The scale increase and decrease of the chair for the pulsing animation of the chairs in percent.")]
-    [SerializeField] [Range(0.1F, 10.0F)] private float _chairPulsateStrength = 1.0F;
-    [Tooltip("The duration of the chair pulsing animation.")]
-    [SerializeField] [Range(0.1F, 10.0F)] private float _chairPulsateDuration = 1.0F;
-    
     [Header("References")]
     [Header("Prefabs")]
     [SerializeField] private GameObject _itemPrefab;
@@ -113,8 +107,6 @@ public class GameSettings : ScriptableObject
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
     public Vector3 CheckmarkScale => _checkmarkScale;
     public float LevelButtonScale => _levelButtonScale;
-    public float ChairPulsateStrength => _chairPulsateStrength;
-    public float ChairPulsateDuration => _chairPulsateDuration;
     
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;

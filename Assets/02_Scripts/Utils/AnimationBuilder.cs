@@ -48,9 +48,9 @@ public class AnimationBuilder
         return this;
     }
 
-    public AnimationBuilder SetLooped()
+    public AnimationBuilder SetLooped(bool value = true)
     {
-        _looped = true;
+        _looped = value;
         return this;
     }
 

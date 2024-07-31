@@ -13,7 +13,7 @@ public class TableSelectionHandler : ISelectionHandler
             .Where(x => x.Table.Customer is null);
 
         foreach (var chair in chairs)
-            chair.StartPulsating();
+            chair.Animator.StartPulsating();
     }
 
     public event EventHandler<object> Result;
@@ -79,6 +79,6 @@ public class TableSelectionHandler : ISelectionHandler
             .Where(x => x && x.isActiveAndEnabled && x.Table);
         
         foreach (var chair in chairs)
-            chair.StopPulsating();
+            chair.Animator.StopPulsating();
     }
 }
