@@ -35,6 +35,7 @@ public class Animation : IDisposable
         {
             Complete?.Invoke(this, EventArgs.Empty);
             _running = false;
+
             return;
         }
         

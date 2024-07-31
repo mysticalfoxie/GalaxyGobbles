@@ -9,6 +9,7 @@ public class AnimationBuilder
     private AnimationInterpolation _i = AnimationInterpolation.EaseInOutCubic;
     private Func<(float a, float b, float c, float t), bool> _ccc;
     private bool _playOnce;
+    private bool _looped;
     private Animation _animation;
     private Action _completeCallback;
     private Action _disposedCallback;
@@ -42,6 +43,12 @@ public class AnimationBuilder
     public AnimationBuilder SetDuration(float duration)
     {
         _d = duration;
+        return this;
+    }
+
+    public AnimationBuilder SetLooped()
+    {
+        _looped = true;
         return this;
     }
 
@@ -98,12 +105,11 @@ public class AnimationBuilder
         return this;
     }
 
-    public bool TryStop()
+    public void Stop()
     {
-        if (_animation is null) return false;
+        if (_animation is null) return;
         _animation.Dispose();
         _completeCallback?.Invoke();
-        return true;
     }
 
     private void OnAnimationTick(object sender, (float c, float t) value)
@@ -113,6 +119,12 @@ public class AnimationBuilder
 
     private void OnAnimationComplete(object sender, EventArgs e)
     {
+        if (_looped)
+        {
+            _animation.Start();
+            return;
+        }
+        
         _completeCallback?.Invoke();
         
         if (!_playOnce) return;

@@ -45,7 +45,7 @@ public class KittyBot : Singleton<KittyBot>
     {
         // Cancel when kitty bot is on it's way back to station and a new order comes in.
         if (_running && _queue.Count > 1 && _queue[0].Callback is null && _queue[0].Animations is not null)
-            foreach (var anim in _queue[0].Animations) anim.TryStop();
+            foreach (var anim in _queue[0].Animations) anim.Stop();
         
         if (_queue.Count > 0 && !_running)
             StartAnimation();
