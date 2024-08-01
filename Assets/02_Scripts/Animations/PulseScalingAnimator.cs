@@ -13,6 +13,8 @@ public class PulseScalingAnimator : MonoBehaviour
     [SerializeField] private bool _playOnAwake;
     [SerializeField] private bool _looped;
 
+    public bool Playing => _animation is not null;
+    
     public float Strength
     {
         get => _strength;
@@ -39,12 +41,9 @@ public class PulseScalingAnimator : MonoBehaviour
 
     private AnimationBuilder _animation;
     private Vector3 _original;
-    private RectTransform _rectTransform;
 
     public void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
-        
         if (!_playOnAwake) return;
         StartPulsating();
     }
@@ -61,7 +60,7 @@ public class PulseScalingAnimator : MonoBehaviour
             .SetDuration(_duration)
             .SetInterpolation(AnimationInterpolation.Pulse)
             .OnUpdate(OnAnimationTick)
-            .OnDisposed(() => (_rectTransform ? _rectTransform : transform).localScale = _original)
+            .OnDisposed(OnAnimationDisposed)
             .SetLooped(_looped)
             .Build()
             .Start();
@@ -69,7 +68,7 @@ public class PulseScalingAnimator : MonoBehaviour
 
     private void OnAnimationTick((float c, float t) value)
     {
-        if (!this || !isActiveAndEnabled)
+        if (!this || !transform || !isActiveAndEnabled)
         {
             StopPulsating();
             return;
@@ -104,7 +103,13 @@ public class PulseScalingAnimator : MonoBehaviour
         
         // Value: 2.5, 6.25, 10
 
-        (_rectTransform ? _rectTransform : transform).localScale = newScale;
+        transform.localScale = newScale;
+    }
+
+    public void OnAnimationDisposed()
+    {
+        if (!transform) return;
+        transform.localScale = _original;
     }
 
     public void StopPulsating()

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
@@ -44,6 +46,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         Customer = StateMachine.Customer ?? throw new ArgumentNullException(nameof(Customer));
         _outline = GetComponent<Outline>() ?? GetComponentInChildren<Outline>() ?? throw new MissingComponentException();
+        BottomBar.Instance.Inventory.Update += OnInventoryUpdate;
         InitializeItems();
     }
 
@@ -188,31 +191,38 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             > 2 => throw new NotSupportedException("At this point of development the customer cannot render more then 2 Items at once."),
             _ => throw new NotSupportedException()
         };
-
-        foreach (var item in _desiredItems) 
-            InitializeDesiredItem(item);
     }
 
-    private static void InitializeDesiredItem(Item item)
+    private void OnInventoryUpdate(object sender, IReadOnlyCollection<Item> items)
     {
-        item.Disposed += OnDesiredItemDisposed;
-        BottomBar.Instance.Inventory.Update += OnInventoryUpdate();
-        
-        var animator = item.GameObject.AddComponent<PulseScalingAnimator>();
-        animator.Strength = GameSettings.Data.ItemPulseAnimationStrength;
-        animator.Duration = GameSettings.Data.ItemPulseAnimationDuration;
-        animator.Looped = true;
-        animator.StartPulsating();
+        if (!this || !gameObject || !isActiveAndEnabled) return;
+        if (StateMachine.State != CustomerState.WaitingForMeal) return;
+        CheckForNewItemMatches(items);
+        CheckForOutdatedMatches(items);
     }
 
-    private static void OnInventoryUpdate(object sender, EventArgs e)
+    private void CheckForOutdatedMatches(IEnumerable<Item> items)
     {
+        var activeItems = _desiredItems
+            .Select(x => new { Item = x, Animator = x.GameObject?.GetComponent<PulseScalingAnimator>() })
+            .Where(x => x.Animator is not null)
+            .Where(x => x.Animator.Playing);
         
+        foreach (var container in activeItems)
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (items.All(x => x.Data.name != container.Item.Data.name))
+                container.Animator.StopPulsating();
     }
 
-    private static void OnDesiredItemDisposed(object sender, EventArgs e)
+    private void CheckForNewItemMatches(IEnumerable<Item> items)
     {
-        
+        foreach (var desiredItem in _desiredItems)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (items.All(y => y.Data.name != desiredItem.Data.name)) continue;
+            var animator = desiredItem.GameObject.GetComponent<PulseScalingAnimator>();
+            animator.StartPulsating();
+        }
     }
 
     private void RenderItem(Item item, Vector2? position = null)

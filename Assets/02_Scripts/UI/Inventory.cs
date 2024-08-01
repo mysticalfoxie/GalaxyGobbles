@@ -19,7 +19,12 @@ public class Inventory : MonoBehaviour
     
     public bool TryAdd(Item item)
     {
-        if (TryCraftSomethingWith(item)) return false;
+        if (TryCraftSomethingWith(item))
+        {
+            Update?.Invoke(this, _items);
+            return false;
+        }
+        
         if (!item.Data.Deliverable) return false;
         if (IsFull()) return false;
         
