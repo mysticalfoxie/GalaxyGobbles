@@ -13,8 +13,7 @@ public class Animation : IDisposable
     private Action _cb; // Callback
     private float _t; // Current Time
     private float _c; // Current Value
-    private bool _running;
-    
+
     public Animation(float a, float b, float d, AnimationInterpolation i)
     {
         _a = a;
@@ -26,16 +25,18 @@ public class Animation : IDisposable
         _id = Guid.NewGuid();
     }
 
+    public bool IsPlaying { get; private set; }
+
     public event EventHandler<(float c, float t)> Tick;
     public event EventHandler Complete;
     public event EventHandler Disposed;
 
     private void OnTick(object sender, EventArgs e)
     {
-        if (!_running) return;
+        if (!IsPlaying) return;
         if (_t >= _d)
         {
-            _running = false;
+            IsPlaying = false;
             Complete?.Invoke(this, EventArgs.Empty);
 
             return;
@@ -55,7 +56,7 @@ public class Animation : IDisposable
 
     public void Start()
     {
-        _running = true;
+        IsPlaying = true;
         _c = _a;
         _t = 0;
     }
@@ -64,7 +65,7 @@ public class Animation : IDisposable
     {
         AnimationHandler.Instance.Tick -= OnTick;
         GC.SuppressFinalize(this);
-        _running = false;
+        IsPlaying = false;
         Disposed?.Invoke(this, EventArgs.Empty);
     }
 }

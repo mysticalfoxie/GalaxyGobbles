@@ -1025,6 +1025,9 @@ GameObject:
   - component: {fileID: 2747398160204142548}
   - component: {fileID: 8115137198852362499}
   - component: {fileID: 8078723275006346542}
+  - component: {fileID: 3518405799933619119}
+  - component: {fileID: 3933802954908580986}
+  - component: {fileID: 2402925583764811231}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -1114,6 +1117,58 @@ MonoBehaviour:
   _scale: 1.05
   _color: {r: 1, g: 0.91004884, b: 0.34193665, a: 0}
   _enabled: 0
+--- !u!114 &3518405799933619119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5615654165182259697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b97e0704364a5bb6215100a2b88096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedAnimators:
+  - {fileID: 6496811214109296174}
+--- !u!114 &3933802954908580986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5615654165182259697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92cf6795152a43958489faa1c74985cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.2
+  _strength: 1
+  _weight: {x: 1, y: 1, z: 1}
+  _playOnAwake: 0
+  _playOnce: 1
+  _looped: 0
+  _interpolation: 6
+--- !u!114 &2402925583764811231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5615654165182259697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fda595591da439c85ab2b6146943a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.2
+  _strength: 1.05
+  _weight: {x: 1, y: 1, z: 1}
+  _playOnAwake: 0
+  _playOnce: 1
+  _looped: 0
+  _interpolation: 6
 --- !u!1 &5966484569863450103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,6 +1397,9 @@ GameObject:
   - component: {fileID: 4167993967063172537}
   - component: {fileID: 4076890809566931973}
   - component: {fileID: 2424361245630258644}
+  - component: {fileID: 5325531230507673221}
+  - component: {fileID: 3472460311237986553}
+  - component: {fileID: 6496811214109296174}
   m_Layer: 5
   m_Name: CV_Chat Bubble
   m_TagString: Untagged
@@ -1438,6 +1496,58 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 228.69, y: 200.91, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5325531230507673221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6570975260843983516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92cf6795152a43958489faa1c74985cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.2
+  _strength: 1
+  _weight: {x: 1, y: 1, z: 1}
+  _playOnAwake: 0
+  _playOnce: 1
+  _looped: 0
+  _interpolation: 6
+--- !u!114 &3472460311237986553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6570975260843983516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fda595591da439c85ab2b6146943a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.2
+  _strength: 1.05
+  _weight: {x: 1, y: 1, z: 1}
+  _playOnAwake: 0
+  _playOnce: 1
+  _looped: 0
+  _interpolation: 6
+--- !u!114 &6496811214109296174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6570975260843983516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b97e0704364a5bb6215100a2b88096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedAnimators:
+  - {fileID: 3518405799933619119}
 --- !u!1 &6598310288318509104
 GameObject:
   m_ObjectHideFlags: 0

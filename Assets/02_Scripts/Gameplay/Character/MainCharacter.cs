@@ -75,7 +75,7 @@ public class MainCharacter : Singleton<MainCharacter>
             .SetInterpolation(_interpolation)
             .OnUpdate(OnAnimationTick)
             .OnComplete(() => OnAnimationComplete(id))
-            .OnlyPlayOnce()
+            .SetPlayOnce()
             .Build()
             .Start();
     }

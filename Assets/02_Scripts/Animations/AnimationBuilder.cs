@@ -1,6 +1,4 @@
 using System;
-using JetBrains.Annotations;
-
 
 public class AnimationBuilder
 {
@@ -14,6 +12,8 @@ public class AnimationBuilder
     private Action _completeCallback;
     private Action _disposedCallback;
     private Action<(float c, float t)> _updateCallback;
+
+    public bool IsPlaying => _animation?.IsPlaying ?? false;
 
     private AnimationBuilder()
     {
@@ -60,9 +60,9 @@ public class AnimationBuilder
         return this;
     }
 
-    public AnimationBuilder OnlyPlayOnce()
+    public AnimationBuilder SetPlayOnce(bool playOnce = true)
     {
-        _playOnce = true;
+        _playOnce = playOnce;
         return this;
     }
 
@@ -93,6 +93,8 @@ public class AnimationBuilder
         _animation.Tick += OnAnimationTick;
         return this;
     }
+
+    public bool IsDisposed() => _animation is null;
 
     public AnimationBuilder Start()
     {
@@ -134,3 +136,4 @@ public class AnimationBuilder
         _animation = null;
     }
 }
+

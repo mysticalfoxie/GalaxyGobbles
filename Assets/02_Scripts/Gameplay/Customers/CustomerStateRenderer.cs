@@ -204,14 +204,14 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private void CheckForOutdatedMatches(IEnumerable<Item> items)
     {
         var activeItems = _desiredItems
-            .Select(x => new { Item = x, Animator = x.GameObject?.GetComponent<PulseScalingAnimator>() })
+            .Select(x => new { Item = x, Animator = x.GameObject?.GetComponent<ScalingAnimator>() })
             .Where(x => x.Animator is not null)
             .Where(x => x.Animator.Playing);
         
         foreach (var container in activeItems)
             // ReSharper disable once PossibleMultipleEnumeration
             if (items.All(x => x.Data.name != container.Item.Data.name))
-                container.Animator.StopPulsating();
+                container.Animator.Stop();
     }
 
     private void CheckForNewItemMatches(IEnumerable<Item> items)
@@ -220,8 +220,8 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         {
             // ReSharper disable once PossibleMultipleEnumeration
             if (items.All(y => y.Data.name != desiredItem.Data.name)) continue;
-            var animator = desiredItem.GameObject.GetComponent<PulseScalingAnimator>();
-            animator.StartPulsating();
+            var animator = desiredItem.GameObject.GetComponent<ScalingAnimator>();
+            animator.Play();
         }
     }
 

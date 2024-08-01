@@ -68,7 +68,7 @@ public class KittyBot : Singleton<KittyBot>
             .SetInterpolation(_interpolationX)
             .OnUpdate(OnAnimationTickX)
             .OnComplete(OnAnimationComplete)
-            .OnlyPlayOnce()
+            .SetPlayOnce()
             .Build()
             .Start();
 
@@ -77,7 +77,7 @@ public class KittyBot : Singleton<KittyBot>
             .SetInterpolation(_interpolationZ)
             .OnUpdate(OnAnimationTickZ)
             .OnComplete(OnAnimationComplete)
-            .OnlyPlayOnce()
+            .SetPlayOnce()
             .Build()
             .Start();
 
