@@ -30,13 +30,13 @@ public class TouchHandler : Singleton<TouchHandler>
         var eventArgs = new TouchEvent(touched);
         Touch?.Invoke(touched, eventArgs);
         var touchables = touched.GetComponents<Touchable>();
+        var interfaces = touched.GetComponents<ITouchable>();
         TouchedGameObject = null;
 
         if (eventArgs.Cancelled) return;
-        if (touchables.Length == 0) return;
         
-        foreach (var touchable in touchables)
-            touchable.InvokeTouch(this, EventArgs.Empty);
+        foreach (var touchable in touchables) touchable.InvokeTouch(this, EventArgs.Empty);
+        foreach (var @interface in interfaces) @interface.OnTouch();
     }
 
     private void CheckTouchState()
