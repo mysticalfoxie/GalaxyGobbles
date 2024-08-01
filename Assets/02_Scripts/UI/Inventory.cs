@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class Inventory : MonoBehaviour
     private GameObject[] _positions;
 
     public IEnumerable<Item> Items => _items;
+
+    public event EventHandler<IReadOnlyCollection<Item>> Update;
 
     public void Awake()
     {
@@ -88,6 +91,8 @@ public class Inventory : MonoBehaviour
             var item = _items[index];
             item.Follow(_positions[index].gameObject);
         }
+        
+        Update?.Invoke(this, _items);
     }
 }
 

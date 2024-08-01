@@ -30,12 +30,21 @@ public class PulseScalingAnimator : MonoBehaviour
         get => _duration;
         set => _duration = value;
     }
-    
+
+    public bool Looped
+    {
+        get => _looped;
+        set => _looped = value;
+    }
+
     private AnimationBuilder _animation;
     private Vector3 _original;
+    private RectTransform _rectTransform;
 
     public void Awake()
     {
+        _rectTransform = GetComponent<RectTransform>();
+        
         if (!_playOnAwake) return;
         StartPulsating();
     }
@@ -52,7 +61,7 @@ public class PulseScalingAnimator : MonoBehaviour
             .SetDuration(_duration)
             .SetInterpolation(AnimationInterpolation.Pulse)
             .OnUpdate(OnAnimationTick)
-            .OnDisposed(() => transform.localScale = _original)
+            .OnDisposed(() => (_rectTransform ? _rectTransform : transform).localScale = _original)
             .SetLooped(_looped)
             .Build()
             .Start();
@@ -60,9 +69,15 @@ public class PulseScalingAnimator : MonoBehaviour
 
     private void OnAnimationTick((float c, float t) value)
     {
+        if (!this || !isActiveAndEnabled)
+        {
+            StopPulsating();
+            return;
+        }
+        
         var strength = new Vector3(value.c, value.c, value.c);
         var scale = _original.Multiply(strength);
-        var diff = _original.Subtract(scale);
+        var diff = scale.Subtract(_original);
         var weightedDiff = diff.Multiply(_weight);
         var newScale = _original.Add(weightedDiff);
         
@@ -89,7 +104,7 @@ public class PulseScalingAnimator : MonoBehaviour
         
         // Value: 2.5, 6.25, 10
 
-        transform.localScale = newScale;
+        (_rectTransform ? _rectTransform : transform).localScale = newScale;
     }
 
     public void StopPulsating()

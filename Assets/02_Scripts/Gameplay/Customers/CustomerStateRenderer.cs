@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
@@ -189,6 +188,31 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             > 2 => throw new NotSupportedException("At this point of development the customer cannot render more then 2 Items at once."),
             _ => throw new NotSupportedException()
         };
+
+        foreach (var item in _desiredItems) 
+            InitializeDesiredItem(item);
+    }
+
+    private static void InitializeDesiredItem(Item item)
+    {
+        item.Disposed += OnDesiredItemDisposed;
+        BottomBar.Instance.Inventory.Update += OnInventoryUpdate();
+        
+        var animator = item.GameObject.AddComponent<PulseScalingAnimator>();
+        animator.Strength = GameSettings.Data.ItemPulseAnimationStrength;
+        animator.Duration = GameSettings.Data.ItemPulseAnimationDuration;
+        animator.Looped = true;
+        animator.StartPulsating();
+    }
+
+    private static void OnInventoryUpdate(object sender, EventArgs e)
+    {
+        
+    }
+
+    private static void OnDesiredItemDisposed(object sender, EventArgs e)
+    {
+        
     }
 
     private void RenderItem(Item item, Vector2? position = null)
@@ -206,16 +230,15 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private void InitializeItems()
     {
         foreach (var item in _items = new[]
-                 {
-                     _chairItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat), dimension: ItemDisplayDimension.Dimension3D)),
-                     _moneyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout),
-                         dimension: ItemDisplayDimension.Dimension3D)),
-                     _thinkDots = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking), dimension: ItemDisplayDimension.Dimension3D)),
-                     _eatingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Eating), dimension: ItemDisplayDimension.Dimension3D)),
-                     _dyingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Dying), dimension: ItemDisplayDimension.Dimension3D)),
-                     _poisonedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned), dimension: ItemDisplayDimension.Dimension3D)),
-                     _angryItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Angry), dimension: ItemDisplayDimension.Dimension3D)),
-                 }) item.ForwardTouchEventsTo(Customer);
+        {
+            _chairItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat), dimension: ItemDisplayDimension.Dimension3D)),
+            _moneyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout), dimension: ItemDisplayDimension.Dimension3D)),
+            _thinkDots = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking), dimension: ItemDisplayDimension.Dimension3D)),
+            _eatingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Eating), dimension: ItemDisplayDimension.Dimension3D)),
+            _dyingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Dying), dimension: ItemDisplayDimension.Dimension3D)),
+            _poisonedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned), dimension: ItemDisplayDimension.Dimension3D)),
+            _angryItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Angry), dimension: ItemDisplayDimension.Dimension3D)),
+        }) item.ForwardTouchEventsTo(Customer);
     }
 
     private void CreateDesiredItems()
