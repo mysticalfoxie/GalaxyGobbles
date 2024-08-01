@@ -86,6 +86,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         HideAllItems();
         RenderThinkingBubble();
         RenderDesiredItems();
+        CheckForNewItemMatches(BottomBar.Instance.Inventory.Items);
     }
 
     public void RenderWaitingForCheckout()
@@ -93,6 +94,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         HideAllItems();
         RenderThinkingBubble();
         RenderItem(_moneyItem);
+        _moneyItem.GameObject.GetComponent<ScalingAnimator>().Play();
     }
 
     public void RenderEating()
@@ -221,6 +223,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
             // ReSharper disable once PossibleMultipleEnumeration
             if (items.All(y => y.Data.name != desiredItem.Data.name)) continue;
             var animator = desiredItem.GameObject.GetComponent<ScalingAnimator>();
+            if (!animator) continue;
             animator.Play();
         }
     }

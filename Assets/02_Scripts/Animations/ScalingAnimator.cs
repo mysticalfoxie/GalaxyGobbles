@@ -46,6 +46,7 @@ public class ScalingAnimator : AnimatorBase
     
     protected override void OnAnimationDisposed()
     {
+        if (!this) return;
         if (!ResetScaleAfterComplete) return;
         if (!transform) return;
         if (!_played) return;
@@ -79,4 +80,3 @@ public class ScalingAnimator : AnimatorBase
         
 // Value: 2.5, 6.25, 10
 #endregion
-
