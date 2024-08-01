@@ -4,13 +4,15 @@ using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
-public class KittyBot : Singleton<KittyBot>
+public class KittyBot : Singleton<KittyBot>, ITouchable
 {
+    private readonly List<GameObject> _activeQuestionMarks = new();
     private Transform _target;
     private SpriteRenderer _renderer;
     private bool _running;
     private int _animationsComplete;
     private int _previousDecimal;
+    private GameObject[] _questionMarks;
 
     private readonly List<KittyBotQueueEntry> _queue = new();
 
@@ -31,6 +33,8 @@ public class KittyBot : Singleton<KittyBot>
         _renderer = this.GetRequiredComponent<SpriteRenderer>();
         _renderer.sprite = _front;
     }
+
+    public void OnTouch() => EasterEgg();
 
     public void MoveTo(Transform target, Action callback)
     {
@@ -162,6 +166,59 @@ public class KittyBot : Singleton<KittyBot>
         var queueFeedback = _queue[0].Target.GetComponentInChildren<QueueFeedback>();
         if (!queueFeedback) return;
         queueFeedback.Hide();
+    }
+
+    #region Dont mind me down there...
+
+    private void EasterEgg()
+    {
+        var questionMark = this
+            .GetChildren()
+            .First()
+            .GetChildren()
+            .Where(x => !_activeQuestionMarks.Contains(x))
+            .GetRandom();
+
+        if (questionMark is null) return;
+
+        _activeQuestionMarks.Add(questionMark);
+        questionMark.transform.localScale = Vector3.zero;
+        questionMark.SetActive(true);
+
+        MoveIn();
+        return;
+
+        void MoveIn()
+        {
+            AnimationBuilder
+                .CreateNew(0, 1, 0.2F)
+                .OnUpdate(x => questionMark.transform.localScale = new Vector3(x.c, x.c, x.c))
+                .SetInterpolation(AnimationInterpolation.EaseInQuart)
+                .SetPlayOnce()
+                .OnComplete(MoveOut)
+                .Build()
+                .Start();
+        }
+
+        void MoveOut()
+        {
+            AnimationBuilder
+                .CreateNew(1, 0, 0.2F)
+                .SetPlayOnce()
+                .SetInterpolation(AnimationInterpolation.EaseInQuart)
+                .OnUpdate(x => questionMark.transform.localScale = new Vector3(x.c, x.c, x.c))
+                .OnComplete(OnComplete)
+                .Build()
+                .Start();
+        }
+
+        void OnComplete()
+        {
+            _activeQuestionMarks.Remove(questionMark);
+            questionMark.SetActive(false);
+        }
+
+        #endregion
     }
 }
 

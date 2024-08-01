@@ -73,6 +73,7 @@ public class TouchHandler : Singleton<TouchHandler>
         if (!Raycaster.Instance) return; 
         Raycaster.Instance.Raycast(position, out _touchStartGameObject);
         TouchFeedback.Instance.TryPlayShrinkAnimation(_touchStartGameObject);
+        TouchFeedback.Instance.InvokePushEvent(_touchStartGameObject);
     }
 
     private void HandleTouchInputUp()
@@ -85,5 +86,6 @@ public class TouchHandler : Singleton<TouchHandler>
         if (!Raycaster.Instance) return;
         Raycaster.Instance.Raycast(position, out _touchEndGameObject);
         TouchFeedback.TryPlayExpandAnimation(_touchEndGameObject);
+        TouchFeedback.Instance.InvokeReleaseEvent(_touchStartGameObject);
     }
 }

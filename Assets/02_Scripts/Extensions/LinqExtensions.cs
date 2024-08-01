@@ -14,7 +14,7 @@ public static class LinqExtensions
         }
 
         var random = new Random();
-        var index = random.Next(0, array.Length - 1);
+        var index = random.Next(0, array.Length);
         return array[index];
     }
 }

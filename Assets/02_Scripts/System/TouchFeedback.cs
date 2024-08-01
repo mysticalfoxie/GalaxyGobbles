@@ -72,5 +72,24 @@ public class TouchFeedback : Singleton<TouchFeedback>
             TryPlayShrinkAnimation(_pushedGameObject);
             _pushed = true;
         }
-    } 
+    }
+
+    public void InvokeReleaseEvent(GameObject releasedObject)
+    {
+        if (!releasedObject) return;
+        var touchables = releasedObject.GetComponents<Touchable>();
+        var interfaces = releasedObject.GetComponents<ITouchable>();
+        foreach (var touchable in touchables) touchable.InvokeRelease(this, EventArgs.Empty);
+        foreach (var @interface in interfaces) @interface.OnRelease();
+    }
+
+    public void InvokePushEvent(GameObject pushedObject)
+    {
+        if (!pushedObject) return;
+        var touchables = pushedObject.GetComponents<Touchable>();
+        var interfaces = pushedObject.GetComponents<ITouchable>();
+        foreach (var touchable in touchables) touchable.InvokePush(this, EventArgs.Empty);
+        foreach (var @interface in interfaces) @interface.OnPush();
+    }
 }
+
