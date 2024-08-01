@@ -134,7 +134,6 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         HideAllItems();
         RenderItem(_poisonedItem);
-        StartCoroutine(nameof(StartPoisonCloudAnimation));
     }
 
     public void SetSeated()
@@ -235,6 +234,12 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
                 .Show();
     }
 
+    public void OnPoisonHidden()
+    {
+        _thinkingBubble.SetActive(false);
+        HideAllItems();
+    }
+
     public void InitializeCustomerSprites(SpeciesData data)
     {
         SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
@@ -247,33 +252,5 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         var boxCollider = this.GetRequiredComponent<BoxCollider>();
         boxCollider.size = data.ColliderSize;
         boxCollider.center = Vector3.zero;
-    }
-
-    private IEnumerator StartPoisonCloudAnimation()
-    {
-        yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
-
-        CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
-        CustomerPoisonRenderer.Instance.MovingEnded += OnMovingEnded;
-        CustomerPoisonRenderer.Instance.StartPoisonAnimation(Customer);
-        yield break;
-
-        void OnMovingEnded(object sender, EventArgs e)
-        {
-            CustomerPoisonRenderer.Instance.MovingEnded -= OnMovingEnded;
-
-            var target = Customer.Table.NeighbourTable.Customer;
-            if (target is not null) target.Kill();
-        }
-
-        void OnPoisonHidden(object sender, EventArgs e)
-        {
-            CustomerPoisonRenderer.Instance.PoisonHidden -= OnPoisonHidden;
-
-            _thinkingBubble.SetActive(false);
-            HideAllItems();
-
-            Customer.StateMachine.State = CustomerState.WaitingForCheckout;
-        }
     }
 }

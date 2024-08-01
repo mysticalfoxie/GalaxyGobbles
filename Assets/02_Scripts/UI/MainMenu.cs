@@ -211,6 +211,7 @@ public class MainMenu : Singleton<MainMenu>
         _btnMainMenu.SetActive(false);
         _completeDayMenu.SetActive(true);
         _backgroundImage.SetActive(true);
+        AudioManager.Instance.StopAll();
         CalculateScore();
     }
 
@@ -242,6 +243,8 @@ public class MainMenu : Singleton<MainMenu>
             _continueButton.SetActive(true);
             if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
             _completeScoreStamp.SetActive(true);
+            
+            AudioManager.Instance.PlayMusic(AudioSettings.Data.WinMusic);
             //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');  [ToDO Maybe need later...]
         }
         else
@@ -253,6 +256,8 @@ public class MainMenu : Singleton<MainMenu>
             if (_continueButton) _continueButton.SetActive(false);
             if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+            
+            AudioManager.Instance.PlayMusic(AudioSettings.Data.LooseMusic);
         }
 
         _starRevealed1.SetActive(starsAcquired >= 1);

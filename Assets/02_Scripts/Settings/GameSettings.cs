@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 // ReSharper disable InconsistentNaming
 
+[CreateAssetMenu(fileName = "CFG_Game Settings", menuName = "Galaxy Gobbles/Configurations/Game Settings", order = 2)]
 public class GameSettings : ScriptableObject
 {
     [Header("General Settings")]
@@ -25,6 +26,8 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _customerEatingTime = 3.0F;
     [Tooltip("The amount of time it takes for the customer to stock up the queue, when the one in front is seated.")]
     [SerializeField] private float _queueRestockDelay = 0.2F;
+    [Tooltip("The amount of time it takes for the customer to beam from his position to the chair.")]
+    [SerializeField] private float _customerBeamingTime = 0.2F;
     
     [Header("Assassination")]
     [Tooltip("The amount of time it takes for the customer to die from poison.")]
@@ -46,16 +49,20 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _patienceDropAmount = 2.0F;
     [Tooltip("The amount of time between the angry think bubble and his leave.")]
     [SerializeField] private float _customerAngryLeaveTime = 2.0F;
+    [Tooltip("The threshold of when a customer is considered \"loving\" in percent. (0 = Leaving, 100 = Full)")]
+    [SerializeField] private float _customerLoveThreshold = 80.0F;
+    [Tooltip("The threshold of when a customer is considered \"angry\" in percent. (0 = Leaving, 100 = Full)")]
+    [SerializeField] private float _customerAngryThreshold = 20.0F;
+    [Tooltip("The amount of patience that the customer regains after receiving being seated in percent.")]
+    [SerializeField] private float _patienceRegainOnSeated = 20.0F;
+    [Tooltip("The amount of patience that the customer regains after receiving an item in percent.")]
+    [SerializeField] private float _patienceRegainOnItemReceive = 20.0F;
     
     [Header("Scoring")]
     [Tooltip("The base value each customer gives you when you successfully served them.")]
     [SerializeField] private float _customerBaseScore = 1.0F;
     [Tooltip("The maximum score you could receive from a single customer.")]
     [SerializeField] private float _customerMaxScore = 4.0F;
-    [Tooltip("The amount of patience that the customer regains after receiving being seated in percent.")]
-    [SerializeField] private float _patienceRegainOnSeated = 20.0F;
-    [Tooltip("The amount of patience that the customer regains after receiving an item in percent.")]
-    [SerializeField] private float _patienceRegainOnItemReceive = 20.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -75,10 +82,6 @@ public class GameSettings : ScriptableObject
     [SerializeField] private GameObject _spriteRendererPrefab;
     [SerializeField] private GameObject _rectTransformPrefab;
     [SerializeField] private GameObject _heartsPrefab;
-
-    [Header("Music")] 
-    [SerializeField] private AudioData _mainMenuMusic;
-    [SerializeField] private AudioData _inGameMusic;
 
     [Header("Game Data")] 
     [Tooltip("When this is enabled, unity will automatically map all customers to the levels, and gather all references for the next entries automatically.")]
@@ -110,6 +113,9 @@ public class GameSettings : ScriptableObject
     public float PatienceRegainOnSeated => _patienceRegainOnSeated;
     public Vector3 CheckmarkScale => _checkmarkScale;
     public float LevelButtonScale => _levelButtonScale;
+    public float CustomerLoveThreshold => _customerLoveThreshold;
+    public float CustomerAngryThreshold => _customerAngryThreshold;
+    public float CustomerBeamingTime => _customerBeamingTime;
     public float ClosureDelay => _closureDelay;
     
     public SpriteData PoisonIcon => _poisonIcon;
@@ -127,8 +133,6 @@ public class GameSettings : ScriptableObject
     public IEnumerable<ItemData> Items => _items;
     public IEnumerable<RecipeData> Recipes => _recipes;
     
-    public AudioData MainMenuMusic => _mainMenuMusic;
-    public AudioData InGameMusic => _inGameMusic;
     #endregion
     
     #region Boilerplate
@@ -224,14 +228,6 @@ public class GameSettings : ScriptableObject
         var item = Data.Items.FirstOrDefault(x => x.name == name) ?? throw new ItemNotFoundException(data);
         return item.Clone();
     }
-
-    public static AudioData GetTrackBySceneIndex(int index) 
-        => index switch
-        {
-            0 => Data.MainMenuMusic,
-            1 => Data.InGameMusic,
-            _ => null
-        };
 
     #endregion
 }

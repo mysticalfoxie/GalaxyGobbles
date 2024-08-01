@@ -25,11 +25,13 @@ public class NoodlePot : Touchable
 
     protected override void OnTouch()
     {
-        MainCharacter.Instance.MoveTo(transform, () =>
-        {
-            if (State == NoodlePotState.Cooked) OnCookedNoodlesTouched();
-            if (State == NoodlePotState.Overcooked) OnOvercookedNoodlesTouched();
-        });
+        MainCharacter.Instance.MoveTo(transform, OnInteract);
+    }
+
+    private void OnInteract()
+    {
+        if (State == NoodlePotState.Cooked) OnCookedNoodlesTouched();
+        if (State == NoodlePotState.Overcooked) OnOvercookedNoodlesTouched();
     }
 
     public void StartCooking()
@@ -69,9 +71,11 @@ public class NoodlePot : Touchable
     private IEnumerator OnCookingFinished()
     {
         UpdateState(NoodlePotState.Cooked);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.Ready, true);
         var overcookTime = GameSettings.Data.NoodleOvercookTime;
         yield return new WaitForSeconds(overcookTime);
         if (State != NoodlePotState.Cooked) yield break;
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.Overcooked, true);
         UpdateState(NoodlePotState.Overcooked);
     }
 
@@ -79,12 +83,14 @@ public class NoodlePot : Touchable
     {
         var cleaningTime = GameSettings.Data.PotCleaningTime;
         yield return new WaitForSeconds(cleaningTime);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.PotCleaning);
         UpdateState(NoodlePotState.Empty);
     }
 
     private IEnumerator OnCookingStart()
     {
         UpdateState(NoodlePotState.Cooking);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.BoilingSounds, true);
         var boilingTime = GameSettings.Data.NoodleBoilingTime;
         yield return new WaitForSeconds(boilingTime);
         yield return OnCookingFinished();
