@@ -4,13 +4,15 @@ using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
-public class KittyBot : Singleton<KittyBot>
+public class KittyBot : Singleton<KittyBot>, ITouchable
 {
+    private readonly List<GameObject> _activeQuestionMarks = new();
     private Transform _target;
     private SpriteRenderer _renderer;
     private bool _running;
     private int _animationsComplete;
     private int _previousDecimal;
+    private GameObject[] _questionMarks;
 
     private readonly List<KittyBotQueueEntry> _queue = new();
 
@@ -32,6 +34,8 @@ public class KittyBot : Singleton<KittyBot>
         _renderer.sprite = _front;
     }
 
+    public void OnTouch() => EasterEgg();
+
     public void MoveTo(Transform target, Action callback)
     {
         if (_queue.Any(x => x.Target.gameObject == target.gameObject)) return;
@@ -45,7 +49,7 @@ public class KittyBot : Singleton<KittyBot>
     {
         // Cancel when kitty bot is on it's way back to station and a new order comes in.
         if (_running && _queue.Count > 1 && _queue[0].Callback is null && _queue[0].Animations is not null)
-            foreach (var anim in _queue[0].Animations) anim.TryStop();
+            foreach (var anim in _queue[0].Animations) anim.Stop();
         
         if (_queue.Count > 0 && !_running)
             StartAnimation();
@@ -68,7 +72,7 @@ public class KittyBot : Singleton<KittyBot>
             .SetInterpolation(_interpolationX)
             .OnUpdate(OnAnimationTickX)
             .OnComplete(OnAnimationComplete)
-            .OnlyPlayOnce()
+            .SetPlayOnce()
             .Build()
             .Start();
 
@@ -77,7 +81,7 @@ public class KittyBot : Singleton<KittyBot>
             .SetInterpolation(_interpolationZ)
             .OnUpdate(OnAnimationTickZ)
             .OnComplete(OnAnimationComplete)
-            .OnlyPlayOnce()
+            .SetPlayOnce()
             .Build()
             .Start();
 
@@ -162,6 +166,59 @@ public class KittyBot : Singleton<KittyBot>
         var queueFeedback = _queue[0].Target.GetComponentInChildren<QueueFeedback>();
         if (!queueFeedback) return;
         queueFeedback.Hide();
+    }
+
+    #region Dont mind me down there...
+
+    private void EasterEgg()
+    {
+        var questionMark = this
+            .GetChildren()
+            .First()
+            .GetChildren()
+            .Where(x => !_activeQuestionMarks.Contains(x))
+            .GetRandom();
+
+        if (questionMark is null) return;
+
+        _activeQuestionMarks.Add(questionMark);
+        questionMark.transform.localScale = Vector3.zero;
+        questionMark.SetActive(true);
+
+        MoveIn();
+        return;
+
+        void MoveIn()
+        {
+            AnimationBuilder
+                .CreateNew(0, 1, 0.2F)
+                .OnUpdate(x => questionMark.transform.localScale = new Vector3(x.c, x.c, x.c))
+                .SetInterpolation(AnimationInterpolation.EaseInQuart)
+                .SetPlayOnce()
+                .OnComplete(MoveOut)
+                .Build()
+                .Start();
+        }
+
+        void MoveOut()
+        {
+            AnimationBuilder
+                .CreateNew(1, 0, 0.2F)
+                .SetPlayOnce()
+                .SetInterpolation(AnimationInterpolation.EaseInQuart)
+                .OnUpdate(x => questionMark.transform.localScale = new Vector3(x.c, x.c, x.c))
+                .OnComplete(OnComplete)
+                .Build()
+                .Start();
+        }
+
+        void OnComplete()
+        {
+            _activeQuestionMarks.Remove(questionMark);
+            questionMark.SetActive(false);
+        }
+
+        #endregion
     }
 }
 

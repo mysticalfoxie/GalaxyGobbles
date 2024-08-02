@@ -30,6 +30,9 @@ public class Item : IDisposable
     public Vector2? LocalPosition { get; private set; }
     public Vector3? Rotation { get; private set; }
     public Vector3? Scale { get; set; }
+    public GameObject GameObject => _renderer?.gameObject;
+
+    public event EventHandler Disposed;
     public event EventHandler Click;
 
     public Item Show()
@@ -129,6 +132,8 @@ public class Item : IDisposable
     {
         if (_renderer is not null && !_renderer.Destroyed) 
             _renderer.Destroy();
+     
+        Disposed?.Invoke(this, null);
         
         GC.SuppressFinalize(this);
     }
