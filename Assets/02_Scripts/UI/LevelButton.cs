@@ -13,6 +13,14 @@ public class LevelButton : MonoBehaviour
 
     public event Action<int> Clicked;
 
+    public void Awake()
+    {
+        Vector2 levelButtonScale = this.transform.localScale;
+        Vector2 scalingFactor = new Vector2(GameSettings.Data.LevelButtonScale, GameSettings.Data.LevelButtonScale);
+        if (levelButtonScale != scalingFactor)
+            transform.localScale *= scalingFactor;
+    }
+
     public void OnEnable()
     {
         UpdateStars();
