@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -31,6 +32,11 @@ public sealed class TouchInputSystem : Singleton<TouchInputSystem>
     public InputAction.CallbackContext? FingerDownContext { get; private set; }
     public InputAction.CallbackContext? FingerUpContext { get; private set; }
     public InputAction.CallbackContext? MovingContext { get; private set; }
+
+    public event EventHandler<InputAction.CallbackContext> Move;
+    public event EventHandler<InputAction.CallbackContext> Tap;
+    public event EventHandler<InputAction.CallbackContext> Push;
+    public event EventHandler<InputAction.CallbackContext> Release;
     
     public override void Awake()
     {
@@ -40,9 +46,9 @@ public sealed class TouchInputSystem : Singleton<TouchInputSystem>
         
         _input = this.GetRequiredComponent<PlayerInput>();
         
-        _input.actions[INPUT_PRESS].started += OnFingerDown;
-        _input.actions[INPUT_PRESS].canceled += OnFingerUp;
-        _input.actions[INPUT_POSITION].performed += OnPositionChanged;
+        _input.actions[INPUT_PRESS].started += OnPush;
+        _input.actions[INPUT_PRESS].canceled += OnRelease;
+        _input.actions[INPUT_POSITION].performed += OnMove;
         _input.actions[INPUT_TAP].performed += OnTapped;
     }
 
@@ -50,24 +56,28 @@ public sealed class TouchInputSystem : Singleton<TouchInputSystem>
     {
         _tap = true;
         _tapContext = context;
+        Tap?.Invoke(this, context);
     }
 
-    private void OnPositionChanged(InputAction.CallbackContext context)
+    private void OnMove(InputAction.CallbackContext context)
     {
         _moving = true;
         _movingContext = context;
+        Move?.Invoke(this, context);
     }
 
-    private void OnFingerUp(InputAction.CallbackContext context)
+    private void OnRelease(InputAction.CallbackContext context)
     {
         _fingerUp = true;
         _fingerUpContext = context;
+        Release?.Invoke(this, context);
     }
 
-    private void OnFingerDown(InputAction.CallbackContext context)
+    private void OnPush(InputAction.CallbackContext context)
     {
         _fingerDown = true;
         _fingerDownContext = context;
+        Push?.Invoke(this, context);
     }
 
     public void Update()
