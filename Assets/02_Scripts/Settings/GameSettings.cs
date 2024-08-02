@@ -73,6 +73,12 @@ public class GameSettings : ScriptableObject
     [SerializeField] private Vector3 _checkmarkScale = new(10, 10, 1);
     [Tooltip("The scale of the level buttons.")]
     [SerializeField] private float _levelButtonScale = 0.85F;
+
+    [Header("Animations")] 
+    [Tooltip("The strength of the pulse animation for the items rendered in the thinking bubble.")] 
+    [Range(0.1F, 10.0F)] [SerializeField] private float _itemPulseAnimationStrength = 1.0F;
+    [Tooltip("The duration of the pulse animation for the items rendered in the thinking bubble.")]
+    [Range(0.1F, 10.0F)] [SerializeField] private float _itemPulseAnimationDuration = 1.0F;
     
     [Header("References")]
     [Header("Prefabs")]
@@ -117,6 +123,8 @@ public class GameSettings : ScriptableObject
     public float CustomerAngryThreshold => _customerAngryThreshold;
     public float CustomerBeamingTime => _customerBeamingTime;
     public float ClosureDelay => _closureDelay;
+    public float ItemPulseAnimationDuration => _itemPulseAnimationDuration;
+    public float ItemPulseAnimationStrength => _itemPulseAnimationStrength;
     
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;
