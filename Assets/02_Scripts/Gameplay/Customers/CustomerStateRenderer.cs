@@ -72,6 +72,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         RenderThinkingBubble();
         RenderItem(_chairItem);
+        _chairItem.GameObject.GetComponent<ScalingAnimator>().Play();
     }
 
     public void RenderThinkingAboutMeal()
@@ -146,8 +147,27 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         SpriteRenderer.flipX = Customer.Chair.Side == Direction.Left;
     }
 
-    public void OnSelected() => _outline.Enable();
-    public void OnDeselected() => _outline.Disable();
+    private void PauseChairPulsing()
+    {
+        _chairItem.GameObject.GetComponent<ScalingAnimator>().Stop();        
+    }
+
+    private void ResumeChairPulsing()
+    {
+        _chairItem.GameObject.GetComponent<ScalingAnimator>().Play();
+    }
+
+    public void OnSelected()
+    {
+        if (StateMachine.State == CustomerState.WaitingForSeat) PauseChairPulsing();
+        _outline.Enable();
+    }
+
+    public void OnDeselected()
+    {
+        _outline.Disable();
+        if (StateMachine.State == CustomerState.WaitingForSeat) ResumeChairPulsing();
+    }
 
     private void RenderDesiredItems()
     {
