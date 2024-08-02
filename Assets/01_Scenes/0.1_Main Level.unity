@@ -11466,8 +11466,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: -0, z: -0, w: 0.9659258}
   m_LocalPosition: {x: -0.19999999, y: 0.57941777, z: -4.7283916}
-  m_LocalScale: {x: 0.38, y: 0.38, z: 0.38}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2146120722}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11512,7 +11512,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 64d4b180069962b4c9b4253a5f689591, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 09a97fed4d3cca347a1a8a6f2a48bd73, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11535,9 +11535,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311f8f709c814fbe832fe290cf982e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _side: {fileID: 21300000, guid: 14b97a21ad6badb4ab1c51e1baad6f5a, type: 3}
-  _back: {fileID: 21300000, guid: e639cecaed785f34c92487c08805eff2, type: 3}
-  _front: {fileID: 21300000, guid: 64d4b180069962b4c9b4253a5f689591, type: 3}
+  _side: {fileID: 21300000, guid: 6de3723f680601f46bf4659886beae3f, type: 3}
+  _back: {fileID: 21300000, guid: 09a97fed4d3cca347a1a8a6f2a48bd73, type: 3}
+  _front: {fileID: 21300000, guid: 09a97fed4d3cca347a1a8a6f2a48bd73, type: 3}
   _distanceToDurationMod: 2.5
   _interpolation: 12
   _confirmationDistanceThreshold: 0.01
