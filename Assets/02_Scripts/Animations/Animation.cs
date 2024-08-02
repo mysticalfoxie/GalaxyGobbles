@@ -1,28 +1,31 @@
 using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Animation : IDisposable
 {
-    private readonly float _a;
-    private readonly float _b;
-    private readonly float _d;
-    private readonly AnimationInterpolation _i;
-    private readonly Func<(float a, float b, float c, float t), bool> _ccc;
-    private Action _cb;
-    private float _t;
-    private float _c;
-    private bool _running;
-    
-    public Animation(float a, float b, float d, AnimationInterpolation i, Func<(float a, float b, float c, float t), bool> ccc)
+    [UsedImplicitly] private Guid _id;
+
+    private readonly float _a; // State A
+    private readonly float _b; // State B
+    private readonly float _d; // Duration
+    private readonly AnimationInterpolation _i; // Interpolation
+    private Action _cb; // Callback
+    private float _t; // Current Time
+    private float _c; // Current Value
+
+    public Animation(float a, float b, float d, AnimationInterpolation i)
     {
         _a = a;
         _b = b;
         _d = d;
         _i = i;
-        _ccc = ccc;
         
         AnimationHandler.Instance.Tick += OnTick;
+        _id = Guid.NewGuid();
     }
+
+    public bool IsPlaying { get; private set; }
 
     public event EventHandler<(float c, float t)> Tick;
     public event EventHandler Complete;
@@ -30,22 +33,16 @@ public class Animation : IDisposable
 
     private void OnTick(object sender, EventArgs e)
     {
-        if (!_running) return;
-        if (IsComplete())
+        if (!IsPlaying) return;
+        if (_t >= _d)
         {
+            IsPlaying = false;
             Complete?.Invoke(this, EventArgs.Empty);
-            _running = false;
+
             return;
         }
         
         NextAnimationFrame();
-    }
-
-    private bool IsComplete()
-    {
-        if (_ccc is not null)
-            return _ccc((_a, _b, _c, _t));
-        return _a > _b ? _c <= _b : _c >= _b;
     }
 
     private void NextAnimationFrame()
@@ -59,15 +56,16 @@ public class Animation : IDisposable
 
     public void Start()
     {
-        _running = true;
+        IsPlaying = true;
         _c = _a;
+        _t = 0;
     }
 
     public void Dispose()
     {
         AnimationHandler.Instance.Tick -= OnTick;
         GC.SuppressFinalize(this);
-        _running = false;
+        IsPlaying = false;
         Disposed?.Invoke(this, EventArgs.Empty);
     }
 }
