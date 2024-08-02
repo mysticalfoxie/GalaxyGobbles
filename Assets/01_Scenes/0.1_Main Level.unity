@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.013821637, g: 0.06304462, b: 0.2080954, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1788,8 +1788,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: [{fileID: 1771684833665562120, guid: a312dae041688bc43bc657fceabd24c9,
-        type: 3}]
+    m_RemovedGameObjects:
+    - {fileID: 1771684833665562120, guid: a312dae041688bc43bc657fceabd24c9, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1892531716059061785, guid: a312dae041688bc43bc657fceabd24c9,
         type: 3}
@@ -10722,7 +10722,8 @@ Transform:
   m_LocalPosition: {x: 2.01, y: 0.943, z: -5.837}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
-  m_Children: [{fileID: 1076286412}]
+  m_Children:
+  - {fileID: 1076286412}
   m_Father: {fileID: 2146120722}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1976940169
@@ -11098,8 +11099,8 @@ RectTransform:
   m_GameObject: {fileID: 2020564245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.38}
-  m_LocalScale: {x: 0.047375, y: 0.047375, z: 0.047375}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1706379, y: 0.1706379, z: 0.1706379}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 267489602}
   - {fileID: 10503861}
@@ -11109,8 +11110,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.03, y: 1.989}
-  m_SizeDelta: {x: 61.93325, y: 38.49016}
+  m_AnchoredPosition: {x: -0.2, y: 6.1}
+  m_SizeDelta: {x: 63.89, y: 46.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2020564247
 MonoBehaviour:
@@ -12137,7 +12138,8 @@ Transform:
   m_LocalPosition: {x: -0.19999999, y: 0.57941777, z: -4.7283916}
   m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
   m_ConstrainProportionsScale: 1
-  m_Children: [{fileID: 2020564246}]
+  m_Children:
+  - {fileID: 2020564246}
   m_Father: {fileID: 2146120722}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2044506063
@@ -12210,8 +12212,8 @@ MonoBehaviour:
   _distanceToDurationMod: 2.5
   _interpolation: 12
   _confirmationDistanceThreshold: 0.01
-  _maxX: 4.89
-  _minX: -4.04
+  _maxX: 26.2
+  _minX: -17.5
   _gizmoY: 0
 --- !u!114 &2044506065
 MonoBehaviour:
@@ -12225,7 +12227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linkedAnimators: []
   m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
   m_EffectDistance: {x: 5.42, y: 3.09}
   m_UseGraphicAlpha: 1
@@ -13981,7 +13982,7 @@ PrefabInstance:
     - target: {fileID: 5842360435000049080, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.739
+      value: -5.8090005
       objectReference: {fileID: 0}
     - target: {fileID: 5842360435000049080, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
@@ -15463,7 +15464,7 @@ PrefabInstance:
     - target: {fileID: 5842360435000049080, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.7389994
+      value: -5.809
       objectReference: {fileID: 0}
     - target: {fileID: 5842360435000049080, guid: 816a9a19a30db2a409304888c251b28d,
         type: 3}
