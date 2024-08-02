@@ -15,10 +15,6 @@ public class LevelButton : MonoBehaviour
 
     public void OnEnable()
     {
-        var xScalingFactor = GameSettings.Data.LevelButtonScale;
-        var yScalingFactor = GameSettings.Data.LevelButtonScale;
-        transform.localScale *= new Vector2(xScalingFactor, yScalingFactor);
-
         RefreshStars();
     }
 
