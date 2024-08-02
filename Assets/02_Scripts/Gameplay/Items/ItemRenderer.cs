@@ -60,8 +60,9 @@ public class ItemRenderer : Touchable
     {
         if (_item is null) return;
         if (!_item.Scale.HasValue) return;
-        var scale = _item.Scale.Value;
-        gameObject.transform.localScale = scale;
+        if (_item.Scale == _scaleO) return;
+        var scale = _scaleO = _item.Scale.Value;
+        gameObject.transform.localScale = scale.Value;
     }
 
     public bool UpdatePosition()

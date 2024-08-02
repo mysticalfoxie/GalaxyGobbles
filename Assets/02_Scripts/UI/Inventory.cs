@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class Inventory : MonoBehaviour
 
     public IEnumerable<Item> Items => _items;
 
+    public event EventHandler<IReadOnlyCollection<Item>> Update;
+
     public void Awake()
     {
         _positions = this.GetChildren().ToArray();
@@ -16,7 +19,12 @@ public class Inventory : MonoBehaviour
     
     public bool TryAdd(Item item)
     {
-        if (TryCraftSomethingWith(item)) return false;
+        if (TryCraftSomethingWith(item))
+        {
+            Update?.Invoke(this, _items);
+            return false;
+        }
+        
         if (!item.Data.Deliverable) return false;
         if (IsFull()) return false;
         
@@ -31,8 +39,17 @@ public class Inventory : MonoBehaviour
     {
         var recipe = _items.GetCraftableRecipesWith(item).FirstOrDefault(x => x.IsMatch);
         if (!recipe.IsMatch) return false;
+        
         var newItem = recipe.Fulfill();
         Replace(recipe.ItemA, newItem);
+        
+        if (item.Data.name == Identifiers.Value.BabyBokChoy.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.IngredientBokChoyAdded);
+        else if (item.Data.name == Identifiers.Value.Eyes.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.IngredientEyeAdded);
+        else if (item.Data.name == Identifiers.Value.Squid.name)
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.IngredientSquidAdded);
+        
         return true;
     }
 
@@ -79,6 +96,8 @@ public class Inventory : MonoBehaviour
             var item = _items[index];
             item.Follow(_positions[index].gameObject);
         }
+        
+        Update?.Invoke(this, _items);
     }
 }
 

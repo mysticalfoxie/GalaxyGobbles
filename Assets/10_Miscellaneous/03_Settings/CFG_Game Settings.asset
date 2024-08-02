@@ -18,22 +18,28 @@ MonoBehaviour:
   _customerThinkingTime: 2
   _customerEatingTime: 3
   _queueRestockDelay: 0.2
+  _customerBeamingTime: 0.2
   _customerDyingTime: 2
   _poisonHideDelay: 3
   _customerKillDelay: 2
   _tableCleaningTime: 2
+  _closureDelay: 1
   _patienceTickDelay: 0.25
   _patienceDropAmount: 0.5
   _customerAngryLeaveTime: 2
-  _customerBaseScore: 1
-  _customerMaxScore: 4
+  _customerLoveThreshold: 80
+  _customerAngryThreshold: 20
   _patienceRegainOnSeated: 20
   _patienceRegainOnItemReceive: 20
+  _customerBaseScore: 1
+  _customerMaxScore: 4
   _poisonIcon: {fileID: 11400000, guid: 57700fccc4889934e8fadf2dd19f429e, type: 2}
   _outlineMaterial: {fileID: -876546973899608171, guid: 7a56b9cdf2126ff4da39e5b5782c459e,
     type: 3}
   _checkmarkScale: {x: 7.438896, y: 6.756221, z: 1}
   _levelButtonScale: 0.9
+  _itemPulseAnimationStrength: 0.85
+  _itemPulseAnimationDuration: 1.14
   _itemPrefab: {fileID: 3252135566979042909, guid: d3024749853fb9448b22b795707563bf,
     type: 3}
   _checkmarkPrefab: {fileID: 7709166963047045946, guid: 64dbe30e781d8bb4dafe2860451f0d78,
@@ -46,8 +52,6 @@ MonoBehaviour:
     type: 3}
   _heartsPrefab: {fileID: 6238925351524442547, guid: cbf0db4c2d357394fba63f859a9896ac,
     type: 3}
-  _mainMenuMusic: {fileID: 11400000, guid: 8ece19bf06de39d449bc84c07ea084d6, type: 2}
-  _inGameMusic: {fileID: 11400000, guid: b1c7b702fcc28894186ba69a4c6a24b1, type: 2}
   _autoMap: 0
   _autoMapClearsConsole: 0
   _levels:

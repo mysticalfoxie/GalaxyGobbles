@@ -27,7 +27,8 @@ public class WaitAreaHandler : Singleton<WaitAreaHandler>
             Debug.Log("[Wait Area] A new customer waits outside and will arrive as soon as there's an open slot.");
             return;
         }
-
+        
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.CustomerEnters);
         slot.SetCustomer(customer);
         customer.Visible = true;
     }

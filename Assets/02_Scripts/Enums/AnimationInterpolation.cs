@@ -19,5 +19,6 @@ public enum AnimationInterpolation
     BounceIn,
     BounceOut,
     BounceInOut,
-    Funzies01,
+    Funzies,
+    Pulse
 }
