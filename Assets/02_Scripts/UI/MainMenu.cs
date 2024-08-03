@@ -298,14 +298,17 @@ public class MainMenu : Singleton<MainMenu>
         _volumeSlider.value = PlayerPrefs.HasKey("MasterVolume")
             ? _currentVolume = PlayerPrefs.GetFloat("MasterVolume")
             : PlayerPrefs.GetFloat("MasterVolume");
+        _audioMixer.SetFloat("MasterVolume", _currentVolume);
 
         _musicSlider.value = PlayerPrefs.HasKey("MusicVolume")
             ? _currentMusicVolume = PlayerPrefs.GetFloat("MusicVolume")
             : PlayerPrefs.GetFloat("MusicVolume");
+        _audioMixer.SetFloat("MusicVolume", _currentMusicVolume);
 
         _sfxSlider.value = PlayerPrefs.HasKey("SFXVolume")
             ? _currentSfxVolume = PlayerPrefs.GetFloat("SFXVolume")
             : PlayerPrefs.GetFloat("SFXVolume");
+        _audioMixer.SetFloat("SFXVolume", _currentSfxVolume);
     }
 
     public void StartLoadingLevel(int index)
