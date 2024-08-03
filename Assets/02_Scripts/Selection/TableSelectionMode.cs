@@ -8,7 +8,12 @@ public class TableSelectionHandler : ISelectionHandler
 
     public void OnEnable()
     {
-        
+        var chairs = References.Instance.Chairs
+            .Where(x => x && x.isActiveAndEnabled && x.Table)
+            .Where(x => x.Table.Customer is null);
+
+        foreach (var chair in chairs)
+            chair.StartAnimation();
     }
 
     public event EventHandler<object> Result;
@@ -80,5 +85,10 @@ public class TableSelectionHandler : ISelectionHandler
 
     public void OnDisable()
     {
+        var chairs = References.Instance.Chairs
+            .Where(x => x && x.isActiveAndEnabled && x.Table);
+        
+        foreach (var chair in chairs)
+            chair.StopAnimation();
     }
 }

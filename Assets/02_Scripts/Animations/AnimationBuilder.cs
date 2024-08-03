@@ -1,20 +1,23 @@
 using System;
 
-
 public class AnimationBuilder
 {
     private float _a;
     private float _b;
     private float _d = 1.0F;
     private AnimationInterpolation _i = AnimationInterpolation.EaseInOutCubic;
-    private Func<(float a, float b, float c, float t), bool> _ccc;
     private bool _playOnce;
+    private bool _looped;
     private Animation _animation;
     private Action _completeCallback;
     private Action _disposedCallback;
     private Action<(float c, float t)> _updateCallback;
 
-    private AnimationBuilder() { }
+    public bool IsPlaying => _animation?.IsPlaying ?? false;
+
+    private AnimationBuilder()
+    {
+    }
     
     public static AnimationBuilder CreateNew()
     {
@@ -45,21 +48,21 @@ public class AnimationBuilder
         return this;
     }
 
+    public AnimationBuilder SetLooped(bool value = true)
+    {
+        _looped = value;
+        return this;
+    }
+
     public AnimationBuilder SetInterpolation(AnimationInterpolation interpolation)
     {
         _i = interpolation;
         return this;
     }
 
-    public AnimationBuilder SetCustomCompleteCheck(Func<(float a, float b, float c, float t), bool> completeCheck)
+    public AnimationBuilder SetPlayOnce(bool playOnce = true)
     {
-        _ccc = completeCheck;
-        return this;
-    }
-
-    public AnimationBuilder OnlyPlayOnce()
-    {
-        _playOnce = true;
+        _playOnce = playOnce;
         return this;
     }
 
@@ -84,12 +87,14 @@ public class AnimationBuilder
     public AnimationBuilder Build()
     {
         if (_animation is not null) throw new InvalidOperationException("The animation has already been built.");
-        _animation = new Animation(_a, _b, _d, _i, _ccc);
+        _animation = new Animation(_a, _b, _d, _i);
         _animation.Complete += OnAnimationComplete;
         _animation.Disposed += OnAnimationDisposed;
         _animation.Tick += OnAnimationTick;
         return this;
     }
+
+    public bool IsDisposed() => _animation is null;
 
     public AnimationBuilder Start()
     {
@@ -98,12 +103,11 @@ public class AnimationBuilder
         return this;
     }
 
-    public bool TryStop()
+    public void Stop()
     {
-        if (_animation is null) return false;
+        if (_animation is null) return;
         _animation.Dispose();
         _completeCallback?.Invoke();
-        return true;
     }
 
     private void OnAnimationTick(object sender, (float c, float t) value)
@@ -113,6 +117,12 @@ public class AnimationBuilder
 
     private void OnAnimationComplete(object sender, EventArgs e)
     {
+        if (_looped)
+        {
+            _animation.Start();
+            return;
+        }
+        
         _completeCallback?.Invoke();
         
         if (!_playOnce) return;
@@ -126,3 +136,4 @@ public class AnimationBuilder
         _animation = null;
     }
 }
+

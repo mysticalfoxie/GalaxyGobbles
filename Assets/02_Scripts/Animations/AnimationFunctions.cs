@@ -25,14 +25,21 @@ public static class AnimationFunctions
             AnimationInterpolation.ElasticIn => ElasticIn(a, b, t),
             AnimationInterpolation.ElasticOut => ElasticOut(a, b, t),
             AnimationInterpolation.ElasticInOut => ElasticInOut(a, b, t),
-            AnimationInterpolation.Funzies01 => Funzies01(a, b, t),
+            AnimationInterpolation.Funzies => Funzies(a, b, t),
+            AnimationInterpolation.Pulse => Pulse(a, b, t),
             _ => throw new ArgumentOutOfRangeException(nameof(interpolation), interpolation, null)
         };
 
     // f(x)= -0.5 cos(x * 3.0F * π) + 0.5
-    public static float Funzies01(float a, float b, float x)
+    public static float Funzies(float a, float b, float x)
     {
         return Lerp(a, b, -0.5F * Mathf.Cos(x * 3.0F * Mathf.PI) + 0.5F);
+    }
+
+    // f(x) = -cos(6.285 * x - 1.57075)
+    public static float Pulse(float a, float b, float x)
+    {
+        return Lerp(a, b, -1.0F * Mathf.Cos(6.285F * x - 1.57075F));
     }
 
     // f(x) = 1 - cos(x * PI / 2)
