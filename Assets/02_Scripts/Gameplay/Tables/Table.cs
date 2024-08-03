@@ -30,8 +30,6 @@ public class Table : Touchable
 
         _cleaningItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Cleaning)));
         _thinkingDotsItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)));
-        
-        SetDirty();
     }
 
     public bool CanSeat { get; private set; }
