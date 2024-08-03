@@ -4,6 +4,7 @@ public static class VectorExtensions
 {
     public static Vector3 ToVector3(this Vector2 vector2, float z = 0) => new(vector2.x, vector2.y, z);
     
+    public static Vector3 Multiply(this Vector3 vector1, float value) => vector1.Multiply(new Vector3(value, value, value));
     public static Vector3 Multiply(this Vector3 vector1, float x, float y, float z) => vector1.Multiply(new Vector3(x, y, z));
     public static Vector3 Multiply(this Vector3 vector1, int x, int y, int z) => vector1.Multiply(new Vector3(x, y, z));
     public static Vector3 Multiply(this Vector3 vector1, Vector3 vector2)

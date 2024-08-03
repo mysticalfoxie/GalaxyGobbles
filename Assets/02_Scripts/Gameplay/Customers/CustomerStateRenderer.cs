@@ -1,5 +1,6 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CustomerStateRenderer : MonoBehaviour, IDisposable
@@ -45,6 +46,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
         Customer = StateMachine.Customer ?? throw new ArgumentNullException(nameof(Customer));
         _outline = GetComponent<Outline>() ?? GetComponentInChildren<Outline>() ?? throw new MissingComponentException();
+        BottomBar.Instance.Inventory.Update += OnInventoryUpdate;
         InitializeItems();
     }
 
@@ -84,6 +86,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         HideAllItems();
         RenderThinkingBubble();
         RenderDesiredItems();
+        CheckForNewItemMatches(BottomBar.Instance.Inventory.Items);
     }
 
     public void RenderWaitingForCheckout()
@@ -91,6 +94,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         HideAllItems();
         RenderThinkingBubble();
         RenderItem(_moneyItem);
+        _moneyItem.GameObject.GetComponent<ScalingAnimator>().Play();
     }
 
     public void RenderEating()
@@ -134,7 +138,6 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         HideAllItems();
         RenderItem(_poisonedItem);
-        StartCoroutine(nameof(StartPoisonCloudAnimation));
     }
 
     public void SetSeated()
@@ -192,6 +195,39 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         };
     }
 
+    private void OnInventoryUpdate(object sender, IReadOnlyCollection<Item> items)
+    {
+        if (!this || !gameObject || !isActiveAndEnabled) return;
+        if (StateMachine.State != CustomerState.WaitingForMeal) return;
+        CheckForNewItemMatches(items);
+        CheckForOutdatedMatches(items);
+    }
+
+    private void CheckForOutdatedMatches(IEnumerable<Item> items)
+    {
+        var activeItems = _desiredItems
+            .Select(x => new { Item = x, Animator = x.GameObject?.GetComponent<ScalingAnimator>() })
+            .Where(x => x.Animator is not null)
+            .Where(x => x.Animator.Playing);
+        
+        foreach (var container in activeItems)
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (items.All(x => x.Data.name != container.Item.Data.name))
+                container.Animator.Stop();
+    }
+
+    private void CheckForNewItemMatches(IEnumerable<Item> items)
+    {
+        foreach (var desiredItem in _desiredItems)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (items.All(y => y.Data.name != desiredItem.Data.name)) continue;
+            var animator = desiredItem.GameObject.GetComponent<ScalingAnimator>();
+            if (!animator) continue;
+            animator.Play();
+        }
+    }
+
     private void RenderItem(Item item, Vector2? position = null)
     {
         _thinkingBubble.SetActive(true);
@@ -207,16 +243,15 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     private void InitializeItems()
     {
         foreach (var item in _items = new[]
-                 {
-                     _chairItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat), dimension: ItemDisplayDimension.Dimension3D)),
-                     _moneyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout),
-                         dimension: ItemDisplayDimension.Dimension3D)),
-                     _thinkDots = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking), dimension: ItemDisplayDimension.Dimension3D)),
-                     _eatingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Eating), dimension: ItemDisplayDimension.Dimension3D)),
-                     _dyingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Dying), dimension: ItemDisplayDimension.Dimension3D)),
-                     _poisonedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned), dimension: ItemDisplayDimension.Dimension3D)),
-                     _angryItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Angry), dimension: ItemDisplayDimension.Dimension3D)),
-                 }) item.ForwardTouchEventsTo(Customer);
+        {
+            _chairItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForSeat), dimension: ItemDisplayDimension.Dimension3D)),
+            _moneyItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.WaitForCheckout), dimension: ItemDisplayDimension.Dimension3D)),
+            _thinkDots = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking), dimension: ItemDisplayDimension.Dimension3D)),
+            _eatingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Eating), dimension: ItemDisplayDimension.Dimension3D)),
+            _dyingItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Dying), dimension: ItemDisplayDimension.Dimension3D)),
+            _poisonedItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Poisoned), dimension: ItemDisplayDimension.Dimension3D)),
+            _angryItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Angry), dimension: ItemDisplayDimension.Dimension3D)),
+        }) item.ForwardTouchEventsTo(Customer);
     }
 
     private void CreateDesiredItems()
@@ -235,6 +270,12 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
                 .Show();
     }
 
+    public void OnPoisonHidden()
+    {
+        _thinkingBubble.SetActive(false);
+        HideAllItems();
+    }
+
     public void InitializeCustomerSprites(SpeciesData data)
     {
         SpriteRenderer = this.GetRequiredComponentInChildren<SpriteRenderer>();
@@ -247,33 +288,5 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
         var boxCollider = this.GetRequiredComponent<BoxCollider>();
         boxCollider.size = data.ColliderSize;
         boxCollider.center = Vector3.zero;
-    }
-
-    private IEnumerator StartPoisonCloudAnimation()
-    {
-        yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
-
-        CustomerPoisonRenderer.Instance.PoisonHidden += OnPoisonHidden;
-        CustomerPoisonRenderer.Instance.MovingEnded += OnMovingEnded;
-        CustomerPoisonRenderer.Instance.StartPoisonAnimation(Customer);
-        yield break;
-
-        void OnMovingEnded(object sender, EventArgs e)
-        {
-            CustomerPoisonRenderer.Instance.MovingEnded -= OnMovingEnded;
-
-            var target = Customer.Table.NeighbourTable.Customer;
-            if (target is not null) target.Kill();
-        }
-
-        void OnPoisonHidden(object sender, EventArgs e)
-        {
-            CustomerPoisonRenderer.Instance.PoisonHidden -= OnPoisonHidden;
-
-            _thinkingBubble.SetActive(false);
-            HideAllItems();
-
-            Customer.StateMachine.State = CustomerState.WaitingForCheckout;
-        }
     }
 }

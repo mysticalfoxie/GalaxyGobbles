@@ -8,8 +8,12 @@ public class TableSelectionHandler : ISelectionHandler
 
     public void OnEnable()
     {
-        Result?.Invoke(null, null);
-        Cancel?.Invoke(null, null);
+        var chairs = References.Instance.Chairs
+            .Where(x => x && x.isActiveAndEnabled && x.Table)
+            .Where(x => x.Table.Customer is null);
+
+        foreach (var chair in chairs)
+            chair.StartAnimation();
     }
 
     public event EventHandler<object> Result;
@@ -19,8 +23,8 @@ public class TableSelectionHandler : ISelectionHandler
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement
         var touchable = @object.GetComponents<Touchable>().FirstOrDefault();
-        if (!touchable || touchable.CancelSelectionOnTouch) return;
-        if (SelectionSystem.Instance.Selection is null) return;
+        if (!IsValidTouch(touchable)) return;
+        
         eventArgs.CancelPropagation();
 
         if (GetTouchedTable(@object, out var table))
@@ -29,6 +33,16 @@ public class TableSelectionHandler : ISelectionHandler
             Cancel?.Invoke(this, null);
 
         SelectionSystem.Instance.Deselect();
+    }
+
+    private bool IsValidTouch(Touchable touchable)
+    {
+        if (touchable && !touchable.CancelSelectionOnTouch) return true;
+        
+        Cancel?.Invoke(this, null);
+        SelectionSystem.Instance.Deselect();
+        
+        return true;
     }
 
     private static bool GetTouchedTable(GameObject @object, out TableSelectEvent eventArgs)
@@ -71,5 +85,10 @@ public class TableSelectionHandler : ISelectionHandler
 
     public void OnDisable()
     {
+        var chairs = References.Instance.Chairs
+            .Where(x => x && x.isActiveAndEnabled && x.Table);
+        
+        foreach (var chair in chairs)
+            chair.StopAnimation();
     }
 }

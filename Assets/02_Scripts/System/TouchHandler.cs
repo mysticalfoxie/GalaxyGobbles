@@ -30,13 +30,13 @@ public class TouchHandler : Singleton<TouchHandler>
         var eventArgs = new TouchEvent(touched);
         Touch?.Invoke(touched, eventArgs);
         var touchables = touched.GetComponents<Touchable>();
+        var interfaces = touched.GetComponents<ITouchable>();
         TouchedGameObject = null;
 
         if (eventArgs.Cancelled) return;
-        if (touchables.Length == 0) return;
         
-        foreach (var touchable in touchables)
-            touchable.InvokeTouch(this, EventArgs.Empty);
+        foreach (var touchable in touchables) touchable.InvokeTouch(this, EventArgs.Empty);
+        foreach (var @interface in interfaces) @interface.OnTouch();
     }
 
     private void CheckTouchState()
@@ -68,8 +68,12 @@ public class TouchHandler : Singleton<TouchHandler>
         if (TouchInputSystem.Instance is null) return;
         if (!TouchInputSystem.Instance.IsFingerDown) return;
         var position = TouchInputSystem.GetTouchPosition();
+        TouchFeedback.Instance.TryPlayFeedbackAnimation(position);
         if (position == default) return;
+        if (!Raycaster.Instance) return; 
         Raycaster.Instance.Raycast(position, out _touchStartGameObject);
+        TouchFeedback.Instance.TryPlayShrinkAnimation(_touchStartGameObject);
+        TouchFeedback.Instance.InvokePushEvent(_touchStartGameObject);
     }
 
     private void HandleTouchInputUp()
@@ -79,7 +83,9 @@ public class TouchHandler : Singleton<TouchHandler>
         if (!TouchInputSystem.Instance.IsFingerUp) return;
         var position = TouchInputSystem.GetTouchPosition();
         if (position == default) return;
-
+        if (!Raycaster.Instance) return;
         Raycaster.Instance.Raycast(position, out _touchEndGameObject);
+        TouchFeedback.TryPlayExpandAnimation(_touchEndGameObject);
+        TouchFeedback.Instance.InvokeReleaseEvent(_touchStartGameObject);
     }
 }
