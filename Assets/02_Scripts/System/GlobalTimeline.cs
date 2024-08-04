@@ -10,10 +10,12 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     public uint SecondsUntilClosure { get; private set; }
     public bool Loading { get; private set; } = true;
+    public bool DayComplete { get; set; }
 
     public override void Awake()
     {
         base.Awake();
+        DayComplete = false;
 
         var operation = WaitUntilLevelLoaded(() =>
         {
@@ -75,6 +77,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
     {
         yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
         MainMenu.Instance.CompleteDayMenu();
+        DayComplete = true;
         Active = false;
     }
 }
