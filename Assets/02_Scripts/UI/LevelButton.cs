@@ -34,7 +34,9 @@ public class LevelButton : MonoBehaviour
 
     public void UpdateLevel(int unlockedLevels)
     {
-        LevelButtonski.interactable = LevelIndex <= unlockedLevels;
+        // Todo: Fix me - I'm hard stuck at level 3
+        // It seems like the lines where "UnlockedLevels" is set are corrupted, not this here. 
+        LevelButtonski.interactable = true; // LevelIndex <= unlockedLevels;
     }
 
     public void UpdateStars(int unlockedLevels)
