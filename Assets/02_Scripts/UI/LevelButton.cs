@@ -10,17 +10,19 @@ public class LevelButton : MonoBehaviour
 
     public static int UnlockedLevels;
     public int LevelIndex { get; set; }
-
+    public UnityEngine.UI.Button LevelButtonski;
     public event Action<int> Clicked;
 
     public void OnEnable()
     {
-        RefreshStars();
+        LevelButtonski = this.GetRequiredComponent<Button>();
     }
 
-    public void RefreshStars()
+    public void Refresh()
     {
-        AddStars();
+        var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
+        UpdateStars(unlockedLevels);
+        UpdateLevel(unlockedLevels);
     }
 
     public void AddStars()
@@ -29,13 +31,21 @@ public class LevelButton : MonoBehaviour
         // var unlockedLevels = PlayerPrefs.HasKey("UnlockedLevels")
         //     ? PlayerPrefs.GetInt("UnlockedLevels", 0)
         //     : PlayerPrefs.GetInt("UnlockedLevels");
-        UpdateStars();
         if (unlockedLevels < LevelIndex) return;
         var button = this.GetRequiredComponent<Button>();
         button.interactable = true;
+        LevelButtonski.interactable = LevelIndex <= unlockedLevels;
+        UpdateStars(unlockedLevels);
     }
 
-    public void UpdateStars()
+    public void UpdateLevel(int unlockedLevels)
+    {
+        // Todo: Fix me - I'm hard stuck at level 3
+        // It seems like the lines where "UnlockedLevels" is set are corrupted, not this here. 
+        LevelButtonski.interactable = true; // LevelIndex <= unlockedLevels;
+    }
+
+    public void UpdateStars(int unlockedLevels)
     {
         var stars = PlayerPrefs.GetInt("Stars" + LevelIndex, 0);
         // var stars = PlayerPrefs.HasKey("Stars")
