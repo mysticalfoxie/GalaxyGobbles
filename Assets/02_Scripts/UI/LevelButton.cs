@@ -16,6 +16,10 @@ public class LevelButton : MonoBehaviour
     public void OnEnable()
     {
         LevelButtonski = this.GetRequiredComponent<Button>();
+    }
+
+    public void Refresh()
+    {
         var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
         UpdateStars(unlockedLevels);
         UpdateLevel(unlockedLevels);

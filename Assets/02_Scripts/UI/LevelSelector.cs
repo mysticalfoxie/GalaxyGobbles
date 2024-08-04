@@ -28,7 +28,7 @@ public class LevelSelector : MonoBehaviour
             levelNumber.text = "Level "+(i + 1).ToString();
             var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
             buttonScript.LevelIndex = i;
-            buttonScript.AddStars();
+            buttonScript.Refresh();
             
             var ci = i;
             buttonScript.Clicked += _ => MainMenu.Instance.StartLoadingLevel(ci);
