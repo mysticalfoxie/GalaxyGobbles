@@ -227,7 +227,7 @@ public class MainMenu : Singleton<MainMenu>
         var starsAcquired = ProgressBar.Progress;
         var maxScore = LevelManager.CurrentLevel.MaxScore;
         _maxScore.text = Mathf.Floor(maxScore).ToString(CultureInfo.InvariantCulture);
-        _valueScore.text = BottomBar.Instance.Score.Value.ToString(CultureInfo.InvariantCulture);
+        _valueScore.text = Mathf.Floor(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
         _levelText.text = "Level" +
                           (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
 
