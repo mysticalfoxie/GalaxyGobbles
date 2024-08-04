@@ -10,7 +10,7 @@ public class LevelButton : MonoBehaviour
 
     public static int UnlockedLevels;
     public int LevelIndex { get; set; }
-
+    public UnityEngine.UI.Button LevelButtonski;
     public event Action<int> Clicked;
 
     public void Awake()
@@ -19,6 +19,7 @@ public class LevelButton : MonoBehaviour
         var scalingFactor = new Vector2(GameSettings.Data.LevelButtonScale, GameSettings.Data.LevelButtonScale);
         if (levelButtonScale != scalingFactor)
             transform.localScale *= scalingFactor;
+        LevelButtonski = this.GetRequiredComponent<Button>();
     }
 
     public void OnEnable()
@@ -30,18 +31,14 @@ public class LevelButton : MonoBehaviour
     public void AddStars()
     {
         var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
-        if (unlockedLevels < LevelIndex) return;
-        var button = this.GetRequiredComponent<Button>();
-        button.interactable = true;
+        LevelButtonski.interactable = LevelIndex <= unlockedLevels;
         UpdateStars();
     }
 
     public void UpdateLevel()
     {
-        var button = this.GetRequiredComponent<Button>();
         var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
-        button.interactable = unlockedLevels >= LevelIndex;
-            Debug.Log($"UnlockedLevels var is {unlockedLevels} and the levelindex is {LevelIndex}");
+        LevelButtonski.interactable = unlockedLevels >= LevelIndex;
     }
 
     public void UpdateStars()
