@@ -23,7 +23,7 @@ public class LevelSelector : MonoBehaviour
         for (var i = 0; i < levels.Length; i++)
         {
             var levelButton = Instantiate(_levelButtonPrefab);
-            levelButton.transform!.SetParent(_parentLevelButton.transform);
+            levelButton.transform!.SetParent(_parentLevelButton.transform, false);
             var levelNumber = levelButton.GetComponentInChildren<TMP_Text>();
             levelNumber.text = "Level "+(i + 1).ToString();
             var buttonScript = levelButton.GetRequiredComponent<LevelButton>();
