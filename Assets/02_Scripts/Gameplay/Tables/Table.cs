@@ -2,21 +2,21 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Table : Touchable
 {
     private Chair[] _chairs;
 
     [SerializeField] private Table _neighbourTable;
-    [SerializeField] private Orientation _orientation;
-    [SerializeField] private Vector2 _thinkBubbleOffset;
+    [SerializeField] private GameObject _cleanBubble;
+    [FormerlySerializedAs("_cleanBubbleItem")] [SerializeField] private Transform _cleanBubbleItemPosition;
+    [SerializeField] private Transform _parent;
     
     private bool _cleaning;
-    private Item _tableThinkingBubbleItem;
-    private Item _thinkingDotsItem;
     private Item _cleaningItem;
-        
-    public Orientation Orientation => _orientation;
+    private Item _thinkingDotsItem;
+
     public Table NeighbourTable => _neighbourTable;
     public bool RequiresCleaning { get; private set; }
 
@@ -28,9 +28,8 @@ public class Table : Touchable
         _chairs = GetComponentsInChildren<Chair>();
         CanSeat = _chairs.Length > 0;
 
-        _tableThinkingBubbleItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.ThinkBubbleTable)));
-        _thinkingDotsItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)));
         _cleaningItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Cleaning)));
+        _thinkingDotsItem = new Item(new(this, GameSettings.GetItemMatch(Identifiers.Value.Thinking)));
     }
 
     public bool CanSeat { get; private set; }
@@ -55,8 +54,15 @@ public class Table : Touchable
         if (RequiresCleaning) return;
         RequiresCleaning = true;
         
-        _tableThinkingBubbleItem.Show().Follow(this, _thinkBubbleOffset);
-        _cleaningItem.Show().Follow(_tableThinkingBubbleItem);
+        _cleanBubble.SetActive(true);
+        _cleaningItem
+            .SetParent(_parent)
+            .SetLocalPosition(_cleanBubbleItemPosition.localPosition)
+            .SetRotation(new(0, 0, 0))
+            .ForwardTouchEventsTo(this)
+            .Show();
+        
+        _cleaningItem.GameObject.GetComponent<ScalingAnimator>().Play();
     }
 
     protected override void OnTouch()
@@ -76,12 +82,19 @@ public class Table : Touchable
     private IEnumerator StartCleaning()
     {
         _cleaningItem.Hide();
-        _thinkingDotsItem.Show().Follow(_tableThinkingBubbleItem);
+        _thinkingDotsItem
+            .SetParent(_parent)
+            .SetLocalPosition(_cleanBubbleItemPosition.localPosition)
+            .SetRotation(new(0, 0, 0))
+            .ForwardTouchEventsTo(this)
+            .Show();
+        
         AudioManager.Instance.PlaySFX(AudioSettings.Data.LaserScanCleaning);
         yield return new WaitForSeconds(GameSettings.Data.TableCleaningTime);
         RequiresCleaning = false;
-        _tableThinkingBubbleItem.Hide();
         _thinkingDotsItem.Hide();
+        _cleanBubble.SetActive(false);
+        _cleaning = false;
     }
 
     public void ClearSeat()
