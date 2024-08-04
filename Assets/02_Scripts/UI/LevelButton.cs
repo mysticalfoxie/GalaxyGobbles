@@ -15,10 +15,6 @@ public class LevelButton : MonoBehaviour
 
     public void Awake()
     {
-        var levelButtonScale = (Vector2)transform.localScale;
-        var scalingFactor = new Vector2(GameSettings.Data.LevelButtonScale, GameSettings.Data.LevelButtonScale);
-        if (levelButtonScale != scalingFactor)
-            transform.localScale *= scalingFactor;
         LevelButtonski = this.GetRequiredComponent<Button>();
     }
 
