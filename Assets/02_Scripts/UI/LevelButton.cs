@@ -13,31 +13,27 @@ public class LevelButton : MonoBehaviour
     public UnityEngine.UI.Button LevelButtonski;
     public event Action<int> Clicked;
 
-    public void Awake()
-    {
-        LevelButtonski = this.GetRequiredComponent<Button>();
-    }
-
     public void OnEnable()
     {
-        UpdateStars();
-        UpdateLevel();
+        LevelButtonski = this.GetRequiredComponent<Button>();
+        var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
+        UpdateStars(unlockedLevels);
+        UpdateLevel(unlockedLevels);
     }
 
     public void AddStars()
     {
         var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
         LevelButtonski.interactable = LevelIndex <= unlockedLevels;
-        UpdateStars();
+        UpdateStars(unlockedLevels);
     }
 
-    public void UpdateLevel()
+    public void UpdateLevel(int unlockedLevels)
     {
-        var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
-        LevelButtonski.interactable = unlockedLevels >= LevelIndex;
+        LevelButtonski.interactable = LevelIndex <= unlockedLevels;
     }
 
-    public void UpdateStars()
+    public void UpdateStars(int unlockedLevels)
     {
         var stars = PlayerPrefs.GetInt("Stars" + LevelIndex, 0);
         for (var i = 0; i < stars; i++)
