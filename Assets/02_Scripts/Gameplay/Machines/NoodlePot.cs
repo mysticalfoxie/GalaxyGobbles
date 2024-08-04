@@ -70,10 +70,12 @@ public class NoodlePot : Touchable
 
     private IEnumerator OnCookingFinished()
     {
+        if (GlobalTimeline.Instance.DayComplete) yield break;
         UpdateState(NoodlePotState.Cooked);
         AudioManager.Instance.PlaySFX(AudioSettings.Data.Ready, true);
         var overcookTime = GameSettings.Data.NoodleOvercookTime;
         yield return new WaitForSeconds(overcookTime);
+        if (GlobalTimeline.Instance.DayComplete) yield break;
         if (State != NoodlePotState.Cooked) yield break;
         AudioManager.Instance.PlaySFX(AudioSettings.Data.Overcooked, true);
         UpdateState(NoodlePotState.Overcooked);
@@ -83,6 +85,7 @@ public class NoodlePot : Touchable
     {
         var cleaningTime = GameSettings.Data.PotCleaningTime;
         yield return new WaitForSeconds(cleaningTime);
+        if (GlobalTimeline.Instance.DayComplete) yield break;
         AudioManager.Instance.PlaySFX(AudioSettings.Data.PotCleaning);
         UpdateState(NoodlePotState.Empty);
     }
