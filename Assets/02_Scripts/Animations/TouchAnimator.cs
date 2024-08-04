@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TouchExpandAnimator))]
@@ -27,7 +28,7 @@ public class TouchAnimator : MonoBehaviour
 
     public void Shrink()
     {
-        foreach (var x in _linkedAnimators) 
+        foreach (var x in _linkedAnimators.Where(x => x && x.isActiveAndEnabled)) 
             x.ShrinkInternal();
         
         ShrinkInternal();
@@ -35,7 +36,7 @@ public class TouchAnimator : MonoBehaviour
 
     public void Expand()
     {
-        foreach (var x in _linkedAnimators) 
+        foreach (var x in _linkedAnimators.Where(x => x && x.isActiveAndEnabled))
             x.ExpandInternal();
 
         ExpandInternal();
