@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb1b9afe62b4c538e7daeb03c7647f5, type: 3}
   m_Name: ITEM_Noodle Pot (Cooked)
   m_EditorClassIdentifier: 
-  _id: ITEM_Noodle Pot (Cooked)
   _name: Cooked Noodle Pot
   _deliverable: 0
+  _canBecomePoison: 0
+  _canBecomePoisoned: 0
+  _score: 1
   _sprites:
   - {fileID: 11400000, guid: ef33ad761e166bc4bb506ddddea335cd, type: 2}
   - {fileID: 11400000, guid: 0d90f25d642983c4085b8978f1e9e399, type: 2}
   - {fileID: 11400000, guid: c62aee2823bdfb243b0443186d8f2970, type: 2}
+  - {fileID: 11400000, guid: 32439c88bef862746a53075beb8592e0, type: 2}
+  - {fileID: 11400000, guid: 5b72d32999c26bf469e5effccc1b68ef, type: 2}
+  - {fileID: 11400000, guid: e7d4547ca55c9334393cd4b9476739f0, type: 2}
   - {fileID: 11400000, guid: e59a0c148c09395498679dbab97f27f7, type: 2}

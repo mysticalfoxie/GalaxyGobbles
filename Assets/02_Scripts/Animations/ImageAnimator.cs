@@ -53,7 +53,7 @@ public class ImageAnimator : MonoBehaviour
         _index = Mathf.FloorToInt(_time / msPerFrame);
         _index = Mathf.Min(Mathf.Max(_index, 0), _sprites.Length - 1);
 
-        if (_index >= _sprites.Length - 1 && msPerFrame * _sprites.Length >= _time)
+        if (_time >= msPerFrame * _sprites.Length)
         {
             Stop();
             

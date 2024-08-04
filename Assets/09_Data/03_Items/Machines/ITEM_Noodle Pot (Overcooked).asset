@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb1b9afe62b4c538e7daeb03c7647f5, type: 3}
   m_Name: ITEM_Noodle Pot (Overcooked)
   m_EditorClassIdentifier: 
-  _id: ITEM_Noodle Pot (Overcooked)
   _name: Overcooked Noodle Pot
   _deliverable: 0
+  _canBecomePoison: 0
+  _canBecomePoisoned: 0
+  _score: 1
   _sprites:
   - {fileID: 11400000, guid: ef33ad761e166bc4bb506ddddea335cd, type: 2}
   - {fileID: 11400000, guid: 0d90f25d642983c4085b8978f1e9e399, type: 2}
   - {fileID: 11400000, guid: 61f93c864979336469067efb4d570feb, type: 2}
+  - {fileID: 11400000, guid: a33ad2b6fc7cbb248a12163226f88fc2, type: 2}
+  - {fileID: 11400000, guid: 6a2c5431edab56b4c9a0bc18a31b5ea7, type: 2}
+  - {fileID: 11400000, guid: 02178883ef1c90b4ca17be70e2429e2d, type: 2}
   - {fileID: 11400000, guid: e59a0c148c09395498679dbab97f27f7, type: 2}
