@@ -130,9 +130,18 @@ public class MainMenu : Singleton<MainMenu>
         _pausedGame = false;
     }
 
-    public void HomeMenu()
+    public void HomeMenu(bool skipLoad = false)
+    {
+        if (skipLoad)
+            HomeMenuInternal();
+        else
+            StartLoadingLevel(-1, HomeMenuInternal);
+    }
+
+    private void HomeMenuInternal()
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
+        if (_credits) _credits.SetActive(false);
         if (_assassinationBriefing) _assassinationBriefing.SetActive(false);
         Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);
@@ -140,7 +149,6 @@ public class MainMenu : Singleton<MainMenu>
         _startMenu.SetActive(true);
         _blockPauseMenu = true;
         _sidebar.SetActive(false);
-        SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
     public void AssassinationBriefing()
@@ -178,13 +186,20 @@ public class MainMenu : Singleton<MainMenu>
         _assassinationBriefingLoading = true;
         Time.timeScale = 1F;
         GlobalTimeline.Instance.Disable();
-        StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(HomeMenu,
+        StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
+            () => HomeMenu(true),
             () => _assassinationBriefingLoading = false));
     }
 
     public void Options()
     {
         _options.SetActive(true);
+    }
+
+    public void Credits()
+    {
+        _credits.SetActive(true);
+        _startMenu.SetActive(false);
     }
 
     public void SetVolume(float masterVolume)
@@ -261,17 +276,17 @@ public class MainMenu : Singleton<MainMenu>
         {
             _bounty1.transform.gameObject.SetActive(false);
             _bounty2.transform.gameObject.SetActive(false);
-            _bounty3.transform.gameObject.SetActive(false); 
+            _bounty3.transform.gameObject.SetActive(false);
             _noDeathsText.gameObject.SetActive(true);
             _completeBountyStamp.SetActive(false);
             _failedBountyStamp.SetActive(false);
         }
         else
-        { 
+        {
             _noDeathsText.gameObject.SetActive(false);
             _bounty1.transform.gameObject.SetActive(true);
             _bounty2.transform.gameObject.SetActive(true);
-            _bounty3.transform.gameObject.SetActive(true); 
+            _bounty3.transform.gameObject.SetActive(true);
             var bounties = BottomBar.Instance.Bounties.GetBounties();
             _bounty1.sprite = GetBountyCard(bounties, 0);
             _bounty2.sprite = GetBountyCard(bounties, 1);
@@ -288,7 +303,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         if (index > bounties.Length - 1)
             return _emptyBounty;
-        
+
         if (bounties[index].WasTarget)
         {
             if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
@@ -297,7 +312,7 @@ public class MainMenu : Singleton<MainMenu>
                 return _bobBountySuccess;
             if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
                 return _ikaruzBountySuccess;
-            
+
             throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
         }
 
@@ -307,7 +322,7 @@ public class MainMenu : Singleton<MainMenu>
             return _bobBountyFail;
         if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
             return _ikaruzBountyFail;
-        
+
         throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
@@ -383,21 +398,38 @@ public class MainMenu : Singleton<MainMenu>
         _audioMixer.SetFloat("SFXVolume", _currentSfxVolume);
     }
 
-    public void StartLoadingLevel(int index)
+    public void StartLoadingLevel(int index, Action actionsDuringBlack = null)
     {
         if (_levelLoading) return;
         _levelLoading = true;
 
-        StartCoroutine(LoadLevelAsync(index));
+        StartCoroutine(LoadLevelAsync(index, actionsDuringBlack));
     }
 
-    private IEnumerator LoadLevelAsync(int index)
+    private IEnumerator LoadLevelAsync(int index, Action actionsDuringBlack = null)
     {
+        Time.timeScale = 1F;
         yield return Fader.Instance.FadeBlackAsync();
+
+        if (index == -1)
+            yield return LoadSceneAsyncInternal(MAIN_MENU_SCENE_INDEX);
+        else
+            yield return LoadLevelAsyncInternal(index);
+
+        actionsDuringBlack?.Invoke();
+
+        yield return Fader.Instance.FadeWhiteAsync();
+        _levelLoading = false;
+    }
+
+    private static IEnumerator LoadSceneAsyncInternal(int index)
+    {
+        yield return SceneManager.LoadSceneAsync(index);
+    }
+
+    private IEnumerator LoadLevelAsyncInternal(int index)
+    {
         yield return LevelManager.Instance.LoadLevelAsync(index);
         AssassinationBriefing();
-        yield return Fader.Instance.FadeWhiteAsync();
-        if (_assassinationBriefing.activeInHierarchy) Time.timeScale = 0F;
-        _levelLoading = false;
     }
 }
