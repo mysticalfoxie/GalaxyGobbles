@@ -3632,6 +3632,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8699382365016992031, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9052054762137031829, guid: 23bd2ac57bbb29c4ca7fb68d5b89c0e3,
         type: 3}
       propertyPath: m_IsActive
@@ -6196,18 +6201,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 150766218}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1197416313 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4886730010170058584, guid: 282436c2e30747843a9cb0637648cdef,
-    type: 3}
-  m_PrefabInstance: {fileID: 150766218}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 153ea2b32175462bbd31fca6a25f4f5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1198641273
 GameObject:
   m_ObjectHideFlags: 0
@@ -8442,18 +8435,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1408064542}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1421602722 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4886730010170058584, guid: 282436c2e30747843a9cb0637648cdef,
-    type: 3}
-  m_PrefabInstance: {fileID: 1663000094}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 153ea2b32175462bbd31fca6a25f4f5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1427899633
 GameObject:
   m_ObjectHideFlags: 0
@@ -9917,7 +9898,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _neighbourTable
       value: 
-      objectReference: {fileID: 1197416313}
+      objectReference: {fileID: 0}
     - target: {fileID: 4999715352668715786, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13425,7 +13406,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _neighbourTable
       value: 
-      objectReference: {fileID: 1421602722}
+      objectReference: {fileID: 0}
     - target: {fileID: 4999715352668715786, guid: 282436c2e30747843a9cb0637648cdef,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14403,7 +14384,7 @@ PrefabInstance:
     - target: {fileID: 3784486756144850194, guid: 034b71642ffdb5741af31c5d5bbfca74,
         type: 3}
       propertyPath: orthographic size
-      value: 204.75
+      value: 324.1875
       objectReference: {fileID: 0}
     - target: {fileID: 6033037049903796583, guid: 034b71642ffdb5741af31c5d5bbfca74,
         type: 3}
@@ -14458,7 +14439,7 @@ PrefabInstance:
     - target: {fileID: 7640467561414709899, guid: 034b71642ffdb5741af31c5d5bbfca74,
         type: 3}
       propertyPath: orthographic size
-      value: 204.75
+      value: 324.1875
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
