@@ -47,6 +47,7 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private TMP_Text _targetText;
     [SerializeField] private TMP_Text _minScoreText;
     [SerializeField] private TMP_Text _levelNumberAssassinationBriefing;
+    [SerializeField] private TMP_Text _noDeathsText;
 
     [Header("Assassination Briefing")] [SerializeField]
     private GameObject _ikaruzCard;
@@ -227,8 +228,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ReplayLevel()
     {
-        var operation = LevelManager.Instance.LoadLevelAsync(LevelManager.CurrentLevelIndex);
-        StartCoroutine(operation);
+        StartLoadingLevel(LevelManager.CurrentLevelIndex);
     }
 
     public void QuitGame()
@@ -246,8 +246,8 @@ public class MainMenu : Singleton<MainMenu>
         _completeDayMenu.SetActive(true);
         _backgroundImage.SetActive(true);
         AudioManager.Instance.StopAll();
-        RenderBounties();
         CalculateScore();
+        RenderBounties();
     }
 
     public void ContinueButton()
@@ -257,13 +257,31 @@ public class MainMenu : Singleton<MainMenu>
 
     private void RenderBounties()
     {
-        var bounties = BottomBar.Instance.Bounties.GetBounties();
-        _bounty1.sprite = GetBountyCard(bounties, 0);
-        _bounty2.sprite = GetBountyCard(bounties, 1);
-        _bounty3.sprite = GetBountyCard(bounties, 2);
-        var bountySucceeded = bounties.Any(x => x.WasTarget);
-        _completeBountyStamp.SetActive(bountySucceeded);
-        _failedBountyStamp.SetActive(!bountySucceeded);
+        if (LevelManager.CurrentLevel.Target is null)
+        {
+            _bounty1.transform.gameObject.SetActive(false);
+            _bounty2.transform.gameObject.SetActive(false);
+            _bounty3.transform.gameObject.SetActive(false); 
+            _noDeathsText.gameObject.SetActive(true);
+            _completeBountyStamp.SetActive(false);
+            _failedBountyStamp.SetActive(false);
+        }
+        else
+        { 
+            _noDeathsText.gameObject.SetActive(false);
+            _bounty1.transform.gameObject.SetActive(true);
+            _bounty2.transform.gameObject.SetActive(true);
+            _bounty3.transform.gameObject.SetActive(true); 
+            var bounties = BottomBar.Instance.Bounties.GetBounties();
+            _bounty1.sprite = GetBountyCard(bounties, 0);
+            _bounty2.sprite = GetBountyCard(bounties, 1);
+            _bounty3.sprite = GetBountyCard(bounties, 2);
+            var bountySucceeded = bounties.Any(x => x.WasTarget);
+            _completeBountyStamp.SetActive(bountySucceeded);
+            _failedBountyStamp.SetActive(!bountySucceeded);
+            if (_continueButton.activeInHierarchy)
+                _continueButton.SetActive(bountySucceeded);
+        }
     }
 
     private Sprite GetBountyCard(BountyData[] bounties, int index)
