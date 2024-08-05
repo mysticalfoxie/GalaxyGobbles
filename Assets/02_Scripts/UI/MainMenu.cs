@@ -261,8 +261,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ContinueButton()
     {
-        var operation = LevelManager.Instance.LoadLevelAsync(LevelManager.CurrentLevelIndex + 1);
-        StartCoroutine(operation);
+        StartLoadingLevel(LevelManager.CurrentLevelIndex + 1);
     }
 
     private void RenderBounties()
@@ -380,10 +379,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void StartLoadingLevel(int index)
     {
-        // The level is already loading -> Do nothing -> Return
         if (_levelLoading) return;
-
-        // Starting to load the level
         _levelLoading = true;
 
         StartCoroutine(LoadLevelAsync(index));
