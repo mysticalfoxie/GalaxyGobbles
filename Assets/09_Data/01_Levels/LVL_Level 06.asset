@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4112a7d61daa462a8db5564fcc6092d5, type: 3}
   m_Name: LVL_Level 06
   m_EditorClassIdentifier: 
-  _levelNumber: 3
+  _levelNumber: 6
   _closeAfterMinutes: 2
   _closeAfterSeconds: 0
-  _targetText: 
+  _targetSpecies: {fileID: 11400000, guid: d100db6dee7d2514fbff39a86629d935, type: 2}
+  _targetPosition: 1
+  _amountOfSpeciesInLevel: 4
+  _targetExists: 1
   _requiredScoreStar1: 95
   _requiredScoreStar2: 130
   _requiredScoreStar3: 155

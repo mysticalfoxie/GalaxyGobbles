@@ -225,9 +225,10 @@ public class Customer : Selectable
 
     private void OnCustomerDied()
     {
+        var level = LevelManager.CurrentLevel;
         var bounty = Model.Create<BountyData>(model =>
         {
-            model.WasTarget = _data._isAssassinationTarget;
+            model.WasTarget = level.GetCustomerPosition(_data) == level.TargetPosition && _data.Species.name == level.Target.name;
             model.Species = _data.Species;
         });
 

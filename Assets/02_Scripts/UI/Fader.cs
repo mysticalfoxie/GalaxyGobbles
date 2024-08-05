@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,6 +100,14 @@ public class Fader : Singleton<Fader>
         _animator.SetBool(_fadeWhiteParameter, false);
         _animator.SetFloat(_fadeSpeedParameter, _fadeSpeedMultiplier);
         if (_debugging) Debug.Log("Fading to white ended...");
+    }
+
+    public IEnumerator FadeBlackWhiteWhile(Action actionsDuringBlack, Action actionAfterComplete)
+    {
+        yield return FadeBlackAsync();
+        actionsDuringBlack?.Invoke();
+        yield return FadeWhiteAsync();
+        actionAfterComplete?.Invoke();
     }
     
     private IEnumerator WaitForAnimationAsync()

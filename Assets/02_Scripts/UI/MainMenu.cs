@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -18,10 +20,9 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private GameObject _levelMap;
     [SerializeField] private GameObject _options;
     [SerializeField] private GameObject _credits;
-    [SerializeField] private GameObject _targetScreen;
+    [SerializeField] private GameObject _assassinationBriefing;
 
     [Header("Button")] [SerializeField] private GameObject _btnMainMenu;
-    [SerializeField] private GameObject _targetScreenButton;
     [SerializeField] private GameObject _continueButton;
 
     [Header("Audio")] [SerializeField] private AudioMixer _audioMixer;
@@ -33,26 +34,42 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private float _currentSfxVolume;
 
     [Header("Images")] [SerializeField] private GameObject _backgroundImage;
+    [SerializeField] private Sprite _ikaruzBountySuccess;
+    [SerializeField] private Sprite _ikaruzBountyFail;
+    [SerializeField] private Sprite _bobBountySuccess;
+    [SerializeField] private Sprite _bobBountyFail;
+    [SerializeField] private Sprite _broccoloidBountySuccess;
+    [SerializeField] private Sprite _broccoloidBountyFail;
+    [SerializeField] private Sprite _emptyBounty;
 
     [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private TMP_Text _targetText;
+    [SerializeField] private TMP_Text _minScoreText;
+    [SerializeField] private TMP_Text _levelNumberAssassinationBriefing;
 
-    [Header("Stars & Bounty in Complete Day Menu")]
-    [SerializeField] private GameObject _starRevealed1;
+    [Header("Assassination Briefing")] [SerializeField]
+    private GameObject _ikaruzCard;
+
+    [SerializeField] private GameObject _bobCard;
+    [SerializeField] private GameObject _broccoloidCard;
+
+    [Header("Stars & Bounty in Complete Day Menu")] [SerializeField]
+    private GameObject _starRevealed1;
+
     [SerializeField] private GameObject _starRevealed2;
     [SerializeField] private GameObject _starRevealed3;
     [SerializeField] private GameObject _starUnrevealed1;
     [SerializeField] private GameObject _starUnrevealed2;
     [SerializeField] private GameObject _starUnrevealed3;
 
-    [SerializeField] private GameObject _bounty1;
-    [SerializeField] private GameObject _bounty2;
-    [SerializeField] private GameObject _bounty3;
+    [SerializeField] private Image _bounty1;
+    [SerializeField] private Image _bounty2;
+    [SerializeField] private Image _bounty3;
 
     [SerializeField] private TMP_Text _valueScore;
     [SerializeField] private TMP_Text _maxScore;
-    
+
     [SerializeField] private GameObject _completeBountyStamp;
     [SerializeField] private GameObject _failedBountyStamp;
     [SerializeField] private GameObject _completeScoreStamp;
@@ -64,6 +81,7 @@ public class MainMenu : Singleton<MainMenu>
     private bool _pausedGame;
     private bool _blockPauseMenu;
     private bool _levelLoading;
+    private bool _assassinationBriefingLoading;
 
     public override void Awake()
     {
@@ -123,6 +141,7 @@ public class MainMenu : Singleton<MainMenu>
     public void HomeMenu()
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
+        if (_assassinationBriefing) _assassinationBriefing.SetActive(false);
         if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);
         _backgroundImage.SetActive(true);
@@ -132,19 +151,43 @@ public class MainMenu : Singleton<MainMenu>
         SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
-    public void TargetScreen()
+    public void AssassinationBriefing()
     {
-        if (Time.timeScale != 0f) Time.timeScale = 0.0f;
-        if (!_targetScreen) _targetScreen.SetActive(true);
-        var targetText = LevelManager.CurrentLevel.TargetText;
-        _targetText.text = $"You must kill the {targetText} that comes into the restaurant.";
+        if (LevelManager.CurrentLevel.Target is null) return;
+        _assassinationBriefing.SetActive(true);
+        _levelNumberAssassinationBriefing.text = $"Level {LevelManager.CurrentLevel.Number.ToString().PadLeft(2, '0')}";
+        _targetText.text = $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
+        _minScoreText.text = Mathf.FloorToInt(LevelManager.CurrentLevel.MinScore).ToString();
+        foreach (var image in new[] { _ikaruzCard, _bobCard, _broccoloidCard }) image.SetActive(false);
+        if (LevelManager.CurrentLevel.Target.name == Identifiers.Value.Ikaruz.name) _ikaruzCard.SetActive(true);
+        if (LevelManager.CurrentLevel.Target.name == Identifiers.Value.Bob.name) _bobCard.SetActive(true);
+        if (LevelManager.CurrentLevel.Target.name == Identifiers.Value.Broccoloid.name) _broccoloidCard.SetActive(true);
     }
 
-    public void TargetScreenButton()
+    public void AssassinationBriefingContinue()
     {
-        _targetScreen.SetActive(false);
-        if (Time.timeScale != 1f) Time.timeScale = 1f;
-        _sidebar.SetActive(true);
+        if (_assassinationBriefingLoading) return;
+        _assassinationBriefingLoading = true;
+        GlobalTimeline.Instance.Disable();
+        Time.timeScale = 1F;
+
+        StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
+            () => _assassinationBriefing.SetActive(false),
+            () =>
+            {
+                _assassinationBriefingLoading = false;
+                GlobalTimeline.Instance.Enable();
+            }));
+    }
+
+    public void AssassinationBriefingBack()
+    {
+        if (_assassinationBriefingLoading) return;
+        _assassinationBriefingLoading = true;
+        Time.timeScale = 1F;
+        GlobalTimeline.Instance.Disable();
+        StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(HomeMenu,
+            () => _assassinationBriefingLoading = false));
     }
 
     public void Options()
@@ -212,13 +255,51 @@ public class MainMenu : Singleton<MainMenu>
         _completeDayMenu.SetActive(true);
         _backgroundImage.SetActive(true);
         AudioManager.Instance.StopAll();
+        RenderBounties();
         CalculateScore();
     }
 
     public void ContinueButton()
     {
-        var operation = LevelManager.Instance.LoadLevelAsync(LevelManager.CurrentLevelIndex + 1);
-        StartCoroutine(operation);
+        StartLoadingLevel(LevelManager.CurrentLevelIndex + 1);
+    }
+
+    private void RenderBounties()
+    {
+        var bounties = BottomBar.Instance.Bounties.GetBounties();
+        _bounty1.sprite = GetBountyCard(bounties, 0);
+        _bounty2.sprite = GetBountyCard(bounties, 1);
+        _bounty3.sprite = GetBountyCard(bounties, 2);
+        var bountySucceeded = bounties.Any(x => x.WasTarget);
+        _completeBountyStamp.SetActive(bountySucceeded);
+        _failedBountyStamp.SetActive(!bountySucceeded);
+    }
+
+    private Sprite GetBountyCard(BountyData[] bounties, int index)
+    {
+        if (index > bounties.Length - 1)
+            return _emptyBounty;
+        
+        if (bounties[index].WasTarget)
+        {
+            if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
+                return _broccoloidBountySuccess;
+            if (bounties[index].Species.name == Identifiers.Value.Bob.name)
+                return _bobBountySuccess;
+            if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
+                return _ikaruzBountySuccess;
+            
+            throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+        }
+
+        if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
+            return _broccoloidBountyFail;
+        if (bounties[index].Species.name == Identifiers.Value.Bob.name)
+            return _bobBountyFail;
+        if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
+            return _ikaruzBountyFail;
+        
+        throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
     private void CalculateScore()
@@ -226,9 +307,9 @@ public class MainMenu : Singleton<MainMenu>
         var starsAcquired = ProgressBar.Progress;
         var maxScore = LevelManager.CurrentLevel.MaxScore;
         _maxScore.text = Mathf.Floor(maxScore).ToString(CultureInfo.InvariantCulture);
-        _valueScore.text = Mathf.Floor(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
+        _valueScore.text = Math.Ceiling(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
         _levelText.text = "Level" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
-        
+
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex))
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
 
@@ -242,7 +323,7 @@ public class MainMenu : Singleton<MainMenu>
             _continueButton.SetActive(true);
             if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
             _completeScoreStamp.SetActive(true);
-            
+
             AudioManager.Instance.PlayMusic(AudioSettings.Data.WinMusic);
             //_completeDayText.text = "You completed day #" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');  [ToDO Maybe need later...]
         }
@@ -255,18 +336,13 @@ public class MainMenu : Singleton<MainMenu>
             if (_continueButton) _continueButton.SetActive(false);
             if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
             PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-            
+
             AudioManager.Instance.PlayMusic(AudioSettings.Data.LooseMusic);
         }
 
         _starRevealed1.SetActive(starsAcquired >= 1);
         _starRevealed2.SetActive(starsAcquired >= 2);
         _starRevealed3.SetActive(starsAcquired >= 3);
-
-        //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bounty in Menu after Completed Day , Reveal the right Target else let it Empty!
-        if (_bounty1) _bounty1.SetActive(false);
-        if (_bounty2) _bounty2.SetActive(false);
-        if (_bounty3) _bounty3.SetActive(false);
     }
 
     public void BackAndSave()
@@ -303,10 +379,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void StartLoadingLevel(int index)
     {
-        // The level is already loading -> Do nothing -> Return
         if (_levelLoading) return;
-
-        // Starting to load the level
         _levelLoading = true;
 
         StartCoroutine(LoadLevelAsync(index));
@@ -315,18 +388,10 @@ public class MainMenu : Singleton<MainMenu>
     private IEnumerator LoadLevelAsync(int index)
     {
         yield return Fader.Instance.FadeBlackAsync();
-
-        // Before the new level has started loading  
         yield return LevelManager.Instance.LoadLevelAsync(index);
-        // After the level has completely loaded
-
-        // When it's still black, show the bounty screen, so this is the first thing the users sees after fading back.
-        // TODO: Show Bounty Screen
-
+        AssassinationBriefing();
         yield return Fader.Instance.FadeWhiteAsync();
-
-        // When done with level loading the button becomes clickable again
-        // -> Stay at the last line of the function
+        if (_assassinationBriefing.activeInHierarchy) Time.timeScale = 0F;
         _levelLoading = false;
     }
 }

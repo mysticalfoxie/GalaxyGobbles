@@ -30,6 +30,18 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
         StartCoroutine(operation);
     }
 
+    public void Enable()
+    {
+        Active = true;
+        DayComplete = false;
+    }
+
+    public void Disable()
+    {
+        Active = false;
+        DayComplete = true;
+    }
+
     public static IEnumerator WaitUntilTimelineLoaded()
     {
         yield return new WaitUntil(() => !Instance.Loading);
