@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +34,12 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private float _currentSfxVolume;
 
     [Header("Images")] [SerializeField] private GameObject _backgroundImage;
+    [SerializeField] private Sprite _ikaruzBountySuccess;
+    [SerializeField] private Sprite _ikaruzBountyFail;
+    [SerializeField] private Sprite _bobBountySuccess;
+    [SerializeField] private Sprite _bobBountyFail;
+    [SerializeField] private Sprite _broccoloidBountySuccess;
+    [SerializeField] private Sprite _broccoloidBountyFail;
 
     [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
     [SerializeField] private TMP_Text _levelText;
@@ -54,9 +62,9 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private GameObject _starUnrevealed2;
     [SerializeField] private GameObject _starUnrevealed3;
 
-    [SerializeField] private GameObject _bounty1;
-    [SerializeField] private GameObject _bounty2;
-    [SerializeField] private GameObject _bounty3;
+    [SerializeField] private Image _bounty1;
+    [SerializeField] private Image _bounty2;
+    [SerializeField] private Image _bounty3;
 
     [SerializeField] private TMP_Text _valueScore;
     [SerializeField] private TMP_Text _maxScore;
@@ -161,7 +169,7 @@ public class MainMenu : Singleton<MainMenu>
         _assassinationBriefingLoading = true;
         GlobalTimeline.Instance.Disable();
         Time.timeScale = 1F;
-        
+
         StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
             () => _assassinationBriefing.SetActive(false),
             () =>
@@ -246,6 +254,7 @@ public class MainMenu : Singleton<MainMenu>
         _completeDayMenu.SetActive(true);
         _backgroundImage.SetActive(true);
         AudioManager.Instance.StopAll();
+        RenderBounties();
         CalculateScore();
     }
 
@@ -255,12 +264,50 @@ public class MainMenu : Singleton<MainMenu>
         StartCoroutine(operation);
     }
 
+    private void RenderBounties()
+    {
+        var bounties = BottomBar.Instance.Bounties.GetBounties();
+        _bounty1.gameObject.SetActive(bounties.Length >= 1);
+        _bounty2.gameObject.SetActive(bounties.Length >= 2);
+        _bounty3.gameObject.SetActive(bounties.Length >= 3);
+        if (bounties.Length >= 1) _bounty1.sprite = GetBountyCard(bounties[0]);
+        if (bounties.Length >= 2) _bounty1.sprite = GetBountyCard(bounties[1]);
+        if (bounties.Length >= 3) _bounty1.sprite = GetBountyCard(bounties[2]);
+        var bountySucceeded = bounties.Any(x => x.WasTarget);
+        _completeBountyStamp.SetActive(bountySucceeded);
+        _failedBountyStamp.SetActive(!bountySucceeded);
+    }
+
+    private Sprite GetBountyCard(BountyData bounty)
+    {
+        if (bounty.WasTarget)
+        {
+            if (bounty.Species.name == Identifiers.Value.Broccoloid.name)
+                return _broccoloidBountySuccess;
+            if (bounty.Species.name == Identifiers.Value.Bob.name)
+                return _bobBountySuccess;
+            if (bounty.Species.name == Identifiers.Value.Ikaruz.name)
+                return _ikaruzBountySuccess;
+            
+            throw new NotSupportedException($"Could not find a bounty card for species \"{bounty.Species.name}\".");
+        }
+
+        if (bounty.Species.name == Identifiers.Value.Broccoloid.name)
+            return _broccoloidBountyFail;
+        if (bounty.Species.name == Identifiers.Value.Bob.name)
+            return _bobBountyFail;
+        if (bounty.Species.name == Identifiers.Value.Ikaruz.name)
+            return _ikaruzBountyFail;
+        
+        throw new NotSupportedException($"Could not find a bounty card for species \"{bounty.Species.name}\".");
+    }
+
     private void CalculateScore()
     {
         var starsAcquired = ProgressBar.Progress;
         var maxScore = LevelManager.CurrentLevel.MaxScore;
         _maxScore.text = Mathf.Floor(maxScore).ToString(CultureInfo.InvariantCulture);
-        _valueScore.text = Mathf.Floor(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
+        _valueScore.text = Math.Ceiling(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
         _levelText.text = "Level" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
 
         if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex))
@@ -296,11 +343,6 @@ public class MainMenu : Singleton<MainMenu>
         _starRevealed1.SetActive(starsAcquired >= 1);
         _starRevealed2.SetActive(starsAcquired >= 2);
         _starRevealed3.SetActive(starsAcquired >= 3);
-
-        //ToDo: Placeholder! Add Bounty Menu and connect to CalculateScore to Show correct Bounty in Menu after Completed Day , Reveal the right Target else let it Empty!
-        if (_bounty1) _bounty1.SetActive(false);
-        if (_bounty2) _bounty2.SetActive(false);
-        if (_bounty3) _bounty3.SetActive(false);
     }
 
     public void BackAndSave()

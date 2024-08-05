@@ -3641,6 +3641,15 @@ MonoBehaviour:
   _currentMusicVolume: 0
   _currentSfxVolume: 0
   _backgroundImage: {fileID: 9052054762137031829}
+  _ikaruzBountySuccess: {fileID: 21300000, guid: edc4fedff30ac1e468827b2f4c62d600,
+    type: 3}
+  _ikaruzBountyFail: {fileID: 21300000, guid: 78b8c87555eae3c4c9c3bc206fc1e402, type: 3}
+  _bobBountySuccess: {fileID: 21300000, guid: bf8316457befc894b94c5730923d331b, type: 3}
+  _bobBountyFail: {fileID: 21300000, guid: 618d17789614e4d4991b72bf552ebc0e, type: 3}
+  _broccoloidBountySuccess: {fileID: 21300000, guid: 7eb954b354833b641920443c8ecadcfa,
+    type: 3}
+  _broccoloidBountyFail: {fileID: 21300000, guid: 78b8c87555eae3c4c9c3bc206fc1e402,
+    type: 3}
   _completeDayText: {fileID: 0}
   _levelText: {fileID: 2136674998021437750}
   _targetText: {fileID: 7911363653102453010}
@@ -3655,9 +3664,9 @@ MonoBehaviour:
   _starUnrevealed1: {fileID: 6958177613407358745}
   _starUnrevealed2: {fileID: 5989981094436612669}
   _starUnrevealed3: {fileID: 2221902395386695744}
-  _bounty1: {fileID: 6629999389166775690}
-  _bounty2: {fileID: 7722519119654750746}
-  _bounty3: {fileID: 6177697824624997561}
+  _bounty1: {fileID: 3515389466455075396}
+  _bounty2: {fileID: 4318045661427754121}
+  _bounty3: {fileID: 156383086795360881}
   _valueScore: {fileID: 1544146049684147966}
   _maxScore: {fileID: 2932739650979007694}
   _completeBountyStamp: {fileID: 7406482597589180566}
@@ -6224,7 +6233,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0000000
+  m_text: 0000014
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -7890,7 +7899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 0.5
+  m_ScaleFactor: 1
   m_ReferenceResolution: {x: 3040, y: 1440}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0

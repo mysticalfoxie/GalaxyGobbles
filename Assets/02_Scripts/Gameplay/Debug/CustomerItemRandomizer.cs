@@ -55,7 +55,6 @@ public class CustomerItemRandomizer : MonoBehaviour
         var clone = ScriptableObject.CreateInstance<CustomerData>();
         clone._desiredItems = data._desiredItems;
         clone._species = data._species;
-        clone._isAssassinationTarget = data._isAssassinationTarget;
         clone._minutesInGame = data._minutesInGame;
         clone._secondsInGame = data._secondsInGame;
         clone.name = data.name;

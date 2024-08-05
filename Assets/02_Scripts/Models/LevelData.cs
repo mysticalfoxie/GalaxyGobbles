@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -70,6 +71,19 @@ public class LevelData : ScriptableObject
     {
         ValidateTarget();
         ValidateScore();
+    }
+
+    public int GetCustomerPosition(CustomerData customer)
+    {
+        var index = 0;
+        foreach (var entry in _customers.Where(x => x.Species.name == customer.Species.name))
+        {
+            index++;
+            if (entry.name == customer.name)
+                return index;
+        }
+
+        return -1;
     }
 
     private void ValidateTarget()
