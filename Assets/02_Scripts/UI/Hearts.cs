@@ -109,7 +109,7 @@ public class Hearts : MonoBehaviour
 
     public static void Clear()
     {
-        var instances = _instances.Where(instance => instance && instance.gameObject).ToArray();
-        foreach (var instance in instances) DestroyImmediate(instance.gameObject);
+        var instances = _instances.Where(instance => instance && instance.gameObject && instance.gameObject.activeInHierarchy).ToArray();
+        foreach (var instance in instances) instance.gameObject.SetActive(false);
     }
 }
