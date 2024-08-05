@@ -154,6 +154,7 @@ public class MainMenu : Singleton<MainMenu>
     public void AssassinationBriefing()
     {
         if (LevelManager.CurrentLevel.Target is null) return;
+        GlobalTimeline.Instance.Disable();
         _assassinationBriefing.SetActive(true);
         _levelNumberAssassinationBriefing.text = $"Level {LevelManager.CurrentLevel.Number.ToString().PadLeft(2, '0')}";
         _targetText.text = $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
