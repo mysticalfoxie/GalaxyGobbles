@@ -40,6 +40,7 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private Sprite _bobBountyFail;
     [SerializeField] private Sprite _broccoloidBountySuccess;
     [SerializeField] private Sprite _broccoloidBountyFail;
+    [SerializeField] private Sprite _emptyBounty;
 
     [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
     [SerializeField] private TMP_Text _levelText;
@@ -267,39 +268,39 @@ public class MainMenu : Singleton<MainMenu>
     private void RenderBounties()
     {
         var bounties = BottomBar.Instance.Bounties.GetBounties();
-        _bounty1.gameObject.SetActive(bounties.Length >= 1);
-        _bounty2.gameObject.SetActive(bounties.Length >= 2);
-        _bounty3.gameObject.SetActive(bounties.Length >= 3);
-        if (bounties.Length >= 1) _bounty1.sprite = GetBountyCard(bounties[0]);
-        if (bounties.Length >= 2) _bounty1.sprite = GetBountyCard(bounties[1]);
-        if (bounties.Length >= 3) _bounty1.sprite = GetBountyCard(bounties[2]);
+        _bounty1.sprite = GetBountyCard(bounties, 0);
+        _bounty2.sprite = GetBountyCard(bounties, 1);
+        _bounty3.sprite = GetBountyCard(bounties, 2);
         var bountySucceeded = bounties.Any(x => x.WasTarget);
         _completeBountyStamp.SetActive(bountySucceeded);
         _failedBountyStamp.SetActive(!bountySucceeded);
     }
 
-    private Sprite GetBountyCard(BountyData bounty)
+    private Sprite GetBountyCard(BountyData[] bounties, int index)
     {
-        if (bounty.WasTarget)
+        if (index > bounties.Length - 1)
+            return _emptyBounty;
+        
+        if (bounties[index].WasTarget)
         {
-            if (bounty.Species.name == Identifiers.Value.Broccoloid.name)
+            if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
                 return _broccoloidBountySuccess;
-            if (bounty.Species.name == Identifiers.Value.Bob.name)
+            if (bounties[index].Species.name == Identifiers.Value.Bob.name)
                 return _bobBountySuccess;
-            if (bounty.Species.name == Identifiers.Value.Ikaruz.name)
+            if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
                 return _ikaruzBountySuccess;
             
-            throw new NotSupportedException($"Could not find a bounty card for species \"{bounty.Species.name}\".");
+            throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
         }
 
-        if (bounty.Species.name == Identifiers.Value.Broccoloid.name)
+        if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
             return _broccoloidBountyFail;
-        if (bounty.Species.name == Identifiers.Value.Bob.name)
+        if (bounties[index].Species.name == Identifiers.Value.Bob.name)
             return _bobBountyFail;
-        if (bounty.Species.name == Identifiers.Value.Ikaruz.name)
+        if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
             return _ikaruzBountyFail;
         
-        throw new NotSupportedException($"Could not find a bounty card for species \"{bounty.Species.name}\".");
+        throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
     private void CalculateScore()
