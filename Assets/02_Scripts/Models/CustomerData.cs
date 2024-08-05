@@ -17,9 +17,6 @@ public class CustomerData : ScriptableObject
     [Header("Customer Specification")]
     [SerializeField] internal SpeciesData _species;
     [SerializeField] internal ItemData[] _desiredItems = Array.Empty<ItemData>();
-
-    [Header("Assassination")]
-    [SerializeField] internal bool _isAssassinationTarget;
     
     public uint Minutes => _minutesInGame;
     public uint Seconds => _secondsInGame;

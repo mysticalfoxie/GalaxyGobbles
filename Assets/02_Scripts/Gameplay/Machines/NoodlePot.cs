@@ -52,6 +52,8 @@ public class NoodlePot : Touchable
         }
 
         item.Show();
+        
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.TakeReadyNoodles);
         UpdateState(NoodlePotState.Empty);
     }
 
