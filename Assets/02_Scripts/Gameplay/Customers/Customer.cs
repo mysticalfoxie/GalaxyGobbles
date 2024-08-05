@@ -99,8 +99,6 @@ public class Customer : Selectable
         yield return new CancellableWaitForSeconds(GameSettings.Data.CustomerEatingTime, () => _dying);
         if (_dying) yield break;
         if (HandlePoisoned()) yield break;
-        // if (HandleOrderingTwice()) yield break;
-        // if (HandleOrderingSake()) yield break;
 
         StateMachine.State = CustomerState.WaitingForCheckout;
     }
@@ -237,17 +235,6 @@ public class Customer : Selectable
 
         OnCustomerLeave();
     }
-
-    // private bool HandleOrderingSake()
-    // {
-    //     if (Random.Range(1, 100) > Data.Species.ChanceToOrderSake) return false;
-    //
-    //     DesiredItems.Add(GameSettings.GetItemMatch(Identifiers.Value.Sake));
-    //     StateMachine.State = CustomerState.ThinkingAboutMeal;
-    //     StartCoroutine(nameof(OnThinkingStart));
-    //
-    //     return true;
-    // }
 
     private bool HandlePoisoned()
     {

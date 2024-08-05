@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,6 +20,7 @@ public class LevelData : ScriptableObject
     [Header("Assassination - Debug")]
     [Tooltip("Just a readonly value for better configuration. This is the amount of customers are in the level filtered by their species.")]
     [SerializeField] private int _amountOfSpeciesInLevel;
+    // ReSharper disable once NotAccessedField.Local -> Used as readonly checkup field in inspector
     [Tooltip("This checks if the customer is existent in the store.")]
     [SerializeField] private bool _targetExists;
 

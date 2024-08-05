@@ -94,15 +94,6 @@ public class MainMenu : Singleton<MainMenu>
         _startMenu.SetActive(!_startWithoutMenu);
 
         LoadSettings();
-        //  _backgroundImage.SetActive(true);
-
-        /*
-         * WIP: Used for Audio Control, later content!
-         * -> NOPE! Keep in mind we already have an AudioManager
-         * -> The main menu is not in charge to handle audio.
-         * _backgroundAudio = FindObjectOfType<AudioSource>();
-         * if(_backgroundAudio) _backgroundAudio.Play();
-         */
     }
 
     public void StartGame()
@@ -114,7 +105,7 @@ public class MainMenu : Singleton<MainMenu>
     public void SetElementsForStart()
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
-        if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
+        Time.timeScale = 1.0f;
         if (_backgroundImage) _backgroundImage.SetActive(false);
         _levelMap.SetActive(false);
         _blockPauseMenu = false;
@@ -142,7 +133,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (_assassinationBriefing) _assassinationBriefing.SetActive(false);
-        if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
+        Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);
         _backgroundImage.SetActive(true);
         _startMenu.SetActive(true);
@@ -226,7 +217,7 @@ public class MainMenu : Singleton<MainMenu>
         if (_completeDayText != null) _completeDayText.text = null;
         if (_startMenu) _startMenu.SetActive(false);
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
-        if (Time.timeScale != 1.0f) Time.timeScale = 1.0f;
+        Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);
         if (_blockPauseMenu == false) _blockPauseMenu = true;
         if (_sidebar) _sidebar.SetActive(false);
