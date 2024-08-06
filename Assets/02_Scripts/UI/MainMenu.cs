@@ -193,7 +193,7 @@ public class MainMenu : Singleton<MainMenu>
         Time.timeScale = 1F;
         GlobalTimeline.Instance.Disable();
         StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
-            () => HomeMenu(true),
+            () => HomeMenu(),
             () => _assassinationBriefingLoading = false));
     }
 
