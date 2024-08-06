@@ -24,6 +24,7 @@ public class MainMenu : Singleton<MainMenu>
 
     [Header("Button")] [SerializeField] private GameObject _btnMainMenu;
     [SerializeField] private GameObject _continueButton;
+    [SerializeField] private GameObject _creditsButton;
 
     [Header("Audio")] [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private Slider _volumeSlider;
@@ -199,8 +200,22 @@ public class MainMenu : Singleton<MainMenu>
 
     public void Credits()
     {
-        _credits.SetActive(true);
-        _startMenu.SetActive(false);
+        if (SceneManager.GetActiveScene().buildIndex == MAIN_MENU_SCENE_INDEX)
+        {
+            _credits.SetActive(true);
+            _startMenu.SetActive(false);
+            return;
+        }
+
+        Time.timeScale = 1F;
+        StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
+            () =>
+            {
+                _completeDayMenu.SetActive(false);
+                SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
+                _credits.SetActive(true);
+                _startMenu.SetActive(false);
+            }));
     }
 
     public void SetVolume(float masterVolume)
@@ -339,32 +354,44 @@ public class MainMenu : Singleton<MainMenu>
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
 
         if (starsAcquired >= 1)
-        {
-            if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
-                LevelButton.UnlockedLevels++;
-
-            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-
-            _continueButton.SetActive(true);
-            if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
-            _completeScoreStamp.SetActive(true);
-
-            AudioManager.Instance.PlayMusic(AudioSettings.Data.WinMusic);
-        }
+            OnLevelSucceed();
         else
-        {
-            if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
-            _failedScoreStamp.SetActive(true);
-            if (_continueButton) _continueButton.SetActive(false);
-            if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
-            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-
-            AudioManager.Instance.PlayMusic(AudioSettings.Data.LooseMusic);
-        }
+            OnLevelFailed();
 
         _starRevealed1.SetActive(starsAcquired >= 1);
         _starRevealed2.SetActive(starsAcquired >= 2);
         _starRevealed3.SetActive(starsAcquired >= 3);
+    }
+
+    private void OnLevelFailed()
+    {
+        if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
+        _failedScoreStamp.SetActive(true);
+        if (_continueButton) _continueButton.SetActive(false);
+        if (_creditsButton) _creditsButton.SetActive(false);
+        if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
+        PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+
+        AudioManager.Instance.PlayMusic(AudioSettings.Data.LooseMusic);
+    }
+
+    private void OnLevelSucceed()
+    {
+        if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
+            LevelButton.UnlockedLevels++;
+
+        PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+        if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
+        _completeScoreStamp.SetActive(true);
+        AudioManager.Instance.PlayMusic(AudioSettings.Data.WinMusic);
+        ShowNextButton();
+    }
+
+    private void ShowNextButton()
+    {
+        var isLastLevel = LevelManager.CurrentLevelIndex == GameSettings.Data.Levels.Count() - 1;
+        _continueButton.SetActive(!isLastLevel);
+        _creditsButton.SetActive(isLastLevel);
     }
 
     public void BackAndSave()
