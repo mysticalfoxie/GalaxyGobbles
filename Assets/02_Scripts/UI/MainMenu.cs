@@ -158,7 +158,8 @@ public class MainMenu : Singleton<MainMenu>
         GlobalTimeline.Instance.Disable();
         _assassinationBriefing.SetActive(true);
         _levelNumberAssassinationBriefing.text = $"Level {LevelManager.CurrentLevel.Number.ToString().PadLeft(2, '0')}";
-        _targetText.text = $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
+        _targetText.text =
+            $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
         _minScoreText.text = Mathf.FloorToInt(LevelManager.CurrentLevel.MinScore).ToString();
         foreach (var image in new[] { _ikaruzCard, _bobCard, _broccoloidCard }) image.SetActive(false);
         if (LevelManager.CurrentLevel.Target.name == Identifiers.Value.Ikaruz.name) _ikaruzCard.SetActive(true);
@@ -265,6 +266,8 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ReplayLevel()
     {
+        if (_pauseMenu) _pauseMenu.SetActive(false);
+        if(Time.timeScale != 1.0f) Time.timeScale = 1.0f;
         StartLoadingLevel(LevelManager.CurrentLevelIndex);
     }
 
@@ -335,7 +338,8 @@ public class MainMenu : Singleton<MainMenu>
             if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
                 return _ikaruzBountySuccess;
 
-            throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+            throw new NotSupportedException(
+                $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
         }
 
         if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
@@ -345,7 +349,8 @@ public class MainMenu : Singleton<MainMenu>
         if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
             return _ikaruzBountyFail;
 
-        throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+        throw new NotSupportedException(
+            $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
     private void CalculateScore()
