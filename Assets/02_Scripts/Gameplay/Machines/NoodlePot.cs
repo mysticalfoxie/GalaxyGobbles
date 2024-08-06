@@ -75,10 +75,16 @@ public class NoodlePot : Touchable
         if (GlobalTimeline.Instance.DayComplete) yield break;
         UpdateState(NoodlePotState.Cooked);
         AudioManager.Instance.PlaySFX(AudioSettings.Data.Ready, true);
-        var overcookTime = GameSettings.Data.NoodleOvercookTime;
-        yield return new WaitForSeconds(overcookTime);
+        
+        StartCoroutine(StartOvercooking());
+    }
+
+    private IEnumerator StartOvercooking()
+    {
+        yield return new CancellableWaitForSeconds(GameSettings.Data.NoodleOvercookTime, () => GlobalTimeline.Instance.DayComplete || State != NoodlePotState.Cooked);
         if (GlobalTimeline.Instance.DayComplete) yield break;
         if (State != NoodlePotState.Cooked) yield break;
+        
         AudioManager.Instance.PlaySFX(AudioSettings.Data.Overcooked, true);
         UpdateState(NoodlePotState.Overcooked);
     }
