@@ -50,6 +50,14 @@ public class AudioSettings : ScriptableObject
     [SerializeField] private AudioData _potCleaning;
     [SerializeField] private AudioData _takeReadyNoodles;
 
+    [Header("UI")] 
+    [SerializeField] private AudioData _uiBack;
+    [SerializeField] private AudioData _uiClose;
+    [SerializeField] private AudioData _uiOpenPopup;
+    [SerializeField] private AudioData _uiSelectItem;
+    [SerializeField] private AudioData _uiStamp;
+    [SerializeField] private AudioData _uiStartGame;
+    [SerializeField] private AudioData _uiUnlockUpdate;
     #endregion
 
     #region Properties
@@ -93,6 +101,14 @@ public class AudioSettings : ScriptableObject
     public AudioData AmbientSound => _ambientSound;
     public AudioData PotCleaning => _potCleaning;
     public AudioData TakeReadyNoodles => _takeReadyNoodles;
+    
+    public AudioData UIBack => _uiBack;
+    public AudioData UIClose => _uiClose;
+    public AudioData UIOpenPopup => _uiOpenPopup;
+    public AudioData UISelectItem => _uiSelectItem;
+    public AudioData UIStamp => _uiStamp;
+    public AudioData UIStartGame => _uiStartGame;
+    public AudioData UIUnlockUpdate => _uiUnlockUpdate;
     
     #endregion
 
