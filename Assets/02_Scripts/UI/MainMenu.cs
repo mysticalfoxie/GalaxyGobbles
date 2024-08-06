@@ -301,6 +301,10 @@ public class MainMenu : Singleton<MainMenu>
         AudioManager.Instance.StopAll();
         CalculateScore();
         RenderBounties();
+
+        AudioManager.Instance.PlayMusic(_continueButton.activeInHierarchy
+            ? AudioSettings.Data.WinMusic 
+            : AudioSettings.Data.LooseMusic);
     }
 
     public void ContinueButton()
@@ -383,9 +387,26 @@ public class MainMenu : Singleton<MainMenu>
         else
             OnLevelFailed();
 
-        _starRevealed1.SetActive(starsAcquired >= 1);
-        _starRevealed2.SetActive(starsAcquired >= 2);
-        _starRevealed3.SetActive(starsAcquired >= 3);
+        StartCoroutine(PlayStarsAnimation(starsAcquired));
+    }
+
+    private IEnumerator PlayStarsAnimation(int starsAcquired)
+    {
+        var audios = new[]
+        {
+            AudioSettings.Data.UIStarComboOne,
+            AudioSettings.Data.UIStarComboTwo,
+            AudioSettings.Data.UIStarComboThree,
+        };
+        
+        for (var i = 0; i < starsAcquired; i++)
+        {
+            _starRevealed1.SetActive(i >= 0);
+            _starRevealed2.SetActive(i >= 1);
+            _starRevealed3.SetActive(i >= 2);
+            AudioManager.Instance.PlaySFX(audios[i]);
+            yield return new WaitForSecondsRealtime(audios[i].Source.length - 1F);
+        }
     }
 
     private void OnLevelFailed()
@@ -397,7 +418,6 @@ public class MainMenu : Singleton<MainMenu>
         if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
         PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
 
-        AudioManager.Instance.PlayMusic(AudioSettings.Data.LooseMusic);
     }
 
     private void OnLevelSucceed()
@@ -408,7 +428,6 @@ public class MainMenu : Singleton<MainMenu>
         PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
         if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
         _completeScoreStamp.SetActive(true);
-        AudioManager.Instance.PlayMusic(AudioSettings.Data.WinMusic);
         ShowNextButton();
     }
 
