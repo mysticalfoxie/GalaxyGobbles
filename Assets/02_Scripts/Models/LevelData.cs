@@ -99,6 +99,16 @@ public class LevelData : ScriptableObject
         var allBaseScores = _customers.Length * GameSettings.Data.CustomerBaseScore;
         var allMaxScores = _customers.Length * GameSettings.Data.CustomerMaxScore;
         _maxScore = allMaxScores + allBaseScores + allMealsScore;
+
+        if (_targetExists)
+        {
+            var target = _customers.Where(x => x.Species.name == _targetSpecies.name).ElementAt(_targetPosition - 1);
+            _maxScore += GameSettings.Data.SuccessFullAssassinationScore;
+            _maxScore -= target.DesiredItems.Select(x => x.Score).Sum();
+            _maxScore -= GameSettings.Data.CustomerMaxScore;
+            _maxScore -= GameSettings.Data.CustomerBaseScore;
+        }
+        
         if (_maxScore == 0) return;
         
         _star1Percentage = 100.0F / _maxScore * _requiredScoreStar1;

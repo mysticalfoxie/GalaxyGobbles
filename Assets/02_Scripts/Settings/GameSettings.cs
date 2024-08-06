@@ -63,6 +63,8 @@ public class GameSettings : ScriptableObject
     [SerializeField] private float _customerBaseScore = 1.0F;
     [Tooltip("The maximum score you could receive from a single customer.")]
     [SerializeField] private float _customerMaxScore = 4.0F;
+    [Tooltip("The score you receive when you kill the correct assassination target.")]
+    [SerializeField] private float _successFullAssassinationScore = 20.0F;
 
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
@@ -123,8 +125,7 @@ public class GameSettings : ScriptableObject
     public float CustomerAngryThreshold => _customerAngryThreshold;
     public float CustomerBeamingTime => _customerBeamingTime;
     public float ClosureDelay => _closureDelay;
-    public float ItemPulseAnimationDuration => _itemPulseAnimationDuration;
-    public float ItemPulseAnimationStrength => _itemPulseAnimationStrength;
+    public float SuccessFullAssassinationScore => _successFullAssassinationScore;
     
     public SpriteData PoisonIcon => _poisonIcon;
     public Material OutlineMaterial => _outlineMaterial;
