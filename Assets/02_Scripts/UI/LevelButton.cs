@@ -51,6 +51,7 @@ public class LevelButton : MonoBehaviour
 
     public void OnClick()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         Clicked?.Invoke(LevelIndex);
     }
 }

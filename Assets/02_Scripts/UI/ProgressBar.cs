@@ -45,14 +45,17 @@ public class ProgressBar : Singleton<ProgressBar>
         if (_progressSlider.value >= _starOneReached && _progressSlider.value < _starTwoReached)
         {
             Progress = 1;
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStarComboOne);
         }
         else if (_progressSlider.value >= _starTwoReached && _progressSlider.value < _starThreeReached)
         {
             Progress = 2;
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStarComboTwo);
         }
         else if (_progressSlider.value >= _starThreeReached)
         {
             Progress = 3;
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStarComboThree);
         }
     }
 

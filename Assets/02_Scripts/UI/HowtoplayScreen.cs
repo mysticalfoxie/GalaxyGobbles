@@ -24,6 +24,7 @@ public class HowtoplayScreen : MonoBehaviour
 
     public void Next()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         if (_index >= _pages.Length - 1) return;
         _pages[_index].SetActive(false);
         _pages[++_index].SetActive(true);
@@ -33,6 +34,7 @@ public class HowtoplayScreen : MonoBehaviour
 
     public void Previous()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         if (_index <= 0) return;
         _pages[_index].SetActive(false);
         _pages[--_index].SetActive(true);
