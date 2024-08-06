@@ -141,6 +141,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (_credits) _credits.SetActive(false);
+        if (_howToPlay) _howToPlay.SetActive(false);
         if (_assassinationBriefing) _assassinationBriefing.SetActive(false);
         Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);

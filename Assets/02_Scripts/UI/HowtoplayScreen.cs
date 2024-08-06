@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class HowtoplayScreen : MonoBehaviour
 {
     private MainMenu _mainMenu;
-    private GameObject[] _pages;
+   [SerializeField] private GameObject[] _pages;
     private int _index;
     
     [Header("Buttons")] 
@@ -20,7 +20,6 @@ public class HowtoplayScreen : MonoBehaviour
     {
         _pages = this.GetChildren().ToArray();
         _mainMenu = GetComponentInParent<MainMenu>();
-
     }
 
     public void Next()
