@@ -99,6 +99,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void StartGame()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         _startMenu.SetActive(false);
         _levelMap.SetActive(true);
     }
@@ -116,6 +117,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void PauseGame()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         _btnMainMenu.SetActive(false);
         Time.timeScale = 0.0f;
         _pauseMenu.SetActive(true);
@@ -124,6 +126,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ResumeGame()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         _btnMainMenu.SetActive(true);
         Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
@@ -140,6 +143,7 @@ public class MainMenu : Singleton<MainMenu>
 
     private void HomeMenuInternal()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (_credits) _credits.SetActive(false);
         if (_howToPlay) _howToPlay.SetActive(false);
@@ -180,12 +184,14 @@ public class MainMenu : Singleton<MainMenu>
                 _assassinationBriefingLoading = false;
                 GlobalTimeline.Instance.Enable();
             }));
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
     }
 
     public void AssassinationBriefingBack()
     {
         if (_assassinationBriefingLoading) return;
         _assassinationBriefingLoading = true;
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         Time.timeScale = 1F;
         GlobalTimeline.Instance.Disable();
         StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
@@ -194,18 +200,21 @@ public class MainMenu : Singleton<MainMenu>
     }
 
     public void Options()
-    {
+    {   
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         _options.SetActive(true);
     }
 
     public void HowToPlay()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         _howToPlay.SetActive(true);
         _startMenu.SetActive(false);
     }
 
     public void Credits()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         if (SceneManager.GetActiveScene().buildIndex == MAIN_MENU_SCENE_INDEX)
         {
             _credits.SetActive(true);
@@ -244,6 +253,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void BackButton()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         if (_options) _options.SetActive(false);
         if (_credits) _credits.SetActive(false);
         if (_levelMap) _levelMap.SetActive(false);
@@ -252,6 +262,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void BackToLevelSelection()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         if (_completeDayText != null) _completeDayText.text = null;
         if (_startMenu) _startMenu.SetActive(false);
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
@@ -265,11 +276,13 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ReplayLevel()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
         StartLoadingLevel(LevelManager.CurrentLevelIndex);
     }
 
     public void QuitGame()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         Application.Quit();
 
 #if UNITY_EDITOR // UwU
@@ -289,6 +302,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ContinueButton()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
         StartLoadingLevel(LevelManager.CurrentLevelIndex + 1);
     }
 
@@ -402,6 +416,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void BackAndSave()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         Save();
         if (_pausedGame) _options.SetActive(false);
         else BackButton();
@@ -409,6 +424,7 @@ public class MainMenu : Singleton<MainMenu>
 
     private void Save()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         PlayerPrefs.SetFloat("MasterVolume", _currentVolume);
         PlayerPrefs.SetFloat("MusicVolume", _currentMusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", _currentSfxVolume);
