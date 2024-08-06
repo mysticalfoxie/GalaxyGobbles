@@ -102,7 +102,7 @@ public class Fader : Singleton<Fader>
         if (_debugging) Debug.Log("Fading to white ended...");
     }
 
-    public IEnumerator FadeBlackWhiteWhile(Action actionsDuringBlack, Action actionAfterComplete)
+    public IEnumerator FadeBlackWhiteWhile(Action actionsDuringBlack, Action actionAfterComplete = null)
     {
         yield return FadeBlackAsync();
         actionsDuringBlack?.Invoke();

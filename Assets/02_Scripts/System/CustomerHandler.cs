@@ -23,9 +23,9 @@ public class CustomerHandler : Singleton<CustomerHandler>
         _customers.Remove(customer);
     }
 
-    public IEnumerator WaitUntilCustomersLeave()
+    public IEnumerator WaitUntilCustomersLeave(Func<bool> cancellation)
     {
-        yield return new WaitWhile(() => _customers.Count != 0);
-        yield return new WaitForSeconds(GameSettings.Data.ClosureDelay);
+        yield return new WaitWhile(() => _customers.Count != 0 && !cancellation());
+        yield return new CancellableWaitForSeconds(GameSettings.Data.ClosureDelay, cancellation);
     }
 }
