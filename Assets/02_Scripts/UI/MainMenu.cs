@@ -19,6 +19,7 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private GameObject _sidebar;
     [SerializeField] private GameObject _levelMap;
     [SerializeField] private GameObject _options;
+    [SerializeField] private GameObject _howToPlay;
     [SerializeField] private GameObject _credits;
     [SerializeField] private GameObject _assassinationBriefing;
 
@@ -77,7 +78,6 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private GameObject _completeScoreStamp;
     [SerializeField] private GameObject _failedScoreStamp;
 
-
     [Header("Debug")] [SerializeField] private bool _startWithoutMenu;
 
     private bool _pausedGame;
@@ -94,7 +94,6 @@ public class MainMenu : Singleton<MainMenu>
     public void Start()
     {
         _startMenu.SetActive(!_startWithoutMenu);
-
         LoadSettings();
     }
 
@@ -143,6 +142,7 @@ public class MainMenu : Singleton<MainMenu>
     {
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (_credits) _credits.SetActive(false);
+        if (_howToPlay) _howToPlay.SetActive(false);
         if (_assassinationBriefing) _assassinationBriefing.SetActive(false);
         Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);
@@ -196,6 +196,12 @@ public class MainMenu : Singleton<MainMenu>
     public void Options()
     {
         _options.SetActive(true);
+    }
+
+    public void HowToPlay()
+    {
+        _howToPlay.SetActive(true);
+        _startMenu.SetActive(false);
     }
 
     public void Credits()
