@@ -13,12 +13,19 @@ public abstract class AnimatorBase : MonoBehaviour
     [Tooltip("The multipliers for each axis. 1.0F = fully affected, 0.0F = static - not moving.")] [SerializeField]
     protected  Vector3 _weight = new(1.0F, 1.0F, 1.0F);
 
+    [SerializeField] protected bool _unscaledTime;
     [SerializeField] protected bool _playOnAwake;
     [SerializeField] protected bool _playOnce;
-    [SerializeField] protected  bool _looped;
+    [SerializeField] protected bool _looped;
 
     public bool Playing => _animation is not null;
 
+    public bool UnscaledTime
+    {
+        get => _unscaledTime;
+        set => _unscaledTime = value;
+    }
+    
     public float Strength
     {
         get => _strength;
@@ -81,6 +88,7 @@ public abstract class AnimatorBase : MonoBehaviour
         => _animation = OnConfigure()
             .SetLooped(_looped)
             .SetPlayOnce(_playOnce)
+            .SetUnscaledTime(_unscaledTime)
             .OnUpdate(OnAnimationTick)
             .OnDisposed(OnAnimationDisposed)
             .OnComplete(OnAnimationCompleted)

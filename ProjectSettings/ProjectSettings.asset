@@ -16,7 +16,7 @@ PlayerSettings:
   productName: Galaxy Gobbles
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
@@ -41,11 +41,11 @@ PlayerSettings:
     height: 1
   m_SplashScreenLogos:
   - logo: {fileID: 10404, guid: 0000000000000000f000000000000000, type: 0}
-    duration: 3
+    duration: 2.5
   - logo: {fileID: 21300000, guid: 2b5f861368532f24293ed4987d47aa47, type: 3}
-    duration: 3
+    duration: 2.5
   - logo: {fileID: 21300000, guid: 753bcf19a4663714b90bae075cd9f805, type: 3}
-    duration: 3
+    duration: 2.5
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1920
@@ -145,8 +145,12 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.4.13
-  preloadedAssets: []
+  bundleVersion: 1.0.0
+  preloadedAssets:
+  - {fileID: 8171321636667593712, guid: d3271ddf13f31494aacedd2cab475c88, type: 2}
+  - {fileID: 11400000, guid: 79dea58c3214ca24f80ee39ac6011f28, type: 2}
+  - {fileID: 11400000, guid: 28d44ae88f28cf941b4fab6a7021cf4d, type: 2}
+  - {fileID: 11400000, guid: aa63014528acca34382463e3137ab022, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -756,9 +760,10 @@ PlayerSettings:
   ps4IncludedModules: []
   ps4attribVROutputEnabled: 0
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 0}
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 623b8319f03031c49a7abaf40ccfdbce,
+    type: 3}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
-  blurSplashScreenBackground: 1
+  blurSplashScreenBackground: 0
   spritePackerPolicy: 
   webGLMemorySize: 32
   webGLExceptionSupport: 1
