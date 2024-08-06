@@ -58,6 +58,10 @@ public class AudioSettings : ScriptableObject
     [SerializeField] private AudioData _uiStamp;
     [SerializeField] private AudioData _uiStartGame;
     [SerializeField] private AudioData _uiUnlockUpdate;
+    [SerializeField] private AudioData _uiStarComboOne;
+    [SerializeField] private AudioData _uiStarComboTwo;
+    [SerializeField] private AudioData _uiStarComboThree;
+    
     #endregion
 
     #region Properties
@@ -109,6 +113,9 @@ public class AudioSettings : ScriptableObject
     public AudioData UIStamp => _uiStamp;
     public AudioData UIStartGame => _uiStartGame;
     public AudioData UIUnlockUpdate => _uiUnlockUpdate;
+    public AudioData UIStarComboOne => _uiStarComboOne;
+    public AudioData UIStarComboTwo => _uiStarComboTwo;
+    public AudioData UIStarComboThree => _uiStarComboThree;
     
     #endregion
 
