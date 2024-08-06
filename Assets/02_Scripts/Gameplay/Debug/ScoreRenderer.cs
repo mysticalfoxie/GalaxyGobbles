@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEngine;
 
 public class ScoreRenderer : Singleton<ScoreRenderer>
 {
@@ -7,12 +6,19 @@ public class ScoreRenderer : Singleton<ScoreRenderer>
     
     private TMP_Text _tmpText;
     
+    #if UNITY_EDITOR
     public override void Awake()
     {
         InheritedDDoL = true;
         base.Awake();
         _tmpText = this.GetRequiredComponent<TMP_Text>();
     }
+    #else
+    public override void Awake()
+    {
+        Destroy(gameObject);
+    }
+    #endif
 
     public void Update() => _tmpText.text = GetValue();
     public void OnValidate()
