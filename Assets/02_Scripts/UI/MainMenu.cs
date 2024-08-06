@@ -199,6 +199,7 @@ public class MainMenu : Singleton<MainMenu>
     public void HowToPlay()
     {
         _howToPlay.SetActive(true);
+        _startMenu.SetActive(false);
     }
 
     public void Credits()
