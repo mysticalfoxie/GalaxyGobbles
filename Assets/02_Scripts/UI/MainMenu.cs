@@ -14,6 +14,7 @@ public class MainMenu : Singleton<MainMenu>
     public const int MAIN_MENU_SCENE_INDEX = 0;
 
     [Header("Menus")] [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _pauseMenuPanel;
     [SerializeField] private GameObject _startMenu;
     [SerializeField] private GameObject _completeDayMenu;
     [SerializeField] private GameObject _sidebar;
@@ -80,10 +81,10 @@ public class MainMenu : Singleton<MainMenu>
 
     [Header("Debug")] [SerializeField] private bool _startWithoutMenu;
 
-    private bool _pausedGame;
     private bool _blockPauseMenu;
     private bool _levelLoading;
     private bool _assassinationBriefingLoading;
+    private bool _optionsOriginIsMenu;
 
     public override void Awake()
     {
@@ -118,19 +119,15 @@ public class MainMenu : Singleton<MainMenu>
     public void PauseGame()
     {
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
-        _btnMainMenu.SetActive(false);
         Time.timeScale = 0.0f;
         _pauseMenu.SetActive(true);
-        _pausedGame = true;
     }
 
     public void ResumeGame()
     {
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
-        _btnMainMenu.SetActive(true);
         Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
-        _pausedGame = false;
     }
 
     public void HomeMenu(bool skipLoad = false)
@@ -162,7 +159,8 @@ public class MainMenu : Singleton<MainMenu>
         GlobalTimeline.Instance.Disable();
         _assassinationBriefing.SetActive(true);
         _levelNumberAssassinationBriefing.text = $"Level {LevelManager.CurrentLevel.Number.ToString().PadLeft(2, '0')}";
-        _targetText.text = $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
+        _targetText.text =
+            $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
         _minScoreText.text = Mathf.FloorToInt(LevelManager.CurrentLevel.MinScore).ToString();
         foreach (var image in new[] { _ikaruzCard, _bobCard, _broccoloidCard }) image.SetActive(false);
         if (LevelManager.CurrentLevel.Target.name == Identifiers.Value.Ikaruz.name) _ikaruzCard.SetActive(true);
@@ -199,10 +197,13 @@ public class MainMenu : Singleton<MainMenu>
             () => _assassinationBriefingLoading = false));
     }
 
-    public void Options()
-    {   
+    public void Options(bool originIsMenu)
+    {
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
+        _optionsOriginIsMenu = originIsMenu;
         _options.SetActive(true);
+        if (!_optionsOriginIsMenu) 
+            _pauseMenuPanel.SetActive(false);
     }
 
     public void HowToPlay()
@@ -277,6 +278,8 @@ public class MainMenu : Singleton<MainMenu>
     public void ReplayLevel()
     {
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
+        if (_pauseMenu) _pauseMenu.SetActive(false);
+        Time.timeScale = 1.0f;
         StartLoadingLevel(LevelManager.CurrentLevelIndex);
     }
 
@@ -349,7 +352,8 @@ public class MainMenu : Singleton<MainMenu>
             if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
                 return _ikaruzBountySuccess;
 
-            throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+            throw new NotSupportedException(
+                $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
         }
 
         if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
@@ -359,7 +363,8 @@ public class MainMenu : Singleton<MainMenu>
         if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
             return _ikaruzBountyFail;
 
-        throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+        throw new NotSupportedException(
+            $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
     private void CalculateScore()
@@ -414,12 +419,19 @@ public class MainMenu : Singleton<MainMenu>
         _creditsButton.SetActive(isLastLevel);
     }
 
-    public void BackAndSave()
+    public void ApplyOptions()
     {
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         Save();
-        if (_pausedGame) _options.SetActive(false);
-        else BackButton();
+
+        if (_optionsOriginIsMenu)
+        {
+            BackButton();
+            return;
+        }
+
+        _pauseMenuPanel.SetActive(true);
+        _options.SetActive(false);
     }
 
     private void Save()
