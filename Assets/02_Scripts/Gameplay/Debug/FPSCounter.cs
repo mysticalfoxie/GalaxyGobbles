@@ -12,7 +12,6 @@ public class FPSCounter : Singleton<FPSCounter>
     [SerializeField] private float _capturingDelay = 1.0F;
     [SerializeField] private bool _displayDelta;
 
-#if UNITY_EDITOR
     public override void Awake()
     {
         if (!Debug.isDebugBuild) return;
@@ -25,12 +24,6 @@ public class FPSCounter : Singleton<FPSCounter>
         StartCoroutine(nameof(StartSecondTicks));
         Instance.gameObject.SetActive(false);
     }
-#else
-    public void Awake()
-    {
-        Destroy(gameObject);
-    }
-#endif
 
     public void Update()
     {

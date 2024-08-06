@@ -13,6 +13,8 @@ public class UI : Singleton<UI>
 
         Raycaster = this.GetRequiredComponent<GraphicRaycaster>();
         Canvas = this.GetRequiredComponent<Canvas>();
+        if (SceneManager.GetActiveScene().buildIndex == LevelManager.MAIN_LEVEL_INDEX)
+            FPSCounter.Show();
     }
 
     public GraphicRaycaster Raycaster { get; private set; }
