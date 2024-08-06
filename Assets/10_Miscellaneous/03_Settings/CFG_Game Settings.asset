@@ -22,7 +22,7 @@ MonoBehaviour:
   _customerDyingTime: 2
   _poisonHideDelay: 3
   _customerKillDelay: 2
-  _tableCleaningTime: 2
+  _tableCleaningTime: 0
   _closureDelay: 1
   _patienceTickDelay: 0.25
   _patienceDropAmount: 0.5
@@ -31,15 +31,14 @@ MonoBehaviour:
   _customerAngryThreshold: 20
   _patienceRegainOnSeated: 20
   _patienceRegainOnItemReceive: 20
-  _customerBaseScore: 1
-  _customerMaxScore: 4
+  _customerBaseScore: 80
+  _customerMaxScore: 10
+  _successFullAssassinationScore: 20
   _poisonIcon: {fileID: 11400000, guid: 57700fccc4889934e8fadf2dd19f429e, type: 2}
   _outlineMaterial: {fileID: -876546973899608171, guid: 7a56b9cdf2126ff4da39e5b5782c459e,
     type: 3}
   _checkmarkScale: {x: 7.438896, y: 6.756221, z: 1}
   _levelButtonScale: 0.9
-  _itemPulseAnimationStrength: 0.85
-  _itemPulseAnimationDuration: 1.14
   _itemPrefab: {fileID: 3252135566979042909, guid: d3024749853fb9448b22b795707563bf,
     type: 3}
   _checkmarkPrefab: {fileID: 7709166963047045946, guid: 64dbe30e781d8bb4dafe2860451f0d78,
@@ -62,6 +61,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 91fd2c9b75bc1f44abd31de7ea5ff57b, type: 2}
   - {fileID: 11400000, guid: 916dfe521ef2fe54c93921649666e473, type: 2}
   - {fileID: 11400000, guid: e19226438e6d90e4b94d249b7fe2f96b, type: 2}
+  - {fileID: 11400000, guid: f2e138629499353439122e0d0c85ecf7, type: 2}
   _species:
   - {fileID: 11400000, guid: 99ddd7ca94694d14f9aabbfc771cc8c2, type: 2}
   - {fileID: 11400000, guid: d100db6dee7d2514fbff39a86629d935, type: 2}

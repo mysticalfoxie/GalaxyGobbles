@@ -71,7 +71,9 @@ public class Table : Touchable
         if (RequiresCleaning)
         {
             _cleaning = true;
-            StartCoroutine(nameof(StartCleaning));
+            KittyBot.Instance.MoveTo(transform, () => 
+                StartCoroutine(nameof(StartCleaning)));
+            
             return;
         }
         

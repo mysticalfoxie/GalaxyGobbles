@@ -14,16 +14,19 @@ public class MainMenu : Singleton<MainMenu>
     public const int MAIN_MENU_SCENE_INDEX = 0;
 
     [Header("Menus")] [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _pauseMenuPanel;
     [SerializeField] private GameObject _startMenu;
     [SerializeField] private GameObject _completeDayMenu;
     [SerializeField] private GameObject _sidebar;
     [SerializeField] private GameObject _levelMap;
     [SerializeField] private GameObject _options;
+    [SerializeField] private GameObject _howToPlay;
     [SerializeField] private GameObject _credits;
     [SerializeField] private GameObject _assassinationBriefing;
 
     [Header("Button")] [SerializeField] private GameObject _btnMainMenu;
     [SerializeField] private GameObject _continueButton;
+    [SerializeField] private GameObject _creditsButton;
 
     [Header("Audio")] [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private Slider _volumeSlider;
@@ -76,13 +79,12 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private GameObject _completeScoreStamp;
     [SerializeField] private GameObject _failedScoreStamp;
 
-
     [Header("Debug")] [SerializeField] private bool _startWithoutMenu;
 
-    private bool _pausedGame;
     private bool _blockPauseMenu;
     private bool _levelLoading;
     private bool _assassinationBriefingLoading;
+    private bool _optionsOriginIsMenu;
 
     public override void Awake()
     {
@@ -93,12 +95,12 @@ public class MainMenu : Singleton<MainMenu>
     public void Start()
     {
         _startMenu.SetActive(!_startWithoutMenu);
-
         LoadSettings();
     }
 
     public void StartGame()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         _startMenu.SetActive(false);
         _levelMap.SetActive(true);
     }
@@ -116,18 +118,16 @@ public class MainMenu : Singleton<MainMenu>
 
     public void PauseGame()
     {
-        _btnMainMenu.SetActive(false);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         Time.timeScale = 0.0f;
         _pauseMenu.SetActive(true);
-        _pausedGame = true;
     }
 
     public void ResumeGame()
     {
-        _btnMainMenu.SetActive(true);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
-        _pausedGame = false;
     }
 
     public void HomeMenu(bool skipLoad = false)
@@ -140,8 +140,10 @@ public class MainMenu : Singleton<MainMenu>
 
     private void HomeMenuInternal()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
         if (_credits) _credits.SetActive(false);
+        if (_howToPlay) _howToPlay.SetActive(false);
         if (_assassinationBriefing) _assassinationBriefing.SetActive(false);
         Time.timeScale = 1.0f;
         if (_pauseMenu) _pauseMenu.SetActive(false);
@@ -157,7 +159,8 @@ public class MainMenu : Singleton<MainMenu>
         GlobalTimeline.Instance.Disable();
         _assassinationBriefing.SetActive(true);
         _levelNumberAssassinationBriefing.text = $"Level {LevelManager.CurrentLevel.Number.ToString().PadLeft(2, '0')}";
-        _targetText.text = $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
+        _targetText.text =
+            $"{LevelManager.CurrentLevel.TargetPosition.ToPositionString()} {LevelManager.CurrentLevel.Target.Name}";
         _minScoreText.text = Mathf.FloorToInt(LevelManager.CurrentLevel.MinScore).ToString();
         foreach (var image in new[] { _ikaruzCard, _bobCard, _broccoloidCard }) image.SetActive(false);
         if (LevelManager.CurrentLevel.Target.name == Identifiers.Value.Ikaruz.name) _ikaruzCard.SetActive(true);
@@ -179,28 +182,56 @@ public class MainMenu : Singleton<MainMenu>
                 _assassinationBriefingLoading = false;
                 GlobalTimeline.Instance.Enable();
             }));
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
     }
 
     public void AssassinationBriefingBack()
     {
         if (_assassinationBriefingLoading) return;
         _assassinationBriefingLoading = true;
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         Time.timeScale = 1F;
         GlobalTimeline.Instance.Disable();
         StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
-            () => HomeMenu(true),
+            () => HomeMenu(),
             () => _assassinationBriefingLoading = false));
     }
 
-    public void Options()
+    public void Options(bool originIsMenu)
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
+        _optionsOriginIsMenu = originIsMenu;
         _options.SetActive(true);
+        if (!_optionsOriginIsMenu) 
+            _pauseMenuPanel.SetActive(false);
+    }
+
+    public void HowToPlay()
+    {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
+        _howToPlay.SetActive(true);
+        _startMenu.SetActive(false);
     }
 
     public void Credits()
     {
-        _credits.SetActive(true);
-        _startMenu.SetActive(false);
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
+        if (SceneManager.GetActiveScene().buildIndex == MAIN_MENU_SCENE_INDEX)
+        {
+            _credits.SetActive(true);
+            _startMenu.SetActive(false);
+            return;
+        }
+
+        Time.timeScale = 1F;
+        StartCoroutine(Fader.Instance.FadeBlackWhiteWhile(
+            () =>
+            {
+                _completeDayMenu.SetActive(false);
+                SceneManager.LoadScene(MAIN_MENU_SCENE_INDEX);
+                _credits.SetActive(true);
+                _startMenu.SetActive(false);
+            }));
     }
 
     public void SetVolume(float masterVolume)
@@ -223,6 +254,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void BackButton()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         if (_options) _options.SetActive(false);
         if (_credits) _credits.SetActive(false);
         if (_levelMap) _levelMap.SetActive(false);
@@ -231,6 +263,7 @@ public class MainMenu : Singleton<MainMenu>
 
     public void BackToLevelSelection()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIBack);
         if (_completeDayText != null) _completeDayText.text = null;
         if (_startMenu) _startMenu.SetActive(false);
         if (_completeDayMenu) _completeDayMenu.SetActive(false);
@@ -244,11 +277,15 @@ public class MainMenu : Singleton<MainMenu>
 
     public void ReplayLevel()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
+        if (_pauseMenu) _pauseMenu.SetActive(false);
+        Time.timeScale = 1.0f;
         StartLoadingLevel(LevelManager.CurrentLevelIndex);
     }
 
     public void QuitGame()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         Application.Quit();
 
 #if UNITY_EDITOR // UwU
@@ -264,10 +301,15 @@ public class MainMenu : Singleton<MainMenu>
         AudioManager.Instance.StopAll();
         CalculateScore();
         RenderBounties();
+
+        AudioManager.Instance.PlayMusic(_continueButton.activeInHierarchy
+            ? AudioSettings.Data.WinMusic 
+            : AudioSettings.Data.LooseMusic);
     }
 
     public void ContinueButton()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStartGame);
         StartLoadingLevel(LevelManager.CurrentLevelIndex + 1);
     }
 
@@ -314,7 +356,8 @@ public class MainMenu : Singleton<MainMenu>
             if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
                 return _ikaruzBountySuccess;
 
-            throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+            throw new NotSupportedException(
+                $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
         }
 
         if (bounties[index].Species.name == Identifiers.Value.Broccoloid.name)
@@ -324,7 +367,8 @@ public class MainMenu : Singleton<MainMenu>
         if (bounties[index].Species.name == Identifiers.Value.Ikaruz.name)
             return _ikaruzBountyFail;
 
-        throw new NotSupportedException($"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
+        throw new NotSupportedException(
+            $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
     private void CalculateScore()
@@ -339,43 +383,79 @@ public class MainMenu : Singleton<MainMenu>
             PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
 
         if (starsAcquired >= 1)
-        {
-            if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
-                LevelButton.UnlockedLevels++;
-
-            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-
-            _continueButton.SetActive(true);
-            if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
-            _completeScoreStamp.SetActive(true);
-
-            AudioManager.Instance.PlayMusic(AudioSettings.Data.WinMusic);
-        }
+            OnLevelSucceed();
         else
-        {
-            if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
-            _failedScoreStamp.SetActive(true);
-            if (_continueButton) _continueButton.SetActive(false);
-            if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
-            PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+            OnLevelFailed();
 
-            AudioManager.Instance.PlayMusic(AudioSettings.Data.LooseMusic);
-        }
-
-        _starRevealed1.SetActive(starsAcquired >= 1);
-        _starRevealed2.SetActive(starsAcquired >= 2);
-        _starRevealed3.SetActive(starsAcquired >= 3);
+        StartCoroutine(PlayStarsAnimation(starsAcquired));
     }
 
-    public void BackAndSave()
+    private IEnumerator PlayStarsAnimation(int starsAcquired)
     {
+        var audios = new[]
+        {
+            AudioSettings.Data.UIStarComboOne,
+            AudioSettings.Data.UIStarComboTwo,
+            AudioSettings.Data.UIStarComboThree,
+        };
+        
+        for (var i = 0; i < starsAcquired; i++)
+        {
+            _starRevealed1.SetActive(i >= 0);
+            _starRevealed2.SetActive(i >= 1);
+            _starRevealed3.SetActive(i >= 2);
+            AudioManager.Instance.PlaySFX(audios[i]);
+            yield return new WaitForSecondsRealtime(audios[i].Source.length - 1F);
+        }
+    }
+
+    private void OnLevelFailed()
+    {
+        if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
+        _failedScoreStamp.SetActive(true);
+        if (_continueButton) _continueButton.SetActive(false);
+        if (_creditsButton) _creditsButton.SetActive(false);
+        if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
+        PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+
+    }
+
+    private void OnLevelSucceed()
+    {
+        if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
+            LevelButton.UnlockedLevels++;
+
+        PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
+        if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
+        _completeScoreStamp.SetActive(true);
+        ShowNextButton();
+    }
+
+    private void ShowNextButton()
+    {
+        var isLastLevel = LevelManager.CurrentLevelIndex == GameSettings.Data.Levels.Count() - 1;
+        _continueButton.SetActive(!isLastLevel);
+        _creditsButton.SetActive(isLastLevel);
+    }
+
+    public void ApplyOptions()
+    {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         Save();
-        if (_pausedGame) _options.SetActive(false);
-        else BackButton();
+
+        if (_optionsOriginIsMenu)
+        {
+            BackButton();
+            return;
+        }
+
+        _pauseMenuPanel.SetActive(true);
+        _options.SetActive(false);
     }
 
     private void Save()
     {
+        AudioManager.Instance.PlaySFX(AudioSettings.Data.UIClose);
         PlayerPrefs.SetFloat("MasterVolume", _currentVolume);
         PlayerPrefs.SetFloat("MusicVolume", _currentMusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", _currentSfxVolume);
