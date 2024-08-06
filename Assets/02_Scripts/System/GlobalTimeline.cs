@@ -7,7 +7,9 @@ using UnityEngine;
 public class GlobalTimeline : TimelineBase<GlobalTimeline>
 {
     private Dictionary<uint, CustomerData> _customers;
-
+    private bool _closing;
+    private bool _forceClose;
+    
     public uint SecondsUntilClosure { get; private set; }
     public bool Loading { get; private set; } = true;
     public bool DayComplete { get; set; }
@@ -87,9 +89,32 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     private IEnumerator CloseStore()
     {
-        yield return CustomerHandler.Instance.WaitUntilCustomersLeave();
+        if (_closing) yield break;
+        _closing = true;
+        yield return CustomerHandler.Instance.WaitUntilCustomersLeave(() => _forceClose);
         MainMenu.Instance.CompleteDayMenu();
         DayComplete = true;
         Active = false;
+        _closing = false;
+    }
+
+    public void SkipDay()
+    {
+        _forceClose = true;
+        BottomBar.Instance.Score.Add(LevelManager.CurrentLevel.MaxScore - BottomBar.Instance.Score.Value);
+        BottomBar.Instance.ProgressBar.SetValue(100.0F);
+        
+        if (LevelManager.CurrentLevel.Target && BottomBar.Instance.Bounties.GetBounties().All(x => !x.WasTarget))
+        {
+            var bounty = Model.Create<BountyData>(model =>
+            {
+                model.WasTarget = true;
+                model.Species = LevelManager.CurrentLevel.Target;
+            });
+            
+            BottomBar.Instance.Bounties.TryAdd(bounty);
+        }
+        
+        StartCoroutine(CloseStore());
     }
 }

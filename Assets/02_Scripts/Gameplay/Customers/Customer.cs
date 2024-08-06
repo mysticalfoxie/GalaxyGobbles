@@ -233,6 +233,12 @@ public class Customer : Selectable
         if (!BottomBar.Instance.Bounties.TryAdd(bounty))
             Debug.Log("[Bounties] Cannot pick up any more bounties.");
 
+        if (bounty.WasTarget)
+        {
+            AudioManager.Instance.PlaySFX(AudioSettings.Data.MoneyPaid);
+            BottomBar.Instance.Score.Add(GameSettings.Data.SuccessFullAssassinationScore);
+        }
+
         OnCustomerLeave();
     }
 
