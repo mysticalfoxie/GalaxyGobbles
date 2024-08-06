@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,8 +30,14 @@ public abstract class TimelineBase<T> : Singleton<T> where T : class
 
     public IEnumerator TimelineTick()
     {
-        while (!_destroyed && Active)
+        while (!_destroyed)
         {
+            if (!Active)
+            {
+                yield return new WaitForNextFrameUnit();
+                continue;
+            }
+            
             Tick?.Invoke(this, EventArgs.Empty);
             Ticks++;
             

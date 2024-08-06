@@ -48,6 +48,7 @@ public class AudioSettings : ScriptableObject
     [SerializeField] private AudioData _clickDrink;
     [SerializeField] private AudioData _ambientSound;
     [SerializeField] private AudioData _potCleaning;
+    [SerializeField] private AudioData _takeReadyNoodles;
 
     #endregion
 
@@ -91,6 +92,7 @@ public class AudioSettings : ScriptableObject
     public AudioData ClickDrink => _clickDrink;
     public AudioData AmbientSound => _ambientSound;
     public AudioData PotCleaning => _potCleaning;
+    public AudioData TakeReadyNoodles => _takeReadyNoodles;
     
     #endregion
 
