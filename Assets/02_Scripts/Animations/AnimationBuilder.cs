@@ -8,6 +8,7 @@ public class AnimationBuilder
     private AnimationInterpolation _i = AnimationInterpolation.EaseInOutCubic;
     private bool _playOnce;
     private bool _looped;
+    private bool _unscaledTime;
     private Animation _animation;
     private Action _completeCallback;
     private Action _disposedCallback;
@@ -66,6 +67,12 @@ public class AnimationBuilder
         return this;
     }
 
+    public AnimationBuilder SetUnscaledTime(bool unscaledTime = true)
+    {
+        _unscaledTime = unscaledTime;
+        return this;
+    }
+
     public AnimationBuilder OnDisposed(Action callback)
     {
         _disposedCallback = callback;
@@ -87,7 +94,7 @@ public class AnimationBuilder
     public AnimationBuilder Build()
     {
         if (_animation is not null) throw new InvalidOperationException("The animation has already been built.");
-        _animation = new Animation(_a, _b, _d, _i);
+        _animation = new Animation(_a, _b, _d, _i, _unscaledTime);
         _animation.Complete += OnAnimationComplete;
         _animation.Disposed += OnAnimationDisposed;
         _animation.Tick += OnAnimationTick;

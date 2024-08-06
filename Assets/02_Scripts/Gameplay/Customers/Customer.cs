@@ -161,7 +161,7 @@ public class Customer : Selectable
 
     private IEnumerator StartDying()
     {
-        AudioManager.Instance.PlaySFX(GetCustomerAngryVoice());
+        AudioManager.Instance.PlaySFX(GetCustomerAngryVoice(Data.Species));
         yield return new WaitForSeconds(GameSettings.Data.CustomerDyingTime);
         OnCustomerDied();
     }
@@ -182,43 +182,43 @@ public class Customer : Selectable
     private AudioData GetCustomerVoice()
         => Patience.State switch
         {
-            PatienceCategory.Love => GetCustomerLoveVoice(),
-            PatienceCategory.Happy => GetCustomerHappyVoice(),
-            PatienceCategory.Angry => GetCustomerAngryVoice(),
+            PatienceCategory.Love => GetCustomerLoveVoice(Data.Species),
+            PatienceCategory.Happy => GetCustomerHappyVoice(Data.Species),
+            PatienceCategory.Angry => GetCustomerAngryVoice(Data.Species),
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private AudioData GetCustomerAngryVoice()
+    public static AudioData GetCustomerAngryVoice(SpeciesData data)
     {
-        if (Data.Species.name == Identifiers.Value.Ikaruz.name)
+        if (data.name == Identifiers.Value.Ikaruz.name)
             return AudioSettings.Data.IcarusVoiceAngry;
-        if (Data.Species.name == Identifiers.Value.Bob.name)
+        if (data.name == Identifiers.Value.Bob.name)
             return AudioSettings.Data.BobVoiceAngry;
-        if (Data.Species.name == Identifiers.Value.Broccoloid.name)
+        if (data.name == Identifiers.Value.Broccoloid.name)
             return AudioSettings.Data.BrocoloidVoiceAngry;
-        throw new NotSupportedException($"[Leave Audio] Could not match the species {Data.Species.name} to the preserved species.");
+        throw new NotSupportedException($"[Leave Audio] Could not match the species {data.name} to the preserved species.");
     }
 
-    private AudioData GetCustomerHappyVoice()
+    public static AudioData GetCustomerHappyVoice(SpeciesData data)
     {
-        if (Data.Species.name == Identifiers.Value.Ikaruz.name)
+        if (data.name == Identifiers.Value.Ikaruz.name)
             return AudioSettings.Data.IcarusVoiceHappy;
-        if (Data.Species.name == Identifiers.Value.Bob.name)
+        if (data.name == Identifiers.Value.Bob.name)
             return AudioSettings.Data.BobVoiceHappy;
-        if (Data.Species.name == Identifiers.Value.Broccoloid.name)
+        if (data.name == Identifiers.Value.Broccoloid.name)
             return AudioSettings.Data.BrocoloidVoiceHappy;
-        throw new NotSupportedException($"[Leave Audio] Could not match the species {Data.Species.name} to the preserved species.");
+        throw new NotSupportedException($"[Leave Audio] Could not match the species {data.name} to the preserved species.");
     }
 
-    private AudioData GetCustomerLoveVoice()
+    public static AudioData GetCustomerLoveVoice(SpeciesData data)
     {
-        if (Data.Species.name == Identifiers.Value.Ikaruz.name)
+        if (data.name == Identifiers.Value.Ikaruz.name)
             return AudioSettings.Data.IcarusVoiceLove;
-        if (Data.Species.name == Identifiers.Value.Bob.name)
+        if (data.name == Identifiers.Value.Bob.name)
             return AudioSettings.Data.BobVoiceLove;
-        if (Data.Species.name == Identifiers.Value.Broccoloid.name)
+        if (data.name == Identifiers.Value.Broccoloid.name)
             return AudioSettings.Data.BrocoloidVoiceLove;
-        throw new NotSupportedException($"[Leave Audio] Could not match the species {Data.Species.name} to the preserved species.");
+        throw new NotSupportedException($"[Leave Audio] Could not match the species {data.name} to the preserved species.");
     }
 
     private void OnCustomerDied()
@@ -252,7 +252,7 @@ public class Customer : Selectable
 
     private IEnumerator StartPoisonCloudAnimation()
     {
-        AudioManager.Instance.PlaySFX(GetCustomerAngryVoice());
+        AudioManager.Instance.PlaySFX(GetCustomerAngryVoice(Data.Species));
         AudioManager.Instance.PlayMusic(AudioSettings.Data.TensionMusic);
         yield return new WaitForSeconds(GameSettings.Data.CustomerKillDelay);
 

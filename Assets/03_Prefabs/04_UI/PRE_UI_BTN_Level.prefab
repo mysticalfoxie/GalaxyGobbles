@@ -57,6 +57,9 @@ GameObject:
   - component: {fileID: 4566375976106634609}
   - component: {fileID: 3366573221151394607}
   - component: {fileID: 4232314108943977537}
+  - component: {fileID: 1013067494056207918}
+  - component: {fileID: 1646087121570357302}
+  - component: {fileID: 8174016148051082805}
   m_Layer: 5
   m_Name: PRE_UI_BTN_Level
   m_TagString: Untagged
@@ -166,6 +169,58 @@ MonoBehaviour:
   - {fileID: 3627425167340748632}
   _goldenStarSprite: {fileID: 21300000, guid: ce17f1752addf6f48971164c091afd9a, type: 3}
   _levelButton: {fileID: 2416559090434878607}
+  LevelButtonski: {fileID: 0}
+--- !u!114 &1013067494056207918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416559090434878607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92cf6795152a43958489faa1c74985cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.15
+  _strength: 1
+  _weight: {x: 1, y: 1, z: 1}
+  _playOnAwake: 0
+  _playOnce: 1
+  _looped: 0
+  _interpolation: 6
+--- !u!114 &1646087121570357302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416559090434878607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fda595591da439c85ab2b6146943a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.15
+  _strength: 1.1
+  _weight: {x: 1, y: 1, z: 1}
+  _playOnAwake: 0
+  _playOnce: 1
+  _looped: 0
+  _interpolation: 6
+--- !u!114 &8174016148051082805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416559090434878607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741c368f0630417fad93958decec9ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &2549364221929088651
 GameObject:
   m_ObjectHideFlags: 0
