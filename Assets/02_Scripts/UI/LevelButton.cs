@@ -28,6 +28,12 @@ public class LevelButton : MonoBehaviour
     public void AddStars()
     {
         var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
+        // var unlockedLevels = PlayerPrefs.HasKey("UnlockedLevels")
+        //     ? PlayerPrefs.GetInt("UnlockedLevels", 0)
+        //     : PlayerPrefs.GetInt("UnlockedLevels");
+        if (unlockedLevels < LevelIndex) return;
+        var button = this.GetRequiredComponent<Button>();
+        button.interactable = true;
         LevelButtonski.interactable = LevelIndex <= unlockedLevels;
         UpdateStars(unlockedLevels);
     }
@@ -42,6 +48,9 @@ public class LevelButton : MonoBehaviour
     public void UpdateStars(int unlockedLevels)
     {
         var stars = PlayerPrefs.GetInt("Stars" + LevelIndex, 0);
+        // var stars = PlayerPrefs.HasKey("Stars")
+        //     ? PlayerPrefs.GetInt("Stars" + LevelIndex, 0)
+        //     : PlayerPrefs.GetInt("Stars");
         for (var i = 0; i < stars; i++)
         {
             var starImage = _starsObjects[i].GetRequiredComponent<Image>();
