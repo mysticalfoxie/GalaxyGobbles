@@ -403,6 +403,9 @@ public class MainMenu : Singleton<MainMenu>
 
     private IEnumerator PlayStarsAnimation(int starsAcquired)
     {
+        _starRevealed1.SetActive(false);
+        _starRevealed2.SetActive(false);
+        _starRevealed3.SetActive(false);
         yield return new WaitForSecondsRealtime(GameSettings.Data.StarsAnimationDelay);
         
         var audios = new[]
