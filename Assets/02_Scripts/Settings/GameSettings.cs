@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 // ReSharper disable InconsistentNaming
@@ -39,8 +40,11 @@ public class GameSettings : ScriptableObject
     [Tooltip("The amount of time it takes for the character to clean the table.")]
     [SerializeField] private float _tableCleaningTime = 2.0F;
 
-    [Header("Store Behaviour")] [Tooltip("The delay between serving the last customer and the store to be fully closed in seconds.")] 
+    [Header("Store Behaviour")] 
+    [Tooltip("The delay between serving the last customer and the store to be fully closed in seconds.")] 
     [SerializeField] private float _closureDelay = 1.0F;
+    [Tooltip("The delay between the first seeing of the complete day menu and the stars animation.")]
+    [SerializeField] private float _starsAnimationDelay = 1.0F;
     
     [Header("Customer Patience")]
     [Tooltip("The amount of time between each tick in the patience system.")]
@@ -69,6 +73,10 @@ public class GameSettings : ScriptableObject
     [Header("Rendering")] 
     [Tooltip("The poison icon that should be added to an item.")]
     [SerializeField] private SpriteData _poisonIcon;
+    [Tooltip("The star sprite, that is not filled.")]
+    [SerializeField] private Sprite _unfilledStar;
+    [Tooltip("The star sprite, that is filled.")]
+    [SerializeField] private Sprite _filledStar;
     [Tooltip("The material used for applying an outline.")]
     [SerializeField] private Material _outlineMaterial;
     [Tooltip("The scale of the checkmark confirmation sprite.")]
@@ -120,8 +128,11 @@ public class GameSettings : ScriptableObject
     public float CustomerBeamingTime => _customerBeamingTime;
     public float ClosureDelay => _closureDelay;
     public float SuccessFullAssassinationScore => _successFullAssassinationScore;
+    public float StarsAnimationDelay => _starsAnimationDelay;
     
     public SpriteData PoisonIcon => _poisonIcon;
+    public Sprite FilledStar => _filledStar;
+    public Sprite UnfilledStar => _unfilledStar;
     public Material OutlineMaterial => _outlineMaterial;
     
     public GameObject PRE_Item => _itemPrefab;

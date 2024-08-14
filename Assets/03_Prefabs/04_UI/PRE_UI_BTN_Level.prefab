@@ -163,13 +163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c9abcf4d5c4c9d8c28785ac4af19a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _starsObjects:
-  - {fileID: 2549364221929088651}
-  - {fileID: 8821071824296190856}
-  - {fileID: 3627425167340748632}
-  _goldenStarSprite: {fileID: 21300000, guid: ce17f1752addf6f48971164c091afd9a, type: 3}
-  _levelButton: {fileID: 2416559090434878607}
-  LevelButtonski: {fileID: 0}
+  _stars:
+  - {fileID: 6360235640650040728}
+  - {fileID: 3559136662923543700}
+  - {fileID: 7601938800676405495}
+  _filled: {fileID: 21300000, guid: ce17f1752addf6f48971164c091afd9a, type: 3}
+  _unfilled: {fileID: 21300000, guid: d729af8d22eb3ad4d900298516105357, type: 3}
 --- !u!114 &1013067494056207918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +184,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -204,6 +204,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1.1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -522,9 +523,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 3634922898624924589}
-  - {fileID: 7573323747138995244}
   - {fileID: 1289968112840622502}
+  - {fileID: 7573323747138995244}
+  - {fileID: 3634922898624924589}
   m_Father: {fileID: 8661182973663340421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
