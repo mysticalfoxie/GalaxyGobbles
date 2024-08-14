@@ -318,6 +318,9 @@ public class MainMenu : Singleton<MainMenu>
         DataManager.UpdateProgress(LevelManager.CurrentLevel.Number, ProgressBar.Progress, succeeded);
         _levelSelector.UpdateLevels();
         
+        _starRevealed1.SetActive(false);
+        _starRevealed2.SetActive(false);
+        _starRevealed3.SetActive(false);
         _continueButton.SetActive(succeeded);
         if (succeeded)
             StartCoroutine(PlayStarsAnimation(ProgressBar.Progress));
@@ -391,7 +394,7 @@ public class MainMenu : Singleton<MainMenu>
         var maxScore = LevelManager.CurrentLevel.MaxScore;
         _maxScore.text = Mathf.Floor(maxScore).ToString(CultureInfo.InvariantCulture);
         _valueScore.text = Math.Ceiling(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
-        _levelText.text = "Level" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
+        _levelText.text = $"Level {LevelManager.CurrentLevel.Number}";
 
         if (starsAcquired >= 1)
             OnLevelSucceed();
@@ -403,9 +406,6 @@ public class MainMenu : Singleton<MainMenu>
 
     private IEnumerator PlayStarsAnimation(int starsAcquired)
     {
-        _starRevealed1.SetActive(false);
-        _starRevealed2.SetActive(false);
-        _starRevealed3.SetActive(false);
         yield return new WaitForSecondsRealtime(GameSettings.Data.StarsAnimationDelay);
         
         var audios = new[]
