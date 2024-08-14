@@ -37,22 +37,28 @@ public class ProgressBar : Singleton<ProgressBar>
 
     public void SetScore(float scoreValue)
     {
-        _scoreIndicator.text = scoreValue.ToString(CultureInfo.InvariantCulture);
+        var score = scoreValue.ToString(CultureInfo.InvariantCulture);
+        var parts = score.Split('.');
+        if (parts.Length > 1) 
+            score = parts[0] + '.' + parts[1].PadRight(2, '0'); 
+        
+        _scoreIndicator.text = score;
     }
 
     private void CheckSliderValue()
     {
-        if (_progressSlider.value >= _starOneReached && _progressSlider.value < _starTwoReached)
+        if (_progressSlider.value >= _starOneReached && _progressSlider.value < _starTwoReached && Progress < 1)
         {
             Progress = 1;
+            
             AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStarComboOne);
         }
-        else if (_progressSlider.value >= _starTwoReached && _progressSlider.value < _starThreeReached)
+        else if (_progressSlider.value >= _starTwoReached && _progressSlider.value < _starThreeReached && Progress < 2)
         {
             Progress = 2;
             AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStarComboTwo);
         }
-        else if (_progressSlider.value >= _starThreeReached)
+        else if (_progressSlider.value >= _starThreeReached && Progress < 3)
         {
             Progress = 3;
             AudioManager.Instance.PlaySFX(AudioSettings.Data.UIStarComboThree);

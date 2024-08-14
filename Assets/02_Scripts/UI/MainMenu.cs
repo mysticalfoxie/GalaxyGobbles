@@ -13,7 +13,8 @@ public class MainMenu : Singleton<MainMenu>
 {
     public const int MAIN_MENU_SCENE_INDEX = 0;
 
-    [Header("Menus")] [SerializeField] private GameObject _pauseMenu;
+    [Header("Menus")] 
+    [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _pauseMenuPanel;
     [SerializeField] private GameObject _startMenu;
     [SerializeField] private GameObject _completeDayMenu;
@@ -23,6 +24,7 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private GameObject _howToPlay;
     [SerializeField] private GameObject _credits;
     [SerializeField] private GameObject _assassinationBriefing;
+    [SerializeField] private LevelSelector _levelSelector;
 
     [Header("Button")] [SerializeField] private GameObject _btnMainMenu;
     [SerializeField] private GameObject _continueButton;
@@ -45,22 +47,22 @@ public class MainMenu : Singleton<MainMenu>
     [SerializeField] private Sprite _broccoloidBountyFail;
     [SerializeField] private Sprite _emptyBounty;
 
-    [Header("TMP Text ")] [SerializeField] private TMP_Text _completeDayText;
+    [Header("TMP Text")] 
+    [SerializeField] private TMP_Text _completeDayText;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private TMP_Text _targetText;
     [SerializeField] private TMP_Text _minScoreText;
     [SerializeField] private TMP_Text _levelNumberAssassinationBriefing;
     [SerializeField] private TMP_Text _noDeathsText;
 
-    [Header("Assassination Briefing")] [SerializeField]
-    private GameObject _ikaruzCard;
+    [Header("Assassination Briefing")] 
+    [SerializeField] private GameObject _ikaruzCard;
 
     [SerializeField] private GameObject _bobCard;
     [SerializeField] private GameObject _broccoloidCard;
 
-    [Header("Stars & Bounty in Complete Day Menu")] [SerializeField]
-    private GameObject _starRevealed1;
-
+    [Header("Stars & Bounty in Complete Day Menu")] 
+    [SerializeField] private GameObject _starRevealed1;
     [SerializeField] private GameObject _starRevealed2;
     [SerializeField] private GameObject _starRevealed3;
     [SerializeField] private GameObject _starUnrevealed1;
@@ -202,7 +204,7 @@ public class MainMenu : Singleton<MainMenu>
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
         _optionsOriginIsMenu = originIsMenu;
         _options.SetActive(true);
-        if (!_optionsOriginIsMenu) 
+        if (!_optionsOriginIsMenu)
             _pauseMenuPanel.SetActive(false);
     }
 
@@ -299,12 +301,29 @@ public class MainMenu : Singleton<MainMenu>
         _completeDayMenu.SetActive(true);
         _backgroundImage.SetActive(true);
         AudioManager.Instance.StopAll();
-        CalculateScore();
-        RenderBounties();
+
+        UpdateProgress();
 
         AudioManager.Instance.PlayMusic(_continueButton.activeInHierarchy
-            ? AudioSettings.Data.WinMusic 
+            ? AudioSettings.Data.WinMusic
             : AudioSettings.Data.LooseMusic);
+    }
+
+    private void UpdateProgress()
+    {
+        var winByScore = CalculateScore();
+        var winByBounties = RenderBounties();
+        var succeeded = winByBounties && winByScore;
+
+        DataManager.UpdateProgress(LevelManager.CurrentLevel.Number, ProgressBar.Progress, succeeded);
+        _levelSelector.UpdateLevels();
+        
+        _starRevealed1.SetActive(false);
+        _starRevealed2.SetActive(false);
+        _starRevealed3.SetActive(false);
+        _continueButton.SetActive(succeeded);
+        if (succeeded)
+            StartCoroutine(PlayStarsAnimation(ProgressBar.Progress));
     }
 
     public void ContinueButton()
@@ -313,33 +332,31 @@ public class MainMenu : Singleton<MainMenu>
         StartLoadingLevel(LevelManager.CurrentLevelIndex + 1);
     }
 
-    private void RenderBounties()
+    private bool RenderBounties()
     {
+        var bountyObjects = new[] { _bounty1, _bounty2, _bounty3 };
+        foreach (var bounty in bountyObjects)
+            bounty.gameObject.SetActive(LevelManager.CurrentLevel.Target is not null);
+        
+        // No assassination target existed
         if (LevelManager.CurrentLevel.Target is null)
         {
-            _bounty1.transform.gameObject.SetActive(false);
-            _bounty2.transform.gameObject.SetActive(false);
-            _bounty3.transform.gameObject.SetActive(false);
             _noDeathsText.gameObject.SetActive(true);
             _completeBountyStamp.SetActive(false);
             _failedBountyStamp.SetActive(false);
+            return true;
         }
-        else
-        {
-            _noDeathsText.gameObject.SetActive(false);
-            _bounty1.transform.gameObject.SetActive(true);
-            _bounty2.transform.gameObject.SetActive(true);
-            _bounty3.transform.gameObject.SetActive(true);
-            var bounties = BottomBar.Instance.Bounties.GetBounties();
-            _bounty1.sprite = GetBountyCard(bounties, 0);
-            _bounty2.sprite = GetBountyCard(bounties, 1);
-            _bounty3.sprite = GetBountyCard(bounties, 2);
-            var bountySucceeded = bounties.Any(x => x.WasTarget);
-            _completeBountyStamp.SetActive(bountySucceeded);
-            _failedBountyStamp.SetActive(!bountySucceeded);
-            if (_continueButton.activeInHierarchy)
-                _continueButton.SetActive(bountySucceeded);
-        }
+
+        var bounties = BottomBar.Instance.Bounties.GetBounties();
+        for (var i = 0; i < bountyObjects.Length; i++)
+            bountyObjects[i].sprite = GetBountyCard(bounties, i);
+
+        var bountySucceeded = bounties.Any(x => x.WasTarget);
+        _completeBountyStamp.SetActive(bountySucceeded);
+        _failedBountyStamp.SetActive(!bountySucceeded);
+        _noDeathsText.gameObject.SetActive(false);
+
+        return bountySucceeded;
     }
 
     private Sprite GetBountyCard(BountyData[] bounties, int index)
@@ -371,34 +388,33 @@ public class MainMenu : Singleton<MainMenu>
             $"Could not find a bounty card for species \"{bounties[index].Species.name}\".");
     }
 
-    private void CalculateScore()
+    private bool CalculateScore()
     {
         var starsAcquired = ProgressBar.Progress;
         var maxScore = LevelManager.CurrentLevel.MaxScore;
         _maxScore.text = Mathf.Floor(maxScore).ToString(CultureInfo.InvariantCulture);
         _valueScore.text = Math.Ceiling(BottomBar.Instance.Score.Value).ToString(CultureInfo.InvariantCulture);
-        _levelText.text = "Level" + (LevelManager.CurrentLevelIndex + 1).ToString().PadLeft(2, '0');
-
-        if (starsAcquired > PlayerPrefs.GetInt("Stars" + LevelManager.CurrentLevelIndex))
-            PlayerPrefs.SetInt("Stars" + LevelManager.CurrentLevelIndex, starsAcquired);
+        _levelText.text = $"Level {LevelManager.CurrentLevel.Number}";
 
         if (starsAcquired >= 1)
             OnLevelSucceed();
         else
             OnLevelFailed();
 
-        StartCoroutine(PlayStarsAnimation(starsAcquired));
+        return starsAcquired >= 1;
     }
 
     private IEnumerator PlayStarsAnimation(int starsAcquired)
     {
+        yield return new WaitForSecondsRealtime(GameSettings.Data.StarsAnimationDelay);
+        
         var audios = new[]
         {
             AudioSettings.Data.UIStarComboOne,
             AudioSettings.Data.UIStarComboTwo,
             AudioSettings.Data.UIStarComboThree,
         };
-        
+
         for (var i = 0; i < starsAcquired; i++)
         {
             _starRevealed1.SetActive(i >= 0);
@@ -415,17 +431,10 @@ public class MainMenu : Singleton<MainMenu>
         _failedScoreStamp.SetActive(true);
         if (_continueButton) _continueButton.SetActive(false);
         if (_creditsButton) _creditsButton.SetActive(false);
-        if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex) LevelButton.UnlockedLevels++;
-        PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
-
     }
 
     private void OnLevelSucceed()
     {
-        if (LevelButton.UnlockedLevels == LevelManager.CurrentLevelIndex)
-            LevelButton.UnlockedLevels++;
-
-        PlayerPrefs.SetInt("UnlockedLevels", LevelButton.UnlockedLevels);
         if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
         _completeScoreStamp.SetActive(true);
         ShowNextButton();
