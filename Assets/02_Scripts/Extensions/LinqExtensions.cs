@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,5 +17,14 @@ public static class LinqExtensions
         var random = new Random();
         var index = random.Next(0, array.Length);
         return array[index];
+    }
+
+    public static int IndexOf<T>(this IEnumerable<T> values, T item) where T : class
+    {
+        var array = values.ToArray();
+        for (var i = 0; i < array.Length; i++)
+            if (item == array[i])
+                return i;
+        return -1;
     }
 }

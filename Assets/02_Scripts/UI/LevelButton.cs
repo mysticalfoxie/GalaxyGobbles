@@ -1,57 +1,44 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelButton : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _starsObjects;
-    [SerializeField] private Sprite _goldenStarSprite;
-    [SerializeField] private GameObject _levelButton;
+    [Header("Stars")]
+    [SerializeField] private Image[] _stars;
+    [SerializeField] private Sprite _filled;
+    [SerializeField] private Sprite _unfilled;
 
-    public static int UnlockedLevels;
-    public int LevelIndex { get; set; }
-    public UnityEngine.UI.Button LevelButtonski;
-    public event Action<int> Clicked;
+    public event Action Clicked;
+    public int LevelNumber { get; private set; }
+
+    private Button _button;
+    private TMP_Text _label;
 
     public void OnEnable()
     {
-        LevelButtonski = this.GetRequiredComponent<Button>();
+        _button = this.GetRequiredComponent<Button>();
+        _label = this.GetRequiredComponentInChildren<TMP_Text>();
     }
 
-    public void Refresh()
+    private void SetStars(int stars)
     {
-        var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
-        UpdateStars(unlockedLevels);
-        UpdateLevel(unlockedLevels);
-    }
-
-    public void AddStars()
-    {
-        var unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels", 0);
-        LevelButtonski.interactable = LevelIndex <= unlockedLevels;
-        UpdateStars(unlockedLevels);
-    }
-
-    public void UpdateLevel(int unlockedLevels)
-    {
-        // Todo: Fix me - I'm hard stuck at level 3
-        // It seems like the lines where "UnlockedLevels" is set are corrupted, not this here. 
-        LevelButtonski.interactable = true; // LevelIndex <= unlockedLevels;
-    }
-
-    public void UpdateStars(int unlockedLevels)
-    {
-        var stars = PlayerPrefs.GetInt("Stars" + LevelIndex, 0);
-        for (var i = 0; i < stars; i++)
-        {
-            var starImage = _starsObjects[i].GetRequiredComponent<Image>();
-            starImage.sprite = _goldenStarSprite;
-        }
+        for (var i = 0; i < _stars.Length; i++)
+            _stars[i].sprite = i <= stars - 1 ? _filled : _unfilled;
     }
 
     public void OnClick()
     {
         AudioManager.Instance.PlaySFX(AudioSettings.Data.UIOpenPopup);
-        Clicked?.Invoke(LevelIndex);
+        Clicked?.Invoke();
+    }
+
+    public void SetData(LevelSaveData data)
+    {
+        LevelNumber = data.Number;
+        _button.interactable = data.Unlocked;
+        _label.text = $"Level {data.Number.ToString().PadLeft(2, '0')}";
+        SetStars(data.Stars);
     }
 }
