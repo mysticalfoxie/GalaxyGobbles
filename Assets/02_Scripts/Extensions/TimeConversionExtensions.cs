@@ -1,6 +1,6 @@
 public static class TimeConversionExtensions
 {
-    public static uint GetSeconds(this CustomerData data) => FromValues(data.Minutes, data.Seconds);
-    public static uint GetSeconds(this LevelData data) => FromValues(data.CloseAfterMinutes, data.CloseAfterSeconds);
-    public static uint FromValues(uint minutes, uint seconds) => minutes * 60 + seconds;
+    public static int GetSeconds(this CustomerData data) => FromValues(data.Minutes, data.Seconds);
+    public static int GetSeconds(this LevelData data) => FromValues(data.CloseAfterMinutes, data.CloseAfterSeconds);
+    public static int FromValues(int minutes, int seconds) => minutes * 60 + seconds;
 }
