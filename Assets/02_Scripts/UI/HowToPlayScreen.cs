@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
-public class HowtoplayScreen : MonoBehaviour
+public class HowToPlayScreen : MonoBehaviour
 {
     private MainMenu _mainMenu;
    [SerializeField] private GameObject[] _pages;
@@ -19,6 +15,9 @@ public class HowtoplayScreen : MonoBehaviour
     private void OnEnable()
     {
         _pages = this.GetChildren().ToArray();
+        foreach (var page in _pages) page.SetActive(false);
+        _pages.First().SetActive(true);
+        _previous.gameObject.SetActive(false);
         _mainMenu = GetComponentInParent<MainMenu>();
     }
 
