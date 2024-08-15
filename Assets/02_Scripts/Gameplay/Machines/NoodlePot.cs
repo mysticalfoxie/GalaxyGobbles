@@ -11,9 +11,15 @@ public class NoodlePot : Touchable
     private Item _item;
     private Item[] _items;
 
-    [Header("Item Visualization")] [SerializeField] private RectTransform _canvas;
+    [Header("Item Visualization")] 
+    [SerializeField] private RectTransform _canvas;
     [SerializeField] [Range(0.1F, 5.0F)] private float _scale = 1;
 
+    [Header("Animations")] 
+    [SerializeField] private GameObject _fireAnimation;
+    [SerializeField] private GameObject _smokeAnimation;
+    [SerializeField] private ScalingAnimator _pulseAnimation;
+        
     public NoodlePotState State { get; private set; }
 
     public override void Awake()
@@ -52,7 +58,7 @@ public class NoodlePot : Touchable
         }
 
         item.Show();
-        
+        _pulseAnimation.Stop();
         AudioManager.Instance.PlaySFX(AudioSettings.Data.TakeReadyNoodles);
         UpdateState(NoodlePotState.Empty);
     }
@@ -73,6 +79,9 @@ public class NoodlePot : Touchable
     private IEnumerator OnCookingFinished()
     {
         if (GlobalTimeline.Instance.DayComplete) yield break;
+        _smokeAnimation.SetActive(false);
+        _pulseAnimation.Play();
+        
         UpdateState(NoodlePotState.Cooked);
         AudioManager.Instance.PlaySFX(AudioSettings.Data.Ready, true);
         
@@ -85,15 +94,18 @@ public class NoodlePot : Touchable
         if (GlobalTimeline.Instance.DayComplete) yield break;
         if (State != NoodlePotState.Cooked) yield break;
         
+        _fireAnimation.SetActive(true);
         AudioManager.Instance.PlaySFX(AudioSettings.Data.Overcooked, true);
         UpdateState(NoodlePotState.Overcooked);
     }
 
     private IEnumerator OnCleaningStart()
     {
+        _pulseAnimation.Stop();
         var cleaningTime = GameSettings.Data.PotCleaningTime;
         yield return new WaitForSeconds(cleaningTime);
         if (GlobalTimeline.Instance.DayComplete) yield break;
+        _fireAnimation.SetActive(false);
         AudioManager.Instance.PlaySFX(AudioSettings.Data.PotCleaning);
         UpdateState(NoodlePotState.Empty);
     }
@@ -101,6 +113,7 @@ public class NoodlePot : Touchable
     private IEnumerator OnCookingStart()
     {
         UpdateState(NoodlePotState.Cooking);
+        _smokeAnimation.SetActive(true);
         AudioManager.Instance.PlaySFX(AudioSettings.Data.BoilingSounds, true);
         var boilingTime = GameSettings.Data.NoodleBoilingTime;
         yield return new WaitForSeconds(boilingTime);

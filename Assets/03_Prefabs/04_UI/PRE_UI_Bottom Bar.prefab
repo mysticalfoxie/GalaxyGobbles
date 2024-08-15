@@ -150,6 +150,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -169,6 +170,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1.1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -616,6 +618,7 @@ RectTransform:
   - {fileID: 7449282696836211375}
   - {fileID: 1624214760449572400}
   - {fileID: 4845468134286822829}
+  - {fileID: 7951029271246116560}
   - {fileID: 1123982894086642371}
   - {fileID: 3850894724270023636}
   - {fileID: 6275998911569874286}
@@ -789,6 +792,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597a15ea23324008b65ebc7e1e60efef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roundTo: 0.25
+  _decimals: 2
 --- !u!1 &2481638799267324367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1033,122 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _paddingX: 0
   _paddingY: 0
+--- !u!1 &2897564721693921986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7951029271246116560}
+  - component: {fileID: 8559703347729261518}
+  - component: {fileID: 2579497681824176326}
+  - component: {fileID: 3970471209079367225}
+  m_Layer: 5
+  m_Name: Open/Closed Sign
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7951029271246116560
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897564721693921986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2008317713775799295}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 256, y: 256}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8559703347729261518
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897564721693921986}
+  m_CullTransparentMesh: 1
+--- !u!114 &2579497681824176326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897564721693921986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 1930104686, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3970471209079367225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897564721693921986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a7c9d95bf9474291587df23e947f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _openSigns:
+  - {fileID: 1930104686, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -2068021066, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 1579477637, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -1246346403, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 1615243129, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -695986013, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 1702617540, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -335946558, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 160547289, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 1314222702, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -469497627, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 2058670704, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 1283753737, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -602115775, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -2129798324, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -2085592033, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -1613444263, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -2053663543, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -1645000666, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: 524948042, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -1404483890, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -1191684585, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  - {fileID: -705963210, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  _closedSign: {fileID: 862792367, guid: 43c4d6d1c4128754abc3a052a6387a18, type: 3}
+  _enabled: 0
+  _current: 100
+  _pps: 4.347826
 --- !u!1 &2903801416984702982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,7 +1269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4845468134286822829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1423,6 +1544,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -1442,6 +1564,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1.1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -2030,6 +2153,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -2049,6 +2173,7 @@ MonoBehaviour:
   _duration: 0.15
   _strength: 1.1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0

@@ -240,8 +240,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _duration: 0.85
-  _strength: 1.14
+  _strength: 1.18
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 0
   _looped: 1
@@ -261,6 +262,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -280,6 +282,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1.05
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0

@@ -12,7 +12,7 @@ public class ImageAnimator : MonoBehaviour
     [SerializeField] private Sprite[] _sprites;
     [Tooltip("The default speed is 100ms per Frame. Speed of 2 means 50ms. Speed of 0.5 means 200ms. ect.")]
     [Range(0.1F, 10.0F)] [SerializeField] private float _speed = 1.0F;
-    [SerializeField] private bool _playOnAwake;
+    [SerializeField] private bool _playOnEnable;
     [SerializeField] private bool _playOnce;
     [SerializeField] private bool _loop;
 
@@ -28,11 +28,8 @@ public class ImageAnimator : MonoBehaviour
         {
             if (this && isActiveAndEnabled) Destroy(gameObject);
         };
-    }
-
-    public void Awake()
-    {
-        if (_playOnAwake) Play();
+        
+        if (_playOnEnable) Play();
     }
 
     public void Play()

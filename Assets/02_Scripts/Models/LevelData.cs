@@ -48,8 +48,8 @@ public class LevelData : ScriptableObject
     private CustomerData[] _customers;
     
     public int Number => _levelNumber;
-    public uint CloseAfterMinutes => _closeAfterMinutes;
-    public uint CloseAfterSeconds => _closeAfterSeconds;
+    public int CloseAfterMinutes => (int)_closeAfterMinutes;
+    public int CloseAfterSeconds => (int)_closeAfterSeconds;
     public IEnumerable<CustomerData> Customers => _customers;
     public SpeciesData Target => _targetSpecies;
     public int TargetPosition => _targetPosition;

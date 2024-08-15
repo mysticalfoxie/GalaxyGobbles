@@ -18,6 +18,7 @@ public class HowToPlayScreen : MonoBehaviour
         foreach (var page in _pages) page.SetActive(false);
         _pages.First().SetActive(true);
         _previous.gameObject.SetActive(false);
+        _index = 0;
         _mainMenu = GetComponentInParent<MainMenu>();
     }
 
