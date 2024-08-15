@@ -66,7 +66,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     private void HandleTimerDisplay()
     {
-        BottomBar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
+        //BottomBar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
     }
 
     private void HandleStoreClosure()
