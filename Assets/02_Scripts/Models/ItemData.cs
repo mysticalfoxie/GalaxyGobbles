@@ -25,6 +25,7 @@ public class ItemData : ScriptableObject
     public bool CanBecomePoisoned => _canBecomePoisoned;
     public float Score => _score;
     public ItemData Poison { get; set; }
+    public bool Reserved { get; set; }
 
     private void OnValidate()
     {
