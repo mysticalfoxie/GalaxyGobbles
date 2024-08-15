@@ -15,6 +15,11 @@ public class CreditsBook : MonoBehaviour
     public void OnEnable()
     {
         _pages = this.GetChildren().ToArray();
+        foreach (var page in _pages) page.SetActive(false);
+        _pages.First().SetActive(true);
+        _previous.gameObject.SetActive(false);
+        _next.gameObject.SetActive(true);
+        _index = 0;
         _mainMenu = GetComponentInParent<MainMenu>();
     }
 

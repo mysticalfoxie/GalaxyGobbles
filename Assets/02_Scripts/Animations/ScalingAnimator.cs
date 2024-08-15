@@ -11,6 +11,7 @@ public class ScalingAnimator : AnimatorBase
     [SerializeField] protected AnimationInterpolation _interpolation = AnimationInterpolation.Pulse;
     public override void Play()
     {
+        if (Playing) return;
         base.Play();
         _original = transform.localScale;
         _played = true;

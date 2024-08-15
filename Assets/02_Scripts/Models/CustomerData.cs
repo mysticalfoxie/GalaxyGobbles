@@ -18,8 +18,8 @@ public class CustomerData : ScriptableObject
     [SerializeField] internal SpeciesData _species;
     [SerializeField] internal ItemData[] _desiredItems = Array.Empty<ItemData>();
     
-    public uint Minutes => _minutesInGame;
-    public uint Seconds => _secondsInGame;
+    public int Minutes => (int)_minutesInGame;
+    public int Seconds => (int)_secondsInGame;
     public SpeciesData Species => _species;
     public IEnumerable<ItemData> DesiredItems => _desiredItems;
 }
