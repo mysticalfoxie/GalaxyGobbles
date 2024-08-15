@@ -18,7 +18,7 @@ public abstract class AnimatorBase : MonoBehaviour
     [SerializeField] protected bool _playOnce;
     [SerializeField] protected bool _looped;
 
-    public bool Playing => _animation is not null;
+    public bool Playing => _animation?.IsPlaying ?? false;
 
     public bool UnscaledTime
     {

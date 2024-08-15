@@ -314,6 +314,7 @@ public class MainMenu : Singleton<MainMenu>
         var winByScore = CalculateScore();
         var winByBounties = RenderBounties();
         var succeeded = winByBounties && winByScore;
+        var lastLevel = LevelManager.CurrentLevel.Number == GameSettings.Data.Levels.Max(x => x.Number);
 
         DataManager.UpdateProgress(LevelManager.CurrentLevel.Number, ProgressBar.Progress, succeeded);
         _levelSelector.UpdateLevels();
@@ -321,7 +322,8 @@ public class MainMenu : Singleton<MainMenu>
         _starRevealed1.SetActive(false);
         _starRevealed2.SetActive(false);
         _starRevealed3.SetActive(false);
-        _continueButton.SetActive(succeeded);
+        _continueButton.SetActive(succeeded && !lastLevel);
+        _creditsButton.SetActive(succeeded && lastLevel);
         if (succeeded)
             StartCoroutine(PlayStarsAnimation(ProgressBar.Progress));
     }
@@ -429,22 +431,12 @@ public class MainMenu : Singleton<MainMenu>
     {
         if (_completeScoreStamp) _completeScoreStamp.SetActive(false);
         _failedScoreStamp.SetActive(true);
-        if (_continueButton) _continueButton.SetActive(false);
-        if (_creditsButton) _creditsButton.SetActive(false);
     }
 
     private void OnLevelSucceed()
     {
         if (_failedScoreStamp) _failedScoreStamp.SetActive(false);
         _completeScoreStamp.SetActive(true);
-        ShowNextButton();
-    }
-
-    private void ShowNextButton()
-    {
-        var isLastLevel = LevelManager.CurrentLevelIndex == GameSettings.Data.Levels.Count() - 1;
-        _continueButton.SetActive(!isLastLevel);
-        _creditsButton.SetActive(isLastLevel);
     }
 
     public void ApplyOptions()

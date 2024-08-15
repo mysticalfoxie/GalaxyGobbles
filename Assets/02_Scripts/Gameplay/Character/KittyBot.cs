@@ -16,6 +16,8 @@ public class KittyBot : Singleton<KittyBot>, ITouchable
 
     private readonly List<KittyBotQueueEntry> _queue = new();
 
+    public List<Item> Inventory { get; } = new();
+
     [Header("Sprites")] [SerializeField] private Sprite _side;
     [SerializeField] private Sprite _back;
     [SerializeField] private Sprite _front;
@@ -43,11 +45,24 @@ public class KittyBot : Singleton<KittyBot>, ITouchable
         AddQueueFeedback(target);
         _queue.Add(new(_waitStation, null, null));
     }
+    
 
+    public void DeliverItems(IEnumerable<Item> items, Transform target, Action callback)
+    {
+        foreach (var item in items.ToArray())
+        {
+            var match = BottomBar.Instance.Inventory.Items.FirstOrDefault(x => x.Data.name == item.Data.name);
+            if (match is null) continue;
+            Inventory.Add(match);
+            BottomBar.Instance.Inventory.Remove(match, true);
+        }
+        
+        MoveTo(target, callback);
+    }
 
     public void Update()
     {
-        // Cancel when kitty bot is on it's way back to station and a new order comes in.
+        // Cancel when kitty bot is on its way back to station and a new order comes in.
         if (_running && _queue.Count > 1 && _queue[0].Callback is null && _queue[0].Animations is not null)
             foreach (var anim in _queue[0].Animations) anim.Stop();
         

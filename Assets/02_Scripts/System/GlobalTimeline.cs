@@ -9,6 +9,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
     private Dictionary<uint, CustomerData> _customers;
     private bool _closing;
     private bool _forceClose;
+    private uint _totalTime;
     
     public uint SecondsUntilClosure { get; private set; }
     public bool Loading { get; private set; } = true;
@@ -21,7 +22,7 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
         var operation = WaitUntilLevelLoaded(() =>
         {
-            SecondsUntilClosure = LevelManager.CurrentLevel.GetSeconds();
+            _totalTime = SecondsUntilClosure = LevelManager.CurrentLevel.GetSeconds();
             _customers = LevelManager.CurrentLevel.Customers
                 .ToDictionary(x => x.GetSeconds(), y => y);
             
@@ -66,12 +67,13 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     private void HandleTimerDisplay()
     {
-        BottomBar.Instance.DaytimeDisplay.UpdateTime((int)SecondsUntilClosure);
+        var currentTime = Mathf.Max(SecondsUntilClosure, 0);
+        var percentage = Mathf.FloorToInt(100.0F / _totalTime * currentTime);
+        BottomBar.Instance.OpenClosedSign.Current = percentage;
     }
 
     private void HandleStoreClosure()
     {
-        BottomBar.Instance.OpenStatus.UpdateTime((int)SecondsUntilClosure);
         if (SecondsUntilClosure != 0) return;
         StartCoroutine(nameof(CloseStore));
     }

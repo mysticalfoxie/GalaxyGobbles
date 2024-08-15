@@ -73,9 +73,9 @@ public class Customer : Selectable
     public bool TryReceiveMeal()
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
-        if (!HasItemMatch()) return false;
+        if (!HasItemMatches(out var items)) return false;
 
-        KittyBot.Instance.MoveTo(Table.transform, OnReceiveMeal);
+        KittyBot.Instance.DeliverItems(items, Table.transform, OnReceiveMeal);
 
         return true;
     }
@@ -293,21 +293,25 @@ public class Customer : Selectable
 
     private void ReceiveItemsFromInventory()
     {
-        var list = BottomBar.Instance.Inventory.Items.ToArray();
-        foreach (var item in list)
+        foreach (var item in KittyBot.Instance.Inventory.ToArray())
         {
             var match = DesiredItems.FirstOrDefault(x => x.name == item.Data.name);
             if (match is null) continue;
 
             OnItemReceived(match, item);
-            BottomBar.Instance.Inventory.Remove(item, true);
+            KittyBot.Instance.Inventory.Remove(item);
         }
     }
 
-    private bool HasItemMatch()
+    private bool HasItemMatches(out Item[] items)
     {
-        var list = BottomBar.Instance.Inventory.Items.ToArray();
-        return list.Any(x => DesiredItems.Any(y => y.name == x.Data.name));
+        var inventory = BottomBar.Instance.Inventory.Items.ToArray();
+        items = DesiredItems
+            .Select(x => inventory.FirstOrDefault(y => y.Data.name == x.name))
+            .Where(x => x is not null)
+            .ToArray();
+        
+        return items.Any();
     }
 
     private void UpdateData(CustomerData data)

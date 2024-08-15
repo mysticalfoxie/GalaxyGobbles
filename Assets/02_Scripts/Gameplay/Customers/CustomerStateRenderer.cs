@@ -227,8 +227,7 @@ public class CustomerStateRenderer : MonoBehaviour, IDisposable
     {
         var activeItems = _desiredItems
             .Select(x => new { Item = x, Animator = x.GameObject?.GetComponent<ScalingAnimator>() })
-            .Where(x => x.Animator is not null)
-            .Where(x => x.Animator.Playing);
+            .Where(x => x.Animator?.Playing ?? false);
         
         foreach (var container in activeItems)
             // ReSharper disable once PossibleMultipleEnumeration
