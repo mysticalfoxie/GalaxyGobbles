@@ -157,8 +157,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 228.69, y: 200.91, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 266.5801, y: 384.88544, z: 0.9999999}
+  m_Center: {x: 3.992235, y: 46.42719, z: 0.00000014639474}
 --- !u!114 &5216261481943043008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +188,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -207,6 +208,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1.05
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -223,3 +225,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b97e0704364a5bb6215100a2b88096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _linkedAnimators: []

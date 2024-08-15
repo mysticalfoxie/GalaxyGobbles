@@ -13,6 +13,7 @@ public class Customer : Selectable
     private bool _visible;
     private bool _selected;
     private bool _orderedTwice;
+    private bool _awaitingDelivery;
 
     public event EventHandler Destroying;
 
@@ -74,7 +75,9 @@ public class Customer : Selectable
     {
         if (StateMachine.State != CustomerState.WaitingForMeal) return false;
         if (!HasItemMatches(out var items)) return false;
+        if (_awaitingDelivery) return false;
 
+        _awaitingDelivery = true;
         KittyBot.Instance.DeliverItems(items, Table.transform, OnReceiveMeal);
 
         return true;
@@ -82,6 +85,7 @@ public class Customer : Selectable
 
     private void OnReceiveMeal()
     {
+        _awaitingDelivery = false;
         ReceiveItemsFromInventory();
         if (DesiredItems.Count == 0)
         {

@@ -210,6 +210,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -229,6 +230,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1.05
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -824,8 +826,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.192739, z: 1.2723956}
-  m_Center: {x: 0, y: 0.5963718, z: -0.0064119725}
+  m_Size: {x: 0.9434846, y: 2.519369, z: 1.2723956}
+  m_Center: {x: 0.013909914, y: 0.75968707, z: -0.006412}
 --- !u!114 &5894215685609557697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1660,6 +1662,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
@@ -1679,6 +1682,7 @@ MonoBehaviour:
   _duration: 0.2
   _strength: 1.15
   _weight: {x: 1, y: 1, z: 1}
+  _unscaledTime: 0
   _playOnAwake: 0
   _playOnce: 1
   _looped: 0
