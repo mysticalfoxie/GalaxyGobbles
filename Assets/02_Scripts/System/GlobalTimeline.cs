@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class GlobalTimeline : TimelineBase<GlobalTimeline>
 {
-    private Dictionary<uint, CustomerData> _customers;
+    private Dictionary<int, CustomerData> _customers;
     private bool _closing;
     private bool _forceClose;
-    private uint _totalTime;
+    private int _totalTime;
     
-    public uint SecondsUntilClosure { get; private set; }
+    public int SecondsUntilClosure { get; private set; }
     public bool Loading { get; private set; } = true;
     public bool DayComplete { get; set; }
 
@@ -80,10 +80,10 @@ public class GlobalTimeline : TimelineBase<GlobalTimeline>
 
     private void HandleCustomerArrival()
     {
-        if (!_customers.ContainsKey((uint)Ticks + 1)) return;
+        if (!_customers.ContainsKey(Ticks + 1)) return;
         
         var customer = _customers
-            .First(x => x.Key == (uint)Ticks + 1)
+            .First(x => x.Key == Ticks + 1)
             .Value;
 
         CustomerHandler.Instance.SummonNewCustomer(customer);

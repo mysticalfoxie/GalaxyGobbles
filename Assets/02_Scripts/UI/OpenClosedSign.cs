@@ -12,10 +12,10 @@ public class OpenClosedSign : MonoBehaviour
 
     [Header("Debugging")] 
     [SerializeField] private bool _enabled;
-    [SerializeField] [Range(0, 100)] private float _current;
+    [SerializeField] [Range(0, 100)] private int _current;
     [SerializeField] private float _pps; // percentage per sprite
 
-    public float Current
+    public int Current
     {
         get => _current;
         set
@@ -45,7 +45,7 @@ public class OpenClosedSign : MonoBehaviour
         // 5 * 11
         // 55
 
-        if (Current <= 0)
+        if (Current <= 0F)
         {
             _renderer.sprite = _closedSign;
             return;
