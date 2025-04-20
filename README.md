@@ -15,7 +15,7 @@ Meet the talented individuals behind Galaxy Gobbles:
 
 - 🎮 **Chantelle Schmitz** - Game Designer & Vision Keeper 
 - 🎮 **Freddy Then** - Game Designer & Content Manager
-- 💻 **Michelle Becker** - Gameplay Developer (Me! 👋) 
+- 💻 **Katarina Becker** - Gameplay Developer
 - 💻 **Jens Kärger** - UI Developer 
 - 🎨 **Sabrin Schwämmlein** - 3D Artist 
 - 🎨 **Bastian Metzkow** - 2D Artist 
@@ -30,12 +30,12 @@ Stay tuned for updates on our development progress:
 - 🔗 **Pitch (Prototype Presentation):** [Watch on YouTube](https://youtu.be/wMgFW1ivDR4)
 - 🔗 **Gate 1 (End of Pre-Production):** [Watch on YouTube](https://youtu.be/PqtghV9fDvA)
 - 🔗 **Gate 2 (End of Full-Production):** [Watch on YouTube](https://youtu.be/yq1xGZLbCBM)
-- 🔗 **Goldmaster (Estimated Release: August 7th, 2024):** Coming soon! ⏳📅
+- 🔗 **Goldmaster:** [Watch on YouTube](https://youtu.be/xrgeNOpofVs)
 
 ## Inquiries
 
 If you're interested in contributing to Galaxy Gobbles, whether it's through feedback, collaboration, or simply spreading the word, we'd love to hear from you! 
 
-Reach out to Luc Fellmann [lookizluc@gmail.com](mailto://lookizluc@gmail.com) as our **Producer** me [michellebecker2003@gmail.com](mailto://michellebecker2003@gmail.com) as our **Developer**!~~~~
+Reach out to Luc Fellmann [lookizluc@gmail.com](mailto://lookizluc@gmail.com) as our **Producer** me [katarinabecker137@gmail.com](mailto://katarinabecker137@gmail.com) as our **Developer**!~~~~
 
 We're happy to hear from you!
