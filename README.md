@@ -36,6 +36,6 @@ Stay tuned for updates on our development progress:
 
 If you're interested in contributing to Galaxy Gobbles, whether it's through feedback, collaboration, or simply spreading the word, we'd love to hear from you! 
 
-Reach out to Luc Fellmann [lookizluc@gmail.com](mailto://lookizluc@gmail.com) as our **Producer** me [katarinabecker137@gmail.com](mailto://katarinabecker137@gmail.com) as our **Developer**!~~~~
+Reach out to Luc Fellmann [lookizluc@gmail.com](mailto://lookizluc@gmail.com) as our **Producer** - or to me [katarinabecker137@gmail.com](mailto://katarinabecker137@gmail.com) as our **Developer**!~~~~
 
 We're happy to hear from you!
